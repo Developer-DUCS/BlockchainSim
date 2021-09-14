@@ -26,5 +26,5 @@ npm/yarn run client
 ### Extra Steps For Developers 
 
 1. Use Visual Studio Code
-2. Install [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) **Requires VSCODE restart after install
-3. Your code should now auto format to the project standards.
+2. Install [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+3. Make sure code auto formats to project standards.
