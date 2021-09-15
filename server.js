@@ -1,18 +1,14 @@
+// Server side code for the application
+// Note: Do we need to use bodyParser?
+
 const express = require("express");
-const cors = require("cors");
-
 const app = express();
-
-app.get("/api/customers", cors(), (req, res) => {
-  const customers = [
-    { id: 1, firstName: "John", lastName: "Doe" },
-    { id: 2, firstName: "Brad", lastName: "Traversy" },
-    { id: 3, firstName: "Mary", lastName: "Swanson" },
-  ];
-
-  res.json(customers);
-});
-
 const port = 5000;
 
+var router = express.Router();
+
+// List of routes
+router.use("/api/customers", require("./client/src/api/customers"));
+
+app.use(router);
 app.listen(port, () => `Server running on port ${port}`);
