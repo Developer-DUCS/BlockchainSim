@@ -8,7 +8,7 @@
 # Install dependencies for server
 npm/yarn install
 
-# Install dependencies for client
+# Install dependencies for client (Re run this for new packages)
 npm/yarn run client-install
 
 # Run the client & server with concurrently
@@ -28,3 +28,9 @@ npm/yarn run client
 1. Use Visual Studio Code
 2. Install [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 3. Make sure code auto formats to project standards.
+
+
+### Examples
+
+1. Api example: api/customers.js
+2. Basic React Example: components/Error.js
