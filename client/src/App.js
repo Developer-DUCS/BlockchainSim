@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import Customers from "./components/customers";
+import HomePage from "./components/HomePage";
 import Login from "./components/Login";
 import Error from "./components/Error";
 
@@ -11,7 +11,7 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route path="/" component={Customers} exact />
+          <Route path="/" component={HomePage} exact />
           <Route path="/login" component={Login} />
           <Route component={Error} />
         </Switch>
