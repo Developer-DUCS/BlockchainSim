@@ -29,6 +29,12 @@ npm/yarn run client
 2. Install [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 3. Make sure code auto formats to project standards.
 
+### Testing
+
+```bash
+# Run Tests (located in src/tests directory)
+npm/yarn run test
+```
 
 ### Examples
 
