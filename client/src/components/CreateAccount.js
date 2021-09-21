@@ -18,13 +18,19 @@ const CreateAccount = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(password, verifyPassword, e);
+    let formData = new FormData(e.target);
+
+    // API call to create account
+    // if successful, redirect to login page
+    // if not, display error message
   };
 
+  // If password or verify password change
   React.useEffect(() => {
     checkPassword();
   }, [password, verifyPassword]);
 
+  // Check if passwords match
   const checkPassword = () => {
     if (password !== verifyPassword) {
       setError(true);
@@ -33,7 +39,7 @@ const CreateAccount = () => {
     }
   };
 
-  // Function to verify email
+  // Check if email is valid
   const verifyEmail = (email) => {
     if (email.length > 0) {
       const re =
@@ -44,7 +50,7 @@ const CreateAccount = () => {
 
   return (
     <Container maxWidth="xs">
-      <Paper sx={{ p: 2 }} elevation={3}>
+      <Paper sx={{ p: 2 }} elevation={2}>
         <Typography variant="h4" align="center" gutterBottom>
           Create Account
         </Typography>
@@ -72,7 +78,7 @@ const CreateAccount = () => {
                     }
                     error={emailError}
                     color={emailError ? "error" : "success"}
-                    focused={email}
+                    focused={email.length > 0}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -87,7 +93,7 @@ const CreateAccount = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     error={error}
                     helperText={error ? "Passwords do not match" : ""}
-                    focused={password}
+                    focused={password.length > 0}
                     color={error ? "error" : "success"}
                   />
                 </Grid>
@@ -103,7 +109,7 @@ const CreateAccount = () => {
                     onChange={(e) => setVerifyPassword(e.target.value)}
                     error={error}
                     helperText={error ? "Passwords do not match" : ""}
-                    focused={verifyPassword}
+                    focused={verifyPassword.length > 0}
                     color={error ? "error" : "success"}
                   />
                 </Grid>
