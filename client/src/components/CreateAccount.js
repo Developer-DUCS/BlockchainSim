@@ -58,7 +58,7 @@ const CreateAccount = () => {
                     label="Email"
                     name="email"
                     size="small"
-                    variant="filled"
+                    variant="outlined"
                     type="email"
                     required
                     onChange={(e) => {
@@ -82,7 +82,7 @@ const CreateAccount = () => {
                     name="password"
                     size="small"
                     type="password"
-                    variant="filled"
+                    variant="outlined"
                     required
                     onChange={(e) => setPassword(e.target.value)}
                     error={error}
@@ -98,7 +98,7 @@ const CreateAccount = () => {
                     name="verifyPassword"
                     size="small"
                     type="password"
-                    variant="filled"
+                    variant="outlined"
                     required
                     onChange={(e) => setVerifyPassword(e.target.value)}
                     error={error}
