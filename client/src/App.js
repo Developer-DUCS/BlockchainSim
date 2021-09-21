@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
 import ThemeSwitch from "@mui/material/Switch";
+import CreateAccount from "./components/CreateAccount";
 
 const darkTheme = createTheme({
   palette: {
@@ -36,6 +37,7 @@ const App = () => {
         <Switch>
           <Route path="/" component={HomePage} exact />
           <Route path="/login" component={Login} />
+          <Route path="/create" component={CreateAccount} />
           <Route component={Error} />
         </Switch>
       </Router>
