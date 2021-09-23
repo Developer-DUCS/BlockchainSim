@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 
 const Login = () => {
+  const [password, setPassword] = React.useState(false);
   const [email, setEmail] = React.useState(false);
   const [emailError, setEmailError] = React.useState(false);
 
@@ -16,6 +17,7 @@ const Login = () => {
     e.preventDefault();
 
     let formData = new FormData(e.target);
+    const credentials = { email, password };
 
     // API call to login to account
     // if successful, redirect to landing page
@@ -50,6 +52,7 @@ const Login = () => {
                     variant="outlined"
                     type="email"
                     required
+                    value={email}
                     onChange={(e) => {
                       verifyEmail(e.target.value);
                       setEmail(e.target.value);
@@ -66,6 +69,8 @@ const Login = () => {
                     size="small"
                     type="password"
                     variant="outlined"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </Grid>
