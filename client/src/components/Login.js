@@ -9,8 +9,8 @@ import {
 } from "@mui/material";
 
 const Login = () => {
-  const [password, setPassword] = React.useState(false);
-  const [email, setEmail] = React.useState(false);
+  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(false);
 
   const handleSubmit = (e) => {
