@@ -1,14 +1,15 @@
+import { Container, Typography } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>Homepage</h1>
-      <h2>Welcome to the Homepage</h2>
-      <Link to="/login">Login</Link>
-      <Link to="/create">Create Account</Link>
-    </div>
+    <Container>
+      <Typography variant="h3" align="center">
+        Homepage
+      </Typography>
+      <Typography variant="h4">About</Typography>
+      <Typography variant="body1">Blockchain Simulation</Typography>
+    </Container>
   );
 };
 
