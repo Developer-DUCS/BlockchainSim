@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React from "react";
 
-const CreateAccount = () => {
+const SignUp = () => {
   const [password, setPassword] = React.useState(false);
   const [verifyPassword, setVerifyPassword] = React.useState(false);
   const [email, setEmail] = React.useState(false);
@@ -134,4 +134,4 @@ const CreateAccount = () => {
   );
 };
 
-export default CreateAccount;
+export default SignUp;
