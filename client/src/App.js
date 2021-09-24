@@ -12,6 +12,7 @@ class App extends Component {
   render() {
     return (
       <Router>
+        <NavBar />
         <Switch>
           <Route path="/" component={HomePage} exact />
           <Route path="/login" component={Login} />
