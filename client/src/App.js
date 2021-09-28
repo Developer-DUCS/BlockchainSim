@@ -5,7 +5,6 @@ import Error from "./components/Error";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
-import NavBar from "./components/NavBar";
 
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
