@@ -1,11 +1,11 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   return (
     <div>
       <h1>Login</h1>
-      <Button variant="contained">Example Button</Button>
+      <Link to="/landing">Landing Page</Link>
     </div>
   );
 };
