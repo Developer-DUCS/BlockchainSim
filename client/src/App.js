@@ -12,21 +12,20 @@ import NavBar from "./components/NavBar";
 import SignUp from "./components/SignUp";
 import Demo from "./components/Demo";
 
+// const darkTheme = createTheme({
+//   palette: {
+//     mode: "dark",
+//   },
+// });
+
 const darkTheme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
   },
 });
 
 const lightTheme = createTheme({
   palette: {
-    mode: "light",
-  },
-});
-
-const lightTheme1 = createTheme({
-  palette: {
-    mode: "light",
     primary: { main: "#388697", light: "#3d93a5", dark: "#337989" },
     secondary: { main: "#DE6B48", light: "#e17859", dark: "#db5e37" },
     error: { main: "#BC2C1A", light: "#cd301c", dark: "#ab2818" },
@@ -42,15 +41,39 @@ const lightTheme1 = createTheme({
   },
 });
 
+const eanTheme1 = createTheme({
+  palette: {
+    primary: { main: "#5680E9", light: "#3d93a5", dark: "#337989" },
+    secondary: { main: "#5AB9EA", light: "#e17859", dark: "#db5e37" },
+    error: { main: "#BC2C1A", light: "#cd301c", dark: "#ab2818" },
+    warning: { main: "#E8846D", light: "#67339b", dark: "#53297d" },
+    info: { main: "#C1C8E4", light: "#ad9223", dark: "#8d761d" },
+    success: { main: "#A6E83F", light: "#148f65", dark: "#106d4d" },
+    background: { paper: "#fff", default: "#fff" },
+    text: {
+      primary: "#000",
+      secondary: "#000",
+      disabled: "#000",
+    },
+  },
+});
+
 const App = () => {
+  const [toggle, setToggle] = React.useState(false);
   const [theme, setTheme] = React.useState(lightTheme);
 
   const toggleTheme = () => {
-    setTheme(theme.palette.mode === "light" ? darkTheme : lightTheme);
+    if (toggle) {
+      setToggle(false);
+      setTheme(eanTheme1);
+    } else {
+      setToggle(true);
+      setTheme(lightTheme);
+    }
   };
 
   return (
-    <ThemeProvider theme={lightTheme1}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
         <NavBar toggleTheme={toggleTheme} />
