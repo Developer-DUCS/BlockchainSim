@@ -24,16 +24,16 @@ const lightTheme = createTheme({
   },
 });
 
-const testTheme = createTheme({
+const lightTheme1 = createTheme({
   palette: {
     mode: "light",
-    primary: { main: "#388697", light: "#fff", dark: "#1E2019" },
-    secondary: { main: "#90A583", light: "#fff", dark: "#1E2019" },
-    error: { main: "#BC2C1A", light: "#fff", dark: "#1E2019" },
-    warning: { main: "#942911", light: "#fff", dark: "#1E2019" },
-    info: { main: "#9D8420", light: "#fff", dark: "#1E2019" },
-    success: { main: "#8DAB7F", light: "#98b38b", dark: "#1E2019" },
-    background: { paper: "#FFFCF7", default: "#FFFCF7" },
+    primary: { main: "#388697", light: "#3d93a5", dark: "#337989" },
+    secondary: { main: "#DE6B48", light: "#e17859", dark: "#db5e37" },
+    error: { main: "#BC2C1A", light: "#cd301c", dark: "#ab2818" },
+    warning: { main: "#5D2E8C", light: "#67339b", dark: "#53297d" },
+    info: { main: "#9D8420", light: "#ad9223", dark: "#8d761d" },
+    success: { main: "#127E59", light: "#148f65", dark: "#106d4d" },
+    background: { paper: "#fffcf7", default: "#f7faff" },
     text: {
       primary: "#011627",
       secondary: "#011627",
@@ -50,7 +50,7 @@ const App = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={lightTheme1}>
       <CssBaseline />
       <Router>
         <NavBar toggleTheme={toggleTheme} />
