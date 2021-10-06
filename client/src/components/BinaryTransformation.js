@@ -7,7 +7,7 @@ function convertText2Binary(input) {
   return output;
 }
 
-//turn binary into text
+// turn binary into text
 function convertBinary2Text(input) {
   var output = input
     .split(" ")
