@@ -62,27 +62,21 @@ const App = () => {
   const [toggle, setToggle] = React.useState(false);
   const [theme, setTheme] = React.useState(lightTheme);
 
-  const toggleTheme = () => {
-    if (toggle) {
-      setToggle(false);
-      setTheme(eanTheme1);
-    } else {
-      setToggle(true);
-      setTheme(lightTheme);
-    }
+  const changeTheme = (theme) => {
+    alert("test");
   };
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <NavBar toggleTheme={toggleTheme} />
+        <NavBar toggleTheme={changeTheme} />
         <Switch>
           <Route path="/" component={HomePage} exact />
           <Route path="/login" component={Login} />
           <Route path="/landing" component={LandingPage} />
           <Route path="/create" component={SignUp} />
-          <Route path="/demo" component={Demo} />
+          <Route path="/demo" render={() => <Demo setTheme={setTheme} />} />
           <Route component={Error} />
         </Switch>
       </Router>

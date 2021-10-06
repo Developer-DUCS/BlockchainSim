@@ -12,13 +12,108 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 
-const Demo = () => {
+const eanTheme1 = createTheme({
+  palette: {
+    primary: { main: "#5CB0C8", light: "#7DD0D3", dark: "#4A8DA0" },
+    secondary: { main: "#A68759", light: "#D89F7A", dark: "#856C47" },
+    error: { main: "#E8846E", light: "#ED9D8A", dark: "#BA6A57" },
+    warning: { main: "#E8846D", light: "#67339b", dark: "#53297d" },
+    info: { main: "#C1C8E4", light: "#CD3E9", dark: "#9AA0B6" },
+    success: { main: "#A6E83F", light: "#B8ED65", dark: "#85BA32" },
+    background: { paper: "#fff", default: "#F8F8F8" },
+    text: {
+      primary: "#000",
+      secondary: "#000",
+      disabled: "#000",
+    },
+  },
+});
+
+const eanTheme2 = createTheme({
+  palette: {
+    primary: { main: "#d8c557", light: "#DCCB68", dark: "#c2b14e" },
+    secondary: { main: "#50714D", light: "#738D71", dark: "#405A3E" },
+    error: { main: "#E8846E", light: "#ED9D8a", dark: "#BA6A57" },
+    warning: { main: "#8F56B0", light: "#A578C0", dark: "#72458D" },
+    info: { main: "#B6A35F", light: "#C5B57F", dark: "#92824C" },
+    success: { main: "#A6E83F", light: "#B8ED65", dark: "#85BA32" },
+    background: { paper: "#fff", default: "#FAF9F6" },
+    text: {
+      primary: "#000",
+      secondary: "#000",
+      disabled: "#000",
+    },
+  },
+});
+
+const sethTheme = createTheme({
+  palette: {
+    primary: { main: "#388697", light: "#3d93a5", dark: "#337989" },
+    secondary: { main: "#DE6B48", light: "#e17859", dark: "#db5e37" },
+    error: { main: "#BC2C1A", light: "#cd301c", dark: "#ab2818" },
+    warning: { main: "#5D2E8C", light: "#67339b", dark: "#53297d" },
+    info: { main: "#9D8420", light: "#ad9223", dark: "#8d761d" },
+    success: { main: "#127E59", light: "#148f65", dark: "#106d4d" },
+    background: { paper: "#fffcf7", default: "#f7faff" },
+    text: {
+      primary: "#011627",
+      secondary: "#011627",
+      disabled: "#011627",
+    },
+  },
+});
+
+const Demo = (props) => {
+  const { setTheme } = props;
   return (
     <Container maxWidth="lg">
       <Typography variant="h2" textAlign="center">
         Theme Demo
       </Typography>
+      <Grid
+        container
+        spacing={3}
+        alignItems="center"
+        justifyContent="center"
+        sx={{ mb: 2 }}
+      >
+        <Grid item xs={4}>
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <Button
+                onClick={() => {
+                  setTheme(eanTheme1);
+                }}
+                variant="contained"
+              >
+                Theme 1
+              </Button>
+            </Grid>
+            <Grid item xs={4}>
+              <Button
+                onClick={() => {
+                  setTheme(eanTheme2);
+                }}
+                variant="contained"
+              >
+                Theme 2
+              </Button>
+            </Grid>
+            <Grid item xs={4}>
+              <Button
+                onClick={() => {
+                  setTheme(sethTheme);
+                }}
+                variant="contained"
+              >
+                Theme 3
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
       <Grid container spacing={4}>
         <Grid item xs={6}>
           <Paper sx={{ p: 2 }} elevation={2}>
