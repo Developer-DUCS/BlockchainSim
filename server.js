@@ -8,7 +8,7 @@ const port = 5000;
 var router = express.Router();
 
 // List of routes
-router.use("/api/customers", require("./client/src/api/customers"));
+app.use("/api/users", require("./client/src/api/users"));
 
 app.use(router);
 app.listen(port, () => `Server running on port ${port}`);
