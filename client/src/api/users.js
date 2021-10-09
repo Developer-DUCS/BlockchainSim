@@ -6,7 +6,7 @@ const conn = require("../../../mysqldb");
 
 router.use(bodyParser.json());
 
-const secret = "secret";
+//const secret = "secret";
 
 router.post("/login", (req, res) => {
   //check if email and password are sent

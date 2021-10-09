@@ -22,6 +22,19 @@ const Login = () => {
     // API call to login to account
     // if successful, redirect to landing page
     // if not, display error message
+    fetch("./api/users.js", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: "login",
+      }),
+    }).then(async (response) => {
+      const data = await response.text();
+      setData(data);
+    });
   };
 
   // Check if email is valid
