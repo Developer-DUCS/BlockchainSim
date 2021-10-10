@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
+import BlockComponent from "./BlockComponent";
 
 const eanTheme1 = createTheme({
   palette: {
@@ -65,6 +66,21 @@ const sethTheme = createTheme({
   },
 });
 
+const demoBlock = {
+  blockNumber: "14",
+  blockDate: "28/09/21 06:04:11",
+  blockMiner: "lsgh0325",
+  blockMerkleTree:
+    "0000180d78f908b719c223bcc1aaac0b668ad40ab63891d6c19900228728440",
+  blockTransactions: [
+    { transactionHash: "12938198dhf8h", transactionAmount: "6.25" },
+    { transactionHash: "12938198dhf8h", transactionAmount: "1" },
+  ],
+  blockPreviousHash: "000000f575cf1e27b85c8ad98a98djf9au9h9ajsdofj",
+  blockNonce: "23529",
+  blockHash: "000099d89ffda35707d4ffa5ae51667d4c179e0ebd7b4799b85e11675633f7dc",
+};
+
 const Demo = (props) => {
   const { setTheme } = props;
   return (
@@ -72,6 +88,7 @@ const Demo = (props) => {
       <Typography variant="h2" textAlign="center">
         Theme Demo
       </Typography>
+      <BlockComponent block={demoBlock} />
       <Grid
         container
         spacing={3}
