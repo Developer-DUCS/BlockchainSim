@@ -73,8 +73,30 @@ const demoBlock = {
   blockMerkleTree:
     "0000180d78f908b719c223bcc1aaac0b668ad40ab63891d6c19900228728440",
   blockTransactions: [
-    { transactionHash: "12938198dhf8h", transactionAmount: "6.25" },
-    { transactionHash: "12938198dhf8h", transactionAmount: "1" },
+    {
+      transactionHash: "12938198dhf8h",
+      transactionAmount: "6.25",
+      transactionNameFrom: "New",
+      transactionNameTo: "hjy764",
+      transactionAddressFrom: "Block Reward",
+      transactionAddressTo: "eb38e60ac0",
+    },
+    {
+      transactionHash: "12938198dhf8h",
+      transactionAmount: "1",
+      transactionNameFrom: "ipp098",
+      transactionNameTo: "New",
+      transactionAddressFrom: "eb38e60ac0",
+      transactionAddressTo: "eb38e60ac0",
+    },
+    {
+      transactionHash: "12938198dhf8h",
+      transactionAmount: "1",
+      transactionNameFrom: "Seth",
+      transactionNameTo: "Ean",
+      transactionAddressFrom: "eb38e60ac0",
+      transactionAddressTo: "eb38e60ac0",
+    },
   ],
   blockPreviousHash: "000000f575cf1e27b85c8ad98a98djf9au9h9ajsdofj",
   blockNonce: "23529",
@@ -88,7 +110,14 @@ const Demo = (props) => {
       <Typography variant="h2" textAlign="center">
         Theme Demo
       </Typography>
-      <BlockComponent block={demoBlock} />
+      <Grid container spacing={3} sx={{ p: 2 }}>
+        <Grid item xs={6}>
+          <BlockComponent block={demoBlock} />
+        </Grid>
+        <Grid item xs={6}>
+          <BlockComponent block={demoBlock} />
+        </Grid>
+      </Grid>
       <Grid
         container
         spacing={3}

@@ -18,35 +18,36 @@ const BlockComponent = (props) => {
     <Paper sx={{ p: 2 }} style={{ overflowWrap: "anywhere" }}>
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h4">Block {block.blockNumber}</Typography>
-          <Typography variant="subtitle2">{block.blockDate}</Typography>
-          <br />
-          <Typography variant="subtitle1">Miner: {block.blockMiner}</Typography>
-          <Typography variant="h6">Merkle Tree:</Typography>
-          <Typography variant="subtitle1">{block.blockMerkleTree}</Typography>
-          <Divider />
+          <Typography variant="h6">
+            Block {block.blockNumber}{" "}
+            <Typography variant="caption">{block.blockDate}</Typography>
+          </Typography>
+          <Typography variant="caption">Miner: {block.blockMiner}</Typography>
+          <Typography variant="subtitle2">Merkle Tree:</Typography>
+          <Typography variant="caption">{block.blockMerkleTree}</Typography>
+          <Divider sx={{ bgcolor: "primary.main" }} />
         </Grid>
-        <Grid item xs={12} textAlign="center" sx={{ p: 1 }}>
-          {block.blockTransactions != undefined
-            ? block.blockTransactions.length
-            : 0}{" "}
-          Transactions
-        </Grid>
-        <Grid item xs={12}>
-          <Grid
-            container
-            sx={{ border: 1, borderRadius: 1, borderColor: "divider" }}
-          >
+        <Grid item xs={12} textAlign="center">
+          <Typography variant="caption">
             {block.blockTransactions != undefined
-              ? block.blockTransactions.map((tx) => (
-                  <Grid item xs={12} sx={{ p: 2 }}>
+              ? block.blockTransactions.length
+              : 0}{" "}
+            Transactions
+          </Typography>
+          <Divider sx={{ bgcolor: "primary.main" }} />
+        </Grid>
+        <Grid item xs={12} style={{ maxHeight: "150px", overflow: "auto" }}>
+          <Grid container>
+            {block.blockTransactions != undefined
+              ? block.blockTransactions.map((tx, index) => (
+                  <Grid item xs={12} sx={{ pl: 1, pr: 1, pt: 0.5, pb: 0.5 }}>
                     <Grid container>
                       <Grid item xs={3}>
-                        <Typography variant="subtitle1">
-                          {tx.transactionHash}
+                        <Typography variant="subtitle2">
+                          {tx.transactionNameFrom}
                         </Typography>
-                        <Typography variant="subtitle1">
-                          {tx.transactionHash}
+                        <Typography variant="caption">
+                          {tx.transactionAddressFrom}
                         </Typography>
                       </Grid>
                       <Grid
@@ -61,36 +62,38 @@ const BlockComponent = (props) => {
                         <ArrowForwardIcon />
                       </Grid>
                       <Grid item xs={3}>
-                        <Typography variant="subtitle1">
-                          {tx.transactionHash}
+                        <Typography variant="subtitle2">
+                          {tx.transactionNameTo}
                         </Typography>
-                        <Typography variant="subtitle1">
-                          {tx.transactionHash}
+                        <Typography variant="caption">
+                          {tx.transactionAddressTo}
                         </Typography>{" "}
                       </Grid>
                       <Grid item xs={3} textAlign="right">
-                        <Typography variant="h6">
+                        <Typography variant="subtitle2">
                           {tx.transactionAmount}
                         </Typography>
-                        <Typography variant="subtitle2">BTC</Typography>
+                        <Typography variant="caption">BTC</Typography>
                       </Grid>
                     </Grid>
+                    <Divider />
                   </Grid>
                 ))
               : "non"}
           </Grid>
         </Grid>
 
-        <Grid item xs={12}>
-          <br />
-          <Typography variant="h6">Hash of the previous block:</Typography>
-          <Typography variant="subtitle1">{block.blockPreviousHash}</Typography>
-          <Divider />
+        <Grid item xs={12} sx={{ pt: 1 }}>
+          <Typography variant="subtitle2">
+            Hash of the previous block:
+          </Typography>
+          <Typography variant="caption">{block.blockPreviousHash}</Typography>
+          <Divider sx={{ bgcolor: "primary.main" }} />
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="subtitle1">Nonce: {block.blockNonce}</Typography>
-          <Typography variant="h6">Hash:</Typography>
-          <Typography variant="subtitle1">{block.blockHash}</Typography>
+          <Typography variant="caption">Nonce: {block.blockNonce}</Typography>
+          <Typography variant="subtitle2">Hash:</Typography>
+          <Typography variant="caption">{block.blockHash}</Typography>
         </Grid>
       </Grid>
     </Paper>
