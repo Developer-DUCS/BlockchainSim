@@ -5,6 +5,7 @@ import Error from "./components/Error";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import BlockHeader from "./components/BlockHeader";
+import MiningPool from "./components/MiningPool";
 import NavBar from "./components/NavBar";
 import SignUp from "./components/SignUp";
 
