@@ -17,11 +17,26 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    let formData = new FormData(e.target);
-
     // API call to create account
     // if successful, redirect to login page
+    const url = "http://localhost:5000/api/users/register";
+    const payload = new URLSearchParams();
+    payload.append("email", email);
+    payload.append("password", password);
+    payload.append("role", "dev");
+    fetch(url, {
+      //mode: "no-cors",
+      credentials: "include",
+      method: "post",
+      headers: {
+        "Content-Type": "x-www-form-urlencoded",
+      },
+      body: payload,
+    }).then((res) => {
+      console.log("in res");
+      console.log(res);
+      console.log(res.status);
+    });
     // if not, display error message
   };
 
