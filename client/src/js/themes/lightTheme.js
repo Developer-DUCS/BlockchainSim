@@ -11,8 +11,8 @@ const lightTheme = createTheme({
     background: { paper: "#fffcf7", default: "#f7faff" },
     text: {
       primary: "#011627",
-      secondary: "#011627",
-      disabled: "#011627",
+      secondary: "#022c4d",
+      disabled: "#034174",
     },
   },
 });

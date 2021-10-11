@@ -8,6 +8,7 @@ import BlockHeader from "./components/BlockHeader";
 import MiningPool from "./components/MiningPool";
 import NavBar from "./components/NavBar";
 import SignUp from "./components/SignUp";
+import Demo from "./components/Demo";
 
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
