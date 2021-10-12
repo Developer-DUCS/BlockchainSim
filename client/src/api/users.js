@@ -1,14 +1,10 @@
-const express = require("express");
-const app = express();
-const router = express.Router();
 const db = require("../../../dbConn");
 const bcrypt = require("bcrypt-nodejs");
-
-app.use(express.json());
-router.use(express.urlencoded({ extended: true }));
+const cors = require("cors");
+const router = require("express").Router();
 
 // Create a user
-router.post("/register", (req, res) => {
+router.post("/register", cors(), (req, res) => {
   res.sendStatus(200);
   console.log("register entered");
   // initialize variables

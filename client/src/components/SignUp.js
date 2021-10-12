@@ -25,8 +25,6 @@ const SignUp = () => {
     payload.append("password", password);
     payload.append("role", "dev");
     fetch(url, {
-      //mode: "no-cors",
-      credentials: "include",
       method: "post",
       headers: {
         "Content-Type": "x-www-form-urlencoded",
