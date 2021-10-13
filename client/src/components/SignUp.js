@@ -6,6 +6,7 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
+import { useHistory } from "react-router-dom";
 import React from "react";
 
 const SignUp = () => {
@@ -14,28 +15,35 @@ const SignUp = () => {
   const [email, setEmail] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [emailError, setEmailError] = React.useState(false);
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // API call to create account
     // if successful, redirect to login page
     const url = "http://localhost:5000/api/users/register";
-    const payload = new URLSearchParams();
-    payload.append("email", email);
-    payload.append("password", password);
-    payload.append("role", "dev");
+    const payload = {
+      id: email,
+      pass: password,
+      role: "dev",
+    };
     fetch(url, {
       method: "post",
       headers: {
-        "Content-Type": "x-www-form-urlencoded",
+        "Content-Type": "application/json",
       },
-      body: payload,
+      body: JSON.stringify(payload),
     }).then((res) => {
-      console.log("in res");
-      console.log(res);
-      console.log(res.status);
+      if (res.status == 201) {
+        //redirect
+        history.push("/login");
+      }
+      if (res.status == 409) {
+        // username already exist
+        // display invalid username
+        setEmailError(1);
+      }
     });
-    // if not, display error message
   };
 
   // If password or verify password change
