@@ -22,6 +22,20 @@ const Login = () => {
     // API call to login to account
     // if successful, redirect to landing page
     // if not, display error message
+    fetch("http://localhost:5000/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    }).then(async (response) => {
+      if (res.status == 200) {
+        //redirect
+        history.pushState("/landing");
+      } else {
+        console.log("error with status");
+      }
+    });
   };
 
   // Check if email is valid

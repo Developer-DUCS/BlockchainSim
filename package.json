@@ -14,7 +14,7 @@
   "author": "Seth Workman",
   "license": "Apache-2.0",
   "devDependencies": {
-    "nodemon": "^1.14.6"
+    "nodemon": "^2.0.13"
   },
   "dependencies": {
     "bcrypt-nodejs": "^0.0.3",
