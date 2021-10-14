@@ -6,13 +6,26 @@ import { Link } from "react-router-dom";
 import Switch from "@mui/material/Switch";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import lightTheme from "../js/themes/lightTheme";
+import darkTheme from "../js/themes/darkTheme";
 
 const NavBar = (props) => {
-  const { toggleTheme } = props;
+  const { setTheme } = props;
+  const [toggle, setToggle] = React.useState(false);
 
   // Can be used in future for smaller devices
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
+
+  const toggleTheme = () => {
+    if (toggle) {
+      setTheme(lightTheme);
+      setToggle(false);
+    } else {
+      setTheme(darkTheme);
+      setToggle(true);
+    }
+  };
 
   return (
     <Box sx={{ flexGrow: 1, mb: 5 }}>
