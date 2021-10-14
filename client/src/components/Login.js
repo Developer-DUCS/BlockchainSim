@@ -22,18 +22,19 @@ const Login = () => {
     // API call to login to account
     // if successful, redirect to landing page
     // if not, display error message
-    fetch("./api/users.js", {
+    fetch("http://localhost:5000/api/users/login", {
       method: "POST",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        name: "login",
-      }),
+      body: JSON.stringify(credentials),
     }).then(async (response) => {
-      const data = await response.text();
-      setData(data);
+      if (res.status == 200) {
+        //redirect
+        history.pushState("/landing");
+      } else {
+        console.log("error with status");
+      }
     });
   };
 
