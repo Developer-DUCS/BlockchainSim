@@ -7,21 +7,37 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import { useHistory } from "react-router-dom";
 
-const Login = () => {
+const SignIn = () => {
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(false);
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let formData = new FormData(e.target);
     const credentials = { email, password };
 
     // API call to login to account
     // if successful, redirect to landing page
     // if not, display error message
+    fetch("http://localhost:5000/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    }).then(async (res) => {
+      if (res.status == 200) {
+        //redirect
+        history.push("/landing");
+      } else {
+        console.log("error with status");
+        console.log(res);
+      }
+    });
   };
 
   // Check if email is valid
@@ -37,7 +53,7 @@ const Login = () => {
     <Container maxWidth="xs">
       <Paper sx={{ p: 2 }} elevation={2}>
         <Typography variant="h4" align="center" gutterBottom>
-          Login
+          Sign In
         </Typography>
         <form onSubmit={(e) => handleSubmit(e)}>
           <Grid container spacing={3}>
@@ -83,7 +99,7 @@ const Login = () => {
                 type="submit"
                 variant="contained"
               >
-                Log in
+                Sign in
               </Button>
             </Grid>
           </Grid>
@@ -93,4 +109,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;
