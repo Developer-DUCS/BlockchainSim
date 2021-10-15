@@ -39,7 +39,7 @@ const NavBar = (props) => {
           <Switch onChange={toggleTheme} />
           <Button
             component={Link}
-            to={"/login"}
+            to={"/signin"}
             color="primary"
             variant="outlined"
             sx={{ mr: 2 }}
@@ -48,7 +48,7 @@ const NavBar = (props) => {
           </Button>
           <Button
             component={Link}
-            to={"/create"}
+            to={"/signup"}
             color="primary"
             variant="contained"
           >

@@ -7,16 +7,17 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import { useHistory } from "react-router-dom";
 
-const Login = () => {
+const SignIn = () => {
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(false);
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let formData = new FormData(e.target);
     const credentials = { email, password };
 
     // API call to login to account
@@ -28,12 +29,13 @@ const Login = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(credentials),
-    }).then(async (response) => {
+    }).then(async (res) => {
       if (res.status == 200) {
         //redirect
-        history.pushState("/landing");
+        history.push("/landing");
       } else {
         console.log("error with status");
+        console.log(res);
       }
     });
   };
@@ -51,7 +53,7 @@ const Login = () => {
     <Container maxWidth="xs">
       <Paper sx={{ p: 2 }} elevation={2}>
         <Typography variant="h4" align="center" gutterBottom>
-          Login
+          Sign In
         </Typography>
         <form onSubmit={(e) => handleSubmit(e)}>
           <Grid container spacing={3}>
@@ -97,7 +99,7 @@ const Login = () => {
                 type="submit"
                 variant="contained"
               >
-                Log in
+                Sign in
               </Button>
             </Grid>
           </Grid>
@@ -107,4 +109,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;

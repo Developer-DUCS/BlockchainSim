@@ -16,8 +16,8 @@ router.post("/login", (req, res) => {
   }
   console.log("enters route");
   // go into mysql and get info
-  let qry = `select * from btb.users where email = "${req.body.email}"`;
-  conn.query(qry, (err, rows) => {
+  let qry = `select * from user where email = "${req.body.email}"`;
+  db.query(qry, (err, rows) => {
     if (err) {
       console.log("big error");
       console.log(err);
@@ -46,7 +46,6 @@ router.post("/login", (req, res) => {
         fname: users[0].fname,
         lname: users[0].lname,
         role: users[0].role,
-        token: token,
       });
       /* console.log(users[0])
               if (users[0]) {
@@ -70,7 +69,6 @@ router.post("/login", (req, res) => {
     }
   });
 });
-
 
 // Create a user
 router.post("/register", cors(), (req, res) => {

@@ -36,12 +36,12 @@ const SignUp = () => {
     }).then((res) => {
       if (res.status == 201) {
         //redirect
-        history.push("/login");
+        history.push("/signin");
       }
       if (res.status == 409) {
         // username already exist
         // display invalid username
-        setEmailError(1);
+        setEmailError(true);
       }
     });
   };
@@ -73,7 +73,7 @@ const SignUp = () => {
     <Container maxWidth="xs">
       <Paper sx={{ p: 2 }} elevation={2}>
         <Typography variant="h4" align="center" gutterBottom>
-          Create Account
+          Sign Up
         </Typography>
         <form onSubmit={(e) => handleSubmit(e)}>
           <Grid container spacing={3}>
