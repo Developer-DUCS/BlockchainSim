@@ -48,6 +48,7 @@ npm/yarn run test
 3. From the command line/terminal type: mysql -u root -p
 4. Enter the password you created during installation
 5. Once you are in the MySQL terminal, enter the paste in the following script. (This will be updated soon to reflect October 14th's meeting.)
+
 CREATE Database btb;
 USE btb;
 CREATE TABLE user (
@@ -65,6 +66,7 @@ CREATE TABLE simulation (
   FOREIGN KEY (email) REFERENCES user (email)
  );
 INSERT INTO user Values ('test@test.test', 'test1234', 'dev');
+
 6. Run the command: SELECT * FROM user; to see the user inserted.
 
 ### Errors
