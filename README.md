@@ -40,3 +40,36 @@ npm/yarn run test
 
 1. Api example: api/customers.js
 2. Basic React Example: components/Error.js
+
+## MySQL Database Setup
+
+1. Download [MySQL Community Server Edition](https://dev.mysql.com/downloads/mysql/)
+2. Install MySQL
+3. From the command line/terminal type: mysql -u root -p
+4. Enter the password you created during installation
+5. Once you are in the MySQL terminal, enter the paste in the following script. (This will be updated soon to reflect October 14th's meeting.)
+CREATE Database btb;
+USE btb;
+CREATE TABLE user (
+  email VARCHAR(256) NOT NULL,
+  password VARCHAR(256) NOT NULL,
+  role VARCHAR(64) NOT NULL,
+  PRIMARY KEY (email)
+ );
+CREATE TABLE simulation (
+  sim_id INT NOT NULL AUTO_INCREMENT,
+  email VARCHAR(256) NOT NULL,
+  blockchain_name VARCHAR(256) NOT NULL,
+  binary_file LONGBLOB NOT NULL,
+  PRIMARY KEY ( sim_id ),
+  FOREIGN KEY (email) REFERENCES user (email)
+ );
+INSERT INTO user Values ('test@test.test', 'test1234', 'dev');
+6. Run the command: SELECT * FROM user; to see the user inserted.
+
+### Errors
+If you run into the error when running MySQL: Client does not support authentication protocol requested by server; consider upgrading MySQL client
+1. Log into MySQL on the terminal: mysql -u root -p
+2. Run following command where 'password' is your password for MySQL: ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+3. Run the following command: flush privileges;
+That should fix it :)
