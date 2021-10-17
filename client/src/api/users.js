@@ -103,4 +103,13 @@ router.post("/register", cors(), (req, res) => {
   });
 });
 
+router.post("/auth", cors(), (req, res) => {
+  try {
+    jwt.decode(req.body.token, config.secret);
+    res.sendStatus(200);
+  } catch (err) {
+    res.sendStatus(401);
+  }
+});
+
 module.exports = router;
