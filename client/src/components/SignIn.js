@@ -29,15 +29,26 @@ const SignIn = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(credentials),
-    }).then(async (res) => {
-      if (res.status == 200) {
+    })
+      .then(async (res) => {
+        if (res.status == 200) {
+          return res.json();
+        } else {
+          throw new Error("Failed to Login!");
+        }
+      })
+      .then(async (res) => {
+        console.log(res);
+
+        // Store token in cookie
+        window.localStorage.setItem("token", res.token);
+
         //redirect
         history.push("/landing");
-      } else {
-        console.log("error with status");
-        console.log(res);
-      }
-    });
+      })
+      .catch(async (err) => {
+        console.error(err);
+      });
   };
 
   // Check if email is valid
