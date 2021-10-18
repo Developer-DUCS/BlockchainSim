@@ -89,7 +89,9 @@ To create a new branch run ```git checkout -b {new branch name} {parent branch}`
 
 ### Merging Branches
 To add work done run ```git add .``` from the root directory
+
 To commit changes run ```git commit -m "commit message goes here"```
+
 To push changes back to origin run ```git push origin {current branch}```
 
 
