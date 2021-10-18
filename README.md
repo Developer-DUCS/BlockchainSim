@@ -78,8 +78,9 @@ INSERT INTO user Values ('test@test.test', 'test1234', 'dev');
 ### Errors
 If you run into the error when running MySQL: Client does not support authentication protocol requested by server; consider upgrading MySQL client
 1. Log into MySQL on the terminal ```mysql -u root -p```
-2. Run following command where 'password' is your password for MySQL ```ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';```
+2. Run following command where password is your password for MySQL ```ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';```
 3. Run the following command ```flush privileges;```
+
 That should fix it :)
 
 ## Github CLI
