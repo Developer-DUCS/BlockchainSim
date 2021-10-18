@@ -75,3 +75,18 @@ If you run into the error when running MySQL: Client does not support authentica
 2. Run following command where 'password' is your password for MySQL: ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
 3. Run the following command: flush privileges;
 That should fix it :)
+
+## Github CLI
+
+### Creating Branches
+To fetch branches run 'git fetch origin'
+To pull a branch run 'git pull {branch name}'
+To checkout a branch run 'git checkout {branch name}'
+To create a new branch run 'git checkout -b {new branch name} {parent branch}'
+
+### Merging Branches
+To add work done run 'git add .' from the root directory
+To commit changes run 'git commit -m "commit message goes here"'
+To push changes back to origin run 'git push origin {current branch}'
+
+
