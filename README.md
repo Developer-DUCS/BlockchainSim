@@ -95,7 +95,7 @@ To checkout a branch run ```git checkout {branch name}```
 To create a new branch run ```git checkout -b {new branch name} {parent branch}```
 
 ### Merging Branches
-To add work done run ```git add .``` from the root directory
+To stage changes run ```git add .``` from the root directory
 
 To commit changes run ```git commit -m "commit message goes here"```
 
