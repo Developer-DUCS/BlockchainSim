@@ -94,6 +94,31 @@ router.post("/register", cors(), (req, res) => {
               }
             }
           );
+          // Create a table for the users blocks
+          var tableName = "blocks_";
+          const _id = id.replace(/[@.]/g, "_");
+          tableName = tableName + _id;
+          db.query(
+            `CREATE TABLE ${tableName} (
+              hash VARBINARY(256) NOT NULL,
+              header JSON NOT NULL,
+              transactions JSON NOT NULL,
+              transaction_counter TINYINT NOT NULL, 
+              miner VARCHAR(256) NOT NULL, 
+              time_created TIMESTAMP NOT NULL, 
+              PRIMARY KEY (hash));`,
+            (err, result) => {
+              // If error, log it to console
+              if (err) {
+                console.log(err);
+              } else {
+                // Log user created block table to console
+                console.log(
+                  "User " + id + " created a block table with name " + tableName
+                );
+              }
+            }
+          );
         }
       });
     } else {
