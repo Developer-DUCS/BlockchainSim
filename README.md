@@ -47,7 +47,7 @@ npm/yarn run test
 2. Install MySQL
 3. From the command line/terminal type: ```mysql -u root -p```
 4. Enter the password you created during installation
-5. Once you are in the MySQL terminal, enter the paste in the following script. (This will be updated soon to reflect October 14th's meeting.)
+5. Once you are in the MySQL terminal, enter the paste in the following script.
 
 ```
 CREATE Database btb;
