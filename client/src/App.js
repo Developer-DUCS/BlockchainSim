@@ -17,15 +17,46 @@ import lightTheme from "./js/themes/lightTheme";
 
 const App = () => {
   const [theme, setTheme] = React.useState(lightTheme);
+  const [signIn, setSignIn] = React.useState(false);
+
+  // Check if the user is signed in
+  React.useEffect(() => {
+    fetch("http://localhost:5000/api/users/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token: window.localStorage.getItem("token") }),
+    }).then((res) => {
+      if (res.status == 200) {
+        console.log("Authorized");
+        setSignIn(true);
+      } else {
+        console.error("Unauthorized");
+        setSignIn(false);
+      }
+    });
+  }, []);
+
+  const toggleSignIn = () => {
+    setSignIn(!signIn);
+  };
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <NavBar setTheme={setTheme} />
+        <NavBar
+          setTheme={setTheme}
+          signIn={signIn}
+          toggleSignIn={toggleSignIn}
+        />
         <Switch>
           <Route path="/" component={HomePage} exact />
-          <Route path="/signin" component={SignIn} />
+          <Route
+            path="/signin"
+            render={() => <SignIn toggleSignIn={toggleSignIn} />}
+          />
           <Route path="/landing" component={LandingPage} />
           <Route path="/signup" component={SignUp} />
           <Route path="/demo" render={() => <Demo setTheme={setTheme} />} />

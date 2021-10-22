@@ -8,14 +8,11 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import lightTheme from "../js/themes/lightTheme";
 import darkTheme from "../js/themes/darkTheme";
+import Auth from "../components/Auth";
 
 const NavBar = (props) => {
-  const { setTheme } = props;
+  const { setTheme, signIn, toggleSignIn } = props;
   const [toggle, setToggle] = React.useState(false);
-
-  // Can be used in future for smaller devices
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
   const toggleTheme = () => {
     if (toggle) {
@@ -24,6 +21,21 @@ const NavBar = (props) => {
     } else {
       setTheme(darkTheme);
       setToggle(true);
+    }
+  };
+
+  const signOut = () => {
+    try {
+      // Remove token
+      window.localStorage.removeItem("token");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      // Toggle Sign In state
+      toggleSignIn();
+
+      // Refresh the page (make sure everything is in sync)
+      history.go(0);
     }
   };
 
@@ -37,23 +49,31 @@ const NavBar = (props) => {
             </Link>
           </Typography>
           <Switch onChange={toggleTheme} />
-          <Button
-            component={Link}
-            to={"/signin"}
-            color="primary"
-            variant="outlined"
-            sx={{ mr: 2 }}
-          >
-            Sign In
-          </Button>
-          <Button
-            component={Link}
-            to={"/signup"}
-            color="primary"
-            variant="contained"
-          >
-            Sign Up
-          </Button>
+          {signIn == false ? (
+            <>
+              <Button
+                component={Link}
+                to={"/signin"}
+                color="primary"
+                variant="outlined"
+                sx={{ mr: 2 }}
+              >
+                Sign In
+              </Button>
+              <Button
+                component={Link}
+                to={"/signup"}
+                color="primary"
+                variant="contained"
+              >
+                Sign Up
+              </Button>
+            </>
+          ) : (
+            <Button color="error" variant="contained" onClick={signOut}>
+              Sign Out
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
