@@ -4,11 +4,8 @@ import Box from "@mui/system/Box";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import Switch from "@mui/material/Switch";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import lightTheme from "../js/themes/lightTheme";
 import darkTheme from "../js/themes/darkTheme";
-import Auth from "../components/Auth";
 
 const NavBar = (props) => {
   const { setTheme, signIn, toggleSignIn } = props;
@@ -49,31 +46,33 @@ const NavBar = (props) => {
             </Link>
           </Typography>
           <Switch onChange={toggleTheme} />
-          {signIn == false ? (
-            <>
-              <Button
-                component={Link}
-                to={"/signin"}
-                color="primary"
-                variant="outlined"
-                sx={{ mr: 2 }}
-              >
-                Sign In
+          {signIn == false
+            ? (
+              <>
+                <Button
+                  component={Link}
+                  to={"/signin"}
+                  color="primary"
+                  variant="outlined"
+                  sx={{ mr: 2 }}
+                >
+                  Sign In
+                </Button>
+                <Button
+                  component={Link}
+                  to={"/signup"}
+                  color="primary"
+                  variant="contained"
+                >
+                  Sign Up
+                </Button>
+              </>
+            )
+            : (
+              <Button color="error" variant="contained" onClick={signOut}>
+                Sign Out
               </Button>
-              <Button
-                component={Link}
-                to={"/signup"}
-                color="primary"
-                variant="contained"
-              >
-                Sign Up
-              </Button>
-            </>
-          ) : (
-            <Button color="error" variant="contained" onClick={signOut}>
-              Sign Out
-            </Button>
-          )}
+            )}
         </Toolbar>
       </AppBar>
     </Box>
