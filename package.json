@@ -17,6 +17,8 @@
     "nodemon": "^2.0.13"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/lab": "*",
     "bcrypt-nodejs": "^0.0.3",
     "concurrently": "^3.5.1",
     "cors": "^2.8.5",
