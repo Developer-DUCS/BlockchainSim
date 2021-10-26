@@ -9,7 +9,8 @@ import {
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 
-const SignIn = () => {
+const SignIn = (props) => {
+  const { toggleSignIn } = props;
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(false);
@@ -42,6 +43,9 @@ const SignIn = () => {
 
         // Store token in cookie
         window.localStorage.setItem("token", res.token);
+
+        // Toggle state of sign in
+        toggleSignIn();
 
         //redirect
         history.push("/landing");

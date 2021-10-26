@@ -16,10 +16,6 @@ import DateFnsUtils from "@date-io/date-fns";
 import { useHistory } from "react-router-dom";
 
 const CreateSimulation = () => {
-  const [password, setPassword] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [emailError, setEmailError] = React.useState(false);
-  const history = useHistory();
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = (date) => {
@@ -29,38 +25,7 @@ const CreateSimulation = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const credentials = { email, password };
-
-    // API call to login to account
-    // if successful, redirect to landing page
-    // if not, display error message
-    fetch("http://localhost:5000/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-    })
-      .then(async (res) => {
-        if (res.status == 200) {
-          return res.json();
-        } else {
-          throw new Error("Failed to Login!");
-        }
-      })
-      .then(async (res) => {
-        console.log(res);
-
-        // Store token in cookie
-        window.localStorage.setItem("token", res.token);
-
-        //redirect
-        history.push("/landing");
-      })
-      .catch(async (err) => {
-        console.error(err);
-      });
+    console.log(e);
   };
 
   return (
