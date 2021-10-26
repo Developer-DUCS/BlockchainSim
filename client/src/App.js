@@ -14,6 +14,7 @@ import Demo from "./components/Demo";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import lightTheme from "./js/themes/lightTheme";
+import CreateSimulation from "./components/CreateSimulationPage";
 
 const App = () => {
   const [theme, setTheme] = React.useState(lightTheme);
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/signin" component={SignIn} />
           <Route path="/landing" component={LandingPage} />
           <Route path="/signup" component={SignUp} />
+          <Route path="/createsimulation" component={CreateSimulation} />
           <Route path="/demo" render={() => <Demo setTheme={setTheme} />} />
           <Route component={Error} />
         </Switch>
