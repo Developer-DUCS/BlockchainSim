@@ -90,6 +90,8 @@ To fetch branches run ```git fetch origin```
 
 To pull a branch run ```git pull {branch name}```
 
+If you need a branch that you haven't pulled before, run ```git branch -a``` This command pulls all branches, including remote ones denoted by ```remotes/origin/{branch name}``` Specify full name of the branch when checking out the branch
+
 To checkout a branch run ```git checkout {branch name}```
 
 To create a new branch run ```git checkout -b {new branch name} {parent branch}```
