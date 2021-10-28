@@ -25,7 +25,7 @@ const CreateSimulation = () => {
   const TIME_VARIATION_WINDOW = 30; //30 Seconds
   const NUM_BLOCKS = 500;
 
-  /* CREATE TIME STAMPS */
+  /* Create time stamps given an initial date, number of blocks and interval between blocks */
   const createTimeStaps = (initTime) => {
     let aInitTime = initTime[1].split(":");
     let aInitDate = initTime[0].split("/");
