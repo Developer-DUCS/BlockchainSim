@@ -25,6 +25,7 @@ const CreateSimulation = () => {
   const TIME_VARIATION_WINDOW = 30; //30 Seconds
   const NUM_BLOCKS = 500;
 
+  /* CREATE TIME STAMPS */
   const createTimeStaps = (initTime) => {
     let aInitTime = initTime[1].split(":");
     let aInitDate = initTime[0].split("/");
@@ -41,7 +42,7 @@ const CreateSimulation = () => {
 
     var currTimeStamp = genesisDate;
     for (var i = 0; i < NUM_BLOCKS; i++) {
-      //Obtain time stamps for blocks  //Obtain time stamps for blocks
+      //Obtain time stamps for blocks
       let randomTime = Math.random() * TIME_VARIATION_WINDOW;
       var newTimeMillisec =
         currTimeStamp.getTime() + WINDOW_TIME * 1000 + randomTime * 1000;
@@ -92,7 +93,6 @@ const CreateSimulation = () => {
                       name="timePick"
                       label="genesis block creation date"
                       ampm={false}
-                      //views={["hours", "minutes", "seconds"]}
                       format="HH:mm:ss"
                       variant="dialog"
                       value={selectedDate}
