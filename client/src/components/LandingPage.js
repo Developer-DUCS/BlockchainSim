@@ -12,7 +12,6 @@ const LandingPage = () => {
         </Typography>
         <Typography variant="h4">Blockchain Data</Typography>
         <Typography variant="body1">Blockchain Simulation</Typography>
-        <Link to="/logout">Logout</Link>
       </Container>
     </Auth>
   );

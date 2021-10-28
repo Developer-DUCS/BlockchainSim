@@ -7,7 +7,6 @@ const Auth = (props) => {
   const [auth, setAuth] = React.useState(null);
 
   React.useEffect(() => {
-    console.log("in use effect");
     fetch("http://localhost:5000/api/users/auth", {
       method: "POST",
       headers: {
