@@ -33,7 +33,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import LockOpen from "@mui/icons-material/LockOpen";
 import Add from "@mui/icons-material/Add";
 
-const drawerWidth = 240;
+const drawerWidth = 270;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, openDrawer }) => ({
