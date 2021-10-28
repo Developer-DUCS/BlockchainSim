@@ -135,20 +135,28 @@ Row.propTypes = {
   }).isRequired,
 };
 
-const rows = [
-  createData("Test Simulation", "10/28/2021", "10/20/2021", 24, 4.0, 3.99),
-  createData(
-    "Ean's Super Awesome Simulation",
-    "10/28/2021",
-    "10/28/2021",
-    37,
-    4.3,
-    4.99
-  ),
-  createData("BtB's Simulation", "10/28/2021", "10/28/2021", 24, 6.0, 3.79),
-];
+const SimTable = (props) => {
+  const { table } = props;
 
-export default function SimTable() {
+  const rows = [
+    // createData(table.rows[0].name, "10/28/2021", "10/20/2021", 24, 4.0, 3.99),
+    // createData(
+    //   "Ean's Super Awesome Simulation",
+    //   "10/28/2021",
+    //   "10/28/2021",
+    //   37,
+    //   4.3,
+    //   4.99
+    // ),
+    // createData("BtB's Simulation", "10/28/2021", "10/28/2021", 24, 6.0, 3.79),
+  ];
+
+  table.rows.forEach((ele) =>
+    rows.push(
+      createData(ele.name, ele.edited, ele.created, ele.blocks, 4.1, 3.99)
+    )
+  );
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -169,4 +177,6 @@ export default function SimTable() {
       </Table>
     </TableContainer>
   );
-}
+};
+
+export default SimTable;
