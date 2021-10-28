@@ -3,7 +3,7 @@ import HomePage from "./components/HomePage";
 import Error from "./components/Error";
 import SignIn from "./components/SignIn";
 import EansPage from "./components/EansPage";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import BlockHeader from "./components/BlockHeader";
 import MiningPool from "./components/MiningPool";
@@ -11,6 +11,7 @@ import NavBar from "./components/NavBar";
 import UserBar from "./components/UserBar";
 import SignUp from "./components/SignUp";
 import Demo from "./components/Demo";
+import Simulation from "./components/Simulation";
 
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
@@ -49,15 +50,15 @@ const App = () => {
       <CssBaseline />
 
       <Router>
-        {window.location.pathname == "/ean" ? (
-          <UserBar setTheme={setTheme} />
-        ) : (
-          <NavBar
-            setTheme={setTheme}
-            signIn={signIn}
-            toggleSignIn={toggleSignIn}
-          />
-        )}
+        {window.location.pathname == "/ean"
+          ? <UserBar setTheme={setTheme} />
+          : (
+            <NavBar
+              setTheme={setTheme}
+              signIn={signIn}
+              toggleSignIn={toggleSignIn}
+            />
+          )}
 
         <Switch>
           <Route path="/ean" component={EansPage} />
@@ -69,6 +70,7 @@ const App = () => {
           <Route path="/landing" component={LandingPage} />
           <Route path="/signup" component={SignUp} />
           <Route path="/demo" render={() => <Demo setTheme={setTheme} />} />
+          <Route path="/simulation" component={Simulation} />
 
           <Route component={Error} />
         </Switch>
