@@ -18,7 +18,7 @@ const random = (min = 268435456, max = 4294967295) => {
   return Math.floor(num);
 };
 
-const header = () => {
+const createHeader = () => {
   var difficulty =
     "1000000000000000000000000000000000000000000000000000000000000000";
   // Note: Difficulty is hard-coded, and the target difficulty in the header doesn't do anything.
@@ -57,9 +57,6 @@ const header = () => {
     var hash = hashing(intNonce);
     if (hash <= difficulty) {
       HashResults.push(hash);
-      console.log("Miner:", chooseMiner());
-      //HashResults.push(Miner);
-      //console.log("Hash #"+ i +" is <= target: "+ hashing(intNonce) + " " + Miner + " has mined the block.")
       done = true;
     } else {
       HashResults.push(hash);
@@ -72,7 +69,7 @@ const header = () => {
   console.log(HashResults);
 };
 
-export default header;
+export default createHeader;
 // TODO:
 //        save previous block hash before and after
 //        create a while loop to simulate attempts at solving the hash

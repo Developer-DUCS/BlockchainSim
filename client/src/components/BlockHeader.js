@@ -1,8 +1,8 @@
-import header from "../js/blockchain/header";
+import block from "../js/blockchain/block";
 
 //component to check blockchain js is working correctly
 
-header();
+block();
 
 // TODO:
 //        save previous block hash before and after */
