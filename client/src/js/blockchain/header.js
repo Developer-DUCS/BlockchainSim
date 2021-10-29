@@ -78,6 +78,8 @@ const createHeader = (previousHash, merkleTree) => {
     }
   }
 
+  console.log("winner hash:", selectedHash);
+
   //create header JSON object
   var objectJSON = {
     version: "00000020",

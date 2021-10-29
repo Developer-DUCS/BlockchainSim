@@ -19,13 +19,26 @@ const merkleTree = //TO DO: to not be hardcode
 
 const NUM_MINERS = 100; // TO DO: change when simulation connected
 
-const block = () => {
+const blockCreator = (numMiners) => {
   var miner = chooseMiner(NUM_MINERS);
   var header = createHeader(previousHash, merkleTree);
-  //var timeStamps = createTimeStamp(initialTimeStamp)
+  var hashID = header[0];
+  var headerJSON = header[1];
+  var transactionJSON = {};
+  //var timeStamp   TO DO: figure out how to connect this
+
+  var blockJSON = {
+    header: headerJSON,
+    transaction: transactionJSON,
+    transaction_counter: 0,
+    miner: miner,
+    time_created: "11-02-22 11:22:33",
+  };
 
   console.log("Miner: ", miner);
   console.log("Header:", header);
+
+  return [blockJSON, hashID];
 };
 
-export default block;
+export default blockCreator;

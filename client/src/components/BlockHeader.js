@@ -1,8 +1,9 @@
-import block from "../js/blockchain/block/block";
+//import block from "../js/blockchain/block/block";
+import simulationCreator from "../js/blockchain/simulation";
 
 //component to check blockchain js is working correctly
 
-block();
+simulationCreator();
 
 // TODO:
 //        save previous block hash before and after */
