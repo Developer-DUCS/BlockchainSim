@@ -78,7 +78,17 @@ const createHeader = (previousHash, merkleTree) => {
     }
   }
 
-  return selectedHash;
+  //create header JSON object
+  var objectJSON = {
+    version: "00000020",
+    previousHash: previousHash,
+    merkleTree: merkleTree,
+    time: "2b80475f",
+    target: "00000000",
+    nonce: nonce,
+  };
+
+  return [selectedHash, objectJSON];
 };
 
 export default createHeader;
