@@ -1,4 +1,4 @@
-import block from "../js/blockchain/block";
+import block from "../js/blockchain/block/block";
 
 //component to check blockchain js is working correctly
 
