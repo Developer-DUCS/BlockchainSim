@@ -17,7 +17,7 @@ import {
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import { useHistory } from "react-router-dom";
-import timeStamp from "../js/blockchain/timeStamp";
+import timeStamp from "../js/blockchain/block/timeStamp";
 
 const CreateSimulation = () => {
   const [selectedDate, setSelectedDate] = React.useState(new Date());

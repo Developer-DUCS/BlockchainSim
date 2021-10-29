@@ -1,3 +1,8 @@
+/*
+    CONSTRUCTION OF THE BLOCK - only one block per time
+    
+*/
+
 import chooseMiner from "./miningPool";
 import createHeader from "../header";
 //import createTimeStamp from "./timeStamp";

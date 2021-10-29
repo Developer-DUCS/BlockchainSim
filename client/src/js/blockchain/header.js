@@ -19,7 +19,6 @@
 */
 
 import sjcl from "../../sjcl";
-import chooseMiner from "../blockchain/miningPool";
 
 const version = "00000020";
 const time = "2b80475f";
@@ -46,7 +45,6 @@ const createHeader = (previousHash, merkleTree) => {
   var hashing = (intNonce) => {
     blockHeader = "";
     nonce = intNonce.toString(16);
-    console.log(nonce);
     blockHeader += blockHeader.concat(
       version,
       previousHash,
@@ -67,23 +65,20 @@ const createHeader = (previousHash, merkleTree) => {
   // variables for looping and collecting data
   var i = 1;
   var done = false;
-  var hashResults = [];
+  var selectedHash;
 
   while (done == false) {
     var hash = hashing(intNonce);
     if (hash <= difficulty) {
-      // hash found
-      hashResults.push(hash);
+      selectedHash = hash;
       done = true;
     } else {
-      // keep looking
-      hashResults.push(hash);
       intNonce++;
       i++;
     }
   }
 
-  return hashResults;
+  return selectedHash;
 };
 
 export default createHeader;
@@ -91,8 +86,7 @@ export default createHeader;
 //        save previous block hash before and after
 //        create a while loop to simulate attempts at solving the hash
 
-
-//sim_blocks JSON object
+/* //sim_blocks JSON object
 const sim_blocks = {
   1: "0104db27ef0e770ea5b0786880ee0883b13b04eeb7c34acebc77c4e47957ae95",
   2: "081d730172ca30cd21eaf9f2c6eb41d70b6ff64910b6ce959a0505be0ba729de",
@@ -103,13 +97,12 @@ const sim_blocks = {
 
 //header JSON Object
 const header = {
-  "version" : "00000020",
-  "previousHash" : "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-  "merkleTree" : "113459eb7bb31bddee85ade5230d6ad5d8b2fb52879e00a84ff6ae1067a210d3",
-  "target" : "00000000", 
-  "nonce" : "16c4c4b0"
-}
-
-//transactions JSON object
-const transactions;
-
+  version: "00000020",
+  previousHash:
+    "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+  merkleTree:
+    "113459eb7bb31bddee85ade5230d6ad5d8b2fb52879e00a84ff6ae1067a210d3",
+  target: "00000000",
+  nonce: "16c4c4b0",
+};
+*/
