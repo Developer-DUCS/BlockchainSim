@@ -1,14 +1,29 @@
+/*
+    CONSTRUCTION OF THE HEADER - Construction of the header of block
+
+        Inputs need from block.js: 
+            - previousHash: hash of the previous block
+            - merkleTree: merkle tree of the transactions
+
+        Outputs:
+            - hash of the block
+            - JSON object with the header information
+                {
+                    version: "00000020",
+                    previousHash: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+                    merkleTree: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+                    time: "2b80475f",
+                    target: "00000000",
+                    nonce: "4d6d557c"
+                }
+*/
+
 import sjcl from "../../sjcl";
 import chooseMiner from "../blockchain/miningPool";
-// construct header
-// Bitcoin uses little endian format for many of these values. We are not.
+
 const version = "00000020";
 const time = "2b80475f";
 const target = "00000000"; //no difficulty
-var previousHash =
-  "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8";
-var merkleTree =
-  "113459eb7bb31bddee85ade5230d6ad5d8b2fb52879e00a84ff6ae1067a210d3";
 var nonce;
 
 // create random nonce value which will be
@@ -18,7 +33,7 @@ const random = (min = 268435456, max = 4294967295) => {
   return Math.floor(num);
 };
 
-const createHeader = () => {
+const createHeader = (previousHash, merkleTree) => {
   var difficulty =
     "1000000000000000000000000000000000000000000000000000000000000000";
   // Note: Difficulty is hard-coded, and the target difficulty in the header doesn't do anything.
@@ -31,6 +46,7 @@ const createHeader = () => {
   var hashing = (intNonce) => {
     blockHeader = "";
     nonce = intNonce.toString(16);
+    console.log(nonce);
     blockHeader += blockHeader.concat(
       version,
       previousHash,
@@ -51,22 +67,23 @@ const createHeader = () => {
   // variables for looping and collecting data
   var i = 1;
   var done = false;
-  var HashResults = [];
+  var hashResults = [];
 
   while (done == false) {
     var hash = hashing(intNonce);
     if (hash <= difficulty) {
-      HashResults.push(hash);
+      // hash found
+      hashResults.push(hash);
       done = true;
     } else {
-      HashResults.push(hash);
-      //console.log("Hash #" + i + " is > target: " + hashing(intNonce) )
+      // keep looking
+      hashResults.push(hash);
       intNonce++;
       i++;
     }
   }
 
-  console.log(HashResults);
+  return hashResults;
 };
 
 export default createHeader;
