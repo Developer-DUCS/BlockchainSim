@@ -29,7 +29,7 @@ const createTimeStamp = (initTime) => {
     stampTimes.push(currDate);
   }
 
-  console.log(stampTimes);
+  //console.log(stampTimes);
 };
 
 export default createTimeStamp;
