@@ -15,7 +15,9 @@ const createTimeStamp = (initTime) => {
     aInitTime[1],
     aInitTime[2]
   );
-  stampTimes.push(genesisDate); //initial Date genesis block
+
+  let temp = genesisDate.toISOString().slice(0, 19).replace("T", " ");
+  stampTimes.push(temp); //initial Date genesis block
 
   var currTimeStamp = genesisDate;
   for (var i = 0; i < NUM_BLOCKS; i++) {
@@ -29,7 +31,7 @@ const createTimeStamp = (initTime) => {
     stampTimes.push(currDate);
   }
 
-  //console.log(stampTimes);
+  return stampTimes;
 };
 
 export default createTimeStamp;
