@@ -18,6 +18,7 @@ const simulationCreator = (numBlocks, initialHash, timeStampArr, numMiners) => {
 
   console.log("List of hashes:", hashes);
   console.log("List of blocks:", blocks);
+  return [hashes, blocks];
 };
 
 export default simulationCreator;
