@@ -5,7 +5,8 @@ const cors = require("cors");
 
 router.post("/block", cors(), (req, res) => {
   console.log("block route entered");
-  const hash = 0x0104db27ef0e770ea5b0786880ee0883b13b04eeb7c34acebc77c4e47957ae95;
+  const hash =
+    "0104db27ef0e770ea5b0786880ee0883b13b04eeb7c34acebc77c4e47957ae95";
   const header = {
     version: "00000020",
     previousHash:
@@ -27,7 +28,7 @@ router.post("/block", cors(), (req, res) => {
   const transaction_counter = 5;
   const miner = "whodidit";
   const time_created = new Date().toISOString().slice(0, 19).replace("T", " ");
-  let qry = `INSERT INTO blocks_bryan_valencia_com VALUES (${hash}, '${headerString}', '${transactionsString}', ${transaction_counter}, '${miner}', '${time_created}');`;
+  let qry = `INSERT INTO blocks_bryan_valencia_com VALUES ('${hash}', '${headerString}', '${transactionsString}', ${transaction_counter}, '${miner}', '${time_created}');`;
   db.query(qry, (err, result) => {
     if (err) {
       console.log(err);
