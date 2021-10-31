@@ -39,7 +39,6 @@ router.post("/block", cors(), (req, res) => {
 });
 
 router.post("/simulation", cors(), (req, res) => {
-  const sim_id = 1;
   const email = "seth@workman.com";
   const sim_name = "My First Blockchain";
   const sim_shared = {
