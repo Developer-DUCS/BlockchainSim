@@ -67,7 +67,6 @@ CREATE TABLE simulation (
   sim_created DATETIME NOT NULL,
   sim_modified DATETIME NOT NULL,
   sim_blocks JSON NOT NULL,
-  binary_file LONGBLOB NOT NULL,
   PRIMARY KEY ( sim_id ),
   FOREIGN KEY (email) REFERENCES user (email)
  );
