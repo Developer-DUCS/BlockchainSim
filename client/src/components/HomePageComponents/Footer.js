@@ -32,30 +32,8 @@ export default function Footer(props) {
         <div className={classes.left}>
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
-              <a
-                href="https://www.creative-tim.com/?ref=mkr-footer"
-                className={classes.block}
-                target="_blank"
-              >
-                Creative Tim
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a
-                href="https://www.creative-tim.com/presentation?ref=mkr-footer"
-                className={classes.block}
-                target="_blank"
-              >
-                About us
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a
-                href="http://blog.creative-tim.com/?ref=mkr-footer"
-                className={classes.block}
-                target="_blank"
-              >
-                Blog
+              <a href="" className={classes.block} target="_blank">
+                Off The Chain
               </a>
             </ListItem>
             <ListItem className={classes.inlineBlock}>
@@ -72,14 +50,9 @@ export default function Footer(props) {
         <div className={classes.right}>
           &copy; {1900 + new Date().getYear()} , made with{" "}
           <Favorite className={classes.icon} /> by{" "}
-          <a
-            href="https://www.creative-tim.com?ref=mkr-footer"
-            className={aClasses}
-            target="_blank"
-          >
-            Creative Tim
+          <a href="" className={aClasses} target="_blank">
+            Off the Chain
           </a>{" "}
-          for a better web.
         </div>
       </div>
     </footer>
