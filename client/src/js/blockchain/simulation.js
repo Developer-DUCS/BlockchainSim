@@ -1,14 +1,23 @@
 import blockCreator from "./block/block";
 
-const NUM_MINERS = 100;
-const NUM_BLOCK = 20;
+var blocks = [];
+var hashes = [];
+var previousHash;
+const simulationCreator = (numBlocks, initialHash, timeStampArr, numMiners) => {
+  previousHash = initialHash;
+  console.log("time stamps:", timeStampArr);
+  for (var i = 0; i < numBlocks; i++) {
+    var newBlock = blockCreator(numMiners, previousHash, timeStampArr[i]);
+    var hashID = newBlock[1];
+    var blockJSON = newBlock[0];
+    previousHash = hashID;
 
-const simulationCreator = () => {
-  var newBlock = blockCreator(NUM_MINERS);
-  var hashID = newBlock[1];
-  var blockJSON = newBlock[0];
+    blocks.push(blockJSON);
+    hashes.push(hashID);
+  }
 
-  console.log("New Block:", newBlock);
+  console.log("List of hashes:", hashes);
+  console.log("List of blocks:", blocks);
 };
 
 export default simulationCreator;
