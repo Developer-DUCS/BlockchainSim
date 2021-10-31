@@ -7,7 +7,7 @@ const Auth = (props) => {
   const [auth, setAuth] = React.useState(null);
 
   React.useEffect(() => {
-    fetch("http://localhost:5000/api/users/auth", {
+    fetch("http://localhost:5000/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
