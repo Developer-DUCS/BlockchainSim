@@ -42,15 +42,8 @@ const HomePage = (props) => {
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>About Us</h1>
-              <h4>
-                Beyond the Block consists of a web page that simulates how
-                blockchain works. It allows a user to explore the process of
-                block chain. At the same time, the simulator can be extended to
-                different block chain technologies. The user can interact with
-                the simulator, changing variables to further understand how
-                blockchain works and how transactions are made.
-              </h4>
+              <h1 className={classes.title}>Beyond the Block</h1>
+              <h4></h4>
               <br />
               <Button
                 color="primary"

@@ -49,16 +49,6 @@ const App = () => {
       <CssBaseline />
 
       <Router>
-        {window.location.pathname == "/ean" ? (
-          <UserBar setTheme={setTheme} />
-        ) : (
-          <NavBar
-            setTheme={setTheme}
-            signIn={signIn}
-            toggleSignIn={toggleSignIn}
-          />
-        )}
-
         <Switch>
           <Route path="/ean" component={EansPage} />
           <Route path="/" component={HomePage} exact />
