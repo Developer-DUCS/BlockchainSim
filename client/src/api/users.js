@@ -100,7 +100,7 @@ router.post("/register", cors(), (req, res) => {
           tableName = tableName + _id;
           db.query(
             `CREATE TABLE ${tableName} (
-              hash VARBINARY(256) NOT NULL,
+              hash VARCHAR(64) NOT NULL,
               header JSON NOT NULL,
               transactions JSON NOT NULL,
               transaction_counter TINYINT NOT NULL, 
