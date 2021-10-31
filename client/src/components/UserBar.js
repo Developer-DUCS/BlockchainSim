@@ -81,12 +81,29 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const UserBar = (props) => {
   const theme = useTheme();
-  const { setTheme } = props;
+
+  // setTheme (broken)
+  // barTitle: String
+  // tabNames: Array<String>
+  // setSelectedTab: React state function
+  // selectedTab: Number (index of tab)
+  const { setTheme, barTitle, tabNames, setSelectedTab, selectedTab } = props;
   const [openDrawer, setOpen] = React.useState(false);
   const [toggle, setToggle] = React.useState(false);
-  const [value, setValue] = React.useState("one");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
+  const signOut = () => {
+    try {
+      // Remove token
+      window.localStorage.removeItem("token");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      // Refresh the page (make sure everything is in sync)
+      history.go(0);
+    }
+  };
 
   const toolbarStyle = {
     minHeight: "30px",
@@ -100,10 +117,6 @@ const UserBar = (props) => {
       setTheme(darkTheme);
       setToggle(true);
     }
-  };
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
   };
 
   const handleClick = (event) => {
@@ -199,17 +212,17 @@ const UserBar = (props) => {
               </ListItemIcon>
               Settings
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={signOut}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>
-              Logout
+              Sign Out
             </MenuItem>
           </Menu>
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                Simulations
+                {barTitle}
               </Typography>
             </Grid>
             <Grid item xs />
@@ -241,14 +254,16 @@ const UserBar = (props) => {
         sx={{ zIndex: 20 }}
       >
         <Tabs
-          value={value}
-          onChange={handleChange}
+          value={selectedTab}
+          onChange={setSelectedTab}
           textColor="inherit"
           indicatorColor="secondary"
           aria-label="secondary tabs example"
         >
-          <Tab value="mysim" label="My Simulations" />
-          <Tab value="sharedsim" label="Shared With Me" />
+          {tabNames &&
+            tabNames.map((tabName, index) => (
+              <Tab key={tabName} value={index} label={tabName} />
+            ))}
         </Tabs>
       </AppBar>
       <Drawer

@@ -1,20 +1,18 @@
 import React from "react";
-import { Box, Button, Container, Tab, Tabs, TextField } from "@mui/material";
+import { Box, Button, Container, TextField } from "@mui/material";
 import BlockComponent from "./BlockComponent";
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-  return <div {...other}>{value === index && <Box>{children}</Box>}</div>;
-}
+import UserBar from "./UserBar";
+import Auth from "./Auth";
+import { useParams } from "react-router-dom";
+import TabPanel from "./TabPanel";
 
 const Simulation = () => {
-  const [value, setValue] = React.useState(0);
+  // Used for UserBar component to keep track of selected tab - Set Default to default tab index
+  const [selectedTab, setSelectedTab] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    event.preventDefault();
-    setValue(newValue);
-  };
+  let { id } = useParams();
 
+  // Test Date for blocks
   const demoBlock = {
     blockNumber: "14",
     blockDate: "28/09/21 06:04:11",
@@ -54,70 +52,64 @@ const Simulation = () => {
   };
 
   return (
-    <Container maxWidth="xl">
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-        <Button
-          color="primary"
-          variant="contained"
-        >
-          Options
-        </Button>
-      </Box>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-      >
-        <Tab label="Main Chain" value={0} />
-        <Tab label="Wallet" value={1} />
-      </Tabs>
-      <TabPanel value={value} index={0}>
-        <Box sx={{ mt: 2 }}>
-          <Button
-            color="secondary"
-            variant="contained"
-            sx={{ mr: 2 }}
-          >
-            Add New Block
+    <Auth>
+      <UserBar
+        barTitle={`Simulation ${id}`}
+        tabNames={["Main Chain", "Wallet"]}
+        setSelectedTab={(e, newValue) => setSelectedTab(newValue)}
+        selectedTab={selectedTab}
+      />
+      <Container maxWidth="xl" sx={{ mt: 2 }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+          <Button color="primary" variant="contained">
+            Options
           </Button>
-          <TextField
-            size="small"
-            label="Search"
-            variant="outlined"
-            type="search"
-          />
         </Box>
-        <div style={{ overflow: "auto", whiteSpace: "nowrap" }}>
-          <Box
-            sx={{ mb: 2, mt: 2, mr: 2 }}
-            style={{ display: "inline-block", width: "500px" }}
-          >
-            <BlockComponent block={demoBlock} />
+        <TabPanel value={selectedTab} index={0}>
+          <Box sx={{ mt: 2 }}>
+            <Button color="secondary" variant="contained" sx={{ mr: 2 }}>
+              Add New Block
+            </Button>
+            <TextField
+              size="small"
+              label="Search"
+              variant="outlined"
+              type="search"
+            />
           </Box>
-          <Box
-            sx={{ mb: 2, mt: 2, mr: 2 }}
-            style={{ display: "inline-block", width: "500px" }}
-          >
-            <BlockComponent block={demoBlock} />
-          </Box>
-          <Box
-            sx={{ mb: 2, mt: 2, mr: 2 }}
-            style={{ display: "inline-block", width: "500px" }}
-          >
-            <BlockComponent block={demoBlock} />
-          </Box>
-          <Box
-            sx={{ mb: 2, mt: 2, mr: 2 }}
-            style={{ display: "inline-block", width: "500px" }}
-          >
-            <BlockComponent block={demoBlock} />
-          </Box>
-        </div>
-      </TabPanel>
+          <div style={{ overflow: "auto", whiteSpace: "nowrap" }}>
+            <Box
+              sx={{ mb: 2, mt: 2, mr: 2 }}
+              style={{ display: "inline-block", width: "500px" }}
+            >
+              <BlockComponent block={demoBlock} />
+            </Box>
+            <Box
+              sx={{ mb: 2, mt: 2, mr: 2 }}
+              style={{ display: "inline-block", width: "500px" }}
+            >
+              <BlockComponent block={demoBlock} />
+            </Box>
+            <Box
+              sx={{ mb: 2, mt: 2, mr: 2 }}
+              style={{ display: "inline-block", width: "500px" }}
+            >
+              <BlockComponent block={demoBlock} />
+            </Box>
+            <Box
+              sx={{ mb: 2, mt: 2, mr: 2 }}
+              style={{ display: "inline-block", width: "500px" }}
+            >
+              <BlockComponent block={demoBlock} />
+            </Box>
+          </div>
+        </TabPanel>
 
-      <TabPanel value={value} index={1}>
-        Wallet
-      </TabPanel>
-    </Container>
+        <TabPanel value={selectedTab} index={1}>
+          Wallet
+        </TabPanel>
+      </Container>
+    </Auth>
   );
 };
 

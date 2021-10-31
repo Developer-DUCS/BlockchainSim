@@ -15,6 +15,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { styled } from "@mui/material/styles";
 import lightTheme from "../js/themes/lightTheme";
+import LaunchIcon from "@mui/icons-material/Launch";
+import { Link } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -36,12 +38,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, date, created, blocks) {
+function createData(name, date, created, blocks, id) {
   return {
     name,
     date,
     created,
     blocks,
+    id,
     history: [
       {
         date: "2020-01-05",
@@ -65,6 +68,15 @@ function Row(props) {
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <StyledTableCell>
+          <IconButton
+            sx={{ mr: 1 }}
+            size="small"
+            color="primary"
+            component={Link}
+            to={`/simulation/${row.id}`}
+          >
+            <LaunchIcon />
+          </IconButton>
           <IconButton
             aria-label="expand row"
             size="small"
@@ -121,9 +133,9 @@ function Row(props) {
 
 Row.propTypes = {
   row: PropTypes.shape({
-    date: PropTypes.number.isRequired,
+    date: PropTypes.string.isRequired,
     blocks: PropTypes.number.isRequired,
-    created: PropTypes.number.isRequired,
+    created: PropTypes.string.isRequired,
     history: PropTypes.arrayOf(
       PropTypes.shape({
         amount: PropTypes.number.isRequired,
@@ -132,6 +144,7 @@ Row.propTypes = {
       })
     ).isRequired,
     name: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
   }).isRequired,
 };
 
@@ -152,9 +165,7 @@ const SimTable = (props) => {
   ];
 
   table.rows.forEach((ele) =>
-    rows.push(
-      createData(ele.name, ele.edited, ele.created, ele.blocks, 4.1, 3.99)
-    )
+    rows.push(createData(ele.name, ele.edited, ele.created, ele.blocks, ele.id))
   );
 
   return (
