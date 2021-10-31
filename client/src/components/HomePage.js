@@ -1,26 +1,35 @@
 import React from "react";
-import NavBar from "./NavBar";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
 // core components
-import Header from "components/HomePageComponents/Header.js";
-import Footer from "components/HomePageComponents/Footer.js";
-import GridContainer from "components/HomePageComponents/GridContainer.js";
-import GridItem from "components/HomePageComponents/GridItem.js";
-import Button from "components/HomePageComponents/Button.js";
-import HeaderLinks from "components/HomePageComponents/HeaderLinks.js";
-import Parallax from "components/HomePageComponents/Parallax.js";
+import Header from "./HomePageComponents/Header";
+import Footer from "./HomePageComponents/Footer";
+import GridContainer from "./HomePageComponents/GridContainer";
+import GridItem from "./HomePageComponents/GridItem";
+import Button from "./HomePageComponents/Button";
+import HeaderLinks from "./HomePageComponents/HeaderLinks";
+import Parallax from "./HomePageComponents/Parallax.js";
 
-const HomePage = () => {
+import styles from "./HomePageComponents/HomePage.js";
+//sections for the page
+import ProductSection from "./HomePageComponents/Sections/ProductSection";
+import TeamSection from "./HomePageComponents/Sections/TeamSection.js";
+const dashboardRoutes = [];
+
+const useStyles = makeStyles(styles);
+
+const HomePage = (props) => {
+  const classes = useStyles();
+  const { ...rest } = props;
   return (
     <div>
       <Header
         color="transparent"
         routes={dashboardRoutes}
-        brand="Material Kit React"
+        brand="Beyond the Block"
         rightLinks={<HeaderLinks />}
         fixed
         changeColorOnScroll={{
@@ -29,38 +38,38 @@ const HomePage = () => {
         }}
         {...rest}
       />
-      <Parallax filter image={require("../assets/landing-bg.jpg").default}>
+      <Parallax filter image={require("../assets/not_Rick_Astley.png").default}>
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>Your Story Starts With Us.</h1>
+              <h1 className={classes.title}>About Us</h1>
               <h4>
-                Every landing page needs a small description after the big bold
-                title, that{"'"}s why we added this text here. Add here all the
-                information that can make you or your product create the first
-                impression.
+                Beyond the Block consists of a web page that simulates how
+                blockchain works. It allows a user to explore the process of
+                block chain. At the same time, the simulator can be extended to
+                different block chain technologies. The user can interact with
+                the simulator, changing variables to further understand how
+                blockchain works and how transactions are made.
               </h4>
               <br />
               <Button
-                color="danger"
+                color="primary"
                 size="lg"
                 href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ref=creativetim"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <i className="fas fa-play" />
-                Watch video
+                Tutorial
               </Button>
             </GridItem>
           </GridContainer>
         </div>
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
-        <div className={classes.container}>
-          <ProductSection />
-          <TeamSection />
-          <WorkSection />
-        </div>
+        <div className={classes.container}></div>
+        <ProductSection />
+        <TeamSection />
       </div>
       <Footer />
     </div>
