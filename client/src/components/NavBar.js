@@ -46,33 +46,31 @@ const NavBar = (props) => {
             </Link>
           </Typography>
           <Switch onChange={toggleTheme} />
-          {signIn == false
-            ? (
-              <>
-                <Button
-                  component={Link}
-                  to={"/signin"}
-                  color="primary"
-                  variant="outlined"
-                  sx={{ mr: 2 }}
-                >
-                  Sign In
-                </Button>
-                <Button
-                  component={Link}
-                  to={"/signup"}
-                  color="primary"
-                  variant="contained"
-                >
-                  Sign Up
-                </Button>
-              </>
-            )
-            : (
-              <Button color="error" variant="contained" onClick={signOut}>
-                Sign Out
+          {signIn == false ? (
+            <>
+              <Button
+                component={Link}
+                to={"/signin"}
+                color="primary"
+                variant="outlined"
+                sx={{ mr: 2 }}
+              >
+                Sign In
               </Button>
-            )}
+              <Button
+                component={Link}
+                to={"/signup"}
+                color="primary"
+                variant="contained"
+              >
+                Sign Up
+              </Button>
+            </>
+          ) : (
+            <Button color="error" variant="contained" onClick={signOut}>
+              Sign Out
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
