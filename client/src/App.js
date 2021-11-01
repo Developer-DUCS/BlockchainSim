@@ -15,6 +15,7 @@ import Simulation from "./components/Simulation";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import lightTheme from "./js/themes/lightTheme";
+import CreateSimulation from "./components/CreateSimulationPage";
 import SimulationHome from "./components/SimulationHome";
 
 const App = () => {
@@ -78,6 +79,7 @@ const App = () => {
             )}
           />
           <Route path="/landing" component={LandingPage} />
+          <Route path="/createsimulation" component={CreateSimulation} />
           <Route
             path="/signup"
             render={() => (
