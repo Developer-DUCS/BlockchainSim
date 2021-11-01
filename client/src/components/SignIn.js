@@ -48,7 +48,7 @@ const SignIn = (props) => {
         toggleSignIn();
 
         //redirect
-        history.push("/landing");
+        history.push("/simulation");
       })
       .catch(async (err) => {
         console.error(err);

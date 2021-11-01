@@ -161,7 +161,7 @@ const UserBar = (props) => {
       >
         <Toolbar>
           <ClickAwayListener onClickAway={handleDrawerClose}>
-            <div>
+            <div style={{ width: "50px" }}>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"

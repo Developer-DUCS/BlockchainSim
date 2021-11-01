@@ -55,11 +55,6 @@ const App = () => {
             path="/"
             render={() => (
               <>
-                <NavBar
-                  setTheme={setTheme}
-                  signIn={signIn}
-                  toggleSignIn={toggleSignIn}
-                />
                 <HomePage />
               </>
             )}

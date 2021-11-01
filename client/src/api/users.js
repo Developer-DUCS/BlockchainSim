@@ -133,6 +133,8 @@ router.post("/auth", cors(), (req, res) => {
     jwt.decode(req.body.token, config.secret);
     res.sendStatus(200);
   } catch (err) {
+    console.log(err);
+    console.log("test");
     res.sendStatus(401);
   }
 });
