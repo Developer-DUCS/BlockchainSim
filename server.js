@@ -21,6 +21,7 @@ app.use(function (req, res, next) {
 
 // List of routes
 router.use("/api/users", require("./client/src/api/users"));
+router.use("/api/data", require("./client/src/api/data"));
 
 app.use(router);
 app.listen(port, () => `Server running on port ${port}`);

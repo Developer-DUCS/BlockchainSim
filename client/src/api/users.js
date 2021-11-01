@@ -4,6 +4,8 @@ const db = require("../../../dbConn");
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
 const router = express.Router();
+const jwt = require("jwt-simple");
+const config = require("../../../configuration/config.json");
 
 // to parse JSON
 app.use(express.json());
@@ -14,12 +16,10 @@ router.post("/login", (req, res) => {
     res.status(401).json({ error: "Missing username and/or password" });
     return;
   }
-  console.log("enters route");
   // go into mysql and get info
   let qry = `select * from user where email = "${req.body.email}"`;
   db.query(qry, (err, rows) => {
     if (err) {
-      console.log("big error");
       console.log(err);
       return res.status(500).json({ error: err });
     }
@@ -28,7 +28,6 @@ router.post("/login", (req, res) => {
       // no users found
       res.status(400).json({ msg: "No users found" });
     } else {
-      console.log("enters else statement");
       // process the user records
       let users = [];
       rows.forEach((row) => {
@@ -41,31 +40,24 @@ router.post("/login", (req, res) => {
         };
         users.push(user);
       });
-      res.status(200).json({
-        msg: "user authenticated",
-        fname: users[0].fname,
-        lname: users[0].lname,
-        role: users[0].role,
-      });
-      /* console.log(users[0])
-              if (users[0]) {
-                // Does given password hash match the database password hash?
-                if (bcrypt.compareSync(req.body.password, users[0].password)) {
-                   // Send back a token that contains the user's username
-                    const token = jwt.encode({email: req.body.email}, secret)
-                    res.status(200).json({msg: 'user authenticated', 
-                                          fname: users[0].fname, 
-                                          lname: users[0].lname, 
-                                          role: users[0].role,
-                                          token: token});
-                }
-                else{
-                    res.status(401).json({msg: 'user unauthorized'});
-                }
-            }
-             else {
-                 res.status(401).json({msg: 'user unauthorized'});
-             };*/
+      if (users[0]) {
+        // Does given password hash match the database password hash?
+        bcrypt.compare(req.body.password, users[0].password, (err, result) => {
+          // Send back a token that contains the user's username
+          const token = jwt.encode({ email: req.body.email }, config.secret);
+          if (result == true) {
+            res.status(200).json({
+              msg: "user authenticated",
+              fname: users[0].fname,
+              lname: users[0].lname,
+              role: users[0].role,
+              token: token,
+            });
+          } else {
+            res.sendStatus(409);
+          }
+        });
+      }
     }
   });
 });
@@ -102,6 +94,31 @@ router.post("/register", cors(), (req, res) => {
               }
             }
           );
+          // Create a table for the users blocks
+          var tableName = "blocks_";
+          const _id = id.replace(/[@.]/g, "_");
+          tableName = tableName + _id;
+          db.query(
+            `CREATE TABLE ${tableName} (
+              hash VARCHAR(64) NOT NULL,
+              header JSON NOT NULL,
+              transactions JSON NOT NULL,
+              transaction_counter TINYINT NOT NULL, 
+              miner VARCHAR(256) NOT NULL, 
+              time_created TIMESTAMP NOT NULL, 
+              PRIMARY KEY (hash));`,
+            (err, result) => {
+              // If error, log it to console
+              if (err) {
+                console.log(err);
+              } else {
+                // Log user created block table to console
+                console.log(
+                  "User " + id + " created a block table with name " + tableName
+                );
+              }
+            }
+          );
         }
       });
     } else {
@@ -109,6 +126,17 @@ router.post("/register", cors(), (req, res) => {
       return res.sendStatus(409);
     }
   });
+});
+
+router.post("/auth", cors(), (req, res) => {
+  try {
+    jwt.decode(req.body.token, config.secret);
+    res.sendStatus(200);
+  } catch (err) {
+    console.log(err);
+    console.log("test");
+    res.sendStatus(401);
+  }
 });
 
 module.exports = router;

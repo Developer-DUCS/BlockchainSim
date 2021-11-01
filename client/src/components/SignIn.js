@@ -9,7 +9,8 @@ import {
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 
-const SignIn = () => {
+const SignIn = (props) => {
+  const { toggleSignIn } = props;
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(false);
@@ -29,15 +30,29 @@ const SignIn = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(credentials),
-    }).then(async (res) => {
-      if (res.status == 200) {
-        //redirect
-        history.push("/landing");
-      } else {
-        console.log("error with status");
+    })
+      .then(async (res) => {
+        if (res.status == 200) {
+          return res.json();
+        } else {
+          throw new Error("Failed to Login!");
+        }
+      })
+      .then(async (res) => {
         console.log(res);
-      }
-    });
+
+        // Store token in cookie
+        window.localStorage.setItem("token", res.token);
+
+        // Toggle state of sign in
+        toggleSignIn();
+
+        //redirect
+        history.push("/simulation");
+      })
+      .catch(async (err) => {
+        console.error(err);
+      });
   };
 
   // Check if email is valid
