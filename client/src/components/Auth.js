@@ -1,6 +1,7 @@
 import { Alert } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
+import { Container } from "@mui/material";
 
 const Auth = (props) => {
   const { children } = props;
@@ -27,11 +28,11 @@ const Auth = (props) => {
   return (
     <div>
       {auth == false ? (
-        <div>
+        <Container maxWidth="sm" sx={{ mt: 2 }}>
           <Alert severity="error">
             <Link to="/signin">Sign In</Link> to be able to access this page.
           </Alert>
-        </div>
+        </Container>
       ) : auth == true ? (
         <div>{children}</div>
       ) : (

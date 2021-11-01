@@ -2,21 +2,21 @@ import React from "react";
 import HomePage from "./components/HomePage";
 import Error from "./components/Error";
 import SignIn from "./components/SignIn";
-import EansPage from "./components/EansPage";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import BlockHeader from "./components/BlockHeader";
 import MiningPool from "./components/MiningPool";
 import NavBar from "./components/NavBar";
-import UserBar from "./components/UserBar";
 import SignUp from "./components/SignUp";
 import Demo from "./components/Demo";
+import Simulation from "./components/Simulation";
 
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import lightTheme from "./js/themes/lightTheme";
 import CreateSimulation from "./components/CreateSimulationPage";
+import SimulationHome from "./components/SimulationHome";
 
 const App = () => {
   const [theme, setTheme] = React.useState(lightTheme);
@@ -50,27 +50,52 @@ const App = () => {
       <CssBaseline />
 
       <Router>
-        {window.location.pathname == "/ean" ? (
-          <UserBar setTheme={setTheme} />
-        ) : (
-          <NavBar
-            setTheme={setTheme}
-            signIn={signIn}
-            toggleSignIn={toggleSignIn}
-          />
-        )}
-
         <Switch>
-          <Route path="/ean" component={EansPage} />
-          <Route path="/" component={HomePage} exact />
+          <Route
+            path="/"
+            render={() => (
+              <>
+                <NavBar
+                  setTheme={setTheme}
+                  signIn={signIn}
+                  toggleSignIn={toggleSignIn}
+                />
+                <HomePage />
+              </>
+            )}
+            exact
+          />
           <Route
             path="/signin"
-            render={() => <SignIn toggleSignIn={toggleSignIn} />}
+            render={() => (
+              <>
+                <NavBar
+                  setTheme={setTheme}
+                  signIn={signIn}
+                  toggleSignIn={toggleSignIn}
+                />
+                <SignIn toggleSignIn={toggleSignIn} />
+              </>
+            )}
           />
           <Route path="/landing" component={LandingPage} />
-          <Route path="/signup" component={SignUp} />
           <Route path="/createsimulation" component={CreateSimulation} />
+          <Route
+            path="/signup"
+            render={() => (
+              <>
+                <NavBar
+                  setTheme={setTheme}
+                  signIn={signIn}
+                  toggleSignIn={toggleSignIn}
+                />
+                <SignUp />
+              </>
+            )}
+          />
           <Route path="/demo" render={() => <Demo setTheme={setTheme} />} />
+          <Route path="/simulation" component={SimulationHome} exact />
+          <Route path="/simulation/:id" component={Simulation} />
 
           <Route component={Error} />
         </Switch>

@@ -15,7 +15,10 @@ const BlockComponent = (props) => {
   const { block } = props;
 
   return (
-    <Paper sx={{ p: 2 }} style={{ overflowWrap: "anywhere" }}>
+    <Paper
+      sx={{ p: 2 }}
+      style={{ whiteSpace: "break-spaces", overflowWrap: "anywhere" }}
+    >
       <Grid container>
         <Grid item xs={12}>
           <Typography variant="h6">
@@ -36,11 +39,16 @@ const BlockComponent = (props) => {
           </Typography>
           <Divider sx={{ bgcolor: "primary.main" }} />
         </Grid>
-        <Grid item xs={12} style={{ maxHeight: "150px", overflow: "auto" }}>
+        <Grid item xs={12} style={{ maxHeight: "80px", overflow: "auto" }}>
           <Grid container>
             {block.blockTransactions != undefined
               ? block.blockTransactions.map((tx, index) => (
-                  <Grid item xs={12} sx={{ pl: 1, pr: 1, pt: 0.5, pb: 0.5 }}>
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{ pl: 1, pr: 1, pt: 0.5, pb: 0.5 }}
+                    key={index}
+                  >
                     <Grid container>
                       <Grid item xs={3}>
                         <Typography variant="subtitle2">
