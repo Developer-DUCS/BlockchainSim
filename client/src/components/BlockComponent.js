@@ -34,7 +34,8 @@ const BlockComponent = (props) => {
           <Typography variant="caption">
             {block.blockTransactions != undefined
               ? block.blockTransactions.length
-              : 0} Transactions
+              : 0}{" "}
+            Transactions
           </Typography>
           <Divider sx={{ bgcolor: "primary.main" }} />
         </Grid>
@@ -42,46 +43,50 @@ const BlockComponent = (props) => {
           <Grid container>
             {block.blockTransactions != undefined
               ? block.blockTransactions.map((tx, index) => (
-                <Grid item xs={12} sx={{ pl: 1, pr: 1, pt: 0.5, pb: 0.5 }}>
-                  <Grid container>
-                    <Grid item xs={3}>
-                      <Typography variant="subtitle2">
-                        {tx.transactionNameFrom}
-                      </Typography>
-                      <Typography variant="caption">
-                        {tx.transactionAddressFrom}
-                      </Typography>
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{ pl: 1, pr: 1, pt: 0.5, pb: 0.5 }}
+                    key={index}
+                  >
+                    <Grid container>
+                      <Grid item xs={3}>
+                        <Typography variant="subtitle2">
+                          {tx.transactionNameFrom}
+                        </Typography>
+                        <Typography variant="caption">
+                          {tx.transactionAddressFrom}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={3}
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <ArrowForwardIcon />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Typography variant="subtitle2">
+                          {tx.transactionNameTo}
+                        </Typography>
+                        <Typography variant="caption">
+                          {tx.transactionAddressTo}
+                        </Typography>{" "}
+                      </Grid>
+                      <Grid item xs={3} textAlign="right">
+                        <Typography variant="subtitle2">
+                          {tx.transactionAmount}
+                        </Typography>
+                        <Typography variant="caption">BTC</Typography>
+                      </Grid>
                     </Grid>
-                    <Grid
-                      item
-                      xs={3}
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <ArrowForwardIcon />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Typography variant="subtitle2">
-                        {tx.transactionNameTo}
-                      </Typography>
-                      <Typography variant="caption">
-                        {tx.transactionAddressTo}
-                      </Typography>
-                      {" "}
-                    </Grid>
-                    <Grid item xs={3} textAlign="right">
-                      <Typography variant="subtitle2">
-                        {tx.transactionAmount}
-                      </Typography>
-                      <Typography variant="caption">BTC</Typography>
-                    </Grid>
+                    <Divider />
                   </Grid>
-                  <Divider />
-                </Grid>
-              ))
+                ))
               : "non"}
           </Grid>
         </Grid>

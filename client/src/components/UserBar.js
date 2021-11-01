@@ -31,6 +31,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import HomeIcon from "@mui/icons-material/Home";
 import LockOpen from "@mui/icons-material/LockOpen";
 import Add from "@mui/icons-material/Add";
+import { ClickAwayListener } from "@mui/material";
 
 const drawerWidth = 270;
 
@@ -136,7 +137,7 @@ const UserBar = (props) => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <AppBar
         component="div"
         color="primary"
@@ -159,15 +160,83 @@ const UserBar = (props) => {
         sx={{ zIndex: 0 }}
       >
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(openDrawer && { display: "none" }) }}
-          >
-            <MenuIcon />
-          </IconButton>
+          <ClickAwayListener onClickAway={handleDrawerClose}>
+            <div>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                sx={{ mr: 2, ...(openDrawer && { display: "none" }) }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Drawer
+                ModalProps={{
+                  onBackdropClick: handleDrawerClose,
+                  onEscapeKeyDown: handleDrawerClose,
+                }}
+                sx={{
+                  width: drawerWidth,
+                  flexShrink: 0,
+                  "& .MuiDrawer-paper": {
+                    width: drawerWidth,
+                    boxSizing: "border-box",
+                  },
+                }}
+                variant="persistent"
+                anchor="left"
+                open={openDrawer}
+              >
+                <DrawerHeader>
+                  <IconButton onClick={handleDrawerClose}>
+                    {theme.direction === "ltr" ? (
+                      <ChevronLeftIcon />
+                    ) : (
+                      <ChevronRightIcon />
+                    )}
+                  </IconButton>
+                </DrawerHeader>
+                <Divider />
+                <List>
+                  <ListItem button key={"home"} onClick={handleDrawerClose}>
+                    <ListItemIcon>
+                      <HomeIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Home"} />
+                  </ListItem>
+                  <ListItem button key={"add"} onClick={handleDrawerClose}>
+                    <ListItemIcon>
+                      <Add />
+                    </ListItemIcon>
+                    <ListItemText primary={"Create New Simulation"} />
+                  </ListItem>
+                  <ListItem button key={"settings"} onClick={handleDrawerClose}>
+                    <ListItemIcon>
+                      <Settings />
+                    </ListItemIcon>
+                    <ListItemText primary={"Settings"} />
+                  </ListItem>
+                </List>
+                <Divider />
+                <List>
+                  <ListItem button key={"pro"} onClick={handleDrawerClose}>
+                    <ListItemIcon>
+                      <LockOpen />
+                    </ListItemIcon>
+                    <ListItemText primary={"Unlock Pro"} />
+                  </ListItem>
+                  <ListItem button key={"contact"} onClick={handleDrawerClose}>
+                    <ListItemIcon>
+                      <MailIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Contact us"} />
+                  </ListItem>
+                </List>
+              </Drawer>
+            </div>
+          </ClickAwayListener>
+
           <Menu
             anchorEl={anchorEl}
             open={open}
@@ -266,70 +335,7 @@ const UserBar = (props) => {
             ))}
         </Tabs>
       </AppBar>
-      <Drawer
-        ModalProps={{
-          onBackdropClick: handleDrawerClose,
-          onEscapeKeyDown: handleDrawerClose,
-        }}
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={openDrawer}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          <ListItem button key={"home"} onClick={handleDrawerClose}>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Home"} />
-          </ListItem>
-          <ListItem button key={"add"} onClick={handleDrawerClose}>
-            <ListItemIcon>
-              <Add />
-            </ListItemIcon>
-            <ListItemText primary={"Create New Simulation"} />
-          </ListItem>
-          <ListItem button key={"settings"} onClick={handleDrawerClose}>
-            <ListItemIcon>
-              <Settings />
-            </ListItemIcon>
-            <ListItemText primary={"Settings"} />
-          </ListItem>
-        </List>
-        <Divider />
-        <List>
-          <ListItem button key={"pro"} onClick={handleDrawerClose}>
-            <ListItemIcon>
-              <LockOpen />
-            </ListItemIcon>
-            <ListItemText primary={"Unlock Pro"} />
-          </ListItem>
-          <ListItem button key={"contact"} onClick={handleDrawerClose}>
-            <ListItemIcon>
-              <MailIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Contact us"} />
-          </ListItem>
-        </List>
-      </Drawer>
-    </React.Fragment>
+    </>
   );
 };
 export default UserBar;
