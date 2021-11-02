@@ -1,5 +1,5 @@
-import inputSelection from "../transactions/singleTransactionInputs";
-import outputCreation from "../transactions/singleTransactionOutputs";
+import inputSelection from "./singleTransaction/inputsSingleTransaction";
+import outputCreation from "./singleTransaction/outputsSingleTransaction";
 
 var version = "01000000";
 var input_count; //determines how many inputs (UTXO's) to include
