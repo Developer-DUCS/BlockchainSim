@@ -255,7 +255,6 @@ const UserBar = (props) => {
                   mr: 1,
                 },
                 "&:before": {
-                  content: '""',
                   display: "block",
                   position: "absolute",
                   top: 0,

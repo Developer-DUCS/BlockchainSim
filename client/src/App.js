@@ -89,8 +89,15 @@ const App = () => {
             )}
           />
           <Route path="/demo" render={() => <Demo setTheme={setTheme} />} />
-          <Route path="/simulation" component={SimulationHome} exact />
-          <Route path="/simulation/:id" component={Simulation} />
+          <Route
+            path="/simulation"
+            render={() => <SimulationHome setTheme={setTheme} />}
+            exact
+          />
+          <Route
+            path="/simulation/:id"
+            render={() => <Simulation setTheme={setTheme} />}
+          />
 
           <Route component={Error} />
         </Switch>

@@ -6,7 +6,9 @@ import Auth from "./Auth";
 import { useParams } from "react-router-dom";
 import TabPanel from "./TabPanel";
 
-const Simulation = () => {
+const Simulation = (props) => {
+  const { setTheme } = props;
+
   // Used for UserBar component to keep track of selected tab - Set Default to default tab index
   const [selectedTab, setSelectedTab] = React.useState(0);
 
@@ -58,6 +60,7 @@ const Simulation = () => {
         tabNames={["Main Chain", "Wallet"]}
         setSelectedTab={(e, newValue) => setSelectedTab(newValue)}
         selectedTab={selectedTab}
+        setTheme={setTheme}
       />
       <Container maxWidth="xl" sx={{ mt: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>

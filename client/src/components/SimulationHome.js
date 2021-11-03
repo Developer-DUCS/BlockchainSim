@@ -1,4 +1,4 @@
-import { Container, Typography, Grid } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import Auth from "./Auth";
@@ -7,7 +7,8 @@ import UserBar from "./UserBar";
 import SimTable from "./SimTable";
 import TabPanel from "./TabPanel";
 
-const SimulationHome = () => {
+const SimulationHome = (props) => {
+  const { setTheme } = props;
   const [selectedTab, setSelectedTab] = React.useState(0);
 
   const tablerows = {
@@ -69,6 +70,7 @@ const SimulationHome = () => {
         tabNames={["My Simulations", "Shared With Me"]}
         setSelectedTab={(e, newValue) => setSelectedTab(newValue)}
         selectedTab={selectedTab}
+        setTheme={setTheme}
       />
       <Container>
         <TabPanel value={selectedTab} index={0}>
