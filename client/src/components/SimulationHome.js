@@ -1,4 +1,4 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import Auth from "./Auth";
@@ -87,6 +87,15 @@ const SimulationHome = (props) => {
             </Grid>
           </Grid>
         </TabPanel>
+        <Button
+          component={Link}
+          to={"/createsimulation"}
+          color="secondary"
+          variant="contained"
+          sx={{ float: 500, mr: 2 }}
+        >
+          Add New Simulation
+        </Button>
       </Container>
     </Auth>
   );
