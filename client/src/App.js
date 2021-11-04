@@ -4,7 +4,6 @@ import Error from "./components/Error";
 import SignIn from "./components/SignIn";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
-import BlockHeader from "./components/BlockHeader";
 import MiningPool from "./components/MiningPool";
 import NavBar from "./components/NavBar";
 import SignUp from "./components/SignUp";
