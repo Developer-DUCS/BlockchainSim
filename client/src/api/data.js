@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../../dbConn");
 const cors = require("cors");
+const { hash } = require("bcrypt-nodejs");
 
 router.post("/block", cors(), (req, res) => {
-  console.log("block route entered");
   const hash =
     "0104db27ef0e770ea5b0786880ee0883b13b04eeb7c34acebc77c4e47957ae95";
   const header = {
@@ -17,11 +17,7 @@ router.post("/block", cors(), (req, res) => {
     nonce: "16c4c4b0",
   };
   const transactions = {
-    1: "transaction_one",
-    2: "transaction_two",
-    3: "transaction_three",
-    4: "transaction_four",
-    5: "transaction_five",
+    0: "none yet",
   };
   const headerString = JSON.stringify(header);
   const transactionsString = JSON.stringify(transactions);
@@ -38,7 +34,7 @@ router.post("/block", cors(), (req, res) => {
   });
 });
 
-router.post("/simulation", cors(), (req, res) => {
+router.post("/createsim", cors(), (req, res) => {
   const email = "seth@workman.com";
   const sim_name = "My First Blockchain";
   const sim_shared = {
@@ -62,6 +58,42 @@ router.post("/simulation", cors(), (req, res) => {
       console.log(err);
     } else {
       res.sendStatus(201);
+    }
+  });
+});
+
+router.post("/deletesim", cors(), (req, res) => {
+  const email = req.body.email;
+  const sim_name = req.body.sim_name;
+  // parse email where special characters = _
+  const email_valid = email.replace(/[@.]/g, "_");
+  let qry = `SELECT sim_blocks FROM simulation WHERE email='${email}' AND sim_name='${sim_name}'`;
+  db.query(qry, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // for each element in the sim blocks json object
+      result.array.forEach((element) => {
+        /*
+        // delete hash from blocks table
+        let qry = `DELETE FROM ${email_valid} WHERE hash='${hash}'`
+        db.query(qry2, (err, result) => {
+          if (err){
+            console.log(err);
+          } else {
+            console.log("block deleted")
+          }
+        });*/
+        console.log(element);
+      });
+    }
+  });
+  let qry3 = `DELETE FROM simulation WHERE email='${email}' AND sim_name='${sim_name}'`;
+  db.query(qry3, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("simulation deleted");
     }
   });
 });
