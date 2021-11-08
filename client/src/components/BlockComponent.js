@@ -1,4 +1,4 @@
-import { Divider, Grid, Paper, Typography } from "@mui/material";
+import { Divider, Grid, Button, Paper, Typography } from "@mui/material";
 import React from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 const BlockComponent = (props) => {
@@ -39,56 +39,59 @@ const BlockComponent = (props) => {
           </Typography>
           <Divider sx={{ bgcolor: "primary.main" }} />
         </Grid>
-        <Grid item xs={12} style={{ maxHeight: "80px", overflow: "auto" }}>
-          <Grid container>
-            {block.blockTransactions != undefined
-              ? block.blockTransactions.map((tx, index) => (
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{ pl: 1, pr: 1, pt: 0.5, pb: 0.5 }}
-                    key={index}
-                  >
-                    <Grid container>
-                      <Grid item xs={3}>
-                        <Typography variant="subtitle2">
-                          {tx.transactionNameFrom}
-                        </Typography>
-                        <Typography variant="caption">
-                          {tx.transactionAddressFrom}
-                        </Typography>
-                      </Grid>
-                      <Grid
-                        item
-                        xs={3}
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <ArrowForwardIcon />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Typography variant="subtitle2">
-                          {tx.transactionNameTo}
-                        </Typography>
-                        <Typography variant="caption">
-                          {tx.transactionAddressTo}
-                        </Typography>{" "}
-                      </Grid>
-                      <Grid item xs={3} textAlign="right">
-                        <Typography variant="subtitle2">
-                          {tx.transactionAmount}
-                        </Typography>
-                        <Typography variant="caption">BTC</Typography>
-                      </Grid>
-                    </Grid>
-                    <Divider />
-                  </Grid>
-                ))
-              : "non"}
-          </Grid>
+        <Grid item xs={12} textAlign="center" >
+          <Button color="secondary" variant="contained" sx={{ m: 1 }} size="small">
+            View Transactions
+          </Button>
+          {/* <Grid container> */}
+          {/*   {block.blockTransactions != undefined */}
+          {/*     ? block.blockTransactions.map((tx, index) => ( */}
+          {/*         <Grid */}
+          {/*           item */}
+          {/*           xs={12} */}
+          {/*           sx={{ pl: 1, pr: 1, pt: 0.5, pb: 0.5 }} */}
+          {/*           key={index} */}
+          {/*         > */}
+          {/*           <Grid container> */}
+          {/*             <Grid item xs={3}> */}
+          {/*               <Typography variant="subtitle2"> */}
+          {/*                 {tx.transactionNameFrom} */}
+          {/*               </Typography> */}
+          {/*               <Typography variant="caption"> */}
+          {/*                 {tx.transactionAddressFrom} */}
+          {/*               </Typography> */}
+          {/*             </Grid> */}
+          {/*             <Grid */}
+          {/*               item */}
+          {/*               xs={3} */}
+          {/*               style={{ */}
+          {/*                 display: "flex", */}
+          {/*                 justifyContent: "center", */}
+          {/*                 alignItems: "center", */}
+          {/*               }} */}
+          {/*             > */}
+          {/*               <ArrowForwardIcon /> */}
+          {/*             </Grid> */}
+          {/*             <Grid item xs={3}> */}
+          {/*               <Typography variant="subtitle2"> */}
+          {/*                 {tx.transactionNameTo} */}
+          {/*               </Typography> */}
+          {/*               <Typography variant="caption"> */}
+          {/*                 {tx.transactionAddressTo} */}
+          {/*               </Typography>{" "} */}
+          {/*             </Grid> */}
+          {/*             <Grid item xs={3} textAlign="right"> */}
+          {/*               <Typography variant="subtitle2"> */}
+          {/*                 {tx.transactionAmount} */}
+          {/*               </Typography> */}
+          {/*               <Typography variant="caption">BTC</Typography> */}
+          {/*             </Grid> */}
+          {/*           </Grid> */}
+          {/*           <Divider /> */}
+          {/*         </Grid> */}
+          {/*       )) */}
+          {/*     : "non"} */}
+          {/* </Grid> */}
         </Grid>
 
         <Grid item xs={12} sx={{ pt: 1 }}>

@@ -69,11 +69,12 @@ const defaultFont = {
   lineHeight: "1.5em",
 };
 
-const primaryColor = "#9c27b0";
-const warningColor = "#ff9800";
-const dangerColor = "#f44336";
-const successColor = "#4caf50";
-const infoColor = "#00acc1";
+const primaryColor = "#388697";
+const secondaryColor = "#DE6B48";
+const warningColor = "#5D2E8C";
+const dangerColor = "#BC2C1A";
+const successColor = "#127E59";
+const infoColor = "#9D8420";
 const roseColor = "#e91e63";
 const grayColor = "#999999";
 
@@ -214,4 +215,5 @@ export {
   cardTitle,
   cardLink,
   cardSubtitle,
+  secondaryColor,
 };

@@ -11,6 +11,8 @@ const SimulationHome = (props) => {
   const { setTheme } = props;
   const [selectedTab, setSelectedTab] = React.useState(0);
 
+  const [user, setUser] = React.useState({});
+
   const tablerows = {
     rows: [
       {
@@ -64,7 +66,7 @@ const SimulationHome = (props) => {
   };
 
   return (
-    <Auth>
+    <Auth setUser={setUser}>
       <UserBar
         barTitle={"Simulations"}
         tabNames={["My Simulations", "Shared With Me"]}
@@ -74,6 +76,10 @@ const SimulationHome = (props) => {
       />
       <Container>
         <TabPanel value={selectedTab} index={0}>
+          <div>
+            User testing
+            <h4>userEmail: {user.email}</h4>
+          </div>
           <Grid container spacing={3} sx={{ p: 2 }}>
             <Grid item xs={12}>
               <SimTable table={tablerows} />

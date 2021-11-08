@@ -14,6 +14,7 @@ const Simulation = (props) => {
 
   let { id } = useParams();
 
+  // This placeholder data will be replaced by fetch (to get the block data associated with simulation ID)
   // Test Date for blocks
   const demoBlock = {
     blockNumber: "14",
