@@ -92,7 +92,7 @@ router.post("/register", cors(), (req, res) => {
                 // User created
                 res.sendStatus(201);
               }
-            }
+            },
           );
           // Create a table for the users blocks
           var tableName = "blocks_";
@@ -114,10 +114,11 @@ router.post("/register", cors(), (req, res) => {
               } else {
                 // Log user created block table to console
                 console.log(
-                  "User " + id + " created a block table with name " + tableName
+                  "User " + id + " created a block table with name " +
+                    tableName,
                 );
               }
-            }
+            },
           );
         }
       });
@@ -130,11 +131,10 @@ router.post("/register", cors(), (req, res) => {
 
 router.post("/auth", cors(), (req, res) => {
   try {
-    jwt.decode(req.body.token, config.secret);
-    res.sendStatus(200);
+    let user = jwt.decode(req.body.token, config.secret);
+    res.status(200);
+    res.send(user);
   } catch (err) {
-    console.log(err);
-    console.log("test");
     res.sendStatus(401);
   }
 });
