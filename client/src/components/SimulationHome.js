@@ -98,7 +98,7 @@ const SimulationHome = (props) => {
           to={"/createsimulation"}
           color="secondary"
           variant="contained"
-          sx={{ float: 500, mr: 2 }}
+          sx={{ float: 500, ml: 2 }}
         >
           Add New Simulation
         </Button>
