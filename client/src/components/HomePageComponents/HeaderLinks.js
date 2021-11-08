@@ -56,17 +56,12 @@ export default function HeaderLinks(props) {
           component={Link}
           to={"/signin"}
           color="transparent"
-          target="_blank"
+          fontSize="20px"
           sx={{ mr: 2 }}
         >
           Sign In
         </Button>
-        <Button
-          component={Link}
-          to={"/signup"}
-          color="transparent"
-          target="_blank"
-        >
+        <Button component={Link} to={"/signup"} color="transparent">
           Sign Up
         </Button>
       </ListItem>
