@@ -17,8 +17,8 @@ const merkleTree = //TO DO: to not be hardcode
 
 const NUM_MINERS = 100; // TO DO: change when simulation connected
 
-const blockCreator = (numMiners, previousHash, timeStamp) => {
-  var miner = chooseMiner(NUM_MINERS);
+const blockCreator = (numMiners, previousHash, timeStamp, miningPool) => {
+  var miner = chooseMiner(miningPool, numMiners);
   var header = createHeader(previousHash, merkleTree);
   var hashID = header[0];
   var headerJSON = header[1];
