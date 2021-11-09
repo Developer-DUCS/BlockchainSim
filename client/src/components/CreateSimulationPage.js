@@ -11,20 +11,17 @@ import DateFnsUtils from "@date-io/date-fns";
 import { useHistory } from "react-router-dom";
 import timeStamp from "../js/blockchain/block/timeStamp";
 import simulationCreator from "../js/blockchain/simulation";
-//import chooseMiner from "../js/blockchain/block/miningPool";
-import createMinerPool, {chooseMiner} from "../js/blockchain/block/miningPool";
-
-//const chooseMiner = require("../js/blockchain/block/miningPool");
-//const createMinerPool = require("../js/blockchain/block/miningPool");
+import createMinerPool, {
+  chooseMiner,
+} from "../js/blockchain/block/miningPool";
 
 const SimulationFormCreator = () => {
-  //random
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const stampTimes = [];
   const WINDOW_TIME = 600; //10 Minutes
   const TIME_VARIATION_WINDOW = 30; //30 Seconds
   const NUM_BLOCKS = 20;
-  const NUM_MINERS = 100;
+  const NUM_MINERS = 50;
   const initialHash =
     "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"; //TODO: which one is the genesis hash?
 
@@ -37,11 +34,10 @@ const SimulationFormCreator = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    var miningPool = createMinerPool(NUM_MINERS);
-    var selectedMiner = chooseMiner(miningPool, NUM_MINERS);
 
-    console.log(miningPool)
-    console.log(selectedMiner)
+    var miningPool = createMinerPool(NUM_MINERS);
+    console.log("New mining Pool:", miningPool);
+
     let initTime = [e.target.datePick.value, e.target.timePick.value];
     var timeStampArr = timeStamp(initTime);
     var simulation = simulationCreator(
@@ -51,7 +47,7 @@ const SimulationFormCreator = () => {
       NUM_MINERS,
       miningPool
     );
-    console.log(simulation);
+    console.log("New simulation: ", simulation);
   };
 
   return (
