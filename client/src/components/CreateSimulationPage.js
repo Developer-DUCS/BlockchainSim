@@ -11,8 +11,13 @@ import DateFnsUtils from "@date-io/date-fns";
 import { useHistory } from "react-router-dom";
 import timeStamp from "../js/blockchain/block/timeStamp";
 import simulationCreator from "../js/blockchain/simulation";
+import UserBar from "./UserBar";
+import Auth from "./Auth";
 
-const SimulationFormCreator = () => {
+const SimulationFormCreator = (props) => {
+  const { setTheme } = props;
+  const [selectedTab, setSelectedTab] = React.useState(0);
+  const [user, setUser] = React.useState({});
   //random
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const stampTimes = [];
@@ -44,56 +49,65 @@ const SimulationFormCreator = () => {
   };
 
   return (
-    <Container maxWidth="xs">
-      <Paper xs={{ p: 2 }} elevation={2}>
-        <Typography variant="h4" align="center" gutterBottom>
-          New Simulation
-        </Typography>
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      name="datePick"
-                      label="genesis block creation date"
-                      format="MM/dd/yyyy"
-                      variant="dialog"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                    />
-                  </MuiPickersUtilsProvider>
-                </Grid>
-                <Grid item xs={12}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardTimePicker
-                      name="timePick"
-                      label="genesis block creation date"
-                      ampm={false}
-                      format="HH:mm:ss"
-                      variant="dialog"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                    />
-                  </MuiPickersUtilsProvider>
+    <Auth setUser={setUser}>
+      <UserBar
+        barTitle={"Create a Simulation"}
+        tabNames={["My Simulations", "Shared With Me"]}
+        setSelectedTab={(e, newValue) => setSelectedTab(newValue)}
+        selectedTab={selectedTab}
+        setTheme={setTheme}
+      />
+      <Container maxWidth="xs">
+        <Paper xs={{ p: 2 }} elevation={2}>
+          <Typography variant="h4" align="center" gutterBottom>
+            New Simulation
+          </Typography>
+          <form onSubmit={(e) => handleSubmit(e)}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        name="datePick"
+                        label="genesis block creation date"
+                        format="MM/dd/yyyy"
+                        variant="dialog"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                      />
+                    </MuiPickersUtilsProvider>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardTimePicker
+                        name="timePick"
+                        label="genesis block creation date"
+                        ampm={false}
+                        format="HH:mm:ss"
+                        variant="dialog"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                      />
+                    </MuiPickersUtilsProvider>
+                  </Grid>
                 </Grid>
               </Grid>
+              <Grid item xs={12}>
+                <Button
+                  color="primary"
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                >
+                  Create Simulation
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Button
-                color="primary"
-                fullWidth
-                type="submit"
-                variant="contained"
-              >
-                Create Simulation
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </Paper>
-    </Container>
+          </form>
+        </Paper>
+      </Container>
+    </Auth>
   );
 };
 
