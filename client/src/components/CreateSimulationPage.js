@@ -154,6 +154,8 @@ import {
 import { useHistory } from "react-router-dom";
 import Auth from "./Auth";
 import UserBar from "./UserBar";
+import timeStamp from "../js/blockchain/block/timeStamp";
+import simulationCreator from "../js/blockchain/simulation";
 
 const CreateSimulation = (props) => {
   const { setTheme } = props;
@@ -253,7 +255,8 @@ const CreateSimulation = (props) => {
     // API call to create account
     // if successful, redirect to login page
     const url = "http://localhost:5000/api/data/simulation";
-    const payload = {
+
+    const initValues = {
       name: name,
       desc: description,
       gendate: genDate,
@@ -265,6 +268,18 @@ const CreateSimulation = (props) => {
       coin: coin,
       mining: mine,
     };
+
+    let initTime = [initValues.gendate, initValues.gentime];
+    console.log(initTime);
+    var timeStampArr = timeStamp(initTime);
+    var simulation = simulationCreator(
+      NUM_BLOCKS,
+      initialHash,
+      timeStampArr,
+      NUM_MINERS
+    );
+    console.log(simulation);
+
     fetch(url, {
       method: "post",
       headers: {

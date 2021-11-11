@@ -5,16 +5,18 @@ const NUM_BLOCKS = 20;
 
 const createTimeStamp = (initTime) => {
   let aInitTime = initTime[1].split(":");
-  let aInitDate = initTime[0].split("/");
+  let aInitDate = initTime[0].split("-");
 
   var genesisDate = new Date( //create Date genesis block from user election
     aInitDate[2],
-    aInitDate[0],
     aInitDate[1],
+    aInitDate[0],
     aInitTime[0],
     aInitTime[1],
     aInitTime[2]
   );
+
+  console.log(genesisDate);
 
   let temp = genesisDate.toISOString().slice(0, 19).replace("T", " ");
   stampTimes.push(temp); //initial Date genesis block
