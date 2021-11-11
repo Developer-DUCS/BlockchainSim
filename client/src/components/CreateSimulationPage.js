@@ -126,6 +126,22 @@
 // export default SimulationFormCreator;
 
 // import React from "react";
+
+// Name (str) *
+// Description (str) *
+// Creation Date of Genesis Block (time + date) *
+// Window time between block (5/10/15/20) *
+// Number of Blocks (100 - 500) *
+// Transactions per blocks (3 - 10) *
+// Subsidy (1-50) *
+// Type of Coin (BTC, ETH, ...) *
+// Kind of mining (proof of work, proof of stake, ...) *
+
+//things needed to be validated:
+//  - number of blocks
+//  - number of transactions per blocks
+//  - subsidy
+
 import React, { Fragment, useState } from "react";
 import {
   Button,
@@ -138,12 +154,9 @@ import {
 import { useHistory } from "react-router-dom";
 import Auth from "./Auth";
 import UserBar from "./UserBar";
-import MenuItem from "@mui/material/MenuItem";
-import { SettingsCellOutlined } from "@material-ui/icons";
 
 const CreateSimulation = (props) => {
   const { setTheme } = props;
-
   const [user, setUser] = React.useState({});
 
   const times = [
@@ -193,8 +206,8 @@ const CreateSimulation = (props) => {
 
   const [name, setName] = React.useState();
   const [description, setDesc] = React.useState();
-  const [createDate, setCreateDate] = React.useState();
-  const [ceateTime, setCreateTime] = React.useState();
+  const [genDate, setGenDate] = React.useState();
+  const [genTime, setGenTime] = React.useState();
   const [blocksCount, setBlocksCount] = React.useState();
   const [blocksCountError, setBlocksCountError] = React.useState(false);
   const [transactions, setTransactions] = React.useState();
@@ -211,8 +224,8 @@ const CreateSimulation = (props) => {
     setMining(event.target.value);
   };
 
-  const verifyBlocksCount = (blockscount) => {
-    if (blockscount > 100 || blockscount < 500) {
+  const verifyBlocksCount = (blocksCount) => {
+    if (blocksCount < 100 || blocksCount > 500) {
       setBlocksCountError(true);
     } else {
       setBlocksCountError(false);
@@ -232,37 +245,25 @@ const CreateSimulation = (props) => {
       setSubsidyError(false);
     }
   };
-  // Name (str) *
-  // Description (str) *
-  // Creation Date of Genesis Block (time + date) *
-  // Window time between block (5/10/15/20) *
-  // Number of Blocks (100 - 500) *
-  // Transactions per blocks (3 - 10) *
-  // Subsidy (1-50) *
-  // Type of Coin (BTC, ETH, ...) *
-  // Kind of mining (proof of work, proof of stake, ...) *
 
-  //things needed to be validated:
-  //  - number of blocks
-  //  - number of transactions per blocks
-  //  - subsidy
-
-  const [password, setPassword] = React.useState(false);
-  const [verifyPassword, setVerifyPassword] = React.useState(false);
-  const [email, setEmail] = React.useState(false);
-  const [error, setError] = React.useState(false);
-  const [emailError, setEmailError] = React.useState(false);
   const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // API call to create account
     // if successful, redirect to login page
-    const url = "http://localhost:5000/api/users/register";
+    const url = "http://localhost:5000/api/data/simulation";
     const payload = {
-      id: email,
-      pass: password,
-      role: "dev",
+      name: name,
+      desc: description,
+      gendate: genDate,
+      gentime: genTime,
+      blockwin: blockWindow,
+      numblocks: blocksCount,
+      transactions: transactions,
+      subsidy: subsidy,
+      coin: coin,
+      mining: mine,
     };
     fetch(url, {
       method: "post",
@@ -273,7 +274,7 @@ const CreateSimulation = (props) => {
     }).then((res) => {
       if (res.status == 201) {
         //redirect
-        history.push("/signin");
+        history.push("/simulation");
       }
       if (res.status == 409) {
         // username already exist
@@ -281,29 +282,6 @@ const CreateSimulation = (props) => {
         setEmailError(true);
       }
     });
-  };
-
-  // If password or verify password change
-  React.useEffect(() => {
-    checkPassword();
-  }, [password, verifyPassword]);
-
-  // Check if passwords match
-  const checkPassword = () => {
-    if (password !== verifyPassword) {
-      setError(true);
-    } else {
-      setError(false);
-    }
-  };
-
-  // Check if email is valid
-  const verifyEmail = (email) => {
-    if (email.length > 0) {
-      const re =
-        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      setEmailError(!re.test(String(email).toLowerCase()));
-    } else setEmailError(false);
   };
 
   return (
@@ -354,7 +332,7 @@ const CreateSimulation = (props) => {
                       type="date"
                       defaultValue={values.someDate}
                       onChange={(e) => {
-                        setCreateDate(e.target.value);
+                        setGenDate(e.target.value);
                       }}
                     />
                   </Grid>
@@ -368,7 +346,7 @@ const CreateSimulation = (props) => {
                       type="time"
                       defaultValue={values.someTime}
                       onChange={(e) => {
-                        setCreateTime(e.target.value);
+                        setGenTime(e.target.value);
                       }}
                     />
                   </Grid>
@@ -405,6 +383,11 @@ const CreateSimulation = (props) => {
                       InputLabelProps={{
                         shrink: true,
                       }}
+                      onWheel={(e) => e.target.blur()}
+                      onChange={(e) => {
+                        verifyBlocksCount(e.target.value);
+                        setBlocksCount(e.target.value);
+                      }}
                       helperText={
                         blocksCountError
                           ? "*Blockchains must be between 100 and 500 blocks long"
@@ -412,10 +395,6 @@ const CreateSimulation = (props) => {
                       }
                       error={blocksCountError}
                       color={blocksCountError ? "error" : "success"}
-                      onChange={(e) => {
-                        verifyBlocksCount(e.target.value);
-                        setBlocksCount(e.target.value);
-                      }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -431,6 +410,11 @@ const CreateSimulation = (props) => {
                       InputLabelProps={{
                         shrink: true,
                       }}
+                      onWheel={(e) => e.target.blur()}
+                      onChange={(e) => {
+                        verifyTransaction(e.target.value);
+                        setTransactions(e.target.value);
+                      }}
                       helperText={
                         transactionsError
                           ? "*Blocks can have between 3 and 10 transactions"
@@ -438,10 +422,6 @@ const CreateSimulation = (props) => {
                       }
                       error={transactionsError}
                       color={transactionsError ? "error" : "success"}
-                      onChange={(e) => {
-                        verifyTransaction(e.target.value);
-                        setTransactions(e.target.value);
-                      }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -457,15 +437,16 @@ const CreateSimulation = (props) => {
                       InputLabelProps={{
                         shrink: true,
                       }}
+                      onWheel={(e) => e.target.blur()}
+                      onChange={(e) => {
+                        verifySubsidy(e.target.value);
+                        setSubsidy(e.target.value);
+                      }}
                       helperText={
                         subsidyError ? "*Subsidies can be between 1 and 50" : ""
                       }
                       error={subsidyError}
                       color={subsidyError ? "error" : "success"}
-                      onChange={(e) => {
-                        verifySubsidy(e.target.value);
-                        setSubsidy(e.target.value);
-                      }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -514,7 +495,9 @@ const CreateSimulation = (props) => {
               </Grid>
               <Grid item xs={12}>
                 <Button
-                  disabled={blocksCountError}
+                  disabled={
+                    blocksCountError || transactionsError || subsidyError
+                  }
                   fullWidth
                   type="submit"
                   variant="contained"
