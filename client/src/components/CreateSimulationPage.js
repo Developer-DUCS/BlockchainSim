@@ -91,6 +91,8 @@ const CreateSimulation = (props) => {
   const [blockWindow, setBlockWindow] = React.useState("10");
   const [coin, setCoin] = React.useState("btc");
   const [mine, setMining] = React.useState("pow");
+  const [numMiners, setNumMiners] = React.useState();
+  const [numMinersError, setNumMinersError] = React.useState(false);
   const NUM_MINERS = 100; //TODO: conect it with form
 
   const handleChange = (event) => {
@@ -120,6 +122,13 @@ const CreateSimulation = (props) => {
       setSubsidyError(false);
     }
   };
+  const verifyNumMiners = (numMiners) => {
+    if (numMiners < 50 || numMiners > 150) {
+      setNumMinersError(true);
+    } else {
+      setNumMinersError(false);
+    }
+  };
 
   const history = useHistory();
 
@@ -129,6 +138,7 @@ const CreateSimulation = (props) => {
     // if successful, redirect to login page
     const url = "http://localhost:5000/api/data/simulation";
 
+    //Creates the simulation
     const initValues = {
       name: name,
       desc: description,
@@ -155,7 +165,7 @@ const CreateSimulation = (props) => {
       initValues.numblocks,
       initialHash,
       timeStampArr,
-      NUM_MINERS
+      numMiners
     );
 
     var newSimulation = {
@@ -175,6 +185,8 @@ const CreateSimulation = (props) => {
 
     console.log("final data", data);
 
+    /* NEEDS TO BE IMPLEMENTED */
+    /* JUST COPIED FROM SIGN UP*/
     fetch(url, {
       method: "post",
       headers: {
@@ -182,8 +194,6 @@ const CreateSimulation = (props) => {
       },
       body: JSON.stringify(simulation),
     }).then((res) => {
-      /* NEEDS TO BE IMPLEMENTED */
-      /* JUST COPIED FROM SIGN UP*/
       if (res.status == 201) {
         //redirect
         history.push("/simulation");
@@ -318,7 +328,7 @@ const CreateSimulation = (props) => {
                       id="numtransactions"
                       label="Number of Transactions per Block"
                       type="number"
-                      helperText="between 3 and 10"
+                      // helperText="between 3 and 10"
                       InputProps={{ inputProps: { min: 3, max: 10 } }}
                       InputLabelProps={{
                         shrink: true,
@@ -345,7 +355,7 @@ const CreateSimulation = (props) => {
                       id="subsidy"
                       label="Set a Subsidy"
                       type="number"
-                      helperText="between 1 and 50"
+                      // helperText="between 1 and 50"
                       InputProps={{ inputProps: { min: 1, max: 50 } }}
                       InputLabelProps={{
                         shrink: true,
@@ -360,6 +370,33 @@ const CreateSimulation = (props) => {
                       }
                       error={subsidyError}
                       color={subsidyError ? "error" : "success"}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      required
+                      placeholder="50"
+                      id="miners"
+                      label="How many miners will be in the simulation:"
+                      type="number"
+                      helperText="between 50 and 150"
+                      InputProps={{ inputProps: { min: 50, max: 150 } }}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onWheel={(e) => e.target.blur()}
+                      onChange={(e) => {
+                        verifyNumMiners(e.target.value);
+                        setNumMiners(e.target.value);
+                      }}
+                      helperText={
+                        numMinersError
+                          ? "*There must be between 50 and 150 miners in the simulation"
+                          : ""
+                      }
+                      error={numMinersError}
+                      color={numMinersError ? "error" : "success"}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -409,7 +446,10 @@ const CreateSimulation = (props) => {
               <Grid item xs={12}>
                 <Button
                   disabled={
-                    blocksCountError || transactionsError || subsidyError
+                    blocksCountError ||
+                    transactionsError ||
+                    subsidyError ||
+                    numMinersError
                   }
                   fullWidth
                   type="submit"
