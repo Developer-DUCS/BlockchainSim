@@ -78,10 +78,10 @@ const CreateSimulation = (props) => {
     someTime: "10:30",
   };
 
+  var genDate = "2009-01-09";
+  var genTime = "10:30";
   const [name, setName] = React.useState();
   const [description, setDesc] = React.useState();
-  const [genDate, setGenDate] = React.useState();
-  const [genTime, setGenTime] = React.useState();
   const [blocksCount, setBlocksCount] = React.useState();
   const [blocksCountError, setBlocksCountError] = React.useState(false);
   const [transactions, setTransactions] = React.useState();
@@ -182,13 +182,13 @@ const CreateSimulation = (props) => {
       },
       body: JSON.stringify(simulation),
     }).then((res) => {
+      /* NEEDS TO BE IMPLEMENTED */
+      /* JUST COPIED FROM SIGN UP*/
       if (res.status == 201) {
         //redirect
         history.push("/simulation");
       }
       if (res.status == 409) {
-        // username already exist
-        // display invalid username
         setEmailError(true);
       }
     });
@@ -223,6 +223,7 @@ const CreateSimulation = (props) => {
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
+                      required
                       multiline
                       label="Description"
                       name="description"
@@ -241,8 +242,9 @@ const CreateSimulation = (props) => {
                       InputLabelProps={{ shrink: true, required: true }}
                       type="date"
                       defaultValue={values.someDate}
-                      onChange={(e) => {
-                        setGenDate(e.target.value);
+                      onBlur={(e) => {
+                        genDate = e.target.value;
+                        console.log(genDate);
                       }}
                     />
                   </Grid>
@@ -255,8 +257,9 @@ const CreateSimulation = (props) => {
                       InputLabelProps={{ shrink: true, required: true }}
                       type="time"
                       defaultValue={values.someTime}
-                      onChange={(e) => {
-                        setGenTime(e.target.value);
+                      onBlur={(e) => {
+                        genTime = e.target.value;
+                        console.log(genTime);
                       }}
                     />
                   </Grid>
