@@ -1,8 +1,11 @@
 const express = require("express");
+const app = express();
 const router = express.Router();
 const db = require("../../../dbConn");
 const cors = require("cors");
 const { hash } = require("bcrypt-nodejs");
+
+app.use(express.json());
 
 router.post("/block", cors(), (req, res) => {
   const hash =
@@ -73,27 +76,30 @@ router.post("/deletesim", cors(), (req, res) => {
       console.log(err);
     } else {
       // for each element in the sim blocks json object
-      result.array.forEach((element) => {
-        /*
+      resultData = JSON.stringify(result).replace(/[\\\[\]]/g, "");
+      resultData = resultData.slice(15, resultData.length - 2);
+      console.log(resultData);
+      var hashes = JSON.parse(resultData);
+      for (var id in hashes) {
+        let hash = hashes[id];
         // delete hash from blocks table
-        let qry = `DELETE FROM ${email_valid} WHERE hash='${hash}'`
-        db.query(qry2, (err, result) => {
-          if (err){
+        let qry = `DELETE FROM blocks_${email_valid} WHERE hash='${hash}'`;
+        db.query(qry, (err) => {
+          if (err) {
             console.log(err);
           } else {
-            console.log("block deleted")
+            console.log("block deleted");
           }
-        });*/
-        console.log(element);
-      });
+        });
+      }
     }
   });
-  let qry3 = `DELETE FROM simulation WHERE email='${email}' AND sim_name='${sim_name}'`;
-  db.query(qry3, (err, result) => {
+  let qry = `DELETE FROM simulation WHERE email='${email}' AND sim_name='${sim_name}'`;
+  db.query(qry, (err, result) => {
     if (err) {
       console.log(err);
     } else {
-      console.log("simulation deleted");
+      res.sendStatus(200);
     }
   });
 });
