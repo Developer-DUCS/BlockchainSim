@@ -1,11 +1,6 @@
-/* import chooseMiner from "../block/miningPool"
-import createMinerPool from "../block/miningPool"
+import createMinerPool, {chooseMiner} from "../js/blockchain/block/miningPool";
 
 // make a list of all people with money, give them the basecoin transaction
-createMinerPool(10);
-chooseMiner(miningPool);
-
-console.log(miningPool)
-console.log(selectedMiner) */
-
+// make a fake list of 10 miners, give them all money 
+// 
 

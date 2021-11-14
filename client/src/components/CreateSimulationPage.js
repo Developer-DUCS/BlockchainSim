@@ -11,11 +11,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import { useHistory } from "react-router-dom";
 import timeStamp from "../js/blockchain/block/timeStamp";
 import simulationCreator from "../js/blockchain/simulation";
-//import chooseMiner from "../js/blockchain/block/miningPool";
 import createMinerPool, {chooseMiner} from "../js/blockchain/block/miningPool";
-
-//const chooseMiner = require("../js/blockchain/block/miningPool");
-//const createMinerPool = require("../js/blockchain/block/miningPool");
 
 const SimulationFormCreator = () => {
   //random
