@@ -20,11 +20,11 @@ const randomSelector = (min, max) => {
   return Math.floor(num);
 };
 
-var miningPool = [];
+  var miningPool = [];
 
 
-const createMinerPool= (numMiners)=> {
-  console.log(numMiners);
+  const createMinerPool= (numMiners)=> {
+    console.log(numMiners);
   for (var i = 0; i < numMiners; i++) {
     var miner = (Math.random() + 1).toString(36).substring(2);
     miningPool.push(miner);
@@ -34,7 +34,7 @@ const createMinerPool= (numMiners)=> {
 }
 
 const chooseMiner = (miningPool, numMiners) => {
-  
+
   var randomMinerNum = randomSelector(0, numMiners - 1);
   var selectedMiner = miningPool[randomMinerNum];
 
