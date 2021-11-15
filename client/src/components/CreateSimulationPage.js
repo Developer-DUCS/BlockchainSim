@@ -142,8 +142,8 @@ const CreateSimulation = (props) => {
 
     //console.log(miningPool)
     //console.log(selectedMiner)
-    //let initTime = [e.target.datePick.value, e.target.timePick.value];
-    //var timeStampArr = timeStamp(initTime);
+    // let initTime = [e.target.datePick.value, e.target.timePick.value];
+    // var timeStampArr = timeStamp(initTime);
     // API call to create account
     // if successful, redirect to login page
     const url = "http://localhost:5000/api/data/createsim";
