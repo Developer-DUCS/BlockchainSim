@@ -15,12 +15,16 @@
 
 import React, { Fragment, useState } from "react";
 import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   Button,
   Grid,
   Container,
   Paper,
   Typography,
   TextField,
+  Divider,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import Auth from "./reusable/Auth";
@@ -31,6 +35,8 @@ import chooseMiner, {
   createMinerPool,
 } from "../js/blockchain/block/miningPool";
 import sjcl from "../sjcl";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const CreateSimulation = (props) => {
   const { setTheme } = props;
@@ -87,14 +93,14 @@ const CreateSimulation = (props) => {
   const [description, setDesc] = React.useState();
   const [blocksCount, setBlocksCount] = React.useState();
   const [blocksCountError, setBlocksCountError] = React.useState(false);
-  const [transactions, setTransactions] = React.useState();
+  const [transactions, setTransactions] = React.useState("5");
   const [transactionsError, setTransactionsError] = React.useState(false);
-  const [subsidy, setSubsidy] = React.useState();
+  const [subsidy, setSubsidy] = React.useState("50");
   const [subsidyError, setSubsidyError] = React.useState(false);
   const [blockWindow, setBlockWindow] = React.useState("10");
   const [coin, setCoin] = React.useState("btc");
   const [mine, setMining] = React.useState("pow");
-  const [numMiners, setNumMiners] = React.useState();
+  const [numMiners, setNumMiners] = React.useState("50");
   const [numMinersError, setNumMinersError] = React.useState(false);
   const [genDate, setGenDate] = React.useState("2009-01-09");
   const NUM_MINERS = 100; //TODO: conect it with form
@@ -215,9 +221,9 @@ const CreateSimulation = (props) => {
   return (
     <Auth setUser={setUser}>
       <UserBar barTitle={"Create a Simulation"} setTheme={setTheme} />
-      <Container maxWidth="xs">
+      <Container maxWidth="md">
         <Paper sx={{ p: 2, mt: 2 }} elevation={2}>
-          <Typography variant="h4" align="center" gutterBottom>
+          <Typography variant="h4" gutterBottom>
             Create a Simulation
           </Typography>
           <form onSubmit={(e) => handleSubmit(e)}>
@@ -225,8 +231,11 @@ const CreateSimulation = (props) => {
               <Grid item xs={12}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
+                    <h3>Basic Information</h3>
+                    <Divider />
                     <TextField
-                      fullWidth
+                      sx={{ mt: 4, mr: 7 }}
+                      style={{ width: "43%" }}
                       required
                       label="Name of Simulation"
                       name="name"
@@ -237,24 +246,10 @@ const CreateSimulation = (props) => {
                         setName(e.target.value);
                       }}
                     />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      required
-                      multiline
-                      label="Description"
-                      name="description"
-                      placeholder="Write a short description of the simulation"
-                      onChange={(e) => {
-                        setDesc(e.target.value);
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
                     <TextField
                       required
-                      fullWidth
+                      sx={{ mt: 4, mr: 7 }}
+                      style={{ width: "43%" }}
                       name="creationDate"
                       label="Date of Creation of Genesis Block"
                       InputLabelProps={{ shrink: true, required: true }}
@@ -268,7 +263,19 @@ const CreateSimulation = (props) => {
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      fullWidth
+                      sx={{ mt: 2, mr: 7 }}
+                      style={{ width: "43%" }}
+                      required
+                      label="Description"
+                      name="description"
+                      onChange={(e) => {
+                        setDesc(e.target.value);
+                      }}
+                      multiline
+                    />
+                    <TextField
+                      style={{ width: "43%" }}
+                      sx={{ mt: 2, mr: 7 }}
                       required
                       name="time"
                       label="Time of Creation of Genesis Block"
@@ -283,28 +290,8 @@ const CreateSimulation = (props) => {
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      fullWidth
-                      id="window"
-                      select
-                      required
-                      label="Select a time window between blocks"
-                      helperText="* in minutes"
-                      value={blockWindow}
-                      onChange={handleChange}
-                      SelectProps={{
-                        native: true,
-                      }}
-                    >
-                      {times.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
+                      style={{ width: "43%" }}
+                      sx={{ mt: 2, mr: 7 }}
                       required
                       placeholder="100"
                       id="numblocks"
@@ -327,89 +314,9 @@ const CreateSimulation = (props) => {
                       error={blocksCountError}
                       color={blocksCountError ? "error" : "success"}
                     />
-                  </Grid>
-                  <Grid item xs={12}>
                     <TextField
-                      fullWidth
-                      required
-                      placeholder="5"
-                      id="numtransactions"
-                      label="Number of Transactions per Block"
-                      type="number"
-                      // helperText="between 3 and 10"
-                      InputProps={{ inputProps: { min: 3, max: 10 } }}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      onWheel={(e) => e.target.blur()}
-                      onChange={(e) => {
-                        verifyTransaction(e.target.value);
-                        setTransactions(e.target.value);
-                      }}
-                      helperText={
-                        transactionsError
-                          ? "*Blocks can have between 3 and 10 transactions"
-                          : ""
-                      }
-                      error={transactionsError}
-                      color={transactionsError ? "error" : "success"}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      required
-                      placeholder="50"
-                      id="subsidy"
-                      label="Set a Subsidy"
-                      type="number"
-                      // helperText="between 1 and 50"
-                      InputProps={{ inputProps: { min: 1, max: 50 } }}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      onWheel={(e) => e.target.blur()}
-                      onChange={(e) => {
-                        verifySubsidy(e.target.value);
-                        setSubsidy(e.target.value);
-                      }}
-                      helperText={
-                        subsidyError ? "*Subsidies can be between 1 and 50" : ""
-                      }
-                      error={subsidyError}
-                      color={subsidyError ? "error" : "success"}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      required
-                      placeholder="50"
-                      id="miners"
-                      label="How many miners will be in the simulation:"
-                      type="number"
-                      helperText="between 50 and 150"
-                      InputProps={{ inputProps: { min: 50, max: 150 } }}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      onWheel={(e) => e.target.blur()}
-                      onChange={(e) => {
-                        verifyNumMiners(e.target.value);
-                        setNumMiners(e.target.value);
-                      }}
-                      helperText={
-                        numMinersError
-                          ? "*There must be between 50 and 150 miners in the simulation"
-                          : ""
-                      }
-                      error={numMinersError}
-                      color={numMinersError ? "error" : "success"}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
+                      style={{ width: "43%" }}
+                      sx={{ mt: 2, mr: 7 }}
                       required
                       id="coin"
                       select
@@ -419,7 +326,6 @@ const CreateSimulation = (props) => {
                       SelectProps={{
                         native: true,
                       }}
-                      // helperText="* in minutes"
                     >
                       {coins.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -429,25 +335,146 @@ const CreateSimulation = (props) => {
                     </TextField>
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      required
-                      id="mining"
-                      select
-                      label="Select a type of Verification"
-                      value={mine}
-                      onChange={handleChange}
-                      SelectProps={{
-                        native: true,
-                      }}
-                      // helperText="* in minutes"
-                    >
-                      {mining.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
+                    <Accordion elevation={0}>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        sx={{ ml: -2 }}
+                      >
+                        <h3>Optional Parameters</h3>
+                        <Divider />
+                      </AccordionSummary>
+                      <AccordionDetails sx={{ ml: -1.5 }}>
+                        <Grid item xs={12}>
+                          <TextField
+                            style={{ width: "43%" }}
+                            sx={{ mt: -2, mr: 7 }}
+                            id="window"
+                            select
+                            label="Select a time window between blocks"
+                            helperText="* in minutes"
+                            value={blockWindow}
+                            onChange={handleChange}
+                            SelectProps={{
+                              native: true,
+                            }}
+                          >
+                            {times.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                          <TextField
+                            style={{ width: "43%" }}
+                            sx={{ mt: -2, mr: 7 }}
+                            placeholder="5"
+                            id="numtransactions"
+                            label="Number of Transactions per Block"
+                            type="number"
+                            InputProps={{ inputProps: { min: 3, max: 10 } }}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            onWheel={(e) => e.target.blur()}
+                            onChange={(e) => {
+                              if (e.target.value == "") {
+                                setTransactions("5");
+                              } else {
+                                verifyTransaction(e.target.value);
+                                setTransactions(e.target.value);
+                              }
+                            }}
+                            helperText={
+                              transactionsError
+                                ? "*Blocks can have between 3 and 10 transactions"
+                                : ""
+                            }
+                            error={transactionsError}
+                            color={transactionsError ? "error" : "success"}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            style={{ width: "43%" }}
+                            sx={{ mt: 2, mr: 7 }}
+                            placeholder="50"
+                            id="subsidy"
+                            label="Set a Subsidy"
+                            type="number"
+                            InputProps={{ inputProps: { min: 1, max: 50 } }}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            onWheel={(e) => e.target.blur()}
+                            onChange={(e) => {
+                              if (e.target.value == "") {
+                                setSubsidy("50");
+                              } else {
+                                verifySubsidy(e.target.value);
+                                setSubsidy(e.target.value);
+                              }
+                            }}
+                            helperText={
+                              subsidyError
+                                ? "*Subsidies can be between 1 and 50"
+                                : ""
+                            }
+                            error={subsidyError}
+                            color={subsidyError ? "error" : "success"}
+                          />
+                          <TextField
+                            style={{ width: "43%" }}
+                            sx={{ mt: 2, mr: 7 }}
+                            placeholder="50"
+                            id="miners"
+                            label="How many miners will be in the simulation:"
+                            type="number"
+                            helperText="between 50 and 150"
+                            InputProps={{ inputProps: { min: 50, max: 150 } }}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            onWheel={(e) => e.target.blur()}
+                            onChange={(e) => {
+                              if (e.target.value == "") {
+                                setNumMiners("50");
+                              } else {
+                                verifyNumMiners(e.target.value);
+                                setNumMiners(e.target.value);
+                              }
+                            }}
+                            helperText={
+                              numMinersError
+                                ? "*There must be between 50 and 150 miners in the simulation"
+                                : ""
+                            }
+                            error={numMinersError}
+                            color={numMinersError ? "error" : "success"}
+                          />
+                        </Grid>
+                        <Grid item xs={12}></Grid>
+                        <Grid item xs={12}>
+                          <TextField
+                            style={{ width: "43%" }}
+                            sx={{ mt: 3, mr: 7 }}
+                            id="mining"
+                            select
+                            label="Select a type of Verification"
+                            value={mine}
+                            onChange={handleChange}
+                            SelectProps={{
+                              native: true,
+                            }}
+                          >
+                            {mining.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </TextField>
+                        </Grid>
+                      </AccordionDetails>
+                    </Accordion>
                   </Grid>
                 </Grid>
               </Grid>
