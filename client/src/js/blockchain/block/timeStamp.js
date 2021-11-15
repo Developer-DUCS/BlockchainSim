@@ -8,13 +8,14 @@ const createTimeStamp = (initTime, numblocks, windowTime) => {
   let secWindowTime = windowTime * 60; //pass to seconds
 
   var genesisDate = new Date( //create Date genesis block from user election
-    aInitDate[2],
-    aInitDate[1],
     aInitDate[0],
+    aInitDate[1],
+    aInitDate[2],
     aInitTime[0],
     aInitTime[1]
   );
 
+  console.log(genesisDate);
   let temp = genesisDate.toISOString().slice(0, 19).replace("T", " ");
   stampTimes.push(temp); //initial Date genesis block
   var currTimeStamp = genesisDate;
