@@ -1,29 +1,25 @@
 import inputSelection from "./singleTransaction/inputsSingleTransaction";
 import outputCreation from "./singleTransaction/outputsSingleTransaction";
-
-var version = "01000000";
-var input_count; //determines how many inputs (UTXO's) to include
-var input; // one or more UTXO's as input, multiple variables
-var output_count; //determines how many outputs (STXO's) to create
-var output; // one or more STXO's as output, multiple variables
-var locktime = "00000000"; // sets a minimum block height or unix time
-// that the transaction can be included in
+import singleTransaction from "./singleTransaction/singleTransaction";
 
 // https://learnmeabitcoin.com/technical/transaction-data
 // good resource on transaction data
+const createTransactions = () => {
+    var transactions = []
+    var basecoinTransaction = singleTransaction() //TO DO: add arguments
+    transactions.push(basecoinTransaction);
+    var transaction_count = 0; //TO DO: make this dynamic
+    for (let i=0; i<(transaction_count); i++) {
+        var transaction = singleTransaction()
+        transactions.push(transaction)
+    }
+    //console.log(transactions)
+    return transactions
+}
 
-transaction = "";
-input = inputSelection();
-output = outputCreation();
+export default createTransactions
 
-transaction += transaction.concat(
-  version,
-  input_count,
-  input,
-  output_count,
-  output,
-  locktime
-);
+
 
 //TO DO:
 //      1.) Create a pool of transactions to be included

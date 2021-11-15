@@ -11,7 +11,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import { useHistory } from "react-router-dom";
 import timeStamp from "../js/blockchain/block/timeStamp";
 import simulationCreator from "../js/blockchain/simulation";
-import createMinerPool, {chooseMiner} from "../js/blockchain/block/miningPool";
+import chooseMiner, {createMinerPool} from "../js/blockchain/block/miningPool";
 
 const SimulationFormCreator = () => {
   //random
@@ -36,8 +36,8 @@ const SimulationFormCreator = () => {
     var miningPool = createMinerPool(NUM_MINERS);
     var selectedMiner = chooseMiner(miningPool, NUM_MINERS);
 
-    console.log(miningPool)
-    console.log(selectedMiner)
+    //console.log(miningPool)
+    //console.log(selectedMiner)
     let initTime = [e.target.datePick.value, e.target.timePick.value];
     var timeStampArr = timeStamp(initTime);
     var simulation = simulationCreator(
