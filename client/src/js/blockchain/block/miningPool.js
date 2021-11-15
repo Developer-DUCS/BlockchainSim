@@ -11,6 +11,8 @@
 
 */
 
+import App from "../../../App";
+
 //var numMiners;
 
 const randomSelector = (min, max) => {
@@ -18,17 +20,24 @@ const randomSelector = (min, max) => {
   return Math.floor(num);
 };
 
-const chooseMiner = (numMiners) => {
   var miningPool = [];
+
+  const createMinerPool= (numMiners)=> {
   for (var i = 0; i < numMiners; i++) {
     var miner = (Math.random() + 1).toString(36).substring(2);
     miningPool.push(miner);
   }
 
+  return miningPool;
+}
+
+const chooseMiner = (miningPool, numMiners) => {
+
   var randomMinerNum = randomSelector(0, numMiners - 1);
   var selectedMiner = miningPool[randomMinerNum];
-
+  //console.log(selectedMiner)
   return selectedMiner;
 };
 
 export default chooseMiner;
+export {createMinerPool};
