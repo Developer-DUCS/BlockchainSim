@@ -1,8 +1,8 @@
-const stampTimes = [];
 //const WINDOW_TIME = 600; //10 Minutes
 const TIME_VARIATION_WINDOW = 30; //30 Seconds
 
 const createTimeStamp = (initTime, numblocks, windowTime) => {
+  const stampTimes = [];
   let aInitTime = initTime[1].split(":");
   let aInitDate = initTime[0].split("-");
   let secWindowTime = windowTime * 60; //pass to seconds
@@ -14,8 +14,6 @@ const createTimeStamp = (initTime, numblocks, windowTime) => {
     aInitTime[0],
     aInitTime[1]
   );
-
-  console.log(genesisDate);
   let temp = genesisDate.toISOString().slice(0, 19).replace("T", " ");
   stampTimes.push(temp); //initial Date genesis block
   var currTimeStamp = genesisDate;

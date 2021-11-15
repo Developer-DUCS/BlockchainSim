@@ -81,7 +81,7 @@ const CreateSimulation = (props) => {
     someTime: "10:30",
   };
 
-  var genDate = "2009-01-09";
+  // var genDate = "2009-01-09";
   var genTime = "10:30";
   const [name, setName] = React.useState();
   const [description, setDesc] = React.useState();
@@ -96,6 +96,7 @@ const CreateSimulation = (props) => {
   const [mine, setMining] = React.useState("pow");
   const [numMiners, setNumMiners] = React.useState();
   const [numMinersError, setNumMinersError] = React.useState(false);
+  const [genDate, setGenDate] = React.useState("2009-01-09");
   const NUM_MINERS = 100; //TODO: conect it with form
 
   const handleChange = (event) => {
@@ -264,8 +265,8 @@ const CreateSimulation = (props) => {
                       InputLabelProps={{ shrink: true, required: true }}
                       type="date"
                       defaultValue={values.someDate}
-                      onBlur={(e) => {
-                        genDate = e.target.value;
+                      onChange={(e) => {
+                        setGenDate(e.target.value);
                         console.log(genDate);
                       }}
                     />
