@@ -47,9 +47,8 @@ const HomePage = (props) => {
               <h4></h4>
               <br />
               <Button
-                color="black"
                 size="lg"
-                href=""
+                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                 target="_blank"
                 rel="noopener noreferrer"
               >
