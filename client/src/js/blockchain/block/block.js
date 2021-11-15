@@ -26,8 +26,9 @@ const blockCreator = (numMiners, previousHash, timeStamp, miningPool) => {
   var headerJSON = header[1];
   var transactionJSON = createTransactions();
   //var timeStamp   TO DO: figure out how to connect this
-  
+
   var blockJSON = {
+    id_block: hashID,
     header: headerJSON,
     transaction: transactionJSON,
     transaction_counter: 1, //coinbase transaction 
