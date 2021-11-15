@@ -145,9 +145,6 @@ const CreateSimulation = (props) => {
     //console.log(selectedMiner)
     // let initTime = [e.target.datePick.value, e.target.timePick.value];
     // var timeStampArr = timeStamp(initTime);
-    // API call to create account
-    // if successful, redirect to login page
-    const url = "http://localhost:5000/api/data/createsim";
 
     //Creates the simulation
     const initValues = {
@@ -198,8 +195,9 @@ const CreateSimulation = (props) => {
 
     console.log("final data", data);
 
-    /* NEEDS TO BE IMPLEMENTED */
-    /* JUST COPIED FROM SIGN UP*/
+    // API call to create simulation
+    // if successful, redirect to simulation page
+    const url = "http://localhost:5000/api/data/createsim";
     fetch(url, {
       method: "POST",
       headers: {
@@ -207,13 +205,9 @@ const CreateSimulation = (props) => {
       },
       body: JSON.stringify(data),
     }).then((res) => {
-      console.log(res);
-      if (res.status == 201) {
+      if (res.status == 200) {
         //redirect
         history.push("/simulation");
-      }
-      if (res.status == 409) {
-        setEmailError(true);
       }
     });
   };
