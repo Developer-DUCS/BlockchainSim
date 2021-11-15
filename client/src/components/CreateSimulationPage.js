@@ -23,8 +23,8 @@ import {
   TextField,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
-import Auth from "./Auth";
-import UserBar from "./UserBar";
+import Auth from "./reusable/Auth";
+import UserBar from "./reusable/UserBar";
 import timeStamp from "../js/blockchain/block/timeStamp";
 import simulationCreator from "../js/blockchain/simulation";
 import chooseMiner, {
@@ -201,12 +201,13 @@ const CreateSimulation = (props) => {
     /* NEEDS TO BE IMPLEMENTED */
     /* JUST COPIED FROM SIGN UP*/
     fetch(url, {
-      method: "post",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     }).then((res) => {
+      console.log(res);
       if (res.status == 201) {
         //redirect
         history.push("/simulation");

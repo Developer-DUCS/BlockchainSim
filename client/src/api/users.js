@@ -92,7 +92,7 @@ router.post("/register", cors(), (req, res) => {
                 // User created
                 res.sendStatus(201);
               }
-            },
+            }
           );
           // Create a table for the users blocks
           var tableName = "blocks_";
@@ -114,11 +114,10 @@ router.post("/register", cors(), (req, res) => {
               } else {
                 // Log user created block table to console
                 console.log(
-                  "User " + id + " created a block table with name " +
-                    tableName,
+                  "User " + id + " created a block table with name " + tableName
                 );
               }
-            },
+            }
           );
         }
       });

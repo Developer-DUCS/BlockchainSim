@@ -7,8 +7,6 @@ const { hash } = require("bcrypt-nodejs");
 
 app.use(express.json());
 
-app.use(express.json());
-
 router.post("/block", cors(), (req, res) => {
   const hash =
     "0104db27ef0e770ea5b0786880ee0883b13b04eeb7c34acebc77c4e47957ae95";
@@ -40,6 +38,8 @@ router.post("/block", cors(), (req, res) => {
 });
 
 router.post("/createsim", cors(), (req, res) => {
+  // res.status(201).send("good");
+  // console.log(req)
   const email = req.body.simulation.user;
   const email_valid = email.replace(/[@.]/g, "_");
   const sim_name = req.body.simulation.sim_name;

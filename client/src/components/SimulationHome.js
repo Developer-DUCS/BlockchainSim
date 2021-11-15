@@ -1,9 +1,9 @@
 import { Button, Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import Auth from "./Auth";
-import BlockComponent from "./BlockComponent";
-import UserBar from "./UserBar";
+import Auth from "./reusable/Auth";
+import BlockComponent from "./reusable/BlockComponent";
+import UserBar from "./reusable/UserBar";
 import SimTable from "./SimTable";
 import TabPanel from "./TabPanel";
 
@@ -76,10 +76,10 @@ const SimulationHome = (props) => {
       />
       <Container>
         <TabPanel value={selectedTab} index={0}>
-          <div>
+          {/* <div>
             User testing
             <h4>userEmail: {user.email}</h4>
-          </div>
+          </div> */}
           <Grid container spacing={3} sx={{ p: 2 }}>
             <Grid item xs={12}>
               <SimTable table={tablerows} />

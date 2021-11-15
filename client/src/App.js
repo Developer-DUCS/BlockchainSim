@@ -4,7 +4,7 @@ import Error from "./components/Error";
 import SignIn from "./components/SignIn";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/reusable/NavBar";
 import SignUp from "./components/SignUp";
 import Demo from "./components/Demo";
 import Simulation from "./components/Simulation";
