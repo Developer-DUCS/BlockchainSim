@@ -7,6 +7,8 @@ const { hash } = require("bcrypt-nodejs");
 
 app.use(express.json());
 
+app.use(express.json());
+
 router.post("/block", cors(), (req, res) => {
   const hash =
     "0104db27ef0e770ea5b0786880ee0883b13b04eeb7c34acebc77c4e47957ae95";
@@ -38,21 +40,18 @@ router.post("/block", cors(), (req, res) => {
 });
 
 router.post("/createsim", cors(), (req, res) => {
-  const email = "seth@workman.com";
-  const sim_name = "My First Blockchain";
-  const sim_shared = {
-    emails: ["sean@lowry.com", "bryan@valencia.com"],
-  };
-  const sim_description = "The first blockchain simulation I ever created!";
-  const sim_created = new Date().toISOString().slice(0, 19).replace("T", " ");
-  const sim_modified = new Date().toISOString().slice(0, 19).replace("T", " ");
-  const sim_blocks = {
-    1: "0104db27ef0e770ea5b0786880ee0883b13b04eeb7c34acebc77c4e47957ae95",
-    2: "081d730172ca30cd21eaf9f2c6eb41d70b6ff64910b6ce959a0505be0ba729de",
-    3: "076b23542004b61dea24d6ceef487ee81fcf7ecde0ce0a726e07550c6e6a39f4",
-    4: "014ae7f504e6ac8439ad29f8bdafcfed4ec3d74364dbb0ffdc8df8827861439f",
-    5: "00452e6e3a9450d6a8366a12db71c771a42ce6e93bf85912ac51d4434e721add",
-  };
+  const email = req.body.simulation.user;
+  const email_valid = email.replace(/[@.]/g, "_");
+  const sim_name = req.body.simulation.sim_name;
+  const sim_shared = req.body.simulation.sim_shared;
+  const sim_description = req.body.simulation.sim_description;
+  const sim_created = req.body.simulation.sim_created
+    .slice(0, 19)
+    .replace("T", " ");
+  const sim_modified = req.body.simulation.sim_modified
+    .slice(0, 19)
+    .replace("T", " ");
+  const sim_blocks = req.body.simulation.sim_blocks;
   const sim_shared_string = JSON.stringify(sim_shared);
   const sim_blocks_string = JSON.stringify(sim_blocks);
   let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}');`;
@@ -60,9 +59,27 @@ router.post("/createsim", cors(), (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      res.sendStatus(201);
+      console.log("Sim inserted.");
     }
   });
+  for (i = 0; i < req.body.blocks.length; i++) {
+    const hash = req.body.blocks[i].id_block;
+    const header = req.body.blocks[i].header;
+    const headerString = JSON.stringify(header);
+    const transaction = req.body.blocks[i].transaction;
+    const transactionString = JSON.stringify(transaction);
+    const transaction_counter = req.body.blocks[i].transaction_counter;
+    const miner = req.body.blocks[i].miner;
+    const block_time_created = req.body.blocks[i].time_created;
+    let qry = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '${block_time_created}');`;
+    db.query(qry, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Block " + i + " inserted.");
+      }
+    });
+  }
 });
 
 router.post("/deletesim", cors(), (req, res) => {

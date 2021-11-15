@@ -2,10 +2,12 @@ import { Alert } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
+import { useHistory } from "react-router-dom";
 
 const Auth = (props) => {
   const { children, setUser } = props;
   const [auth, setAuth] = React.useState(null);
+  const history = useHistory();
 
   React.useEffect(() => {
     fetch("http://localhost:5000/api/users/auth", {
@@ -14,39 +16,42 @@ const Auth = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ token: window.localStorage.getItem("token") }),
-    }).then((res) => {
-      if (res.status == 200) {
-        // Process the httpservletresponse
-        return res.json();
-      } else {
-        console.error("Unauthorized");
-        setAuth(false);
-      }
-    }).then((user) => {
-      setAuth(true);
+    })
+      .then((res) => {
+        if (res.status == 200) {
+          // Process the httpservletresponse
+          return res.json();
+        } else {
+          console.error("Unauthorized");
+          setAuth(false);
+        }
+      })
+      .then((user) => {
+        if (user) {
+          setAuth(true);
 
-      // If user prop is passed a function
-      if (setUser) {
-        setUser(user);
-      }
-    }).catch((err) => {
-      console.error(err);
-    });
+          // If user prop is passed a function
+          if (setUser) {
+            setUser(user);
+          }
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   return (
     <div>
-      {auth == false
-        ? (
-          <Container maxWidth="sm" sx={{ mt: 2 }}>
-            <Alert severity="error">
-              <Link to="/signin">Sign In</Link> to be able to access this page.
-            </Alert>
-          </Container>
-        )
-        : auth == true
-          ? <div>{children}</div>
-          : null}
+      {auth == false ? (
+        <Container maxWidth="sm" sx={{ mt: 2 }}>
+          <Alert severity="error">
+            <Link to="/signin">Sign In</Link> to be able to access this page.
+          </Alert>
+        </Container>
+      ) : auth == true ? (
+        <div>{children}</div>
+      ) : null}
     </div>
   );
 };

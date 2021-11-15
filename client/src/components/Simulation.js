@@ -1,10 +1,11 @@
 import React from "react";
-import { Box, Button, Container, TextField } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, Box, Typography, Button, Container, TextField } from "@mui/material";
 import BlockComponent from "./BlockComponent";
 import UserBar from "./UserBar";
 import Auth from "./Auth";
 import { useParams } from "react-router-dom";
 import TabPanel from "./TabPanel";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const Simulation = (props) => {
   const { setTheme } = props;
@@ -69,9 +70,22 @@ const Simulation = (props) => {
             Options
           </Button>
         </Box>
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+          >
+            <Typography>Simulation Information</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="body1">Simulation ID: 7</Typography>
+            <Typography variant="body1">Number of transactions: 183</Typography>
+            <Typography variant="body1">Number of blocks: 183</Typography>
+
+          </AccordionDetails>
+        </Accordion>
         <TabPanel value={selectedTab} index={0}>
           <Box sx={{ mt: 2 }}>
-            <Button color="secondary" variant="contained" sx={{ mr: 2 }}>
+            <Button color="primary" variant="contained" sx={{ mr: 2 }}>
               Add New Block
             </Button>
             <TextField
@@ -107,6 +121,9 @@ const Simulation = (props) => {
               <BlockComponent block={demoBlock} />
             </Box>
           </div>
+          <Container maxWidth="lg" sx={{ m: 2, textAlign: "center" }}>
+            <Typography variant="h4">Transaction Details</Typography>
+          </Container>
         </TabPanel>
 
         <TabPanel value={selectedTab} index={1}>

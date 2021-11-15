@@ -16,6 +16,34 @@ const SignIn = (props) => {
   const [emailError, setEmailError] = React.useState(false);
   const history = useHistory();
 
+  // Checks to see if the user is already logged in and
+  // redirects them to the home page if they are
+  React.useEffect(() => {
+    fetch("http://localhost:5000/api/users/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token: window.localStorage.getItem("token") }),
+    })
+      .then((res) => {
+        if (res.status == 200) {
+          // Process the httpservletresponse
+          return res.json();
+        } else {
+          console.error("Unauthorized");
+        }
+      })
+      .then((user) => {
+        if (user) {
+          history.push("/simulation");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
