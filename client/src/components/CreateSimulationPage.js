@@ -136,7 +136,7 @@ const CreateSimulation = (props) => {
     e.preventDefault();
     // API call to create account
     // if successful, redirect to login page
-    const url = "http://localhost:5000/api/data/simulation";
+    const url = "http://localhost:5000/api/data/createsim";
 
     //Creates the simulation
     const initValues = {
@@ -192,7 +192,7 @@ const CreateSimulation = (props) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(simulation),
+      body: JSON.stringify(data),
     }).then((res) => {
       if (res.status == 201) {
         //redirect
