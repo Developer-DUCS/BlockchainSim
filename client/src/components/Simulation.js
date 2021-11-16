@@ -17,7 +17,7 @@ import BlockComponent from "./reusable/BlockComponent";
 import UserBar from "./reusable/UserBar";
 import Auth from "./reusable/Auth";
 import { useParams } from "react-router-dom";
-import TabPanel from "./TabPanel";
+import TabPanel from "./reusable/TabPanel";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 

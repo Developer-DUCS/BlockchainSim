@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import Auth from "./reusable/Auth";
 import BlockComponent from "./reusable/BlockComponent";
 import UserBar from "./reusable/UserBar";
-import SimTable from "./SimTable";
-import TabPanel from "./TabPanel";
+import SimTable from "./reusable/SimTable";
+import TabPanel from "./reusable/TabPanel";
 
 const SimulationHome = (props) => {
   const { setTheme } = props;
