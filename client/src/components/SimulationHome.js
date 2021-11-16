@@ -1,14 +1,17 @@
-import { Container, Typography, Grid } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import Auth from "./Auth";
-import BlockComponent from "./BlockComponent";
-import UserBar from "./UserBar";
+import Auth from "./reusable/Auth";
+import BlockComponent from "./reusable/BlockComponent";
+import UserBar from "./reusable/UserBar";
 import SimTable from "./SimTable";
 import TabPanel from "./TabPanel";
 
-const SimulationHome = () => {
+const SimulationHome = (props) => {
+  const { setTheme } = props;
   const [selectedTab, setSelectedTab] = React.useState(0);
+
+  const [user, setUser] = React.useState({});
 
   const tablerows = {
     rows: [
@@ -63,15 +66,20 @@ const SimulationHome = () => {
   };
 
   return (
-    <Auth>
+    <Auth setUser={setUser}>
       <UserBar
         barTitle={"Simulations"}
         tabNames={["My Simulations", "Shared With Me"]}
         setSelectedTab={(e, newValue) => setSelectedTab(newValue)}
         selectedTab={selectedTab}
+        setTheme={setTheme}
       />
       <Container>
         <TabPanel value={selectedTab} index={0}>
+          {/* <div>
+            User testing
+            <h4>userEmail: {user.email}</h4>
+          </div> */}
           <Grid container spacing={3} sx={{ p: 2 }}>
             <Grid item xs={12}>
               <SimTable table={tablerows} />
@@ -85,6 +93,15 @@ const SimulationHome = () => {
             </Grid>
           </Grid>
         </TabPanel>
+        <Button
+          component={Link}
+          to={"/createsimulation"}
+          color="secondary"
+          variant="contained"
+          sx={{ float: 500, ml: 2 }}
+        >
+          Add New Simulation
+        </Button>
       </Container>
     </Auth>
   );

@@ -1,4 +1,4 @@
-import { defaultFont } from "./material-kit-react.js";
+import { defaultFont, secondaryColor } from "./material-kit-react.js";
 
 import tooltip from "./tooltipsStyle.js";
 
@@ -11,7 +11,7 @@ const headerLinksStyle = (theme) => ({
     listStyle: "none",
     paddingTop: "0",
     paddingBottom: "0",
-    color: "inherit",
+    color: "white",
   },
   listItem: {
     float: "left",
@@ -25,7 +25,6 @@ const headerLinksStyle = (theme) => ({
       width: "100%",
       "&:after": {
         width: "calc(100% - 30px)",
-        content: '""',
         display: "block",
         height: "1px",
         marginLeft: "15px",

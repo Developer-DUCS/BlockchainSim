@@ -36,15 +36,6 @@ export default function Footer(props) {
                 Off The Chain
               </a>
             </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a
-                href="https://www.creative-tim.com/license?ref=mkr-footer"
-                className={classes.block}
-                target="_blank"
-              >
-                Licenses
-              </a>
-            </ListItem>
           </List>
         </div>
         <div className={classes.right}>

@@ -17,6 +17,7 @@ import styles from "./HomePageComponents/HomePage.js";
 //sections for the page
 import ProductSection from "./HomePageComponents/Sections/ProductSection";
 import TeamSection from "./HomePageComponents/Sections/TeamSection.js";
+
 const dashboardRoutes = [];
 
 const useStyles = makeStyles(styles);
@@ -34,11 +35,11 @@ const HomePage = (props) => {
         fixed
         changeColorOnScroll={{
           height: 400,
-          color: "white",
+          color: "#388697",
         }}
         {...rest}
       />
-      <Parallax filter image={require("../assets/not_Rick_Astley.png").default}>
+      <Parallax filter image={require("../assets/landing-bg.jpg").default}>
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
@@ -46,9 +47,8 @@ const HomePage = (props) => {
               <h4></h4>
               <br />
               <Button
-                color="primary"
                 size="lg"
-                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ref=creativetim"
+                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                 target="_blank"
                 rel="noopener noreferrer"
               >

@@ -130,11 +130,10 @@ router.post("/register", cors(), (req, res) => {
 
 router.post("/auth", cors(), (req, res) => {
   try {
-    jwt.decode(req.body.token, config.secret);
-    res.sendStatus(200);
+    let user = jwt.decode(req.body.token, config.secret);
+    res.status(200);
+    res.send(user);
   } catch (err) {
-    console.log(err);
-    console.log("test");
     res.sendStatus(401);
   }
 });

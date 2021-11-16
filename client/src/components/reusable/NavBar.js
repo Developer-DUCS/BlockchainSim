@@ -4,8 +4,8 @@ import Box from "@mui/system/Box";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import Switch from "@mui/material/Switch";
-import lightTheme from "../js/themes/lightTheme";
-import darkTheme from "../js/themes/darkTheme";
+import lightTheme from "../../js/themes/lightTheme";
+import darkTheme from "../../js/themes/darkTheme";
 
 const NavBar = (props) => {
   const { setTheme, signIn, toggleSignIn } = props;

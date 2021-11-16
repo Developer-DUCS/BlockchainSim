@@ -4,9 +4,7 @@ import Error from "./components/Error";
 import SignIn from "./components/SignIn";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
-import BlockHeader from "./components/BlockHeader";
-import MiningPool from "./components/MiningPool";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/reusable/NavBar";
 import SignUp from "./components/SignUp";
 import Demo from "./components/Demo";
 import Simulation from "./components/Simulation";
@@ -89,8 +87,15 @@ const App = () => {
             )}
           />
           <Route path="/demo" render={() => <Demo setTheme={setTheme} />} />
-          <Route path="/simulation" component={SimulationHome} exact />
-          <Route path="/simulation/:id" component={Simulation} />
+          <Route
+            path="/simulation"
+            render={() => <SimulationHome setTheme={setTheme} />}
+            exact
+          />
+          <Route
+            path="/simulation/:id"
+            render={() => <Simulation setTheme={setTheme} />}
+          />
 
           <Route component={Error} />
         </Switch>
