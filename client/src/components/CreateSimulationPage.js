@@ -144,13 +144,6 @@ const CreateSimulation = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    var miningPool = createMinerPool(NUM_MINERS);
-    var selectedMiner = chooseMiner(miningPool, NUM_MINERS);
-
-    //console.log(miningPool)
-    //console.log(selectedMiner)
-    // let initTime = [e.target.datePick.value, e.target.timePick.value];
-    // var timeStampArr = timeStamp(initTime);
 
     //Creates the simulation
     const initValues = {
@@ -164,13 +157,18 @@ const CreateSimulation = (props) => {
       subsidy: subsidy,
       coin: coin,
       mining: mine,
+      numminers: numMiners,
     };
+
+    //console.log("Simulation values:", initValues);
+
+    var miningPool = createMinerPool(initValues.numminers); //create mining pool
+    //console.log("new mining pool:", miningPool);
 
     var bithash = sjcl.hash.sha256.hash(initValues.desc);
     var initialHash = sjcl.codec.hex.fromBits(bithash);
 
     let initTime = [initValues.gendate, initValues.gentime];
-    console.log(initTime);
     var timeStampArr = timeStamp(
       initTime,
       initValues.numblocks,
@@ -180,9 +178,7 @@ const CreateSimulation = (props) => {
       initValues.numblocks,
       initialHash,
       timeStampArr,
-      NUM_MINERS,
-      miningPool,
-      numMiners
+      miningPool
     );
 
     var newSimulation = {
@@ -200,7 +196,7 @@ const CreateSimulation = (props) => {
       blocks: simulation[1],
     };
 
-    console.log("final data", data);
+    console.log("New Simulation", data);
 
     // API call to create simulation
     // if successful, redirect to simulation page
@@ -258,7 +254,7 @@ const CreateSimulation = (props) => {
                       defaultValue={values.someDate}
                       onChange={(e) => {
                         setGenDate(e.target.value);
-                        console.log(genDate);
+                        //console.log(genDate);
                       }}
                     />
                   </Grid>
@@ -285,7 +281,7 @@ const CreateSimulation = (props) => {
                       defaultValue={values.someTime}
                       onBlur={(e) => {
                         genTime = e.target.value;
-                        console.log(genTime);
+                        //console.log(genTime);
                       }}
                     />
                   </Grid>
