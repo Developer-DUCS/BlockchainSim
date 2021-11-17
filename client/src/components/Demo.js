@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import BlockComponent from "./BlockComponent"
+import BlockComponent from "./reusable/BlockComponent";
 
 const eanTheme1 = createTheme({
   palette: {

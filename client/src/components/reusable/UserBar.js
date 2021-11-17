@@ -12,8 +12,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Switch from "@mui/material/Switch";
 import { styled, useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import lightTheme from "../js/themes/lightTheme";
-import darkTheme from "../js/themes/darkTheme";
+import lightTheme from "../../js/themes/lightTheme";
+import darkTheme from "../../js/themes/darkTheme";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -32,6 +32,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import LockOpen from "@mui/icons-material/LockOpen";
 import Add from "@mui/icons-material/Add";
 import { ClickAwayListener } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 270;
 
@@ -199,13 +200,25 @@ const UserBar = (props) => {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                  <ListItem button key={"home"} onClick={handleDrawerClose}>
+                  <ListItem
+                    button
+                    key={"home"}
+                    onClick={handleDrawerClose}
+                    component={Link}
+                    to={`/simulation`}
+                  >
                     <ListItemIcon>
                       <HomeIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Home"} />
                   </ListItem>
-                  <ListItem button key={"add"} onClick={handleDrawerClose}>
+                  <ListItem
+                    button
+                    key={"add"}
+                    onClick={handleDrawerClose}
+                    component={Link}
+                    to={`/createsimulation`}
+                  >
                     <ListItemIcon>
                       <Add />
                     </ListItemIcon>

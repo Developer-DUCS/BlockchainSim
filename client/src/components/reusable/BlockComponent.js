@@ -12,7 +12,7 @@ const BlockComponent = (props) => {
   //  blockPreviousHash: "0x0",
   //  blockNonce: "0x0",
   //  blockHash: "0x0",}
-  const { block } = props;
+  const { block, setSelectedTransaction } = props;
 
   return (
     <Paper
@@ -39,8 +39,14 @@ const BlockComponent = (props) => {
           </Typography>
           <Divider sx={{ bgcolor: "primary.main" }} />
         </Grid>
-        <Grid item xs={12} textAlign="center" >
-          <Button color="secondary" variant="contained" sx={{ m: 1 }} size="small">
+        <Grid item xs={12} textAlign="center">
+          <Button
+            color="secondary"
+            variant="contained"
+            sx={{ m: 1 }}
+            size="small"
+            onClick={() => setSelectedTransaction(block.blockTransactions)}
+          >
             View Transactions
           </Button>
           {/* <Grid container> */}
