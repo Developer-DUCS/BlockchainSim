@@ -166,6 +166,7 @@ const CreateSimulation = (props) => {
     var initialHash = sjcl.codec.hex.fromBits(bithash);
 
     let initTime = [initValues.gendate, initValues.gentime];
+    console.log(initTime);
     var timeStampArr = timeStamp(
       initTime,
       initValues.numblocks,
