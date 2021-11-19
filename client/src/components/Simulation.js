@@ -12,6 +12,9 @@ import {
   CardContent,
   Grid,
   Divider,
+  Menu,
+  MenuItem,
+  ListItemIcon,
 } from "@mui/material";
 import BlockComponent from "./reusable/BlockComponent";
 import UserBar from "./reusable/UserBar";
@@ -20,6 +23,8 @@ import { useParams } from "react-router-dom";
 import TabPanel from "./reusable/TabPanel";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ShareIcon from "@mui/icons-material/Share";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const Simulation = (props) => {
   const { setTheme } = props;
@@ -29,6 +34,13 @@ const Simulation = (props) => {
 
   // Used to click transactions
   const [selectedTransaction, setSelectedTransaction] = React.useState(null);
+
+  // Used for options menu
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   let { id } = useParams();
 
@@ -137,9 +149,61 @@ const Simulation = (props) => {
       />
       <Container maxWidth="xl" sx={{ mt: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-          <Button color="primary" variant="contained">
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={(e) => {
+              setAnchorEl(e.currentTarget);
+            }}
+          >
             Options
           </Button>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                mt: 1.5,
+                "& .MuiAvatar-root": {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                "&:before": {
+                  display: "block",
+                  position: "absolute",
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: "background.paper",
+                  transform: "translateY(-50%) rotate(45deg)",
+                  zIndex: 0,
+                },
+              },
+            }}
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          >
+            <MenuItem onClick={handleClose}>
+              <ListItemIcon>
+                <ShareIcon />
+              </ListItemIcon>
+              Share
+            </MenuItem>
+            <MenuItem onClick={handleClose} sx={{ color: "error.main" }}>
+              <ListItemIcon sx={{ color: "error.main" }}>
+                <DeleteIcon />
+              </ListItemIcon>
+              Delete
+            </MenuItem>
+          </Menu>
         </Box>
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -209,8 +273,17 @@ const Simulation = (props) => {
               <Card>
                 <CardContent>
                   <Typography variant="h4">Transaction Details</Typography>
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    sx={{ m: 2 }}
+                    size="small"
+                    onClick={() => setSelectedTransaction(null)}
+                  >
+                    Hide Transactions
+                  </Button>
                   <Grid container>
-                    {selectedTransaction != undefined
+                    {selectedTransaction
                       ? selectedTransaction.map((tx, index) => (
                           <Grid
                             item
