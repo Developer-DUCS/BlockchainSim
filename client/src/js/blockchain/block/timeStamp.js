@@ -14,6 +14,7 @@ const createTimeStamp = (initTime, numblocks, windowTime) => {
     aInitTime[0],
     aInitTime[1]
   );
+
   let temp = genesisDate.toISOString().slice(0, 19).replace("T", " ");
   stampTimes.push(temp); //initial Date genesis block
   var currTimeStamp = genesisDate;
