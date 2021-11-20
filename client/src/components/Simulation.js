@@ -15,6 +15,11 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
 } from "@mui/material";
 import BlockComponent from "./reusable/BlockComponent";
 import UserBar from "./reusable/UserBar";
@@ -40,6 +45,12 @@ const Simulation = (props) => {
   const open = Boolean(anchorEl);
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  // Used for dialog
+  const [dialog, setDialog] = React.useState(false);
+  const toggleDialog = () => {
+    dialog ? setDialog(false) : setDialog(true);
   };
 
   let { id } = useParams();
@@ -191,7 +202,12 @@ const Simulation = (props) => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem onClick={handleClose}>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                toggleDialog();
+              }}
+            >
               <ListItemIcon>
                 <ShareIcon />
               </ListItemIcon>
@@ -341,6 +357,34 @@ const Simulation = (props) => {
           Wallet
         </TabPanel>
       </Container>
+
+      {/* Dialog for sharing */}
+      <Dialog open={dialog} onClose={toggleDialog}>
+        <DialogTitle>Share</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To share this simulation, please enter the email address of the
+            person you wish to share with.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="email"
+            label="Email Address"
+            type="email"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" color="error" onClick={toggleDialog}>
+            Cancel
+          </Button>
+          <Button variant="contained" color="primary" onClick={toggleDialog}>
+            Subscribe
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Auth>
   );
 };
