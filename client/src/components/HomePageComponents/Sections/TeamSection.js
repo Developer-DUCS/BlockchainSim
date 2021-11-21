@@ -45,9 +45,11 @@ export default function TeamSection() {
                 <img src={person1} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
-                Gigi
+                Laura Prieto
                 <br />
-                <small className={classes.smallTitle}>Role</small>
+                <small className={classes.smallTitle}>
+                  Researcher and Back End Developer
+                </small>
               </h4>
               <CardBody>
                 <p className={classes.description}>Description of Developer</p>
@@ -83,9 +85,11 @@ export default function TeamSection() {
                 <img src={person1} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
-                Scottie
+                Ean Vandergraaf
                 <br />
-                <small className={classes.smallTitle}>Role</small>
+                <small className={classes.smallTitle}>
+                  Full Stack Developer
+                </small>
               </h4>
               <CardBody>
                 <p className={classes.description}>Description of Developer</p>
@@ -114,9 +118,11 @@ export default function TeamSection() {
                 <img src={person1} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
-                Kendall Jenner
+                Bryan Valencia
                 <br />
-                <small className={classes.smallTitle}>Role</small>
+                <small className={classes.smallTitle}>
+                  Database and Back End Developer
+                </small>
               </h4>
               <CardBody>
                 <p className={classes.description}>Description of Developer</p>
@@ -154,9 +160,11 @@ export default function TeamSection() {
                 <img src={person1} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
-                Your Mom
+                Dawson Holderman
                 <br />
-                <small className={classes.smallTitle}>Role</small>
+                <small className={classes.smallTitle}>
+                  Product Owner and Full Stack Developer
+                </small>
               </h4>
               <CardBody>
                 <p className={classes.description}>Description of Developer</p>
@@ -192,9 +200,11 @@ export default function TeamSection() {
                 <img src={person1} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
-                Thanos
+                Seth Workman
                 <br />
-                <small className={classes.smallTitle}>Role</small>
+                <small className={classes.smallTitle}>
+                  Technology Lead and Front End Developer
+                </small>
               </h4>
               <CardBody>
                 <p className={classes.description}>Description of Developer</p>
@@ -223,9 +233,11 @@ export default function TeamSection() {
                 <img src={person1} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
-                Mr. Rick
+                Sean Lowery
                 <br />
-                <small className={classes.smallTitle}>Role</small>
+                <small className={classes.smallTitle}>
+                  Researcher and Back End Developer
+                </small>
               </h4>
               <CardBody>
                 <p className={classes.description}>Description of Developer</p>

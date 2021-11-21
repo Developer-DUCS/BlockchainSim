@@ -3,9 +3,9 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 // @material-ui/icons
-import Chat from "@material-ui/icons/Chat";
-import VerifiedUser from "@material-ui/icons/VerifiedUser";
-import Fingerprint from "@material-ui/icons/Fingerprint";
+import AccountTree from "@material-ui/icons/AccountTree";
+import Share from "@material-ui/icons/Share";
+import AccountBox from "@material-ui/icons/AccountBox";
 // core components
 import GridContainer from "../GridContainer.js";
 import GridItem from "../GridItem.js";
@@ -36,28 +36,28 @@ export default function ProductSection() {
         <GridContainer>
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
-              title="Free Chat"
-              description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
-              icon={Chat}
+              title="Create Simulations"
+              description="Create detailed blockchain simulations. Able to see many different aspects and behind the scenes of what happens in blockchain technology."
+              icon={AccountTree}
               iconColor="info"
               vertical
             />
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
-              title="Verified Users"
-              description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
-              icon={VerifiedUser}
-              iconColor="success"
+              title="Make an Account"
+              description="Want to save your simulations? Make an account for free and access your simulations wherever you are!"
+              icon={AccountBox}
+              iconColor="danger"
               vertical
             />
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
-              title="Fingerprint"
-              description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
-              icon={Fingerprint}
-              iconColor="danger"
+              title="Share Your Projects"
+              description="Needing to teach, share a sim with colleagues, or work together with a friend? You can share your simulations with whom ever you wish! They only need their own account!"
+              icon={Share}
+              iconColor="success"
               vertical
             />
           </GridItem>
