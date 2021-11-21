@@ -15,10 +15,16 @@ import { ThemeProvider } from "@mui/material/styles";
 import lightTheme from "./js/themes/lightTheme";
 import CreateSimulation from "./components/CreateSimulationPage";
 import SimulationHome from "./components/SimulationHome";
+import Feedback from "./components/reusable/Feedback";
 
 const App = () => {
   const [theme, setTheme] = React.useState(lightTheme);
   const [signIn, setSignIn] = React.useState(false);
+  const [feedback, setFeedback] = React.useState(false);
+  const [feedbackObj, setFeedbackObj] = React.useState({
+    message: "",
+    severity: "success",
+  });
 
   // Check if the user is signed in
   React.useEffect(() => {
@@ -67,12 +73,25 @@ const App = () => {
                   signIn={signIn}
                   toggleSignIn={toggleSignIn}
                 />
-                <SignIn toggleSignIn={toggleSignIn} />
+                <SignIn
+                  toggleSignIn={toggleSignIn}
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
               </>
             )}
           />
           <Route path="/landing" component={LandingPage} />
-          <Route path="/createsimulation" component={CreateSimulation} />
+          <Route
+            path="/createsimulation"
+            render={() => (
+              <CreateSimulation
+                setTheme={setTheme}
+                setFeedback={setFeedback}
+                setFeedbackObj={setFeedbackObj}
+              />
+            )}
+          />
           <Route
             path="/signup"
             render={() => (
@@ -82,7 +101,10 @@ const App = () => {
                   signIn={signIn}
                   toggleSignIn={toggleSignIn}
                 />
-                <SignUp />
+                <SignUp
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
               </>
             )}
           />
@@ -100,6 +122,11 @@ const App = () => {
           <Route component={Error} />
         </Switch>
       </Router>
+      <Feedback
+        feedbackObj={feedbackObj}
+        open={feedback}
+        setOpen={setFeedback}
+      />
     </ThemeProvider>
   );
 };

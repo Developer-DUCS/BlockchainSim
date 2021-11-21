@@ -52,6 +52,16 @@ const Simulation = (props) => {
   const toggleDialog = () => {
     dialog ? setDialog(false) : setDialog(true);
   };
+  // API to Share Simulation
+  const shareSimulation = (e) => {
+    e.preventDefault();
+
+    // Email value
+    let email = document.getElementById("email").value;
+    console.log(email);
+
+    // SHARE API GOES HERE
+  };
 
   let { id } = useParams();
 
@@ -380,7 +390,7 @@ const Simulation = (props) => {
           <Button variant="contained" color="error" onClick={toggleDialog}>
             Cancel
           </Button>
-          <Button variant="contained" color="primary" onClick={toggleDialog}>
+          <Button variant="contained" color="primary" onClick={shareSimulation}>
             Subscribe
           </Button>
         </DialogActions>
