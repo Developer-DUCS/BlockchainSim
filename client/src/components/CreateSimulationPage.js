@@ -39,7 +39,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const CreateSimulation = (props) => {
-  const { setTheme } = props;
+  const { setTheme, setFeedback, setFeedbackObj } = props;
   const [user, setUser] = React.useState({});
 
   const times = [
@@ -209,6 +209,10 @@ const CreateSimulation = (props) => {
       body: JSON.stringify(data),
     }).then((res) => {
       if (res.status == 200) {
+        // Set Feedback Message Properties
+        setFeedback(true);
+        setFeedbackObj({ message: "Created Simulation!", severity: "success" });
+
         //redirect
         history.push("/simulation");
       }

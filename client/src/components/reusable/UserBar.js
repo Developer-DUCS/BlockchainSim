@@ -310,7 +310,7 @@ const UserBar = (props) => {
           </Grid>
 
           <Grid item>
-            <Switch onChange={toggleTheme} />
+            <Switch onChange={toggleTheme} color="secondary" />
           </Grid>
           <Grid item>
             <Tooltip title="Alerts • No alerts">

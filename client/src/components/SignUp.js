@@ -9,7 +9,8 @@ import {
 import { useHistory } from "react-router-dom";
 import React from "react";
 
-const SignUp = () => {
+const SignUp = (props) => {
+  const { setFeedback, setFeedbackObj } = props;
   const [password, setPassword] = React.useState(false);
   const [verifyPassword, setVerifyPassword] = React.useState(false);
   const [email, setEmail] = React.useState(false);
@@ -35,10 +36,21 @@ const SignUp = () => {
       body: JSON.stringify(payload),
     }).then((res) => {
       if (res.status == 201) {
+        // Feedback
+        setFeedback(true);
+        setFeedbackObj({ message: "Account Created!", severity: "success" });
+
         //redirect
         history.push("/signin");
       }
       if (res.status == 409) {
+        // Feedback
+        setFeedback(true);
+        setFeedbackObj({
+          message: "Email already in use.",
+          severity: "error",
+        });
+
         // username already exist
         // display invalid username
         setEmailError(true);
