@@ -3,8 +3,8 @@
 
 const express = require("express");
 const app = express();
-const port = 5000;
 const router = express.Router();
+require("dotenv").config();
 
 app.use(express.static("public"));
 // app.use(express.json());
@@ -26,4 +26,7 @@ router.use("/api/users", require("./client/src/api/users"));
 router.use("/api/data", require("./client/src/api/data"));
 
 app.use(router);
-app.listen(port, () => `Server running on port ${port}`);
+app.listen(
+  process.env.PORT,
+  () => `Server running on port ${process.env.PORT}`
+);

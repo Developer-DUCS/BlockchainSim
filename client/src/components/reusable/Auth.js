@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
 import { useHistory } from "react-router-dom";
+require("dotenv").config({ path: "../../../../.env" });
 
 const Auth = (props) => {
   const { children, setUser } = props;
@@ -10,7 +11,7 @@ const Auth = (props) => {
   const history = useHistory();
 
   React.useEffect(() => {
-    fetch("http://localhost:5000/api/users/auth", {
+    fetch(`http://localhost:3220/api/users/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

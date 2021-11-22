@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import React from "react";
+require("dotenv").config({ path: "../../../.env" });
 
 const SignUp = () => {
   const [password, setPassword] = React.useState(false);
@@ -21,7 +22,7 @@ const SignUp = () => {
     e.preventDefault();
     // API call to create account
     // if successful, redirect to login page
-    const url = "http://localhost:5000/api/users/register";
+    const url = `http://localhost:3220/api/users/register`;
     const payload = {
       id: email,
       pass: password,
