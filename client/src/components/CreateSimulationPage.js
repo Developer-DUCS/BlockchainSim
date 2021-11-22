@@ -202,7 +202,7 @@ const CreateSimulation = (props) => {
     // if successful, redirect to simulation page
     const url = "http://localhost:5000/api/data/createsim";
     fetch(url, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
