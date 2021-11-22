@@ -1,4 +1,6 @@
 // generate a basecoin transaction of 50 bitcoin
+// TO DO: Add fees
+//      : Make scriptSig, scriptLength, scriptPubKey dynamic
 const coinbaseTransaction = () => {
   var coinbase = "";
   // we're copying https://en.bitcoin.it/wiki/Genesis_block

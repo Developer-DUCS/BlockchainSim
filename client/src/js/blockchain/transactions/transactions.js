@@ -1,3 +1,4 @@
+import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
 import inputSelection from "./singleTransaction/inputsSingleTransaction";
 import outputCreation from "./singleTransaction/outputsSingleTransaction";
 import singleTransaction from "./singleTransaction/singleTransaction";
@@ -5,21 +6,19 @@ import singleTransaction from "./singleTransaction/singleTransaction";
 // https://learnmeabitcoin.com/technical/transaction-data
 // good resource on transaction data
 const createTransactions = () => {
-    var transactions = []
-    var basecoinTransaction = singleTransaction() //TO DO: add arguments
-    transactions.push(basecoinTransaction);
-    var transaction_count = 0; //TO DO: make this dynamic
-    for (let i=0; i<(transaction_count); i++) {
-        var transaction = singleTransaction()
-        transactions.push(transaction)
-    }
-    //console.log(transactions)
-    return transactions
-}
+  var transactions = [];
+  var basecoinTransaction = coinbaseTransaction(); //TO DO: add arguments
+  transactions.push(basecoinTransaction);
+  var transaction_count = 0; //TO DO: make this dynamic
+  for (let i = 0; i < transaction_count; i++) {
+    var transaction = singleTransaction();
+    transactions.push(transaction);
+  }
+  //console.log(transactions)
+  return transactions;
+};
 
-export default createTransactions
-
-
+export default createTransactions;
 
 //TO DO:
 //      1.) Create a pool of transactions to be included
