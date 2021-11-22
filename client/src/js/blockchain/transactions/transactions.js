@@ -30,7 +30,7 @@ export default createTransactions
 
 /*
 posible miners:[1,2,3,4,5,6]
-max number trabsaction = 10
+max number transaction = 10
 
 users with currency:[]
 users without currency:[1,2,3,4,5,6]

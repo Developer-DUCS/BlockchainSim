@@ -72,6 +72,7 @@ router.post("/deletesim", cors(), (req, res) => {
       }
     }
   });
+  
   qry = `DELETE FROM simulation WHERE email='${email}' AND sim_name='${sim_name}'`;
   db.query(qry, (err) => {
     if (err) {
