@@ -160,10 +160,7 @@ const CreateSimulation = (props) => {
       numminers: numMiners,
     };
 
-    //console.log("Simulation values:", initValues);
-
-    var miningPool = createMinerPool(initValues.numminers); //create mining pool
-    //console.log("new mining pool:", miningPool);
+    var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
 
     var bithash = sjcl.hash.sha256.hash(initValues.desc);
     var initialHash = sjcl.codec.hex.fromBits(bithash);
@@ -178,7 +175,8 @@ const CreateSimulation = (props) => {
       initValues.numblocks,
       initialHash,
       timeStampArr,
-      miningPool
+      miningPool,
+      user.email
     );
 
     var newSimulation = {

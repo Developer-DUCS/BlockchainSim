@@ -6,14 +6,17 @@ const simulationCreator = (
   numBlocks,
   initialHash,
   timeStampArr,
-  miningPool
+  miningPool,
+  user
 ) => {
   var blocks = [];
   var hashes = [];
   previousHash = initialHash;
 
   for (var i = 0; i < numBlocks; i++) {
-    var selectMiner = chooseMiner(miningPool);
+    var selectMiner;
+    i == 0 ? (selectMiner = user) : (selectMiner = chooseMiner(miningPool));
+    //selectMiner = chooseMiner(miningPool);
     var newBlock = blockCreator(previousHash, timeStampArr[i], selectMiner);
     var hashID = newBlock[1];
     var blockJSON = newBlock[0];
