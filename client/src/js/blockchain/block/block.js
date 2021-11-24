@@ -10,7 +10,7 @@
 
 //import chooseMiner from "./miningPool";
 //import createMinerPool from "./miningPool";
-import createHeader from "../header";
+import { createHeader, getHeaderHash, getHeaderJSON } from "../header";
 import createTransactions from "../transactions/transactions";
 
 const merkleTree = //TO DO: to not be hardcode
@@ -18,8 +18,8 @@ const merkleTree = //TO DO: to not be hardcode
 
 const blockCreator = (previousHash, timeStamp, miner) => {
   var header = createHeader(previousHash, merkleTree);
-  var hashID = header[0];
-  var headerJSON = header[1];
+  var hashID = getHeaderHash(header);
+  var headerJSON = getHeaderJSON(header);
   var transactionJSON = createTransactions();
 
   var blockJSON = {

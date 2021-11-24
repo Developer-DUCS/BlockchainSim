@@ -12,6 +12,7 @@
 */
 
 import App from "../../../App";
+import { get_element_from_array } from "../../utils/array_utils";
 
 //var numMiners;
 
@@ -32,8 +33,7 @@ const createMinerPool = (numMiners) => {
 
 const chooseMiner = (miningPool) => {
   var randomMinerNum = randomSelector(0, miningPool.length - 1);
-  var selectedMiner = miningPool[randomMinerNum];
-  //console.log(selectedMiner)
+  var selectedMiner = get_element_from_array(miningPool, randomMinerNum);
   return selectedMiner;
 };
 
