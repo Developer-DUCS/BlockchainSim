@@ -16,6 +16,8 @@ import createTransactions from "../transactions/transactions";
 const merkleTree = //TO DO: to not be hardcode
   "113459eb7bb31bddee85ade5230d6ad5d8b2fb52879e00a84ff6ae1067a210d3";
 
+
+
 const blockCreator = (previousHash, timeStamp, miner) => {
   var header = createHeader(previousHash, merkleTree);
   var hashID = getHeaderHash(header);

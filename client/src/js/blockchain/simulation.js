@@ -10,7 +10,8 @@ const simulationCreator = (
   numBlocks,
   initialHash,
   timeStampArr,
-  miningPool
+  miningPool,
+  user
 ) => {
   var simulation = {
     blocks: [],
@@ -19,7 +20,9 @@ const simulationCreator = (
   previousHash = initialHash;
 
   for (var i = 0; i < numBlocks; i++) {
-    var selectMiner = chooseMiner(miningPool);
+    var selectMiner;
+    i == 0 ? (selectMiner = user) : (selectMiner = chooseMiner(miningPool));
+    //selectMiner = chooseMiner(miningPool);
     var newBlock = blockCreator(
       previousHash,
       get_element_from_array(timeStampArr, i),

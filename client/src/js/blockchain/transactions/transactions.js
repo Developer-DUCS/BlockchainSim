@@ -2,19 +2,32 @@ import inputSelection from "./singleTransaction/inputsSingleTransaction";
 import outputCreation from "./singleTransaction/outputsSingleTransaction";
 import singleTransaction from "./singleTransaction/singleTransaction";
 import { add_element_to_array } from "../../utils/array_utils";
+import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
 
 // https://learnmeabitcoin.com/technical/transaction-data
 // good resource on transaction data
+
+// create ALL transactions for an individual block
 const createTransactions = () => {
+  // list of all transactions
   var transactions = [];
-  var basecoinTransaction = singleTransaction(); //TO DO: add arguments
-  add_element_to_array(transactions, basecoinTransaction);
-  var transaction_count = 0; //TO DO: make this dynamic
+  // coinbase transaction
+  var coinbaseTX = coinbaseTransaction();
+  // add coinbase transaction
+  transactions.push(coinbaseTX);
+
+  // TO DO:
+  //  1. make transaction_count dynamic
+  //  2. create parameters for transactions
+  //  3. create random transactions
+  //  4. handle inputs and outputs for transactions (?)
+
+  var transaction_count = 0;
+
   for (let i = 0; i < transaction_count; i++) {
     var transaction = singleTransaction();
-    add_element_to_array(transactions, transaction);
+    transactions = add_element_to_array(transactions, transaction);
   }
-  //console.log(transactions)
   return transactions;
 };
 
@@ -29,7 +42,7 @@ export default createTransactions;
 
 /*
 posible miners:[1,2,3,4,5,6]
-max number trabsaction = 10
+max number transaction = 10
 
 users with currency:[]
 users without currency:[1,2,3,4,5,6]
