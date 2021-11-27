@@ -28,7 +28,7 @@ const blockCreator = (previousHash, timeStamp, miner) => {
     id_block: hashID,
     header: headerJSON,
     transaction: transactionJSON,
-    transaction_counter: 1, //coinbase transaction
+    transaction_counter: 1, 
     miner: miner,
     time_created: timeStamp,
   };

@@ -2,7 +2,6 @@ import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
 import inputSelection from "./singleTransaction/inputsSingleTransaction";
 import outputCreation from "./singleTransaction/outputsSingleTransaction";
 import singleTransaction from "./singleTransaction/singleTransaction";
-import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
 
 // https://learnmeabitcoin.com/technical/transaction-data
 // good resource on transaction data

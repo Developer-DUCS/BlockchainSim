@@ -72,7 +72,7 @@ router.post("/deletesim", cors(), (req, res) => {
       }
     }
   });
-  
+
   qry = `DELETE FROM simulation WHERE email='${email}' AND sim_name='${sim_name}'`;
   db.query(qry, (err) => {
     if (err) {
@@ -85,25 +85,39 @@ router.post("/deletesim", cors(), (req, res) => {
 
 router.post("/getsimulations", cors(), (req, res) => {
   var email = req.body.email;
-  let qry = `SELECT sim_name, sim_created, sim_modified FROM simulation WHERE email='${email}'`;
-  db.query(qry, (err,res) => {
-    if (err) {
-      console.log(err);
-    } else {
-      var resArray = []
-      for (i=0; i < res.length; i++) {
-        resArray.push([res[i][0], res[i][2], res[i][1]])        
-      }
-      res.sendStatus(200).send(resArray);
-    }
-  })
-
+  var response = [];
+  getInfo(email);
+  async function getInfo(email) {
+    let qry = `SELECT sim_name, sim_created, sim_modified FROM simulation WHERE email='${email}'`;
+    const query = new Promise((resolve) => {
+      db.query(qry, (err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          for (i = 0; i < res.length; i++) {
+            response.push([
+              res[i].sim_name,
+              res[i].sim_modified,
+              res[i].sim_created,
+            ]);
+          }
+        }
+        resolve();
+      });
+    });
+    await query;
+    console.log("response: " + response);
+    //res.status(201).json({ msg: "it worked" });
+    res.status(200).send(response);
+  }
 });
 
-router.post("/getsimulation", cors(), (req, res) => {
+/*
+router.post("/getblocks", cors(), (req, res) => {
   var sim_name = req.body.sim_name;
   var email = req.body.email;
   let qry = SELECT sim_name, 
 });
+*/
 
 module.exports = router;
