@@ -1,4 +1,3 @@
-import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
 import inputSelection from "./singleTransaction/inputsSingleTransaction";
 import outputCreation from "./singleTransaction/outputsSingleTransaction";
 import singleTransaction from "./singleTransaction/singleTransaction";

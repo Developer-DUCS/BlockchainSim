@@ -85,6 +85,7 @@ router.post("/deletesim", cors(), (req, res) => {
 
 router.post("/getsimulations", cors(), (req, res) => {
   var email = req.body.email;
+<<<<<<< HEAD
   var response = [];
   getInfo(email);
   async function getInfo(email) {
@@ -119,5 +120,26 @@ router.post("/getblocks", cors(), (req, res) => {
   let qry = SELECT sim_name, 
 });
 */
+=======
+  let qry = `SELECT sim_name, sim_created, sim_modified FROM simulation WHERE email='${email}'`;
+  db.query(qry, (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      var resArray = [];
+      for (i = 0; i < res.length; i++) {
+        resArray.push([res[i][0], res[i][2], res[i][1]]);
+      }
+      res.sendStatus(200).send(resArray);
+    }
+  });
+});
+
+/* router.post("/getsimulation", cors(), (req, res) => {
+  var sim_name = req.body.sim_name;
+  var email = req.body.email;
+  let qry = SELECT sim_name, 
+}); */
+>>>>>>> 14f4a5940be15bd7bea489071757719da7f87be5
 
 module.exports = router;
