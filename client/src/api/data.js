@@ -83,18 +83,14 @@ router.post("/deletesim", cors(), (req, res) => {
   });
 });
 
-router.post("/getsimulations", cors(), (req, res) => {
+router.post("/getsimulations", cors(), (req, resp) => {
   var email = req.body.email;
-  let qry = `SELECT sim_name, sim_created, sim_modified FROM simulation WHERE email='${email}'`;
+  let qry = `SELECT sim_id, sim_name, sim_created, sim_modified FROM simulation WHERE email='${email}'`;
   db.query(qry, (err, res) => {
     if (err) {
       console.log(err);
     } else {
-      var resArray = [];
-      for (i = 0; i < res.length; i++) {
-        resArray.push([res[i][0], res[i][2], res[i][1]]);
-      }
-      res.sendStatus(200).send(resArray);
+      resp.send(res);
     }
   });
 });

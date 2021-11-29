@@ -38,13 +38,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, date, created, blocks, id) {
+function createData(sim_id, sim_name, sim_created, sim_modified) {
   return {
-    name,
-    date,
-    created,
-    blocks,
-    id,
+    sim_id,
+    sim_name,
+    sim_created,
+    sim_modified,
     history: [
       {
         date: "2020-01-05",
@@ -73,7 +72,7 @@ function Row(props) {
             size="small"
             color="primary"
             component={Link}
-            to={`/simulation/${row.id}`}
+            to={`/simulation/${row.sim_id}`}
           >
             <LaunchIcon />
           </IconButton>
@@ -86,11 +85,11 @@ function Row(props) {
           </IconButton>
         </StyledTableCell>
         <StyledTableCell component="th" scope="row">
-          {row.name}
+          {row.sim_id}
         </StyledTableCell>
-        <StyledTableCell align="right">{row.date}</StyledTableCell>
-        <StyledTableCell align="right">{row.created}</StyledTableCell>
-        <StyledTableCell align="right">{row.blocks}</StyledTableCell>
+        <StyledTableCell align="right">{row.sim_name}</StyledTableCell>
+        <StyledTableCell align="right">{row.sim_created}</StyledTableCell>
+        <StyledTableCell align="right">{row.sim_modified}</StyledTableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -165,7 +164,9 @@ const SimTable = (props) => {
   ];
 
   table.rows.forEach((ele) =>
-    rows.push(createData(ele.name, ele.edited, ele.created, ele.blocks, ele.id))
+    rows.push(
+      createData(ele.sim_id, ele.sim_name, ele.sim_created, ele.sim_modified)
+    )
   );
 
   return (
@@ -174,15 +175,15 @@ const SimTable = (props) => {
         <TableHead>
           <TableRow>
             <StyledTableCell />
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell align="right">Last Edited</StyledTableCell>
+            <StyledTableCell>ID</StyledTableCell>
+            <StyledTableCell align="right">Name</StyledTableCell>
             <StyledTableCell align="right">Date Created</StyledTableCell>
-            <StyledTableCell align="right">Number Of Blocks</StyledTableCell>
+            <StyledTableCell align="right">Last Modified</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <Row key={row.name} row={row} />
+            <Row key={row.sim_id} row={row} />
           ))}
         </TableBody>
       </Table>
