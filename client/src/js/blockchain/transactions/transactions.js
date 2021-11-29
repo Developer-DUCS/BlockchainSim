@@ -1,15 +1,17 @@
 import inputSelection from "./singleTransaction/inputsSingleTransaction";
 import outputCreation from "./singleTransaction/outputsSingleTransaction";
 import singleTransaction from "./singleTransaction/singleTransaction";
+import chooseMiner from "../block/miningPool";
 
 // https://learnmeabitcoin.com/technical/transaction-data
 // good resource on transaction data
 
 // create ALL transactions for an individual block
-const createTransactions = () => {
+const createTransactions = (miner, numtransactions) => {
   // list of all transactions
   var transactions = [];
   // coinbase transaction
+  //TODO: assign basecoin transaction to miner before pushing it
   var coinbaseTX = coinbaseTransaction();
   // add coinbase transaction
   transactions.push(coinbaseTX);
@@ -20,11 +22,20 @@ const createTransactions = () => {
   //  3. create random transactions
   //  4. handle inputs and outputs for transactions (?)
 
-  var transaction_count = 0;
+  var block_num = 0; // TODO: import from block and simulation
+  if (block_num > 99) {
+    var sender;
+    var receiver;
+    for (let i = 0; i < numtransactions; i++) {
+      sender = selectMiner();
+      //TODO: check if person has valid money
 
-  for (let i = 0; i < transaction_count; i++) {
-    var transaction = singleTransaction();
-    transactions.push(transaction);
+      receiver = selectMiner();
+      //TODO: check reciver is not the same as sender
+
+      var transaction = singleTransaction(sender, receiver);
+      transactions.push(transaction);
+    }
   }
   return transactions;
 };
@@ -85,7 +96,6 @@ block 2:
     }
     - transaction reward: 50BTC
     - transaction fee reward: 0.000004BTC
-
 
 users with currency:[1,2,3,4,5,6]
 1: 38.999997 BTC
