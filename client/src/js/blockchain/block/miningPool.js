@@ -11,17 +11,17 @@
 
 */
 
-import App from "../../../App";
+var miningPool;
 
-//var numMiners;
-
+// function to select random element
 const randomSelector = (min, max) => {
   let num = Math.random() * (max - min) + min;
   return Math.floor(num);
 };
 
+// function to update/create new mining pool
 const createMinerPool = (numMiners, user) => {
-  var miningPool = [];
+  miningPool = [];
   for (var i = 0; i < numMiners - 1; i++) {
     var miner = (Math.random() + 1).toString(36).substring(2);
     miningPool.push(miner);
@@ -31,12 +31,17 @@ const createMinerPool = (numMiners, user) => {
   return miningPool;
 };
 
+// function to get the already current mining pool
+const getMiningPool = (miningPool) => {
+  return miningPool;
+};
+
+//function to choose random miner from pool
 const chooseMiner = (miningPool) => {
   var randomMinerNum = randomSelector(0, miningPool.length - 1);
   var selectedMiner = miningPool[randomMinerNum];
-  //console.log(selectedMiner)
   return selectedMiner;
 };
 
 export default chooseMiner;
-export { createMinerPool };
+export { createMinerPool, getMiningPool };

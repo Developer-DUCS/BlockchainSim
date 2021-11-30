@@ -162,6 +162,7 @@ const CreateSimulation = (props) => {
     };
 
     var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
+    console.log("MINING POOL", miningPool);
 
     var bithash = sjcl.hash.sha256.hash(initValues.desc);
     var initialHash = sjcl.codec.hex.fromBits(bithash);
