@@ -2,12 +2,13 @@ import inputSelection from "./singleTransaction/inputsSingleTransaction";
 import outputCreation from "./singleTransaction/outputsSingleTransaction";
 import singleTransaction from "./singleTransaction/singleTransaction";
 import chooseMiner from "../block/miningPool";
+import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
 
 // https://learnmeabitcoin.com/technical/transaction-data
 // good resource on transaction data
 
 // create ALL transactions for an individual block
-const createTransactions = (miner, numtransactions) => {
+const createTransactions = (miner, numtransactions, block_height) => {
   // list of all transactions
   var transactions = [];
 
@@ -17,8 +18,7 @@ const createTransactions = (miner, numtransactions) => {
   //  3. create random transactions
   //  4. handle inputs and outputs for transactions (?)
 
-  var block_num = 0; // TODO: import from block and simulation
-  if (block_num > 99) {
+  if (block_height > 99) {
     var sender;
     var receiver;
     for (let i = 0; i < numtransactions; i++) {

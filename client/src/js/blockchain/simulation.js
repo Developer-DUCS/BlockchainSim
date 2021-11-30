@@ -22,7 +22,8 @@ const simulationCreator = (
       previousHash,
       timeStampArr[i],
       selectMiner,
-      num_transactions
+      num_transactions,
+      i
     );
     var hashID = newBlock[1];
     var blockJSON = newBlock[0];

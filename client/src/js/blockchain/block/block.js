@@ -14,11 +14,21 @@ import createTransactions from "../transactions/transactions";
 const merkleTree = //TO DO: to not be hardcode
   "113459eb7bb31bddee85ade5230d6ad5d8b2fb52879e00a84ff6ae1067a210d3";
 
-const blockCreator = (previousHash, timeStamp, miner, num_transactions) => {
+const blockCreator = (
+  previousHash,
+  timeStamp,
+  miner,
+  num_transactions,
+  block_height
+) => {
   var header = createHeader(previousHash, merkleTree);
   var hashID = header[0];
   var headerJSON = header[1];
-  var transactionJSON = createTransactions(miner, num_transactions);
+  var transactionJSON = createTransactions(
+    miner,
+    num_transactions,
+    block_height
+  );
 
   var blockJSON = {
     id_block: hashID,
