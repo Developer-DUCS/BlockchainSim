@@ -10,11 +10,6 @@ import chooseMiner from "../block/miningPool";
 const createTransactions = (miner, numtransactions) => {
   // list of all transactions
   var transactions = [];
-  // coinbase transaction
-  //TODO: assign basecoin transaction to miner before pushing it
-  var coinbaseTX = coinbaseTransaction();
-  // add coinbase transaction
-  transactions.push(coinbaseTX);
 
   // TO DO:
   //  1. make transaction_count dynamic
@@ -27,16 +22,28 @@ const createTransactions = (miner, numtransactions) => {
     var sender;
     var receiver;
     for (let i = 0; i < numtransactions; i++) {
-      sender = selectMiner();
+      sender = chooseMiner();
       //TODO: check if person has valid money
 
-      receiver = selectMiner();
+      receiver = chooseMiner();
+      console.log(sender, receiver);
       //TODO: check reciver is not the same as sender
 
       var transaction = singleTransaction(sender, receiver);
       transactions.push(transaction);
     }
+
+    //create coin base transaction + fees
+    //push it to array but in first position
+  } else {
+    // <100 block height
+    // coinbase transaction with no fees
+    //TODO: assign basecoin transaction to miner before pushing it
+    var coinbaseTX = coinbaseTransaction();
+    // add coinbase transaction
+    transactions.push(coinbaseTX);
   }
+
   return transactions;
 };
 
