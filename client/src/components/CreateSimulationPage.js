@@ -178,7 +178,7 @@ const CreateSimulation = (props) => {
       timeStampArr,
       miningPool,
       user.email,
-      num_transactions
+      initValues.num_transactions
     );
 
     var newSimulation = {
