@@ -152,14 +152,14 @@ const UserBar = (props) => {
             <Grid item xs />
           </Grid>
         </Toolbar>
-      </AppBar>
-      <AppBar
+        {/* </AppBar> */}
+        {/* <AppBar
         component="div"
         color="primary"
         position="static"
         elevation={0}
         sx={{ zIndex: 0 }}
-      >
+      > */}
         <Toolbar>
           <ClickAwayListener onClickAway={handleDrawerClose}>
             <div style={{ width: "50px" }}>
@@ -327,13 +327,13 @@ const UserBar = (props) => {
             </Tooltip>
           </Grid>
         </Toolbar>
-      </AppBar>
-      <AppBar
+        {/* </AppBar> */}
+        {/* <AppBar
         component="div"
         position="static"
         elevation={0}
         sx={{ zIndex: 20 }}
-      >
+      > */}
         <Tabs
           value={selectedTab}
           onChange={setSelectedTab}
