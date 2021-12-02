@@ -20,7 +20,7 @@ const SignIn = (props) => {
   // Checks to see if the user is already logged in and
   // redirects them to the home page if they are
   React.useEffect(() => {
-    fetch(`http://localhost:3220/api/users/auth`, {
+    fetch(`http://${process.env.REACT_APP_API_URL}/api/users/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

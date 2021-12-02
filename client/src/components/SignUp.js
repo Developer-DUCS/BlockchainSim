@@ -22,7 +22,7 @@ const SignUp = () => {
     e.preventDefault();
     // API call to create account
     // if successful, redirect to login page
-    const url = `http://localhost:3220/api/users/register`;
+    const url = `http://${process.env.REACT_APP_API_URL}/api/users/register`;
     const payload = {
       id: email,
       pass: password,
