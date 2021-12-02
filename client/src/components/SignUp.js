@@ -37,7 +37,7 @@ const SignUp = () => {
     }).then((res) => {
       if (res.status == 201) {
         //redirect
-        history.push("/signin");
+        history.push(`${process.env.PUBLIC_URL}/signin`);
       }
       if (res.status == 409) {
         // username already exist

@@ -37,7 +37,7 @@ const SignIn = (props) => {
       })
       .then((user) => {
         if (user) {
-          history.push("/simulation");
+          history.push(`${process.env.PUBLIC_URL}/simulation`);
         }
       })
       .catch((err) => {
@@ -77,7 +77,7 @@ const SignIn = (props) => {
         toggleSignIn();
 
         //redirect
-        history.push("/simulation");
+        history.push(`${process.env.PUBLIC_URL}/simulation`);
       })
       .catch(async (err) => {
         console.error(err);

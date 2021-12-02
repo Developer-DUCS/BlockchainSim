@@ -205,7 +205,7 @@ const UserBar = (props) => {
                     key={"home"}
                     onClick={handleDrawerClose}
                     component={Link}
-                    to={`/simulation`}
+                    to={`${process.env.PUBLIC_URL}/simulation`}
                   >
                     <ListItemIcon>
                       <HomeIcon />
@@ -217,7 +217,7 @@ const UserBar = (props) => {
                     key={"add"}
                     onClick={handleDrawerClose}
                     component={Link}
-                    to={`/createsimulation`}
+                    to={`${process.env.PUBLIC_URL}/createsimulation`}
                   >
                     <ListItemIcon>
                       <Add />

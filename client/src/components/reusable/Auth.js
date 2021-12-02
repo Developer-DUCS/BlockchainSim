@@ -3,7 +3,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
 import { useHistory } from "react-router-dom";
-require("dotenv").config({ path: "../../../../.env" });
 
 const Auth = (props) => {
   const { children, setUser } = props;
@@ -11,7 +10,7 @@ const Auth = (props) => {
   const history = useHistory();
 
   React.useEffect(() => {
-    fetch(`http://localhost:3220/api/users/auth`, {
+    fetch(`http://${process.env.REACT_APP_API_URL}/api/users/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +46,8 @@ const Auth = (props) => {
       {auth == false ? (
         <Container maxWidth="sm" sx={{ mt: 2 }}>
           <Alert severity="error">
-            <Link to="/signin">Sign In</Link> to be able to access this page.
+            <Link to={`${process.env.PUBLIC_URL}/signin`}>Sign In</Link> to be
+            able to access this page.
           </Alert>
         </Container>
       ) : auth == true ? (

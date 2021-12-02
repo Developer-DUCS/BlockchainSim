@@ -41,7 +41,10 @@ const NavBar = (props) => {
       <AppBar position="static" color="transparent">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+            <Link
+              to={`${process.env.PUBLIC_URL}/`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
               Beyond the Block
             </Link>
           </Typography>
@@ -50,7 +53,7 @@ const NavBar = (props) => {
             <>
               <Button
                 component={Link}
-                to={"/signin"}
+                to={`${process.env.PUBLIC_URL}/signin/`}
                 color="primary"
                 variant="outlined"
                 sx={{ mr: 2 }}
@@ -59,7 +62,7 @@ const NavBar = (props) => {
               </Button>
               <Button
                 component={Link}
-                to={"/signup"}
+                to={`${process.env.PUBLIC_URL}/signup/`}
                 color="primary"
                 variant="contained"
               >

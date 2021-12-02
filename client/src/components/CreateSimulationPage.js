@@ -210,7 +210,7 @@ const CreateSimulation = (props) => {
     }).then((res) => {
       if (res.status == 200) {
         //redirect
-        history.push("/simulation");
+        history.push(`${process.env.PUBLIC_URL}/simulation`);
       }
     });
   };

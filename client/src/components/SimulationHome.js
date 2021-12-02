@@ -95,7 +95,7 @@ const SimulationHome = (props) => {
         </TabPanel>
         <Button
           component={Link}
-          to={"/createsimulation"}
+          to={`${process.env.PUBLIC_URL}/createsimulation`}
           color="secondary"
           variant="contained"
           sx={{ float: 500, ml: 2 }}
