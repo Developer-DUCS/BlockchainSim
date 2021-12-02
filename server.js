@@ -4,6 +4,9 @@
 const express = require("express");
 const app = express();
 const router = express.Router();
+
+var cors = require("cors");
+
 require("dotenv").config();
 
 app.use(express.static("public"));
@@ -22,10 +25,13 @@ app.use(function (req, res, next) {
 });
 
 // List of routes
-router.use("/api/users", require("./client/src/api/users"));
-router.use("/api/data", require("./client/src/api/data"));
+router.use("/BtB/api/users", require("./client/src/api/users"));
+router.use("/BtB/api/data", require("./client/src/api/data"));
 
 app.use(router);
+
+app.use(cors({ origin: true, credentials: true }));
+
 app.listen(
   process.env.PORT,
   () => `Server running on port ${process.env.PORT}`
