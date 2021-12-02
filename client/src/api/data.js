@@ -35,8 +35,9 @@ router.post("/createsim", cors(), (req, res) => {
     const transactionString = JSON.stringify(transaction);
     const transaction_counter = req.body.blocks[i].transaction_counter;
     const miner = req.body.blocks[i].miner;
+    const balances = req.body.blocks[i].balances;
     const block_time_created = req.body.blocks[i].time_created;
-    let qry = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '${block_time_created}');`;
+    let qry = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '${balances}', '${block_time_created}');`;
     db.query(qry, (err) => {
       if (err) {
         console.log(err);
