@@ -48,10 +48,11 @@ router.post("/createsim", cors(), (req, res) => {
 
 router.post("/deletesim", cors(), (req, res) => {
   const email = req.body.email;
-  const sim_name = req.body.sim_name;
+  const sim_id = req.body.sim_id;
+
   // parse email where special characters = _
   const email_valid = email.replace(/[@.]/g, "_");
-  let qry = `SELECT sim_blocks FROM simulation WHERE email='${email}' AND sim_name='${sim_name}'`;
+  let qry = `SELECT sim_blocks FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
   db.query(qry, (err, result) => {
     if (err) {
       console.log(err);
@@ -73,7 +74,7 @@ router.post("/deletesim", cors(), (req, res) => {
     }
   });
 
-  qry = `DELETE FROM simulation WHERE email='${email}' AND sim_name='${sim_name}'`;
+  qry = `DELETE FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
   db.query(qry, (err) => {
     if (err) {
       console.log(err);

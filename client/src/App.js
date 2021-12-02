@@ -116,7 +116,13 @@ const App = () => {
           />
           <Route
             path="/simulation/:id"
-            render={() => <Simulation setTheme={setTheme} />}
+            render={() => (
+              <Simulation
+                setTheme={setTheme}
+                setFeedback={setFeedback}
+                setFeedbackObj={setFeedbackObj}
+              />
+            )}
           />
 
           <Route component={Error} />

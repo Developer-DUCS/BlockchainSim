@@ -45,32 +45,6 @@ const SimulationHome = (props) => {
     }
   }, [user]);
 
-  const tablerows = {
-    rows: [
-      {
-        name: "Test Simulation",
-        edited: "10/28/2021",
-        created: "10/28/2021",
-        blocks: 20,
-        id: 1,
-      },
-      {
-        name: "Ean's Super Awesome Simulation",
-        edited: "10/28/2021",
-        created: "10/28/2021",
-        blocks: 10,
-        id: 2,
-      },
-      {
-        name: "BtB's Simulation",
-        edited: "10/28/2021",
-        created: "10/28/2021",
-        blocks: 200000,
-        id: 3,
-      },
-    ],
-  };
-
   const tablerows2 = {
     rows: [
       {
@@ -107,6 +81,15 @@ const SimulationHome = (props) => {
         setTheme={setTheme}
       />
       <Container>
+        <Button
+          component={Link}
+          to={"/createsimulation"}
+          color="secondary"
+          variant="contained"
+          sx={{ float: 500, ml: 2, mt: 2 }}
+        >
+          Add New Simulation
+        </Button>
         <TabPanel value={selectedTab} index={0}>
           {/* <div>
             User testing
@@ -129,15 +112,6 @@ const SimulationHome = (props) => {
             </Grid>
           </Grid>
         </TabPanel>
-        <Button
-          component={Link}
-          to={"/createsimulation"}
-          color="secondary"
-          variant="contained"
-          sx={{ float: 500, ml: 2 }}
-        >
-          Add New Simulation
-        </Button>
       </Container>
     </Auth>
   );
