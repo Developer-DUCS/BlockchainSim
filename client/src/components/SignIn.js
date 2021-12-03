@@ -53,7 +53,7 @@ const SignIn = (props) => {
     // API call to login to account
     // if successful, redirect to landing page
     // if not, display error message
-    fetch(`http://localhost:3220/api/users/login`, {
+    fetch(`http://${process.env.REACT_APP_API_URL}/api/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
