@@ -1,7 +1,9 @@
 // generate a basecoin transaction of 50 bitcoin
 // TO DO: Add fees
 //      : Make scriptSig, scriptLength, scriptPubKey dynamic
-const coinbaseTransaction = () => {
+import sjcl from "../../../../sjcl";
+const coinbaseTransaction = (miner) => {
+  /*
   var coinbase = "";
   // we're copying https://en.bitcoin.it/wiki/Genesis_block
   // the original basecoin transaction
@@ -37,8 +39,24 @@ const coinbaseTransaction = () => {
   var output = coinbase.concat(outputCount, value, scriptPubKey, locktime);
 
   coinbase = coinbase.concat(input, output);
+  */
+  var tempCoinbase =
+    '{ transaction_data: { UTXO: "0000000000000000000000000000000000000000000000000000000000000000", owner_UTXO: "0000000000000000000000000000000000000000000000000000000000000000", receiver: miner, sender_leftover: "0", fee: "0", amount_sent: "50",} }';
+  var transactionHash = sjcl.hash.sha256.hash(tempCoinbase);
 
-  return coinbase;
+  var tempCoinbaseJSON = {
+    hash: transactionHash,
+    transaction_data: {
+      UTXO: "0000000000000000000000000000000000000000000000000000000000000000",
+      owner_UTXO:
+        "0000000000000000000000000000000000000000000000000000000000000000",
+      receiver: miner,
+      sender_leftover: "0",
+      fee: "0",
+      amount_sent: "50",
+    },
+  };
+  return tempCoinbaseJSON;
 };
 
 export default coinbaseTransaction;
