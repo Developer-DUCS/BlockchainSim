@@ -37,6 +37,7 @@ import chooseMiner, {
 import sjcl from "../sjcl";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import adressesPool from "../js/blockchain/transactions/adressesPool";
 //import addresses from "../js/blockchain/transactions/adresses";
 
 const CreateSimulation = (props) => {
@@ -172,6 +173,7 @@ const CreateSimulation = (props) => {
       initValues.numblocks,
       initValues.blockwin
     );
+
     var simulation = simulationCreator(
       initValues.numblocks,
       initialHash,

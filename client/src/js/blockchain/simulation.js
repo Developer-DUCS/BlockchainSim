@@ -1,5 +1,7 @@
 import blockCreator from "./block/block";
 import chooseMiner from "./block/miningPool";
+import createAdressPoolHeader from "./transactions/adressesPool";
+import { adressesPool } from "./transactions/adressesPool";
 
 var previousHash;
 const simulationCreator = (
@@ -14,16 +16,24 @@ const simulationCreator = (
   var hashes = [];
   previousHash = initialHash;
 
+  //initialize adress/transaction pool
+  adressesPool.splice(0, adressesPool.length);
+  console.log("empty pool:", adressesPool);
+
+  createAdressPoolHeader(miningPool.length);
+
   for (var i = 0; i < numBlocks; i++) {
     var selectMiner;
+    if (i % 50 == 1)
+      console.log("Adresses Pool at block", i, ":", adressesPool);
     i == 0 ? (selectMiner = user) : (selectMiner = chooseMiner(miningPool));
-    //selectMiner = chooseMiner(miningPool);
     var newBlock = blockCreator(
       previousHash,
       timeStampArr[i],
       selectMiner,
       num_transactions,
-      i
+      i,
+      miningPool
     );
     var hashID = newBlock[1];
     var blockJSON = newBlock[0];

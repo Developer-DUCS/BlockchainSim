@@ -11,8 +11,6 @@
 
 */
 
-var miningPool;
-
 // function to select random element
 const randomSelector = (min, max) => {
   let num = Math.random() * (max - min) + min;
@@ -21,18 +19,13 @@ const randomSelector = (min, max) => {
 
 // function to update/create new mining pool
 const createMinerPool = (numMiners, user) => {
-  miningPool = [];
+  var miningPool = [];
   for (var i = 0; i < numMiners - 1; i++) {
     var miner = (Math.random() + 1).toString(36).substring(2);
     miningPool.push(miner);
   }
 
   miningPool.push(user);
-  return miningPool;
-};
-
-// function to get the already current mining pool
-const getMiningPool = (miningPool) => {
   return miningPool;
 };
 
@@ -44,4 +37,4 @@ const chooseMiner = (miningPool) => {
 };
 
 export default chooseMiner;
-export { createMinerPool, getMiningPool };
+export { createMinerPool };

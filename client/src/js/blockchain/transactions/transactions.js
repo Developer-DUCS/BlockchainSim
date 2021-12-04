@@ -3,14 +3,21 @@ import outputCreation from "./singleTransaction/outputsSingleTransaction";
 import singleTransaction from "./singleTransaction/singleTransaction";
 import chooseMiner from "../block/miningPool";
 import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
+import createAdressPoolHeader, { adressesPool } from "./adressesPool";
 
 // https://learnmeabitcoin.com/technical/transaction-data
 // good resource on transaction data
 
 // create ALL transactions for an individual block
-const createTransactions = (miner, numtransactions, block_height) => {
+const createTransactions = (
+  miner,
+  numtransactions,
+  block_height,
+  miningPool
+) => {
   // list of all transactions
   var transactions = [];
+  var users = miningPool; // possible users
 
   // TO DO:
   //  1. make transaction_count dynamic
@@ -26,7 +33,7 @@ const createTransactions = (miner, numtransactions, block_height) => {
       //TODO: check if person has valid money
 
       receiver = chooseMiner();
-      console.log(sender, receiver);
+      //console.log(sender, receiver);
       //TODO: check reciver is not the same as sender
 
       var transaction = singleTransaction(sender, receiver);
@@ -40,8 +47,20 @@ const createTransactions = (miner, numtransactions, block_height) => {
     // coinbase transaction with no fees
     //TODO: assign basecoin transaction to miner before pushing it
     var coinbaseTX = coinbaseTransaction(miner);
-    // add coinbase transaction
+
+    // add coinbase transaction to block transactions
     transactions.push(coinbaseTX);
+
+    // create + add adress it to adress pool
+    var baseAddress = [
+      coinbaseTX.transaction_data.receiver,
+      coinbaseTX.transaction_data.amount_received,
+      block_height,
+    ];
+    var pos = users.findIndex((pos) => {
+      return pos == baseAddress[0];
+    });
+    adressesPool[pos].push(baseAddress);
   }
 
   return transactions;
