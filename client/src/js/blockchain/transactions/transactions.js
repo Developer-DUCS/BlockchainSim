@@ -46,7 +46,7 @@ const createTransactions = (
     // <100 block height
     // coinbase transaction with no fees
     //TODO: assign basecoin transaction to miner before pushing it
-    var coinbaseTX = coinbaseTransaction(miner);
+    var coinbaseTX = coinbaseTransaction(miner, 0, block_height);
 
     // add coinbase transaction to block transactions
     transactions.push(coinbaseTX);
