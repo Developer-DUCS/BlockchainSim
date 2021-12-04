@@ -39,7 +39,7 @@ const createTransactions = (miner, numtransactions, block_height) => {
     // <100 block height
     // coinbase transaction with no fees
     //TODO: assign basecoin transaction to miner before pushing it
-    var coinbaseTX = coinbaseTransaction();
+    var coinbaseTX = coinbaseTransaction(miner);
     // add coinbase transaction
     transactions.push(coinbaseTX);
   }
@@ -55,61 +55,3 @@ export default createTransactions;
 //      2.) Determine how to store varying amounts of inputs and outputs
 //          - (UTXO's and STXO's)
 //      4/) Pass finished transactions to merkle tree to be hashed
-
-/*
-posible miners:[1,2,3,4,5,6]
-max number transaction = 10
-
-users with currency:[]
-users without currency:[1,2,3,4,5,6]
------------------------------------
-genesis block (0):
-    - miner : 1
-    - number transaction: 1 (only base coin)
-    - transaction:{
-        0: basecoin --> 50BTC to 1
-    }
-    - transaction reward: 50BTC
-
-users with currency:[1]
-users without currency:[2,3,4,5,6]
---------------------------------------
-block 1:
-    - miner: 3
-    - transaction counter: 2 (base coin + 1)
-    - transaction:{
-        0: basecoin ---> 50BTC + fee to 3
-        1: 1BTC from 1 to 4
-    }
-    - transaction reward: 50BTC
-    - transaction fee reward: 0.000001BTC
-
-
-users with currency:[1,3,4]
-1: 48.999999 BTC
-3: 50.000001 BTC
-4: 1BTC
-users without currency:[2,5,6]  
-----------------------------------------------------------
-block 2:
-    - miner: 5
-    - transaction counter: 5 (base coin + 1)
-    - transaction:{
-        0: basecoin ---> 50BTC + fee to 3
-        1: 2BTC from 1 to 2
-        2: 10BTC from 1 to 5
-        3: 2BTC from 3 to 1
-        4: 40BTC from 3 to 6
-    }
-    - transaction reward: 50BTC
-    - transaction fee reward: 0.000004BTC
-
-users with currency:[1,2,3,4,5,6]
-1: 38.999997 BTC
-2: 2BTC
-3: 7.999999 BTC
-4: 1BTC
-5: 60.000003BTC
-6: 40BTC
-users without currency:[]
-*/

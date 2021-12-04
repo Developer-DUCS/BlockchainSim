@@ -42,7 +42,8 @@ const coinbaseTransaction = (miner) => {
   */
   var tempCoinbase =
     '{ transaction_data: { UTXO: "0000000000000000000000000000000000000000000000000000000000000000", owner_UTXO: "0000000000000000000000000000000000000000000000000000000000000000", receiver: miner, sender_leftover: "0", fee: "0", amount_sent: "50",} }';
-  var transactionHash = sjcl.hash.sha256.hash(tempCoinbase);
+  var bitHash = sjcl.hash.sha256.hash(tempCoinbase);
+  var transactionHash = sjcl.codec.hex.fromBits(bitHash);
 
   var tempCoinbaseJSON = {
     hash: transactionHash,
