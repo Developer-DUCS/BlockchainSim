@@ -27,7 +27,7 @@ router.post("/", cors(), (req, res) => {
       res.status(400).json({ msg: "No users found" });
     }
     // if so add the user's email to the simulation ID gathered in the simulation page
-    (qryNew = "insert into simulation (sim_shared) values ?"), [email];
+    let qryNew = "insert into simulation (sim_shared) values ?", [email];
     db.query(qryNew, (err) => {
       // If error, log it to console
       if (err) {
