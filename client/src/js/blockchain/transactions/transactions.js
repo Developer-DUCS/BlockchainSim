@@ -17,8 +17,7 @@ const createTransactions = (
   block_height,
   miningPool
 ) => {
-  // list of all transactions
-  var transactions = [];
+  var transactions = []; // list of all transactions
   var users = miningPool; // possible users
 
   // TO DO:
@@ -28,17 +27,38 @@ const createTransactions = (
   //more than only basecoin transaction is possible
   if (block_height > 99) {
     var receiver;
-    console.log("miningPool:", miningPool);
+    var transNum = 1;
     for (let i = 0; i < numtransactions; i++) {
-      var sender = selectSender(miningPool, users, block_height);
-      console.log("sender found: ", sender, "for block: ", block_height);
-      //TODO: check if person has valid money
-      receiver = chooseMiner(miningPool);
-      console.log(sender, receiver, block_height);
-      //TODO: check reciver is not the same as sender
+      console.log("transaction Number: ", transNum);
+      var senderInfo = selectSender(miningPool, users, block_height);
+      //check if adress found or not
+      if (senderInfo != undefined) {
+        //no possible transaction
+        var sender = senderInfo[0];
+        var adressSender = senderInfo[1];
+        //delete selected adress from adresses pool
+        var adressPos = adressesPool[senderInfo[2]].indexOf(adressSender);
+        adressesPool[senderInfo[2]].splice(adressPos, 1);
+        console.log(
+          "sender found: ",
+          sender,
+          "for block: ",
+          block_height,
+          "with adress: ",
+          adressSender
+        );
+        //TODO: check if person has valid money
+        receiver = chooseMiner(miningPool);
+        console.log(sender, receiver, block_height);
+        //TODO: check reciver is not the same as sender
 
-      var transaction = singleTransaction(sender, receiver);
-      transactions.push(transaction);
+        var transaction = singleTransaction(sender, receiver);
+        transactions.push(transaction);
+      } else {
+        //no more transactions to build
+        return transactions;
+      }
+      transNum++;
     }
 
     //create coin base transaction + fees
@@ -76,24 +96,22 @@ const selectSender = (miningPool, users, block_height) => {
     return pos == sender;
   });
   while (found == false && counter2 < 50) {
-    console.log("checking for miner: ", sender, senderPos);
-    console.log("users already checked: ", usersChecked, usersChecked.length);
-    console.log("round:", counter2);
-
     usersChecked.push(sender); //add current sender to checked users
+
     // check if there is any valid adreess
     var validHeigth = block_height - MINIMUM_DEPTH;
+    var senderInfo;
+
     for (let adressPos in adressesPool[senderPos]) {
-      console.log("new adress:", adressPos, adressesPool[senderPos][adressPos]);
       var adress = adressesPool[senderPos][adressPos];
       if (adress[2] <= validHeigth) {
+        console.log("FOUND", counter2);
         found = true;
-        console.log("possible adress to use:", adress, sender);
+        senderInfo = [sender, adress, senderPos]; // [laura, [laura, 50BTC, block 3], position 15]
+        return senderInfo;
       }
     }
-    if (found) console.log("found");
-    else {
-      console.log("not found yet");
+    if (!found) {
       senderPos + 1 >= miningPool.length
         ? (senderPos = senderPos + 1 - miningPool.length)
         : senderPos++;
@@ -103,7 +121,7 @@ const selectSender = (miningPool, users, block_height) => {
 
     counter2++;
   }
-  return sender;
+  return senderInfo;
 };
 
 export default createTransactions;
