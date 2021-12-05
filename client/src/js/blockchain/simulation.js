@@ -17,9 +17,6 @@ const simulationCreator = (
   previousHash = initialHash;
 
   //initialize adress/transaction pool
-  adressesPool.splice(0, adressesPool.length);
-  console.log("empty pool:", adressesPool);
-
   createAdressPoolHeader(miningPool.length);
 
   for (var i = 0; i < numBlocks; i++) {

@@ -11,6 +11,7 @@
 const adressesPool = [];
 
 const createAdressPoolHeader = (numMiners) => {
+  adressesPool.splice(0, adressesPool.length);
   if (adressesPool.length == 0) {
     for (var i = 0; i < numMiners; i++) {
       adressesPool.push([]);

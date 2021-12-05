@@ -29,10 +29,10 @@ const createTransactions = (
     var sender;
     var receiver;
     for (let i = 0; i < numtransactions; i++) {
-      sender = chooseMiner();
+      sender = chooseMiner(miningPool);
       //TODO: check if person has valid money
 
-      receiver = chooseMiner();
+      receiver = chooseMiner(miningPool);
       //console.log(sender, receiver);
       //TODO: check reciver is not the same as sender
 
