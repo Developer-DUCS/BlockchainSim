@@ -62,6 +62,15 @@ function createData(sim_id, sim_name, sim_created, sim_modified) {
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const options = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true,
+  };
 
   return (
     <React.Fragment>
@@ -88,8 +97,16 @@ function Row(props) {
           {row.sim_id}
         </StyledTableCell>
         <StyledTableCell align="right">{row.sim_name}</StyledTableCell>
-        <StyledTableCell align="right">{row.sim_created}</StyledTableCell>
-        <StyledTableCell align="right">{row.sim_modified}</StyledTableCell>
+        <StyledTableCell align="right">
+          {new Intl.DateTimeFormat("en-US", options).format(
+            new Date(row.sim_created)
+          )}
+        </StyledTableCell>
+        <StyledTableCell align="right">
+          {new Intl.DateTimeFormat("en-US", options).format(
+            new Date(row.sim_modified)
+          )}
+        </StyledTableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

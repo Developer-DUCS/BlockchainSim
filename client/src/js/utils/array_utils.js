@@ -13,4 +13,19 @@ const get_element_from_array = (array, index) => {
   return copy_array[index];
 };
 
-export { add_element_to_array, get_element_from_array };
+function reduce(array, init, f) {
+  var accum = init;
+  forEach(array, function (element) {
+    accum = f(accum, element);
+  });
+  return accum;
+}
+
+function forEach(array, f) {
+  for (var i = 0; i < array.length; i++) {
+    var item = array[i];
+    f(item);
+  }
+}
+
+export { add_element_to_array, get_element_from_array, reduce };

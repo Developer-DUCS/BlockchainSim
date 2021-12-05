@@ -19,10 +19,11 @@ const simulationCreator = (
   };
   previousHash = initialHash;
 
+  // Create blocks for simulation
+
   for (var i = 0; i < numBlocks; i++) {
     var selectMiner;
     i == 0 ? (selectMiner = user) : (selectMiner = chooseMiner(miningPool));
-    //selectMiner = chooseMiner(miningPool);
     var newBlock = blockCreator(
       previousHash,
       get_element_from_array(timeStampArr, i),

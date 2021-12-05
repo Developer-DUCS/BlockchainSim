@@ -1,8 +1,7 @@
-import { Button, Container, Grid, Typography } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import Auth from "./reusable/Auth";
-import BlockComponent from "./reusable/BlockComponent";
 import UserBar from "./reusable/UserBar";
 import SimTable from "./reusable/SimTable";
 import TabPanel from "./reusable/TabPanel";
@@ -37,6 +36,20 @@ const SimulationHome = (props) => {
         })
         .then((simulations) => {
           console.log(simulations);
+          let options = {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true,
+          };
+          console.log(
+            new Intl.DateTimeFormat("en-US", options).format(
+              new Date(simulations[0].sim_created)
+            )
+          );
           setSimulations({ rows: simulations });
         })
         .catch((err) => {
@@ -44,32 +57,6 @@ const SimulationHome = (props) => {
         });
     }
   }, [user]);
-
-  const tablerows2 = {
-    rows: [
-      {
-        name: "Testing",
-        edited: "10/28/2021",
-        created: "10/28/2021",
-        blocks: 2,
-        id: 1,
-      },
-      {
-        name: "Ean's Super AMazing Simulation",
-        edited: "10/28/2021",
-        created: "10/28/2021",
-        blocks: 102,
-        id: 2,
-      },
-      {
-        name: "BtB's Simulation",
-        edited: "10/28/2021",
-        created: "10/28/2021",
-        blocks: 1633,
-        id: 3,
-      },
-    ],
-  };
 
   return (
     <Auth setUser={setUser}>
@@ -100,7 +87,10 @@ const SimulationHome = (props) => {
               {simulations.rows ? (
                 <SimTable table={simulations} />
               ) : (
-                <p>Row data is 0</p>
+                <>
+                  <p>0 Simulations</p>
+                  <p>Create a new simulation</p>
+                </>
               )}
             </Grid>
           </Grid>
