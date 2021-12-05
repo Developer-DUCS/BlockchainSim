@@ -21,8 +21,6 @@ const simulationCreator = (
 
   for (var i = 0; i < numBlocks; i++) {
     var selectMiner;
-    if (i % 50 == 1)
-      console.log("Adresses Pool at block", i, ":", adressesPool);
     i == 0 ? (selectMiner = user) : (selectMiner = chooseMiner(miningPool));
     var newBlock = blockCreator(
       previousHash,
@@ -40,6 +38,18 @@ const simulationCreator = (
     blocks.push(blockJSON);
     hashes.push(hashID);
   }
+
+  //TO DELETE LATER
+  /* var counter = 0;
+  console.log(adressesPool[0]);
+  for (var i = 0; i < adressesPool; i++) {
+    console.log(adressesPool[i]);
+    for (var j = 0; j < adressesPool[i]; j++) {
+      console.log(adressesPool[i][j]);
+      counter++;
+    }
+  }
+  console.log("addresses in the pool after creating simulation: ", counter); */
 
   return [hashes, blocks];
 };

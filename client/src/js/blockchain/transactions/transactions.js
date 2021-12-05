@@ -5,6 +5,8 @@ import chooseMiner from "../block/miningPool";
 import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
 import createAdressPoolHeader, { adressesPool } from "./adressesPool";
 
+var MINIMUM_DEPTH = 100;
+
 // https://learnmeabitcoin.com/technical/transaction-data
 // good resource on transaction data
 
@@ -20,20 +22,19 @@ const createTransactions = (
   var users = miningPool; // possible users
 
   // TO DO:
-  //  1. make transaction_count dynamic
-  //  2. create parameters for transactions
   //  3. create random transactions
   //  4. handle inputs and outputs for transactions (?)
 
+  //more than only basecoin transaction is possible
   if (block_height > 99) {
-    var sender;
     var receiver;
+    console.log("miningPool:", miningPool);
     for (let i = 0; i < numtransactions; i++) {
-      sender = chooseMiner(miningPool);
+      var sender = selectSender(miningPool, users, block_height);
+      console.log("sender found: ", sender, "for block: ", block_height);
       //TODO: check if person has valid money
-
       receiver = chooseMiner(miningPool);
-      //console.log(sender, receiver);
+      console.log(sender, receiver, block_height);
       //TODO: check reciver is not the same as sender
 
       var transaction = singleTransaction(sender, receiver);
@@ -64,6 +65,41 @@ const createTransactions = (
   }
 
   return transactions;
+};
+
+const selectSender = (miningPool, users, block_height) => {
+  var usersChecked = [];
+  var found = false;
+  var sender;
+  var counter2 = 0;
+  while (found == false && counter2 < 50) {
+    sender = chooseMiner(miningPool);
+    console.log("checking for miner: ", sender);
+    console.log("users already checked: ", usersChecked, usersChecked.length);
+    console.log("round:", counter2);
+
+    while (usersChecked.includes(sender)) {
+      console.log("keep looking", counter2);
+      sender = chooseMiner(miningPool);
+    }
+    usersChecked.push(sender);
+
+    //get pointer to sender in adresses pool
+    var senderPos = users.findIndex((pos) => {
+      return pos == sender;
+    });
+    // check if there is any valid adreess
+    var validHeigth = block_height - MINIMUM_DEPTH;
+    for (let adress in adressesPool[senderPos]) {
+      if (adress[2] <= validHeigth) {
+        found = true;
+        console.log("possible adress to use:", adress, user);
+      }
+    }
+
+    counter2++;
+  }
+  return sender;
 };
 
 export default createTransactions;
