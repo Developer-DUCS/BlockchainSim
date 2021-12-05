@@ -64,7 +64,28 @@ const Simulation = (props) => {
     let email = document.getElementById("email").value;
     console.log(email);
 
-    // SHARE API GOES HERE
+    let url = "http://localhost:5000/api/share";
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    };
+    fetch(url, options)
+      .then((res) => {
+        console.log(res);
+
+        if (res.ok) {
+          setFeedback(true);
+          setFeedbackObj({
+            message: `Simulation shared`,
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const deleteSimulation = (e) => {
