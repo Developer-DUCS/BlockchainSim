@@ -9,6 +9,7 @@ app.use(express.json());
 router.post("/", cors(), (req, res) => {
   //get email from form
   let email = req.body.email;
+  let sim_id = req.body.sim_id;
   if (!email) {
     res.status(401).json({ error: "Missing username." });
     return;
@@ -26,8 +27,13 @@ router.post("/", cors(), (req, res) => {
       // no users found
       res.status(400).json({ msg: "No users found" });
     }
+
+    //DUMB
+    email = JSON.stringify({ email: email });
+
     // if so add the user's email to the simulation ID gathered in the simulation page
-    let qryNew = "insert into simulation (sim_shared) values ?", [email];
+    let qryNew = `UPDATE simulation SET sim_shared = '${email}' WHERE sim_id = '${sim_id}';`;
+
     db.query(qryNew, (err) => {
       // If error, log it to console
       if (err) {
@@ -41,3 +47,5 @@ router.post("/", cors(), (req, res) => {
 
   //hope that the new user can access the sim
 });
+
+module.exports = router;

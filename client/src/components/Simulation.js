@@ -60,9 +60,10 @@ const Simulation = (props) => {
   const shareSimulation = (e) => {
     e.preventDefault();
 
+    let simID = id;
+
     // Email value
     let email = document.getElementById("email").value;
-    console.log(email);
 
     let url = "http://localhost:5000/api/share";
     let options = {
@@ -70,7 +71,7 @@ const Simulation = (props) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email: email, sim_id: simID }),
     };
     fetch(url, options)
       .then((res) => {

@@ -10,6 +10,7 @@ const SimulationHome = (props) => {
   const { setTheme } = props;
   const [selectedTab, setSelectedTab] = React.useState(0);
   const [simulations, setSimulations] = React.useState([]);
+  const [sharedSimulations, setSharedSimulations] = React.useState([]);
 
   const [user, setUser] = React.useState({});
 
@@ -35,22 +36,26 @@ const SimulationHome = (props) => {
           }
         })
         .then((simulations) => {
-          console.log(simulations);
-          let options = {
-            year: "numeric",
-            month: "numeric",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            hour12: true,
-          };
-          console.log(
-            new Intl.DateTimeFormat("en-US", options).format(
-              new Date(simulations[0].sim_created)
-            )
-          );
           setSimulations({ rows: simulations });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+
+      // Shared Simulations
+      url = "http://localhost:5000/api/data/getsharedsimulations";
+
+      fetch(url, options)
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            console.error("failed to fetch");
+          }
+        })
+        .then((simulations) => {
+          console.log(simulations);
+          setSharedSimulations({ rows: simulations });
         })
         .catch((err) => {
           console.error(err);
@@ -98,7 +103,13 @@ const SimulationHome = (props) => {
         <TabPanel value={selectedTab} index={1}>
           <Grid container spacing={3} sx={{ p: 2 }}>
             <Grid item xs={12}>
-              {/* <SimTable table={tablerows2} /> */}
+              {sharedSimulations.rows ? (
+                <SimTable table={sharedSimulations} />
+              ) : (
+                <>
+                  <p>0 Shared Simulations</p>
+                </>
+              )}{" "}
             </Grid>
           </Grid>
         </TabPanel>

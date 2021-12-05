@@ -96,6 +96,20 @@ router.post("/getsimulations", cors(), (req, resp) => {
   });
 });
 
+router.post("/getsharedsimulations", cors(), (req, resp) => {
+  var email = req.body.email;
+  let qry = `SELECT sim_id, sim_name, sim_created, sim_modified from simulation WHERE JSON_VALUE(sim_shared, '$.email') LIKE '${email}'`;
+  console.log(qry);
+  db.query(qry, (err, res) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(400);
+    } else {
+      resp.send(res);
+    }
+  });
+});
+
 /* router.post("/getsimulation", cors(), (req, res) => {
   var sim_name = req.body.sim_name;
   var email = req.body.email;
