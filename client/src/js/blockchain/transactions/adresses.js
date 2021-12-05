@@ -1,3 +1,7 @@
+/*
+    This file doesn't do anything right now
+*/
+
 //import chooseMiner from "..block/miningPool";
 //import createMinerPool from "..block/miningPool";
 
@@ -34,18 +38,6 @@ for (i = 0; i < richMiners.length; i++) {
 }
 console.log("Addresses: " + addresses);
 console.log("MiningPool: " + miningPool);
-
-/* 
-TO DO:
-    1. Create random transactions ***
-        - get a list of all miners w/ money DONE
-        - get a list of anyone we can send money to 
-            - create a pool of users (not just miners)
-        - make a randomTransaction function 
-        - make a pool of transactions to be included in blocks
-        - select and delete transactions from the pool
-        - no transactions before block 100 
-*/
 
 module.exports = router;
 //module.exports = addresses;

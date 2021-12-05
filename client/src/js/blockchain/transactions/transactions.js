@@ -54,7 +54,12 @@ const createTransactions = (
         console.log(sender, receiver, block_height);
 
         //create transaction
-        var transaction = singleTransaction(sender, receiver, adressSender);
+        var transaction = singleTransaction(
+          sender,
+          receiver,
+          adressSender,
+          block_height
+        );
         transactions.push(transaction);
       } else {
         //no more possible transactions
