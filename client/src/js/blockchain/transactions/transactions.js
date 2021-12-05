@@ -70,31 +70,35 @@ const createTransactions = (
 const selectSender = (miningPool, users, block_height) => {
   var usersChecked = [];
   var found = false;
-  var sender;
   var counter2 = 0;
+  var sender = chooseMiner(miningPool); //select a random sender
+  var senderPos = users.findIndex((pos) => {
+    return pos == sender;
+  });
   while (found == false && counter2 < 50) {
-    sender = chooseMiner(miningPool);
-    console.log("checking for miner: ", sender);
+    console.log("checking for miner: ", sender, senderPos);
     console.log("users already checked: ", usersChecked, usersChecked.length);
     console.log("round:", counter2);
 
-    while (usersChecked.includes(sender)) {
-      console.log("keep looking", counter2);
-      sender = chooseMiner(miningPool);
-    }
-    usersChecked.push(sender);
-
-    //get pointer to sender in adresses pool
-    var senderPos = users.findIndex((pos) => {
-      return pos == sender;
-    });
+    usersChecked.push(sender); //add current sender to checked users
     // check if there is any valid adreess
     var validHeigth = block_height - MINIMUM_DEPTH;
-    for (let adress in adressesPool[senderPos]) {
+    for (let adressPos in adressesPool[senderPos]) {
+      console.log("new adress:", adressPos, adressesPool[senderPos][adressPos]);
+      var adress = adressesPool[senderPos][adressPos];
       if (adress[2] <= validHeigth) {
         found = true;
-        console.log("possible adress to use:", adress, user);
+        console.log("possible adress to use:", adress, sender);
       }
+    }
+    if (found) console.log("found");
+    else {
+      console.log("not found yet");
+      senderPos + 1 >= miningPool.length
+        ? (senderPos = senderPos + 1 - miningPool.length)
+        : senderPos++;
+      sender = miningPool[senderPos];
+      console.log("new sender", sender);
     }
 
     counter2++;
