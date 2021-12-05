@@ -12,7 +12,7 @@ var locktime = "00000000"; // sets a minimum block height or unix time
 
 // create a JSON object (and transaction string hash?)
 // for a single transaction
-function singleTransaction(sender, receiver) {
+function singleTransaction(sender, receiver, adressSender) {
   var input_count = 0;
   var input = inputSelection();
   var output_count = 0;

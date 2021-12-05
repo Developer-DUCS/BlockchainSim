@@ -27,13 +27,13 @@ const createTransactions = (
   //more than only basecoin transaction is possible
   if (block_height > 99) {
     var receiver;
-    var transNum = 1;
+
+    //create transactions
     for (let i = 0; i < numtransactions; i++) {
-      console.log("transaction Number: ", transNum);
+      //find a valid sender with valid money
       var senderInfo = selectSender(miningPool, users, block_height);
-      //check if adress found or not
+
       if (senderInfo != undefined) {
-        //no possible transaction
         var sender = senderInfo[0];
         var adressSender = senderInfo[1];
         //delete selected adress from adresses pool
@@ -47,29 +47,26 @@ const createTransactions = (
           "with adress: ",
           adressSender
         );
-        //TODO: check if person has valid money
-        receiver = chooseMiner(miningPool);
-        console.log(sender, receiver, block_height);
-        //TODO: check reciver is not the same as sender
 
-        var transaction = singleTransaction(sender, receiver);
+        //select receiver diferent than sender
+        receiver = chooseMiner(miningPool);
+        while (receiver == sender) receiver = chooseMiner(miningPool);
+        console.log(sender, receiver, block_height);
+
+        //create transaction
+        var transaction = singleTransaction(sender, receiver, adressSender);
         transactions.push(transaction);
       } else {
-        //no more transactions to build
+        //no more possible transactions
         return transactions;
       }
-      transNum++;
     }
 
     //create coin base transaction + fees
     //push it to array but in first position
   } else {
-    // <100 block height
-    // coinbase transaction with no fees
-    //TODO: assign basecoin transaction to miner before pushing it
+    // <100 block height --> coinbase transaction with no fees
     var coinbaseTX = coinbaseTransaction(miner, 0, block_height);
-
-    // add coinbase transaction to block transactions
     transactions.push(coinbaseTX);
 
     // create + add adress it to adress pool
