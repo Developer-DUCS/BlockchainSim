@@ -22,12 +22,13 @@ const simulationCreator = (
   for (var i = 0; i < numBlocks; i++) {
     var selectMiner;
     i == 0 ? (selectMiner = user) : (selectMiner = chooseMiner(miningPool));
+    var block_height = i;
     var newBlock = blockCreator(
       previousHash,
       timeStampArr[i],
       selectMiner,
       num_transactions,
-      i,
+      block_height,
       miningPool
     );
     var hashID = newBlock[1];

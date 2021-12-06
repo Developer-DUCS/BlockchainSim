@@ -2,7 +2,7 @@
 import { getAdress } from "../adressesPool";
 import inputSelection from "./inputsSingleTransaction";
 import outputCreation from "./outputsSingleTransaction";
-import { random } from "sjcl";
+import sjcl from "../../../../sjcl";
 
 //Not using these variables
 /*
@@ -19,9 +19,10 @@ import { random } from "sjcl";
 //    [ user, $$$ , parent_block]
 
 // create a JSON object for a single transaction including hash
-function singleTransaction(sender, receiver, adressSender, blockheight) {
-  var fee = 1; //how many addresses (UTXOs) are included in this transaction? How much is a single TX fee?
-  var amount_sent = adressSender[1]; //all of the $ in this address - UTXO
+function singleTransaction(sender, receiver, adressSender, block_height) {
+  var fee =
+    Math.trunc(0.00001 * Math.floor(Math.random() * 100) * 100000) / 100000; //how many addresses (UTXOs) are included in this transaction? add that into consideration when determining fees.
+  var amount_sent = parseFloat(adressSender[1]); //all of the $ in this address - UTXO
   var amount_received = randomAmount(adressSender); //get a random amount to be paid
   var sender_leftover = amount_sent - amount_received;
 
@@ -63,9 +64,9 @@ function singleTransaction(sender, receiver, adressSender, blockheight) {
 }
 
 function randomAmount(adressSender) {
-  balance = adressSender[1];
-  percent = Math.floor(Math.random() * 101) / 100;
-  amount = balance * percent;
+  var balance = adressSender[1];
+  var percent = Math.trunc(Math.random() * 100) / 100;
+  var amount = Math.trunc(balance * percent * 100) / 100;
   return amount;
 }
 

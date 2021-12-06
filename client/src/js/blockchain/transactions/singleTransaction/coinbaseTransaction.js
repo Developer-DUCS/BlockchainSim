@@ -43,9 +43,9 @@ const coinbaseTransaction = (miner, fee, block_height) => {
   var coinbase =
     '{ transaction_data: { UTXO: "0000000000000000000000000000000000000000000000000000000000000000", owner_UTXO: "0000000000000000000000000000000000000000000000000000000000000000", receiver: ' +
     miner +
-    ', sender_leftover: "0", fee: ' +
+    ", sender_leftover: 0, fee: " +
     fee +
-    ', amount_sent: "50", amount_received: "50", block_height: ' +
+    ", amount_sent: 50, amount_received: 50, block_height: " +
     block_height +
     "} }";
   var bitHash = sjcl.hash.sha256.hash(coinbase);
@@ -58,10 +58,10 @@ const coinbaseTransaction = (miner, fee, block_height) => {
       owner_UTXO:
         "0000000000000000000000000000000000000000000000000000000000000000",
       receiver: miner,
-      sender_leftover: "0",
+      sender_leftover: 0,
       fee: fee,
-      amount_sent: "50",
-      amount_received: "50",
+      amount_sent: 50,
+      amount_received: 50,
     },
   };
   return coinbaseJSON;
