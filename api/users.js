@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
-const db = require("../../../dbConn");
+const db = require("../dbConn");
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
 const router = express.Router();
 const jwt = require("jwt-simple");
-const config = require("../../../configuration/config.json");
+const config = require("../configuration/config.json");
 
 // to parse JSON
 app.use(express.json());
