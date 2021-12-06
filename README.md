@@ -47,32 +47,7 @@ npm/yarn run test
 2. Install MySQL
 3. From the command line/terminal type: ```mysql -u root -p```
 4. Enter the password you created during installation
-5. Once you are in the MySQL terminal, enter the paste in the following script.
-
-```
-CREATE Database btb;
-USE btb;
-CREATE TABLE user (
-  email VARCHAR(256) NOT NULL,
-  password VARCHAR(256) NOT NULL,
-  role VARCHAR(64) NOT NULL,
-  PRIMARY KEY (email)
- );
-CREATE TABLE simulation (
-  sim_id INT NOT NULL AUTO_INCREMENT,
-  email VARCHAR(256) NOT NULL,
-  sim_name VARCHAR(256) NOT NULL,
-  sim_shared JSON NOT NULL,
-  sim_description TEXT NOT NULL,
-  sim_created DATETIME NOT NULL,
-  sim_modified DATETIME NOT NULL,
-  sim_blocks JSON NOT NULL,
-  PRIMARY KEY ( sim_id ),
-  FOREIGN KEY (email) REFERENCES user (email)
- );
-INSERT INTO user Values ('test@test.test', 'test1234', 'dev');
-```
-6. Run the command: ```SELECT * FROM user;``` to see the user inserted.
+5. Once you are in the MySQL terminal type: ``` source /path/to/scripts/databaseCreation.sql```
 
 ### Errors
 If you run into the error when running MySQL: Client does not support authentication protocol requested by server; consider upgrading MySQL client
