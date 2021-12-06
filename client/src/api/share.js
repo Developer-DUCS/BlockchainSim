@@ -28,20 +28,41 @@ router.post("/", cors(), (req, res) => {
       res.status(400).json({ msg: "No users found" });
     }
 
-    //DUMB
-    email = JSON.stringify({ email: email });
+    let shared_emails = {};
 
-    // if so add the user's email to the simulation ID gathered in the simulation page
-    let qryNew = `UPDATE simulation SET sim_shared = '${email}' WHERE sim_id = '${sim_id}';`;
-
-    db.query(qryNew, (err) => {
-      // If error, log it to console
+    // Database call to retrieve whats in the sim_shared column
+    let qry2 = `SELECT sim_shared from simulation where sim_id = '${sim_id}'`;
+    db.query(qry2, (err, result) => {
       if (err) {
         console.log(err);
-      } else {
-        // User created
-        res.sendStatus(201);
+        return res.status(500).json({ error: err });
       }
+
+      shared_emails = JSON.parse(result[0].sim_shared);
+
+      if (!shared_emails["email"]) {
+        // Stringfies to enter into database
+        email = JSON.stringify({ email: [email] });
+      } else {
+        let s_emails = shared_emails["email"];
+        console.log("shread", s_emails);
+        s_emails.push(email);
+
+        email = JSON.stringify({ email: s_emails });
+      }
+
+      // if so add the user's email to the simulation ID gathered in the simulation page
+      let qryNew = `UPDATE simulation SET sim_shared = '${email}' WHERE sim_id = '${sim_id}';`;
+
+      db.query(qryNew, (err) => {
+        // If error, log it to console
+        if (err) {
+          console.log(err);
+        } else {
+          // User created
+          res.sendStatus(201);
+        }
+      });
     });
   });
 
