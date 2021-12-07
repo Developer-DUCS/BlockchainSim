@@ -27,6 +27,7 @@ const createTransactions = (
   //more than only basecoin transaction is possible
   if (block_height > 99) {
     var receiver;
+    var fees = 0;
 
     //create transactions
     for (let i = 0; i < numtransactions; i++) {
@@ -68,10 +69,17 @@ const createTransactions = (
     }
 
     //create coin base transaction + fees
+    //var coinbaseTX = coinbaseTransaction(miner, fees, block_height);
     //push it to array but in first position
   } else {
     // <100 block height --> coinbase transaction with no fees
     var coinbaseTX = coinbaseTransaction(miner, 0, block_height);
+    console.log(
+      "BaseCoin transaction for block ",
+      block_height,
+      ": ",
+      coinbaseTX
+    );
     transactions.push(coinbaseTX);
 
     // create + add adress it to adress pool
@@ -107,7 +115,7 @@ const selectSender = (miningPool, users, block_height) => {
     for (let adressPos in adressesPool[senderPos]) {
       var adress = adressesPool[senderPos][adressPos];
       if (adress[2] <= validHeigth) {
-        console.log("FOUND", counter2);
+        //console.log("FOUND", counter2);
         found = true;
         senderInfo = [sender, adress, senderPos]; // [laura, [laura, 50BTC, block 3], position 15]
         return senderInfo;
@@ -118,7 +126,7 @@ const selectSender = (miningPool, users, block_height) => {
         ? (senderPos = senderPos + 1 - miningPool.length)
         : senderPos++;
       sender = miningPool[senderPos];
-      console.log("new sender", sender);
+      //console.log("new sender", sender);
     }
 
     counter2++;

@@ -40,17 +40,8 @@ const simulationCreator = (
     hashes.push(hashID);
   }
 
-  //TO DELETE LATER
-  /* var counter = 0;
-  console.log(adressesPool[0]);
-  for (var i = 0; i < adressesPool; i++) {
-    console.log(adressesPool[i]);
-    for (var j = 0; j < adressesPool[i]; j++) {
-      console.log(adressesPool[i][j]);
-      counter++;
-    }
-  }
-  console.log("addresses in the pool after creating simulation: ", counter); */
+  //TO DELETE LATER DELETE ADRESSES POOL
+  adressesPool.length = 0;
 
   return [hashes, blocks];
 };
