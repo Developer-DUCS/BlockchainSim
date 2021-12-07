@@ -1,22 +1,5 @@
 //create a single transaction
-import { getAdress } from "../adressesPool";
-import inputSelection from "./inputsSingleTransaction";
-import outputCreation from "./outputsSingleTransaction";
 import sjcl from "../../../../sjcl";
-
-//Not using these variables
-/*
-    var version = "01000000";
-    var input_count;  //determines how many inputs (UTXO's) to include
-    var input;        // one or more UTXO's as input, multiple variables
-    var output_count; //determines how many outputs (STXO's) to create
-    var output;       // one or more STXO's as output, multiple variables
-    var locktime = "00000000"; // sets a minimum block height or unix time
-    that the transaction can be included in
-    */
-
-//Adress structure:
-//    [ user, $$$ , parent_block]
 
 // create a JSON object for a single transaction including hash
 function singleTransaction(sender, receiver, adressSender, block_height) {
