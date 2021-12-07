@@ -1,17 +1,4 @@
-/*
-
-NOT USING THIS FILE ATM
-
-1.) outputs - decide how many onputs (output_count) will be 
-    created in this transaction. 
-    - outputCreation function returns the contents of one 
-        (UTXO or STXO?) as output
-    - concatenated string of hexadecimals
-    
-    TO DO:  implement UTXO's and STXO's. These are the unpsent and spent 
-            transaction outputs
-
-*/
+//NOT BEING USED - TO DELETE
 
 var outputs = [];
 

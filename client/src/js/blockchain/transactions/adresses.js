@@ -1,9 +1,4 @@
-/*
-    This file doesn't do anything right now
-*/
-
-//import chooseMiner from "..block/miningPool";
-//import createMinerPool from "..block/miningPool";
+//NOT BEING USED - TO DELETE
 
 const express = require("express");
 const app = express();

@@ -1,15 +1,4 @@
-/*
-
-NOT USING THIS FILE ATM
-
-1.) inputs - decide how many inputs (input_count) will be 
-    included in this transaction. 
-    - inputSelection function returns the contents of one UTXO 
-    - as a concatenated string of hexadecimals
-    
-    TO DO:  implement UTXO's and STXO's. These are the unpsent and spent 
-            transaction outputs
-*/
+//NOT BEING USED - TO DELETE
 
 var inputs = [];
 const inputSelection = () => {
