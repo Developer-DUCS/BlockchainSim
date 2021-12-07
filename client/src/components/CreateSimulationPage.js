@@ -405,7 +405,7 @@ const CreateSimulation = (props) => {
                             ))}
                           </TextField>
                           <InfoButton
-                            sx={{ ml: -5, mt: 4.5 }}
+                            sx={{ ml: -5, mt: 0.5 }}
                             description={
                               "This number will represent the number of minutes between the creation of each block."
                             }
