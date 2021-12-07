@@ -1,14 +1,9 @@
-import inputSelection from "./singleTransaction/inputsSingleTransaction";
-import outputCreation from "./singleTransaction/outputsSingleTransaction";
 import singleTransaction from "./singleTransaction/singleTransaction";
 import chooseMiner from "../block/miningPool";
 import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
-import createAdressPoolHeader, { adressesPool } from "./adressesPool";
+import { adressesPool } from "./adressesPool";
 
 var MINIMUM_DEPTH = 100;
-
-// https://learnmeabitcoin.com/technical/transaction-data
-// good resource on transaction data
 
 // create ALL transactions for an individual block
 const createTransactions = (
@@ -20,14 +15,11 @@ const createTransactions = (
   var transactions = []; // list of all transactions
   var users = miningPool; // possible users
 
-  // TO DO:
-  //  3. create random transactions
-  //  4. handle inputs and outputs for transactions (?)
-
   //more than only basecoin transaction is possible
-  if (block_height > 99) {
+  if (block_height > 99 && !done) {
     var receiver;
-    var fees = 0;
+    var fee = 0;
+    var done = false;
 
     //create transactions
     for (let i = 0; i < numtransactions; i++) {
@@ -40,19 +32,10 @@ const createTransactions = (
         //delete selected adress from adresses pool
         var adressPos = adressesPool[senderInfo[2]].indexOf(adressSender);
         adressesPool[senderInfo[2]].splice(adressPos, 1);
-        console.log(
-          "sender found: ",
-          sender,
-          "for block: ",
-          block_height,
-          "with adress: ",
-          adressSender
-        );
 
         //select receiver diferent than sender
         receiver = chooseMiner(miningPool);
         while (receiver == sender) receiver = chooseMiner(miningPool);
-        console.log(sender, receiver, block_height);
 
         //create transaction
         var transaction = singleTransaction(
@@ -61,25 +44,38 @@ const createTransactions = (
           adressSender,
           block_height
         );
+
+        //create adress
+        var newAdress = [
+          transaction.transaction_data.receiver,
+          transaction.transaction_data.amount_received,
+          block_height,
+        ];
+
+        fee = +transaction.transaction_data.fee;
+
+        addAdress2Pool(newAdress, users);
         transactions.push(transaction);
       } else {
         //no more possible transactions
-        return transactions;
+        done = true;
+        //return transactions;
       }
     }
 
     //create coin base transaction + fees
-    //var coinbaseTX = coinbaseTransaction(miner, fees, block_height);
-    //push it to array but in first position
+    var coinbaseTX = coinbaseTransaction(miner, fee, block_height);
+    var newAdress = [
+      coinbaseTX.transaction_data.receiver,
+      coinbaseTX.transaction_data.amount_received,
+      block_height,
+    ];
+
+    addAdress2Pool(newAdress, users);
+    transactions.unshift(coinbaseTX);
   } else {
     // <100 block height --> coinbase transaction with no fees
     var coinbaseTX = coinbaseTransaction(miner, 0, block_height);
-    console.log(
-      "BaseCoin transaction for block ",
-      block_height,
-      ": ",
-      coinbaseTX
-    );
     transactions.push(coinbaseTX);
 
     // create + add adress it to adress pool
@@ -88,10 +84,8 @@ const createTransactions = (
       coinbaseTX.transaction_data.amount_received,
       block_height,
     ];
-    var pos = users.findIndex((pos) => {
-      return pos == baseAddress[0];
-    });
-    adressesPool[pos].push(baseAddress);
+
+    addAdress2Pool(baseAddress, users);
   }
 
   return transactions;
@@ -115,7 +109,6 @@ const selectSender = (miningPool, users, block_height) => {
     for (let adressPos in adressesPool[senderPos]) {
       var adress = adressesPool[senderPos][adressPos];
       if (adress[2] <= validHeigth) {
-        //console.log("FOUND", counter2);
         found = true;
         senderInfo = [sender, adress, senderPos]; // [laura, [laura, 50BTC, block 3], position 15]
         return senderInfo;
@@ -126,7 +119,6 @@ const selectSender = (miningPool, users, block_height) => {
         ? (senderPos = senderPos + 1 - miningPool.length)
         : senderPos++;
       sender = miningPool[senderPos];
-      //console.log("new sender", sender);
     }
 
     counter2++;
@@ -134,11 +126,12 @@ const selectSender = (miningPool, users, block_height) => {
   return senderInfo;
 };
 
-export default createTransactions;
+//add adress to adresses pool
+const addAdress2Pool = (adress, users) => {
+  var pos = users.findIndex((pos) => {
+    return pos == adress[0];
+  });
+  adressesPool[pos].push(adress);
+};
 
-//TO DO:
-//      1.) Create a pool of transactions to be included
-//
-//      2.) Determine how to store varying amounts of inputs and outputs
-//          - (UTXO's and STXO's)
-//      4/) Pass finished transactions to merkle tree to be hashed
+export default createTransactions;
