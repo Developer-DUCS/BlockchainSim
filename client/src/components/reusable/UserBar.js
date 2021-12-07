@@ -83,7 +83,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const UserBar = (props) => {
   const theme = useTheme();
-
   // setTheme (broken)
   // barTitle: String
   // tabNames: Array<String>
