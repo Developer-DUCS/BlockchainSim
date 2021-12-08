@@ -42,7 +42,7 @@ import InfoTwoToneIcon from "@mui/icons-material/InfoTwoTone";
 import Tooltip from "@mui/material/Tooltip";
 import { Popover } from "@mui/material";
 import InfoButton from "./InfoButton";
-
+import { Link } from "react-router-dom";
 const CreateSimulation = (props) => {
   const { setTheme, setFeedback, setFeedbackObj } = props;
   const [user, setUser] = React.useState({});
@@ -238,6 +238,15 @@ const CreateSimulation = (props) => {
   return (
     <Auth setUser={setUser}>
       <UserBar barTitle={"Create a Simulation"} setTheme={setTheme} />
+      <Button
+        component={Link}
+        to={"/simulation"}
+        color="secondary"
+        variant="contained"
+        sx={{ float: 500, mt: 2 }}
+      >
+        BACK
+      </Button>
       <Container maxWidth="md">
         <Paper sx={{ p: 2, mt: 2 }} elevation={2}>
           <Typography variant="h4" gutterBottom>
@@ -444,6 +453,7 @@ const CreateSimulation = (props) => {
                           />
                           <InfoButton
                             sx={{ ml: -5, mt: 4.5 }}
+                            title="Number of Transactions"
                             description={
                               "This number will represent the number of transactions that each block will store."
                             }
