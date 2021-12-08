@@ -90,7 +90,7 @@ const SignIn = (props) => {
       .catch(async (err) => {
         // Feedback
         setFeedback(true);
-        setFeedbackObj({ message: err, severity: "error" });
+        setFeedbackObj({ message: "Sign In Error", severity: "error" });
 
         console.error(err);
       });
