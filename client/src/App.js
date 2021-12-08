@@ -87,7 +87,7 @@ const App = () => {
             component={LandingPage}
           />
           <Route
-            path="/createsimulation"
+            path={`${process.env.PUBLIC_URL}/createsimulation`}
             render={() => (
               <CreateSimulation
                 setTheme={setTheme}
@@ -95,10 +95,6 @@ const App = () => {
                 setFeedbackObj={setFeedbackObj}
               />
             )}
-          />
-          <Route
-            path={`${process.env.PUBLIC_URL}/createsimulation`}
-            component={CreateSimulation}
           />
           <Route
             path={`${process.env.PUBLIC_URL}/signup`}

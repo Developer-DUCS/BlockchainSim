@@ -90,6 +90,9 @@ const Simulation = (props) => {
   };
 
   const deleteSimulation = (e) => {
+    e.preventDefault();
+    console.log("TEST");
+
     // Get Simulation ID
     let simID = id;
 
@@ -282,9 +285,9 @@ const Simulation = (props) => {
               </ListItemIcon>
               Share
             </MenuItem>
-            <MenuItem onClick={handleClose} sx={{ color: "error.main" }}>
+            <MenuItem sx={{ color: "error.main" }} onClick={deleteSimulation}>
               <ListItemIcon sx={{ color: "error.main" }}>
-                <DeleteIcon onClick={deleteSimulation} />
+                <DeleteIcon />
               </ListItemIcon>
               Delete
             </MenuItem>
