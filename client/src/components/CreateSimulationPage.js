@@ -38,6 +38,8 @@ import chooseMiner, {
 import sjcl from "../sjcl";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import adressesPool from "../js/blockchain/transactions/adressesPool";
+//import addresses from "../js/blockchain/transactions/adresses";
 import InfoTwoToneIcon from "@mui/icons-material/InfoTwoTone";
 import Tooltip from "@mui/material/Tooltip";
 import { Popover } from "@mui/material";
@@ -171,7 +173,7 @@ const CreateSimulation = (props) => {
       gentime: genTime,
       blockwin: blockWindow,
       numblocks: blocksCount,
-      transactions: transactions,
+      num_transactions: transactions,
       subsidy: subsidy,
       coin: coin,
       mining: mine,
@@ -189,12 +191,14 @@ const CreateSimulation = (props) => {
       initValues.numblocks,
       initValues.blockwin
     );
+
     var simulation = simulationCreator(
       initValues.numblocks,
       initialHash,
       timeStampArr,
       miningPool,
-      user.email
+      user.email,
+      initValues.num_transactions
     );
 
     var newSimulation = {

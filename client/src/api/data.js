@@ -35,8 +35,9 @@ router.post("/createsim", cors(), (req, res) => {
     const transactionString = JSON.stringify(transaction);
     const transaction_counter = req.body.blocks[i].transaction_counter;
     const miner = req.body.blocks[i].miner;
+    const balances = req.body.blocks[i].balances;
     const block_time_created = req.body.blocks[i].time_created;
-    let qry = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '${block_time_created}');`;
+    let qry = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '${balances}', '${block_time_created}');`;
     db.query(qry, (err) => {
       if (err) {
         console.log(err);
@@ -72,6 +73,7 @@ router.post("/deletesim", cors(), (req, res) => {
       }
     }
   });
+
   qry = `DELETE FROM simulation WHERE email='${email}' AND sim_name='${sim_name}'`;
   db.query(qry, (err) => {
     if (err) {
@@ -81,5 +83,43 @@ router.post("/deletesim", cors(), (req, res) => {
     }
   });
 });
+
+router.post("/getsimulations", cors(), (req, res) => {
+  var email = req.body.email;
+
+  var response = [];
+  getInfo(email);
+  async function getInfo(email) {
+    let qry = `SELECT sim_name, sim_created, sim_modified FROM simulation WHERE email='${email}'`;
+    const query = new Promise((resolve) => {
+      db.query(qry, (err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          for (i = 0; i < res.length; i++) {
+            response.push([
+              res[i].sim_name,
+              res[i].sim_modified,
+              res[i].sim_created,
+            ]);
+          }
+        }
+        resolve();
+      });
+    });
+    await query;
+    console.log("response: " + response);
+    //res.status(201).json({ msg: "it worked" });
+    res.status(200).send(response);
+  }
+});
+
+/*
+router.post("/getblocks", cors(), (req, res) => {
+  var sim_name = req.body.sim_name;
+  var email = req.body.email;
+  let qry = SELECT sim_name, 
+});
+*/
 
 module.exports = router;
