@@ -38,8 +38,6 @@ import chooseMiner, {
 import sjcl from "../sjcl";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import adressesPool from "../js/blockchain/transactions/adressesPool";
-//import addresses from "../js/blockchain/transactions/adresses";
 import InfoTwoToneIcon from "@mui/icons-material/InfoTwoTone";
 import Tooltip from "@mui/material/Tooltip";
 import { Popover } from "@mui/material";
@@ -173,7 +171,7 @@ const CreateSimulation = (props) => {
       gentime: genTime,
       blockwin: blockWindow,
       numblocks: blocksCount,
-      num_transactions: transactions,
+      transactions: transactions,
       subsidy: subsidy,
       coin: coin,
       mining: mine,
@@ -191,14 +189,12 @@ const CreateSimulation = (props) => {
       initValues.numblocks,
       initValues.blockwin
     );
-
     var simulation = simulationCreator(
       initValues.numblocks,
       initialHash,
       timeStampArr,
       miningPool,
-      user.email,
-      initValues.num_transactions
+      user.email
     );
 
     var newSimulation = {
@@ -242,16 +238,17 @@ const CreateSimulation = (props) => {
   return (
     <Auth setUser={setUser}>
       <UserBar barTitle={"Create a Simulation"} setTheme={setTheme} />
-      <Button
-        component={Link}
-        to={"/simulation"}
-        color="secondary"
-        variant="contained"
-        sx={{ float: 500, mt: 2 }}
-      >
-        BACK
-      </Button>
+
       <Container maxWidth="md">
+        <Button
+          component={Link}
+          to={"/simulation"}
+          color="secondary"
+          variant="contained"
+          sx={{ float: 500, mt: 2 }}
+        >
+          BACK
+        </Button>
         <Paper sx={{ p: 2, mt: 2 }} elevation={2}>
           <Typography variant="h4" gutterBottom>
             Create a Simulation

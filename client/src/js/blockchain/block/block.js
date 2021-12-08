@@ -8,9 +8,7 @@
             * NOT adressed yet *
 */
 
-//import chooseMiner from "./miningPool";
-//import createMinerPool from "./miningPool";
-import { createHeader, getHeaderHash, getHeaderJSON } from "../header";
+import createHeader from "../header";
 import createTransactions from "../transactions/transactions";
 
 const merkleTree = //TO DO: to not be hardcode
@@ -25,9 +23,14 @@ const blockCreator = (
   miningPool
 ) => {
   var header = createHeader(previousHash, merkleTree);
-  var hashID = getHeaderHash(header);
-  var headerJSON = getHeaderJSON(header);
-  var transactionJSON = createTransactions();
+  var hashID = header[0];
+  var headerJSON = header[1];
+  var transactionJSON = createTransactions(
+    miner,
+    num_transactions,
+    block_height,
+    miningPool
+  );
 
   var blockJSON = {
     id_block: hashID,

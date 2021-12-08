@@ -27,10 +27,10 @@ app.use(function (req, res, next) {
 router.use("/api/users", require("./client/src/api/users"));
 router.use("/api/data", require("./client/src/api/data"));
 router.use("/api/share", require("./client/src/api/share"));
-router.use(
-  "/addresses",
-  require("./client/src/js/blockchain/transactions/adresses")
-);
+// router.use(
+//   "/addresses",
+//   require("./client/src/js/blockchain/transactions/adresses")
+// );
 
 app.use(router);
 
