@@ -15,11 +15,17 @@ import { ThemeProvider } from "@mui/material/styles";
 import lightTheme from "./js/themes/lightTheme";
 import CreateSimulation from "./components/CreateSimulationPage";
 import SimulationHome from "./components/SimulationHome";
+import Feedback from "./components/reusable/Feedback";
 
 const App = () => {
   const [theme, setTheme] = React.useState(lightTheme);
   const [signIn, setSignIn] = React.useState(false);
   const basename = process.env.REACT_APP_BASENAME || null;
+  const [feedback, setFeedback] = React.useState(false);
+  const [feedbackObj, setFeedbackObj] = React.useState({
+    message: "",
+    severity: "success",
+  });
 
   // Check if the user is signed in
   React.useEffect(() => {
@@ -68,13 +74,27 @@ const App = () => {
                   signIn={signIn}
                   toggleSignIn={toggleSignIn}
                 />
-                <SignIn toggleSignIn={toggleSignIn} />
+                <SignIn
+                  toggleSignIn={toggleSignIn}
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
               </>
             )}
           />
           <Route
             path={`${process.env.PUBLIC_URL}/landing`}
             component={LandingPage}
+          />
+          <Route
+            path="/createsimulation"
+            render={() => (
+              <CreateSimulation
+                setTheme={setTheme}
+                setFeedback={setFeedback}
+                setFeedbackObj={setFeedbackObj}
+              />
+            )}
           />
           <Route
             path={`${process.env.PUBLIC_URL}/createsimulation`}
@@ -89,7 +109,10 @@ const App = () => {
                   signIn={signIn}
                   toggleSignIn={toggleSignIn}
                 />
-                <SignUp />
+                <SignUp
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
               </>
             )}
           />
@@ -104,12 +127,23 @@ const App = () => {
           />
           <Route
             path={`${process.env.PUBLIC_URL}/simulation/:id`}
-            render={() => <Simulation setTheme={setTheme} />}
+            render={() => (
+              <Simulation
+                setTheme={setTheme}
+                setFeedback={setFeedback}
+                setFeedbackObj={setFeedbackObj}
+              />
+            )}
           />
 
           <Route component={Error} />
         </Switch>
       </Router>
+      <Feedback
+        feedbackObj={feedbackObj}
+        open={feedback}
+        setOpen={setFeedback}
+      />
     </ThemeProvider>
   );
 };

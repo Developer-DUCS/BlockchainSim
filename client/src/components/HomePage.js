@@ -39,7 +39,7 @@ const HomePage = (props) => {
         }}
         {...rest}
       />
-      <Parallax filter image={require("../assets/landing-bg.jpg").default}>
+      <Parallax filter image={require("../assets/nightSky.jpg").default}>
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>

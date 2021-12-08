@@ -105,6 +105,7 @@ router.post("/register", cors(), (req, res) => {
               transactions JSON NOT NULL,
               transaction_counter TINYINT NOT NULL, 
               miner VARCHAR(256) NOT NULL, 
+              balances JSON NOT NULL,
               time_created TIMESTAMP NOT NULL, 
               PRIMARY KEY (hash));`,
             (err, result) => {

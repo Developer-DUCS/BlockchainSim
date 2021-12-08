@@ -18,6 +18,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Box,
   Button,
   Grid,
   Container,
@@ -37,10 +38,27 @@ import chooseMiner, {
 import sjcl from "../sjcl";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-
+import InfoTwoToneIcon from "@mui/icons-material/InfoTwoTone";
+import Tooltip from "@mui/material/Tooltip";
+import { Popover } from "@mui/material";
+import InfoButton from "./InfoButton";
+import { Link } from "react-router-dom";
 const CreateSimulation = (props) => {
-  const { setTheme } = props;
+  const { setTheme, setFeedback, setFeedbackObj } = props;
   const [user, setUser] = React.useState({});
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   const times = [
     {
@@ -160,10 +178,7 @@ const CreateSimulation = (props) => {
       numminers: numMiners,
     };
 
-    //console.log("Simulation values:", initValues);
-
-    var miningPool = createMinerPool(initValues.numminers); //create mining pool
-    //console.log("new mining pool:", miningPool);
+    var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
 
     var bithash = sjcl.hash.sha256.hash(initValues.desc);
     var initialHash = sjcl.codec.hex.fromBits(bithash);
@@ -178,7 +193,8 @@ const CreateSimulation = (props) => {
       initValues.numblocks,
       initialHash,
       timeStampArr,
-      miningPool
+      miningPool,
+      user.email
     );
 
     var newSimulation = {
@@ -209,6 +225,10 @@ const CreateSimulation = (props) => {
       body: JSON.stringify(data),
     }).then((res) => {
       if (res.status == 200) {
+        // Set Feedback Message Properties
+        setFeedback(true);
+        setFeedbackObj({ message: "Created Simulation!", severity: "success" });
+
         //redirect
         history.push(`${process.env.PUBLIC_URL}/simulation`);
       }
@@ -218,7 +238,17 @@ const CreateSimulation = (props) => {
   return (
     <Auth setUser={setUser}>
       <UserBar barTitle={"Create a Simulation"} setTheme={setTheme} />
+
       <Container maxWidth="md">
+        <Button
+          component={Link}
+          to={`${process.env.PUBLIC_URL}/simulation`}
+          color="secondary"
+          variant="contained"
+          sx={{ float: 500, mt: 2 }}
+        >
+          BACK
+        </Button>
         <Paper sx={{ p: 2, mt: 2 }} elevation={2}>
           <Typography variant="h4" gutterBottom>
             Create a Simulation
@@ -232,7 +262,7 @@ const CreateSimulation = (props) => {
                     <Divider />
                     <TextField
                       sx={{ mt: 4, mr: 7 }}
-                      style={{ width: "43%" }}
+                      style={{ width: "90%" }}
                       required
                       label="Name of Simulation"
                       name="name"
@@ -243,25 +273,11 @@ const CreateSimulation = (props) => {
                         setName(e.target.value);
                       }}
                     />
-                    <TextField
-                      required
-                      sx={{ mt: 4, mr: 7 }}
-                      style={{ width: "43%" }}
-                      name="creationDate"
-                      label="Date of Creation of Genesis Block"
-                      InputLabelProps={{ shrink: true, required: true }}
-                      type="date"
-                      defaultValue={values.someDate}
-                      onChange={(e) => {
-                        setGenDate(e.target.value);
-                        //console.log(genDate);
-                      }}
-                    />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
                       sx={{ mt: 2, mr: 7 }}
-                      style={{ width: "43%" }}
+                      style={{ width: "90%" }}
                       required
                       label="Description"
                       name="description"
@@ -270,8 +286,32 @@ const CreateSimulation = (props) => {
                       }}
                       multiline
                     />
+                  </Grid>
+                  <Grid item xs={12}>
                     <TextField
-                      style={{ width: "43%" }}
+                      required
+                      sx={{ mt: 2, mr: 7 }}
+                      style={{ width: "90%" }}
+                      name="creationDate"
+                      label="Date of Creation of Genesis Block"
+                      InputLabelProps={{ shrink: true, required: true }}
+                      type="date"
+                      defaultValue={values.someDate}
+                      onChange={(e) => {
+                        setGenDate(e.target.value);
+                      }}
+                    />
+                    <InfoButton
+                      sx={{ ml: -5, mt: 4.5 }}
+                      title="Creation Date"
+                      description={
+                        "This will be the date that the first block was created in the block chain."
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      style={{ width: "90%" }}
                       sx={{ mt: 2, mr: 7 }}
                       required
                       name="time"
@@ -284,10 +324,17 @@ const CreateSimulation = (props) => {
                         //console.log(genTime);
                       }}
                     />
+                    <InfoButton
+                      sx={{ ml: -5, mt: 4.5 }}
+                      title="Creation Time"
+                      description={
+                        "This will be the time that the first block was created in the block chain."
+                      }
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      style={{ width: "43%" }}
+                      style={{ width: "90%" }}
                       sx={{ mt: 2, mr: 7 }}
                       required
                       placeholder="100"
@@ -311,8 +358,17 @@ const CreateSimulation = (props) => {
                       error={blocksCountError}
                       color={blocksCountError ? "error" : "success"}
                     />
+                    <InfoButton
+                      sx={{ ml: -5, mt: 4.5 }}
+                      title="Number of Blocks"
+                      description={
+                        "This number will represent how many blocks will be created in the block chain."
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
                     <TextField
-                      style={{ width: "43%" }}
+                      style={{ width: "90%" }}
                       sx={{ mt: 2, mr: 7 }}
                       required
                       id="coin"
@@ -343,7 +399,7 @@ const CreateSimulation = (props) => {
                       <AccordionDetails sx={{ ml: -1.5 }}>
                         <Grid item xs={12}>
                           <TextField
-                            style={{ width: "43%" }}
+                            style={{ width: "90%" }}
                             sx={{ mt: -2, mr: 7 }}
                             id="window"
                             select
@@ -361,10 +417,17 @@ const CreateSimulation = (props) => {
                               </option>
                             ))}
                           </TextField>
+                          <InfoButton
+                            sx={{ ml: -5, mt: 0 }}
+                            title="Window between Blocks"
+                            description={
+                              "This number will represent the number of minutes between the creation of each block."
+                            }
+                          />
                           <TextField
-                            style={{ width: "43%" }}
-                            sx={{ mt: -2, mr: 7 }}
-                            placeholder="5"
+                            style={{ width: "90%" }}
+                            sx={{ mt: 2, mr: 7 }}
+                            defaultValue={"5"}
                             id="numtransactions"
                             label="Number of Transactions per Block"
                             type="number"
@@ -389,15 +452,22 @@ const CreateSimulation = (props) => {
                             error={transactionsError}
                             color={transactionsError ? "error" : "success"}
                           />
+                          <InfoButton
+                            sx={{ ml: -5, mt: 4.5 }}
+                            title="Number of Transactions"
+                            description={
+                              "This number will represent the number of transactions that each block will store."
+                            }
+                          />
                         </Grid>
                         <Grid item xs={12}>
                           <TextField
-                            style={{ width: "43%" }}
+                            style={{ width: "90%" }}
                             sx={{ mt: 2, mr: 7 }}
-                            placeholder="50"
                             id="subsidy"
                             label="Set a Subsidy"
                             type="number"
+                            defaultValue={"50"}
                             InputProps={{ inputProps: { min: 1, max: 50 } }}
                             InputLabelProps={{
                               shrink: true,
@@ -419,10 +489,17 @@ const CreateSimulation = (props) => {
                             error={subsidyError}
                             color={subsidyError ? "error" : "success"}
                           />
+                          <InfoButton
+                            sx={{ ml: -5, mt: 4.5 }}
+                            title="Subsidy"
+                            description={
+                              "This number will represent the reward for mining the block."
+                            }
+                          />
                           <TextField
-                            style={{ width: "43%" }}
+                            style={{ width: "90%" }}
                             sx={{ mt: 2, mr: 7 }}
-                            placeholder="50"
+                            defaultValue={"50"}
                             id="miners"
                             label="How many miners will be in the simulation:"
                             type="number"
@@ -448,12 +525,19 @@ const CreateSimulation = (props) => {
                             error={numMinersError}
                             color={numMinersError ? "error" : "success"}
                           />
+                          <InfoButton
+                            sx={{ ml: -5, mt: 4.5 }}
+                            title="Number of Miners"
+                            description={
+                              "This number will represent how many miners will be included in the simulation."
+                            }
+                          />
                         </Grid>
                         <Grid item xs={12}></Grid>
                         <Grid item xs={12}>
                           <TextField
-                            style={{ width: "43%" }}
-                            sx={{ mt: 3, mr: 7 }}
+                            style={{ width: "90%" }}
+                            sx={{ mt: 2, mr: 7 }}
                             id="mining"
                             select
                             label="Select a type of Verification"

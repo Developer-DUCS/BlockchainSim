@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 require("dotenv").config({ path: "../../../.env" });
 
 const SignIn = (props) => {
-  const { toggleSignIn } = props;
+  const { toggleSignIn, setFeedbackObj, setFeedback } = props;
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(false);
@@ -37,6 +37,13 @@ const SignIn = (props) => {
       })
       .then((user) => {
         if (user) {
+          // Feedback
+          setFeedback(true);
+          setFeedbackObj({
+            message: "Signed in!",
+            severity: "success",
+          });
+
           history.push(`${process.env.PUBLIC_URL}/simulation`);
         }
       })
@@ -68,18 +75,24 @@ const SignIn = (props) => {
         }
       })
       .then(async (res) => {
-        console.log(res);
-
         // Store token in cookie
         window.localStorage.setItem("token", res.token);
 
         // Toggle state of sign in
         toggleSignIn();
 
+        // Feedback
+        setFeedback(true);
+        setFeedbackObj({ message: "Signed in!", severity: "success" });
+
         //redirect
         history.push(`${process.env.PUBLIC_URL}/simulation`);
       })
       .catch(async (err) => {
+        // Feedback
+        setFeedback(true);
+        setFeedbackObj({ message: "Sign In Error", severity: "error" });
+
         console.error(err);
       });
   };
