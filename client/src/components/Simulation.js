@@ -30,9 +30,13 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ShareIcon from "@mui/icons-material/Share";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useHistory } from "react-router-dom";
 
 const Simulation = (props) => {
-  const { setTheme } = props;
+  const history = useHistory();
+  const { setTheme, setFeedback, setFeedbackObj } = props;
+  const [user, setUser] = React.useState({});
+  const { id } = useParams();
 
   // Used for UserBar component to keep track of selected tab - Set Default to default tab index
   const [selectedTab, setSelectedTab] = React.useState(0);
@@ -56,14 +60,70 @@ const Simulation = (props) => {
   const shareSimulation = (e) => {
     e.preventDefault();
 
+    let simID = id;
+
     // Email value
     let email = document.getElementById("email").value;
-    console.log(email);
 
-    // SHARE API GOES HERE
+    let url = "http://localhost:5000/api/share";
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email, sim_id: simID }),
+    };
+    fetch(url, options)
+      .then((res) => {
+        console.log(res);
+
+        if (res.ok) {
+          setFeedback(true);
+          setFeedbackObj({
+            message: `Simulation shared`,
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
-  let { id } = useParams();
+  const deleteSimulation = (e) => {
+    e.preventDefault();
+
+    // Get Simulation ID
+    let simID = id;
+
+    // Delete API Call
+    let url = "http://localhost:5000/api/data/deletesim";
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: user.email, sim_id: simID }),
+    };
+
+    fetch(url, options)
+      .then((res) => {
+        console.log(res);
+
+        if (res.ok) {
+          setFeedback(true);
+          setFeedbackObj({
+            message: `Simulation ${id} deleted.`,
+            severity: "error",
+          });
+
+          // reroute back to simulations list
+          history.push("/simulation");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   // This placeholder data will be replaced by fetch (to get the block data associated with simulation ID)
   // Test Date for blocks
@@ -160,7 +220,7 @@ const Simulation = (props) => {
       "000099d89ffda35707d4ffa5ae51667d4c179e0ebd7b4799b85e11675633f7dc",
   };
   return (
-    <Auth>
+    <Auth setUser={setUser}>
       <UserBar
         barTitle={`Simulation ${id}`}
         tabNames={["Main Chain", "Wallet"]}
@@ -225,7 +285,7 @@ const Simulation = (props) => {
             </MenuItem>
             <MenuItem onClick={handleClose} sx={{ color: "error.main" }}>
               <ListItemIcon sx={{ color: "error.main" }}>
-                <DeleteIcon />
+                <DeleteIcon onClick={deleteSimulation} />
               </ListItemIcon>
               Delete
             </MenuItem>

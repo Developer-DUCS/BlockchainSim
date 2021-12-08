@@ -19,6 +19,7 @@
 */
 
 import sjcl from "../../sjcl";
+import { get_element_from_array, reduce } from "../utils/array_utils";
 
 const version = "00000020";
 const time = "2b80475f";
@@ -45,13 +46,21 @@ const createHeader = (previousHash, merkleTree) => {
   var hashing = (intNonce) => {
     blockHeader = "";
     nonce = intNonce.toString(16);
-    blockHeader += blockHeader.concat(
-      version,
-      previousHash,
-      merkleTree,
-      time,
-      target,
-      nonce
+    // blockHeader += blockHeader.concat(
+    //   version,
+    //   previousHash,
+    //   merkleTree,
+    //   time,
+    //   target,
+    //   nonce
+    // );
+
+    blockHeader = reduce(
+      [version, previousHash, merkleTree, time, target, nonce],
+      "",
+      function (result, string) {
+        return result + string;
+      }
     );
 
     //double sha256 block header
@@ -91,4 +100,14 @@ const createHeader = (previousHash, merkleTree) => {
   return [selectedHash, objectJSON];
 };
 
-export default createHeader;
+const getHeaderHash = (header) => {
+  let headerCopy = header.slice();
+  return get_element_from_array(headerCopy, 0);
+};
+
+const getHeaderJSON = (header) => {
+  let headerCopy = header.slice();
+  return get_element_from_array(headerCopy, 1);
+};
+
+export { createHeader, getHeaderHash, getHeaderJSON };

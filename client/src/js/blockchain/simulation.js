@@ -1,5 +1,9 @@
 import blockCreator from "./block/block";
 import chooseMiner from "./block/miningPool";
+import {
+  add_element_to_array,
+  get_element_from_array,
+} from "../utils/array_utils";
 import createAdressPoolHeader from "./transactions/adressesPool";
 import { adressesPool } from "./transactions/adressesPool";
 
@@ -12,10 +16,13 @@ const simulationCreator = (
   user,
   num_transactions
 ) => {
-  var blocks = [];
-  var hashes = [];
+  var simulation = {
+    blocks: [],
+    hashes: [],
+  };
   previousHash = initialHash;
 
+  // Create blocks for simulation
   //initialize adress/transaction pool
   createAdressPoolHeader(miningPool.length);
 
@@ -36,14 +43,31 @@ const simulationCreator = (
 
     previousHash = hashID;
 
-    blocks.push(blockJSON);
-    hashes.push(hashID);
+    simulation = addBlockAndHashToSimulation(simulation, blockJSON, hashID);
   }
 
+const addBlockAndHashToSimulation = (simulation, block, hash) => {
+  let simNew = {};
+  simNew.blocks = addBlockToSimulation(simulation.blocks, block);
+  simNew.hashes = addHashToSimulation(simulation.hashes, hash);
+  return simNew;
+};
+
+const addBlockToSimulation = (simulationBlocks, block) => {
+  let simulationBlocksCopy = simulationBlocks.slice();
+  simulationBlocksCopy = add_element_to_array(simulationBlocksCopy, block);
+  return simulationBlocksCopy;
+};
+
+const addHashToSimulation = (simulationHashes, hash) => {
+  let simulationHashesCopy = simulationHashes.slice();
+  simulationHashesCopy = add_element_to_array(simulationHashesCopy, hash);
+  return simulationHashesCopy;
+};
   //TO DELETE LATER DELETE ADRESSES POOL
   adressesPool.length = 0;
 
-  return [hashes, blocks];
+  return [simulation.hashes, simulation.blocks];
 };
 
 export default simulationCreator;

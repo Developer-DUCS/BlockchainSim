@@ -11,6 +11,11 @@
 
 */
 
+import App from "../../../App";
+import { get_element_from_array } from "../../utils/array_utils";
+
+//var numMiners;
+
 // function to select random element
 const randomSelector = (min, max) => {
   let num = Math.random() * (max - min) + min;
@@ -32,7 +37,7 @@ const createMinerPool = (numMiners, user) => {
 //function to choose random miner from pool
 const chooseMiner = (miningPool) => {
   var randomMinerNum = randomSelector(0, miningPool.length - 1);
-  var selectedMiner = miningPool[randomMinerNum];
+  var selectedMiner = get_element_from_array(miningPool, randomMinerNum);
   return selectedMiner;
 };
 

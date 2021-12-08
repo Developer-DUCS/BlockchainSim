@@ -49,10 +49,11 @@ router.post("/createsim", cors(), (req, res) => {
 
 router.post("/deletesim", cors(), (req, res) => {
   const email = req.body.email;
-  const sim_name = req.body.sim_name;
+  const sim_id = req.body.sim_id;
+
   // parse email where special characters = _
   const email_valid = email.replace(/[@.]/g, "_");
-  let qry = `SELECT sim_blocks FROM simulation WHERE email='${email}' AND sim_name='${sim_name}'`;
+  let qry = `SELECT sim_blocks FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
   db.query(qry, (err, result) => {
     if (err) {
       console.log(err);
@@ -74,7 +75,7 @@ router.post("/deletesim", cors(), (req, res) => {
     }
   });
 
-  qry = `DELETE FROM simulation WHERE email='${email}' AND sim_name='${sim_name}'`;
+  qry = `DELETE FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
   db.query(qry, (err) => {
     if (err) {
       console.log(err);
@@ -84,11 +85,9 @@ router.post("/deletesim", cors(), (req, res) => {
   });
 });
 
-router.post("/getsimulations", cors(), (req, res) => {
-  var email = req.body.email;
-
-  var response = [];
-  getInfo(email);
+router.post("/getsimulations", cors(), (req, resp) => {
+ var response = [];
+  getInfo(req.body.email);
   async function getInfo(email) {
     let qry = `SELECT sim_name, sim_created, sim_modified FROM simulation WHERE email='${email}'`;
     const query = new Promise((resolve) => {
@@ -112,6 +111,20 @@ router.post("/getsimulations", cors(), (req, res) => {
     //res.status(201).json({ msg: "it worked" });
     res.status(200).send(response);
   }
+});
+
+router.post("/getsharedsimulations", cors(), (req, resp) => {
+  var email = req.body.email;
+  let qry = `SELECT sim_id, sim_name, sim_created, sim_modified from simulation WHERE JSON_VALUE(sim_shared, '$.email') LIKE '%${email}%'`;
+  console.log(qry);
+  db.query(qry, (err, res) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(400);
+    } else {
+      resp.send(res);
+    }
+  });
 });
 
 /*
