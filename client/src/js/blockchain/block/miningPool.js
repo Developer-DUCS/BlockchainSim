@@ -16,11 +16,13 @@ import { get_element_from_array } from "../../utils/array_utils";
 
 //var numMiners;
 
+// function to select random element
 const randomSelector = (min, max) => {
   let num = Math.random() * (max - min) + min;
   return Math.floor(num);
 };
 
+// function to update/create new mining pool
 const createMinerPool = (numMiners, user) => {
   var miningPool = [];
   for (var i = 0; i < numMiners - 1; i++) {
@@ -32,6 +34,7 @@ const createMinerPool = (numMiners, user) => {
   return miningPool;
 };
 
+//function to choose random miner from pool
 const chooseMiner = (miningPool) => {
   var randomMinerNum = randomSelector(0, miningPool.length - 1);
   var selectedMiner = get_element_from_array(miningPool, randomMinerNum);
