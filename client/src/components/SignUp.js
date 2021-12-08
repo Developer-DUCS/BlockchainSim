@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import React from "react";
+require("dotenv").config({ path: "../../../.env" });
 
 const SignUp = (props) => {
   const { setFeedback, setFeedbackObj } = props;
@@ -22,7 +23,7 @@ const SignUp = (props) => {
     e.preventDefault();
     // API call to create account
     // if successful, redirect to login page
-    const url = "http://localhost:5000/api/users/register";
+    const url = `http://${process.env.REACT_APP_API_URL}/api/users/register`;
     const payload = {
       id: email,
       pass: password,
@@ -41,7 +42,7 @@ const SignUp = (props) => {
         setFeedbackObj({ message: "Account Created!", severity: "success" });
 
         //redirect
-        history.push("/signin");
+        history.push(`${process.env.PUBLIC_URL}/signin`);
       }
       if (res.status == 409) {
         // Feedback

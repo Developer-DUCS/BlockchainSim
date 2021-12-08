@@ -18,7 +18,7 @@ const SimulationHome = (props) => {
   // Fetch api "/getsimulations" via POST
   React.useEffect(() => {
     if (user.email) {
-      let url = "http://localhost:5000/api/data/getsimulations";
+      let url = `http://${process.env.REACT_APP_API_URL}/api/data/getsimulations`;
       let options = {
         method: "POST",
         headers: {
@@ -43,7 +43,7 @@ const SimulationHome = (props) => {
         });
 
       // Shared Simulations
-      url = "http://localhost:5000/api/data/getsharedsimulations";
+      url = `http://${process.env.REACT_APP_API_URL}/api/data/getsharedsimulations`;
 
       fetch(url, options)
         .then((res) => {
@@ -75,7 +75,7 @@ const SimulationHome = (props) => {
       <Container>
         <Button
           component={Link}
-          to={"/createsimulation"}
+          to={`${process.env.PUBLIC_URL}/createsimulation`}
           color="secondary"
           variant="contained"
           sx={{ float: 500, ml: 2, mt: 2 }}
@@ -113,6 +113,15 @@ const SimulationHome = (props) => {
             </Grid>
           </Grid>
         </TabPanel>
+        <Button
+          component={Link}
+          to={`${process.env.PUBLIC_URL}/createsimulation`}
+          color="secondary"
+          variant="contained"
+          sx={{ float: 500, ml: 2 }}
+        >
+          Add New Simulation
+        </Button>
       </Container>
     </Auth>
   );

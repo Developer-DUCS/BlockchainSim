@@ -65,7 +65,7 @@ const Simulation = (props) => {
     // Email value
     let email = document.getElementById("email").value;
 
-    let url = "http://localhost:5000/api/share";
+    let url = `http://${process.env.REACT_APP_API_URL}/api/share`;
     let options = {
       method: "POST",
       headers: {
@@ -90,13 +90,11 @@ const Simulation = (props) => {
   };
 
   const deleteSimulation = (e) => {
-    e.preventDefault();
-
     // Get Simulation ID
     let simID = id;
 
     // Delete API Call
-    let url = "http://localhost:5000/api/data/deletesim";
+    let url = `http://${process.env.REACT_APP_API_URL}/api/data/deletesim`;
     let options = {
       method: "POST",
       headers: {
@@ -117,7 +115,8 @@ const Simulation = (props) => {
           });
 
           // reroute back to simulations list
-          history.push("/simulation");
+
+          history.push(`${process.env.PUBLIC_URL}/simulation`);
         }
       })
       .catch((err) => {

@@ -20,6 +20,7 @@ import Feedback from "./components/reusable/Feedback";
 const App = () => {
   const [theme, setTheme] = React.useState(lightTheme);
   const [signIn, setSignIn] = React.useState(false);
+  const basename = process.env.REACT_APP_BASENAME || null;
   const [feedback, setFeedback] = React.useState(false);
   const [feedbackObj, setFeedbackObj] = React.useState({
     message: "",
@@ -28,7 +29,7 @@ const App = () => {
 
   // Check if the user is signed in
   React.useEffect(() => {
-    fetch("http://localhost:5000/api/users/auth", {
+    fetch(`http://${process.env.REACT_APP_API_URL}/api/users/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,10 +54,10 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      <Router>
+      <Router basename={basename}>
         <Switch>
           <Route
-            path="/"
+            path={`${process.env.PUBLIC_URL}/`}
             render={() => (
               <>
                 <HomePage />
@@ -65,7 +66,7 @@ const App = () => {
             exact
           />
           <Route
-            path="/signin"
+            path={`${process.env.PUBLIC_URL}/signin`}
             render={() => (
               <>
                 <NavBar
@@ -81,7 +82,10 @@ const App = () => {
               </>
             )}
           />
-          <Route path="/landing" component={LandingPage} />
+          <Route
+            path={`${process.env.PUBLIC_URL}/landing`}
+            component={LandingPage}
+          />
           <Route
             path="/createsimulation"
             render={() => (
@@ -93,7 +97,11 @@ const App = () => {
             )}
           />
           <Route
-            path="/signup"
+            path={`${process.env.PUBLIC_URL}/createsimulation`}
+            component={CreateSimulation}
+          />
+          <Route
+            path={`${process.env.PUBLIC_URL}/signup`}
             render={() => (
               <>
                 <NavBar
@@ -108,14 +116,17 @@ const App = () => {
               </>
             )}
           />
-          <Route path="/demo" render={() => <Demo setTheme={setTheme} />} />
           <Route
-            path="/simulation"
+            path={`${process.env.PUBLIC_URL}/demo`}
+            render={() => <Demo setTheme={setTheme} />}
+          />
+          <Route
+            path={`${process.env.PUBLIC_URL}/simulation`}
             render={() => <SimulationHome setTheme={setTheme} />}
             exact
           />
           <Route
-            path="/simulation/:id"
+            path={`${process.env.PUBLIC_URL}/simulation/:id`}
             render={() => (
               <Simulation
                 setTheme={setTheme}

@@ -81,7 +81,7 @@ function Row(props) {
             size="small"
             color="primary"
             component={Link}
-            to={`/simulation/${row.sim_id}`}
+            to={`${process.env.PUBLIC_URL}/simulation/${row.sim_id}`}
           >
             <LaunchIcon />
           </IconButton>

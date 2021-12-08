@@ -54,14 +54,18 @@ export default function HeaderLinks(props) {
       <ListItem className={classes.listItem}>
         <Button
           component={Link}
-          to={"/signin"}
+          to={`${process.env.PUBLIC_URL}/signin`}
           color="transparent"
           fontSize="20px"
           sx={{ mr: 2 }}
         >
           Sign In
         </Button>
-        <Button component={Link} to={"/signup"} color="transparent">
+        <Button
+          component={Link}
+          to={`${process.env.PUBLIC_URL}/signup`}
+          color="transparent"
+        >
           Sign Up
         </Button>
       </ListItem>

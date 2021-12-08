@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
+require("dotenv").config({ path: "../../../.env" });
 
 const SignIn = (props) => {
   const { toggleSignIn, setFeedbackObj, setFeedback } = props;
@@ -19,7 +20,7 @@ const SignIn = (props) => {
   // Checks to see if the user is already logged in and
   // redirects them to the home page if they are
   React.useEffect(() => {
-    fetch("http://localhost:5000/api/users/auth", {
+    fetch(`http://${process.env.REACT_APP_API_URL}/api/users/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +44,7 @@ const SignIn = (props) => {
             severity: "success",
           });
 
-          history.push("/simulation");
+          history.push(`${process.env.PUBLIC_URL}/simulation`);
         }
       })
       .catch((err) => {
@@ -59,7 +60,7 @@ const SignIn = (props) => {
     // API call to login to account
     // if successful, redirect to landing page
     // if not, display error message
-    fetch("http://localhost:5000/api/users/login", {
+    fetch(`http://${process.env.REACT_APP_API_URL}/api/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -85,7 +86,7 @@ const SignIn = (props) => {
         setFeedbackObj({ message: "Signed in!", severity: "success" });
 
         //redirect
-        history.push("/simulation");
+        history.push(`${process.env.PUBLIC_URL}/simulation`);
       })
       .catch(async (err) => {
         // Feedback

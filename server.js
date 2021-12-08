@@ -3,10 +3,11 @@
 
 const express = require("express");
 const app = express();
-const port = 5000;
 const router = express.Router();
 
 var cors = require("cors");
+
+require("dotenv").config();
 
 app.use(express.static("public"));
 // app.use(express.json());
@@ -24,9 +25,13 @@ app.use(function (req, res, next) {
 });
 
 // List of routes
-router.use("/api/users", require("./client/src/api/users"));
-router.use("/api/data", require("./client/src/api/data"));
-router.use("/api/share", require("./client/src/api/share"));
+router.use("/BtB/api/users", require("./api/users"));
+router.use("/BtB/api/data", require("./api/data"));
+router.use("/BtB/api/share", require("./api/share"));
+
+// router.use("/api/users", require("./client/src/api/users"));
+// router.use("/api/data", require("./client/src/api/data"));
+// router.use("/api/share", require("./client/src/api/share"));
 // router.use(
 //   "/addresses",
 //   require("./client/src/js/blockchain/transactions/adresses")
@@ -36,4 +41,7 @@ app.use(router);
 
 app.use(cors({ origin: true, credentials: true }));
 
-app.listen(port, () => `Server running on port ${port}`);
+app.listen(
+  process.env.PORT,
+  () => `Server running on port ${process.env.PORT}`
+);
