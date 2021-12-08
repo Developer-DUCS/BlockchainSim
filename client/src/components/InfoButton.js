@@ -1,42 +1,41 @@
-import { Popover } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { Typography } from "@mui/material";
 import InfoTwoToneIcon from "@mui/icons-material/InfoTwoTone";
 import React from "react";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 
 const InfoButton = (props) => {
-  const { sx, description } = props;
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { sx, title, description } = props;
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const MyToolTipStyle = styled(({ className, ...props }) => (
+    <Tooltip arrow placement="top" {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: "#f5f5f9",
+      color: "rgba(0, 0, 0, 0.87)",
+      maxWidth: 220,
+      fontSize: theme.typography.pxToRem(12),
+      border: "1px solid #dadde9",
+      fontSize: 15,
+    },
+  }));
 
   return (
     <>
-      <InfoTwoToneIcon fontSize="md" onClick={handleClick} sx={sx} />
-      <Popover
-        anchorOrigin={{
-          vertical: "center",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "center",
-          horizontal: "left",
-        }}
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
+      <MyToolTipStyle
+        title={
+          <React.Fragment>
+            <Typography color="inherit">
+              <u>
+                <b>{title}</b>
+              </u>
+            </Typography>
+            <em>{description}</em>
+          </React.Fragment>
+        }
       >
-        <Typography sx={{ p: 2 }}>{description}</Typography>
-      </Popover>
+        <InfoTwoToneIcon fontSize="md" sx={sx} />
+      </MyToolTipStyle>
     </>
   );
 };

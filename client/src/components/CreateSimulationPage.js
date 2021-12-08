@@ -293,6 +293,7 @@ const CreateSimulation = (props) => {
                     />
                     <InfoButton
                       sx={{ ml: -5, mt: 4.5 }}
+                      title="Creation Date"
                       description={
                         "This will be the date that the first block was created in the block chain."
                       }
@@ -315,6 +316,7 @@ const CreateSimulation = (props) => {
                     />
                     <InfoButton
                       sx={{ ml: -5, mt: 4.5 }}
+                      title="Creation Time"
                       description={
                         "This will be the time that the first block was created in the block chain."
                       }
@@ -348,6 +350,7 @@ const CreateSimulation = (props) => {
                     />
                     <InfoButton
                       sx={{ ml: -5, mt: 4.5 }}
+                      title="Number of Blocks"
                       description={
                         "This number will represent how many blocks will be created in the block chain."
                       }
@@ -405,7 +408,8 @@ const CreateSimulation = (props) => {
                             ))}
                           </TextField>
                           <InfoButton
-                            sx={{ ml: -5, mt: 0.5 }}
+                            sx={{ ml: -5, mt: 0 }}
+                            title="Window between Blocks"
                             description={
                               "This number will represent the number of minutes between the creation of each block."
                             }
@@ -476,6 +480,7 @@ const CreateSimulation = (props) => {
                           />
                           <InfoButton
                             sx={{ ml: -5, mt: 4.5 }}
+                            title="Subsidy"
                             description={
                               "This number will represent the reward for mining the block."
                             }
@@ -511,6 +516,7 @@ const CreateSimulation = (props) => {
                           />
                           <InfoButton
                             sx={{ ml: -5, mt: 4.5 }}
+                            title="Number of Miners"
                             description={
                               "This number will represent how many miners will be included in the simulation."
                             }
