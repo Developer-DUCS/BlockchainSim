@@ -57,7 +57,7 @@ function createData(
     sim_blocks,
     moreinfo: [
       {
-        num_blocks: sim_blocks.length,
+        num_blocks: sim_blocks.length ? sim_blocks.length : 0,
         sim_shared: sim_shared,
         amount: 3,
       },
