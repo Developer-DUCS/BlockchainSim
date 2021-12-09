@@ -36,7 +36,7 @@ router.post("/createsim", cors(), (req, res) => {
     const transaction_counter = req.body.blocks[i].transaction_counter;
     const miner = req.body.blocks[i].miner;
     const block_time_created = req.body.blocks[i].time_created;
-    let qry = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '${block_time_created}');`;
+    let qry = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}');`;
     db.query(qry, (err) => {
       if (err) {
         console.log(err);
@@ -86,11 +86,39 @@ router.post("/deletesim", cors(), (req, res) => {
 
 router.post("/getsimulations", cors(), (req, resp) => {
   var email = req.body.email;
-  let qry = `SELECT sim_id, sim_name, sim_created, sim_modified FROM simulation WHERE email='${email}'`;
+  let qry = `SELECT sim_id, sim_name, sim_created, sim_modified, sim_shared, sim_description, sim_blocks FROM simulation WHERE email='${email}'`;
   db.query(qry, (err, res) => {
     if (err) {
       console.log(err);
     } else {
+      resp.send(res);
+    }
+  });
+});
+
+router.post("/getsimulations/id", cors(), (req, resp) => {
+  var email = req.body.email;
+  var id = req.body.id;
+  let qry = `SELECT sim_id, sim_name, sim_description, email, sim_blocks from simulation WHERE email='${email}' and sim_id='${id}'`;
+  db.query(qry, (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // console.log("RES: ", res);
+      resp.send(res);
+    }
+  });
+});
+
+router.post("/getblocks", cors(), (req, resp) => {
+  var email = req.body.email;
+  var id = req.body.id;
+  let qry = `SELECT sim_id, sim_name, sim_description, email, sim_blocks from simulation WHERE email='${email}' and sim_id='${id}'`;
+  db.query(qry, (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // console.log("RES: ", res);
       resp.send(res);
     }
   });

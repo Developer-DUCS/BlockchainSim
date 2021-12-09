@@ -38,23 +38,34 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(sim_id, sim_name, sim_created, sim_modified) {
+function createData(
+  sim_id,
+  sim_name,
+  sim_created,
+  sim_modified,
+  sim_shared,
+  sim_description,
+  sim_blocks
+) {
   return {
     sim_id,
     sim_name,
     sim_created,
     sim_modified,
-    history: [
+    sim_shared,
+    sim_description,
+    sim_blocks,
+    moreinfo: [
       {
-        date: "2020-01-05",
-        customerId: "11091700",
+        num_blocks: sim_blocks.length,
+        sim_shared: sim_shared,
         amount: 3,
       },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
+      // {
+      //   date: "2020-01-02",
+      //   customerId: "Anonymous",
+      //   amount: 1,
+      // },
     ],
   };
 }
@@ -113,28 +124,23 @@ function Row(props) {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
-                History
+                {row.sim_name}
               </Typography>
+              <Typography sx={{ mb: 2 }}>{row.sim_description}</Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
+                    <TableCell>Number of Blocks</TableCell>
+                    <TableCell>Shared With</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
+                  {row.moreinfo.map((moreinfoRow) => (
+                    <TableRow key={moreinfoRow.num_blocks}>
                       <TableCell component="th" scope="row">
-                        {historyRow.date}
+                        {moreinfoRow.num_blocks}
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
+                      <TableCell>{moreinfoRow.sim_shared}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -147,26 +153,26 @@ function Row(props) {
   );
 }
 
-Row.propTypes = {
-  row: PropTypes.shape({
-    date: PropTypes.string.isRequired,
-    blocks: PropTypes.number.isRequired,
-    created: PropTypes.string.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-  }).isRequired,
-};
+// Row.propTypes = {
+//   row: PropTypes.shape({
+//     date: PropTypes.string.isRequired,
+//     blocks: PropTypes.number.isRequired,
+//     created: PropTypes.string.isRequired,
+//     moreinfo: PropTypes.arrayOf(
+//       PropTypes.shape({
+//         amount: PropTypes.number.isRequired,
+//         customerId: PropTypes.string.isRequired,
+//         date: PropTypes.string.isRequired,
+//       })
+//     ).isRequired,
+//     name: PropTypes.string.isRequired,
+//     id: PropTypes.number.isRequired,
+//   }).isRequired,
+// };
 
 const SimTable = (props) => {
   const { table } = props;
-
+  console.log(table);
   const rows = [
     // createData(table.rows[0].name, "10/28/2021", "10/20/2021", 24, 4.0, 3.99),
     // createData(
@@ -182,7 +188,15 @@ const SimTable = (props) => {
 
   table.rows.forEach((ele) =>
     rows.push(
-      createData(ele.sim_id, ele.sim_name, ele.sim_created, ele.sim_modified)
+      createData(
+        ele.sim_id,
+        ele.sim_name,
+        ele.sim_created,
+        ele.sim_modified,
+        ele.sim_shared,
+        ele.sim_description,
+        ele.sim_blocks
+      )
     )
   );
 

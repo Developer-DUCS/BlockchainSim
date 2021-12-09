@@ -54,8 +54,8 @@ const SimulationHome = (props) => {
           }
         })
         .then((simulations) => {
-          console.log(simulations);
           setSharedSimulations({ rows: simulations });
+          console.log(simulations[0].sim_id);
         })
         .catch((err) => {
           console.error(err);
@@ -113,7 +113,7 @@ const SimulationHome = (props) => {
             </Grid>
           </Grid>
         </TabPanel>
-        <Button
+        {/* <Button
           component={Link}
           to={`${process.env.PUBLIC_URL}/createsimulation`}
           color="secondary"
@@ -121,7 +121,7 @@ const SimulationHome = (props) => {
           sx={{ float: 500, ml: 2 }}
         >
           Add New Simulation
-        </Button>
+        </Button> */}
       </Container>
     </Auth>
   );

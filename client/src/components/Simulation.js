@@ -56,6 +56,38 @@ const Simulation = (props) => {
   const toggleDialog = () => {
     dialog ? setDialog(false) : setDialog(true);
   };
+
+  const [simulation, setSimulation] = React.useState([]);
+
+  React.useEffect(() => {
+    if (user.email) {
+      let url = `http://${process.env.REACT_APP_API_URL}/api/data/getsimulations/id`;
+      let options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: user.email, id: id }),
+      };
+
+      fetch(url, options)
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            console.error("failed to fetch");
+          }
+        })
+        .then((simulation) => {
+          setSimulation(simulation);
+          console.log(simulation[0].blocks);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [user]);
+
   // API to Share Simulation
   const shareSimulation = (e) => {
     e.preventDefault();
@@ -221,6 +253,7 @@ const Simulation = (props) => {
     blockHash:
       "000099d89ffda35707d4ffa5ae51667d4c179e0ebd7b4799b85e11675633f7dc",
   };
+
   return (
     <Auth setUser={setUser}>
       <UserBar
@@ -298,8 +331,8 @@ const Simulation = (props) => {
             <Typography>Simulation Information</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography variant="body1">Simulation ID: 7</Typography>
-            <Typography variant="body1">Number of transactions: 183</Typography>
+            <Typography variant="body1">Simulation ID: {id}</Typography>
+            <Typography variant="body1">Number of transactions: 118</Typography>
             <Typography variant="body1">Number of blocks: 183</Typography>
           </AccordionDetails>
         </Accordion>
@@ -349,6 +382,15 @@ const Simulation = (props) => {
             >
               <BlockComponent
                 block={demoBlock2}
+                setSelectedTransaction={setSelectedTransaction}
+              />
+            </Box>
+            <Box
+              sx={{ mb: 2, mt: 2, mr: 2 }}
+              style={{ display: "inline-block", width: "500px" }}
+            >
+              <BlockComponent
+                block={simulation}
                 setSelectedTransaction={setSelectedTransaction}
               />
             </Box>
