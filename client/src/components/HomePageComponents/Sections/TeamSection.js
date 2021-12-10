@@ -18,10 +18,10 @@ import styles from "./teamStyle.js";
 
 //Need Pictures of Dev Team
 
-import person1 from "../../../assets/not_Rick_Astley.png";
-//import person2 from "";
-//import person3 from "";
-//import person4 from "";
+import Laura from "../../../assets/Laura.png";
+import Ean from "../../../assets/not_Rick_Astley.png";
+import Bryan from "../../../assets/Bryan.png";
+import Dawson from "../../../assets/Dawson.jpg";
 //import person5 from "";
 //import person6 from "";
 
@@ -42,7 +42,7 @@ export default function TeamSection() {
           <GridItem xs={12} sm={12} md={4}>
             <Card plain>
               <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-                <img src={person1} alt="..." className={imageClasses} />
+                <img src={Laura} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
                 Laura Prieto
@@ -52,7 +52,10 @@ export default function TeamSection() {
                 </small>
               </h4>
               <CardBody>
-                <p className={classes.description}>Description of Developer</p>
+                <p className={classes.description}>
+                  Research member on the team. Wants to get into CERN or grad
+                  school for Computer Science. Loves outdoors and hiking.
+                </p>
               </CardBody>
               <CardFooter className={classes.justifyCenter}>
                 <Button
@@ -82,7 +85,7 @@ export default function TeamSection() {
           <GridItem xs={12} sm={12} md={4}>
             <Card plain>
               <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-                <img src={person1} alt="..." className={imageClasses} />
+                <img src={Ean} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
                 Ean Vandergraaf
@@ -115,7 +118,7 @@ export default function TeamSection() {
           <GridItem xs={12} sm={12} md={4}>
             <Card plain>
               <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-                <img src={person1} alt="..." className={imageClasses} />
+                <img src={Bryan} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
                 Bryan Valencia
@@ -125,7 +128,15 @@ export default function TeamSection() {
                 </small>
               </h4>
               <CardBody>
-                <p className={classes.description}>Description of Developer</p>
+                <p className={classes.description}>
+                  After graduation, I plan to secure a remote position, so I can
+                  travel while I work. My favorite hobbies include playing
+                  League of Legends, kayaking, and learning new languages on
+                  Duolingo. On BTB, I have mainly worked on the backend
+                  (database and deployment). I've dabbled with front-end
+                  development, and I'm working on randomly generating
+                  transactions for our blocks.{" "}
+                </p>
               </CardBody>
               <CardFooter className={classes.justifyCenter}>
                 <Button
@@ -157,7 +168,7 @@ export default function TeamSection() {
           <GridItem xs={12} sm={12} md={4}>
             <Card plain>
               <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-                <img src={person1} alt="..." className={imageClasses} />
+                <img src={Dawson} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
                 Dawson Holderman
@@ -167,7 +178,12 @@ export default function TeamSection() {
                 </small>
               </h4>
               <CardBody>
-                <p className={classes.description}>Description of Developer</p>
+                <p className={classes.description}>
+                  I hope to work remotely after I graduate this Spring. I love
+                  playing Counter-Strike and making gaming Youtube videos. I
+                  have worked as the product owner for this project as well as
+                  working with Front-end and Back-end development
+                </p>
               </CardBody>
               <CardFooter className={classes.justifyCenter}>
                 <Button
@@ -197,7 +213,7 @@ export default function TeamSection() {
           <GridItem xs={12} sm={12} md={4}>
             <Card plain>
               <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-                <img src={person1} alt="..." className={imageClasses} />
+                <img src={Ean} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
                 Seth Workman
@@ -230,7 +246,7 @@ export default function TeamSection() {
           <GridItem xs={12} sm={12} md={4}>
             <Card plain>
               <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-                <img src={person1} alt="..." className={imageClasses} />
+                <img src={Ean} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
                 Sean Lowery
