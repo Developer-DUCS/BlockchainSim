@@ -124,7 +124,7 @@ router.post("/getblocks", cors(), (req, resp) => {
     }
   });
 
-  qry += "); ";
+  qry += ") ORDER BY time_created ASC;";
 
   db.query(qry, (err, res) => {
     if (err) {
