@@ -103,7 +103,7 @@ const Simulation = (props) => {
         })
         .then((simulation) => {
           setSimulation(simulation[0]);
-          getBlocks(simulation[0].sim_blocks);
+          getBlocks(simulation[0].sim_blocks, simulation[0].email);
         })
         .catch((err) => {
           console.error(err);
@@ -111,14 +111,14 @@ const Simulation = (props) => {
     }
   }, [user]);
 
-  const getBlocks = (hashes) => {
+  const getBlocks = (hashes, owner) => {
     let url = `http://${process.env.REACT_APP_API_URL}/api/data/getblocks`;
     let options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ owner: user.email, blocks: hashes }),
+      body: JSON.stringify({ owner: owner, blocks: hashes }),
     };
 
     fetch(url, options)
