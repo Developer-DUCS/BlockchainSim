@@ -44,6 +44,9 @@ const Simulation = (props) => {
   // Used to click transactions
   const [selectedTransaction, setSelectedTransaction] = React.useState(null);
 
+  // Used to hold simulation blocks
+  const [simulationBlocks, setSimulationBlocks] = React.useState([]);
+
   // Used for options menu
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -57,7 +60,27 @@ const Simulation = (props) => {
     dialog ? setDialog(false) : setDialog(true);
   };
 
-  const [simulation, setSimulation] = React.useState([]);
+  // Options for date format
+  const options = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true,
+  };
+
+  const [simulation, setSimulation] = React.useState({
+    email: "",
+    sim_block: "",
+    sim_created: "2009-02-10T01:44:31.000Z",
+    sim_description: "",
+    sim_id: 0,
+    sim_modified: "2009-02-10T01:44:31.000Z",
+    sim_name: "",
+    sim_shared: "",
+  });
 
   React.useEffect(() => {
     if (user.email) {
@@ -67,7 +90,7 @@ const Simulation = (props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: user.email, id: id }),
+        body: JSON.stringify({ id: id }),
       };
 
       fetch(url, options)
@@ -79,14 +102,42 @@ const Simulation = (props) => {
           }
         })
         .then((simulation) => {
-          setSimulation(simulation);
-          console.log(simulation[0].blocks);
+          setSimulation(simulation[0]);
+          getBlocks(simulation[0].sim_blocks);
         })
         .catch((err) => {
           console.error(err);
         });
     }
   }, [user]);
+
+  const getBlocks = (hashes) => {
+    let url = `http://${process.env.REACT_APP_API_URL}/api/data/getblocks`;
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ owner: user.email, blocks: hashes }),
+    };
+
+    fetch(url, options)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          console.error("failed to fetch");
+        }
+      })
+      .then((blocks) => {
+        console.log("FETCHED BLOCKS");
+        console.log(blocks);
+        setSimulationBlocks(blocks);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   // API to Share Simulation
   const shareSimulation = (e) => {
@@ -159,105 +210,10 @@ const Simulation = (props) => {
       });
   };
 
-  // This placeholder data will be replaced by fetch (to get the block data associated with simulation ID)
-  // Test Date for blocks
-  const demoBlock = {
-    blockNumber: "14",
-    blockDate: "28/09/21 06:04:11",
-    blockMiner: "lsgh0325",
-    blockMerkleTree:
-      "0000180d78f908b719c223bcc1aaac0b668ad40ab63891d6c19900228728440",
-    blockTransactions: [
-      {
-        transactionHash: "12938198dhf8h",
-        transactionAmount: "6.25",
-        transactionNameFrom: "New",
-        transactionNameTo: "hjy764",
-        transactionAddressFrom: "Block Reward",
-        transactionAddressTo: "eb38e60ac0",
-      },
-      {
-        transactionHash: "12938198dhf8h",
-        transactionAmount: "1",
-        transactionNameFrom: "ipp098",
-        transactionNameTo: "New",
-        transactionAddressFrom: "eb38e60ac0",
-        transactionAddressTo: "eb38e60ac0",
-      },
-      {
-        transactionHash: "12938198dhf8h",
-        transactionAmount: "1",
-        transactionNameFrom: "Seth",
-        transactionNameTo: "Ean",
-        transactionAddressFrom: "eb38e60ac0",
-        transactionAddressTo: "eb38e60ac0",
-      },
-    ],
-    blockPreviousHash: "000000f575cf1e27b85c8ad98a98djf9au9h9ajsdofj",
-    blockNonce: "23529",
-    blockHash:
-      "000099d89ffda35707d4ffa5ae51667d4c179e0ebd7b4799b85e11675633f7dc",
-  };
-
-  const demoBlock2 = {
-    blockNumber: "189",
-    blockDate: "28/09/21 06:04:11",
-    blockMiner: "oisjd",
-    blockMerkleTree:
-      "0000180d78f908b719c223bcc1aaac0b668ad40ab63891d6c19900228728440",
-    blockTransactions: [
-      {
-        transactionHash: "12938198dhf8h",
-        transactionAmount: "294",
-        transactionNameFrom: "New",
-        transactionNameTo: "hjy764",
-        transactionAddressFrom: "Block Reward",
-        transactionAddressTo: "eb38e60ac0",
-      },
-      {
-        transactionHash: "12938198dhf8h",
-        transactionAmount: "1",
-        transactionNameFrom: "ipp098",
-        transactionNameTo: "New",
-
-        transactionAddressFrom: "eb38e60ac0",
-        transactionAddressTo: "eb38e60ac0",
-      },
-      {
-        transactionHash: "12938198dhf8h",
-        transactionAmount: "1",
-        transactionNameFrom: "Seth",
-        transactionNameTo: "Ean",
-        transactionAddressFrom: "eb38e60ac0",
-        transactionAddressTo: "eb38e60ac0",
-      },
-      {
-        transactionHash: "12938198dhf8h",
-        transactionAmount: "1",
-        transactionNameFrom: "ipp098",
-        transactionNameTo: "New",
-        transactionAddressFrom: "eb38e60ac0",
-        transactionAddressTo: "eb38e60ac0",
-      },
-      {
-        transactionHash: "12938198dhf8h",
-        transactionAmount: "1",
-        transactionNameFrom: "Seth",
-        transactionNameTo: "Ean",
-        transactionAddressFrom: "eb38e60ac0",
-        transactionAddressTo: "eb38e60ac0",
-      },
-    ],
-    blockPreviousHash: "000000f575cf1e27b85c8ad98a98djf9au9h9ajsdofj",
-    blockNonce: "23529",
-    blockHash:
-      "000099d89ffda35707d4ffa5ae51667d4c179e0ebd7b4799b85e11675633f7dc",
-  };
-
   return (
     <Auth setUser={setUser}>
       <UserBar
-        barTitle={`Simulation ${id}`}
+        barTitle={`Simulation ${simulation.sim_name}`}
         tabNames={["Main Chain", "Wallet"]}
         setSelectedTab={(e, newValue) => setSelectedTab(newValue)}
         selectedTab={selectedTab}
@@ -332,8 +288,27 @@ const Simulation = (props) => {
           </AccordionSummary>
           <AccordionDetails>
             <Typography variant="body1">Simulation ID: {id}</Typography>
-            <Typography variant="body1">Number of transactions: 118</Typography>
-            <Typography variant="body1">Number of blocks: 183</Typography>
+            <Typography variant="body1">
+              Simulation Owner: {simulation.email}
+            </Typography>
+            <Typography variant="body1">
+              Simulation Description: {simulation.sim_description}
+            </Typography>
+            <Typography variant="body1">
+              Created:{" "}
+              {new Intl.DateTimeFormat("en-US", options).format(
+                new Date(simulation.sim_created)
+              )}
+            </Typography>
+            <Typography variant="body1">
+              Modified:{" "}
+              {new Intl.DateTimeFormat("en-US", options).format(
+                new Date(simulation.sim_modified)
+              )}
+            </Typography>
+            <Typography variant="body1">
+              Shared With: {simulation.sim_shared}
+            </Typography>
           </AccordionDetails>
         </Accordion>
         <TabPanel value={selectedTab} index={0}>
@@ -349,51 +324,19 @@ const Simulation = (props) => {
             />
           </Box>
           <div style={{ overflow: "auto", whiteSpace: "nowrap" }}>
-            <Box
-              sx={{ mb: 2, mt: 2, mr: 2 }}
-              style={{ display: "inline-block", width: "500px" }}
-            >
-              <BlockComponent
-                block={demoBlock}
-                setSelectedTransaction={setSelectedTransaction}
-              />
-            </Box>
-            <Box
-              sx={{ mb: 2, mt: 2, mr: 2 }}
-              style={{ display: "inline-block", width: "500px" }}
-            >
-              <BlockComponent
-                block={demoBlock2}
-                setSelectedTransaction={setSelectedTransaction}
-              />
-            </Box>
-            <Box
-              sx={{ mb: 2, mt: 2, mr: 2 }}
-              style={{ display: "inline-block", width: "500px" }}
-            >
-              <BlockComponent
-                block={demoBlock}
-                setSelectedTransaction={setSelectedTransaction}
-              />
-            </Box>
-            <Box
-              sx={{ mb: 2, mt: 2, mr: 2 }}
-              style={{ display: "inline-block", width: "500px" }}
-            >
-              <BlockComponent
-                block={demoBlock2}
-                setSelectedTransaction={setSelectedTransaction}
-              />
-            </Box>
-            <Box
-              sx={{ mb: 2, mt: 2, mr: 2 }}
-              style={{ display: "inline-block", width: "500px" }}
-            >
-              <BlockComponent
-                block={simulation}
-                setSelectedTransaction={setSelectedTransaction}
-              />
-            </Box>
+            {simulationBlocks.length > 0
+              ? simulationBlocks.map((block) => (
+                  <Box
+                    sx={{ mb: 2, mt: 2, mr: 2 }}
+                    style={{ display: "inline-block", width: "500px" }}
+                  >
+                    <BlockComponent
+                      block={block}
+                      setSelectedTransaction={setSelectedTransaction}
+                    />
+                  </Box>
+                ))
+              : null}
           </div>
           {selectedTransaction ? (
             <Container
@@ -424,7 +367,9 @@ const Simulation = (props) => {
                             <Grid container>
                               <Grid item xs={3}>
                                 <Typography variant="subtitle2">
-                                  {tx.transactionNameFrom}
+                                  {tx.transaction_data.owner_UTXO.length > 63
+                                    ? "BLOCKCHAIN"
+                                    : tx.transaction_data.owner_UTXO}
                                 </Typography>
                                 <Typography variant="caption">
                                   {tx.transactionAddressFrom}
@@ -443,15 +388,15 @@ const Simulation = (props) => {
                               </Grid>
                               <Grid item xs={3}>
                                 <Typography variant="subtitle2">
-                                  {tx.transactionNameTo}
+                                  {tx.transaction_data.receiver}
                                 </Typography>
                                 <Typography variant="caption">
-                                  {tx.transactionAddressTo}
+                                  {tx.transactionAddressFrom}
                                 </Typography>{" "}
                               </Grid>
                               <Grid item xs={3} textAlign="right">
                                 <Typography variant="subtitle2">
-                                  {tx.transactionAmount}
+                                  {tx.transaction_data.amount_received}
                                 </Typography>
                                 <Typography variant="caption">BTC</Typography>
                               </Grid>

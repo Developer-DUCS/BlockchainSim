@@ -97,28 +97,39 @@ router.post("/getsimulations", cors(), (req, resp) => {
 });
 
 router.post("/getsimulations/id", cors(), (req, resp) => {
-  var email = req.body.email;
   var id = req.body.id;
-  let qry = `SELECT sim_id, sim_name, sim_description, email, sim_blocks from simulation WHERE email='${email}' and sim_id='${id}'`;
+  let qry = `SELECT * FROM simulation WHERE sim_id='${id}'`;
   db.query(qry, (err, res) => {
     if (err) {
       console.log(err);
     } else {
-      // console.log("RES: ", res);
       resp.send(res);
     }
   });
 });
 
 router.post("/getblocks", cors(), (req, resp) => {
-  var email = req.body.email;
-  var id = req.body.id;
-  let qry = `SELECT sim_id, sim_name, sim_description, email, sim_blocks from simulation WHERE email='${email}' and sim_id='${id}'`;
+  var blocks = JSON.parse(req.body.blocks);
+  var owner = req.body.owner;
+  let blockTable = "blocks_" + owner.replace(/[@.]/g, "_");
+  console.log(blockTable);
+
+  let qry = ` SELECT * FROM ${blockTable} WHERE hash IN (`;
+
+  blocks.map((hash, index) => {
+    if (index == 0) {
+      qry += `'${hash}'`;
+    } else {
+      qry += `,'${hash}'`;
+    }
+  });
+
+  qry += "); ";
+
   db.query(qry, (err, res) => {
     if (err) {
       console.log(err);
     } else {
-      // console.log("RES: ", res);
       resp.send(res);
     }
   });
