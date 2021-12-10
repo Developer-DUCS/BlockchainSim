@@ -57,7 +57,7 @@ function createData(
     sim_blocks,
     moreinfo: [
       {
-        num_blocks: sim_blocks.length ? sim_blocks.length : 0,
+        num_blocks: sim_blocks,
         sim_shared: sim_shared,
         amount: 3,
       },
@@ -172,7 +172,7 @@ function Row(props) {
 
 const SimTable = (props) => {
   const { table } = props;
-  console.log(table);
+  console.log("Table", table.rows);
   const rows = [
     // createData(table.rows[0].name, "10/28/2021", "10/20/2021", 24, 4.0, 3.99),
     // createData(
@@ -193,9 +193,9 @@ const SimTable = (props) => {
         ele.sim_name,
         ele.sim_created,
         ele.sim_modified,
-        ele.sim_shared,
+        ele.sim_shared != "{}" ? ele.sim_shared : "",
         ele.sim_description,
-        ele.sim_blocks
+        ele.sim_blocks ? ele.sim_blocks.length : "0"
       )
     )
   );
