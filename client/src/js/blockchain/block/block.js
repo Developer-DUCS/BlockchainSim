@@ -22,9 +22,11 @@ const blockCreator = (
   block_height,
   miningPool
 ) => {
-  var header = createHeader(previousHash, merkleTree);
+  var header = createHeader(previousHash, merkleTree); // create header of the block
   var hashID = header[0];
   var headerJSON = header[1];
+
+  // create transactions
   var transactionJSON = createTransactions(
     miner,
     num_transactions,
@@ -32,6 +34,7 @@ const blockCreator = (
     miningPool
   );
 
+  // create the block object
   var blockJSON = {
     id_block: hashID,
     header: headerJSON,
