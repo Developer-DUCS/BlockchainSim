@@ -11,7 +11,6 @@
 const adressesPool = [];
 
 const createAdressPoolHeader = (numMiners) => {
-  //adressesPool.splice(0, adressesPool.length); // not sure if this works
   if (adressesPool.length == 0) {
     for (var i = 0; i < numMiners; i++) {
       adressesPool.push([]);
@@ -19,12 +18,5 @@ const createAdressPoolHeader = (numMiners) => {
   }
 };
 
-const add2AdrPool = () => {};
-
-//
-const deleteOfAdrPool = () => {};
-
-const getAdress = () => {};
-
 export default createAdressPoolHeader;
-export { add2AdrPool, deleteOfAdrPool, getAdress, adressesPool };
+export { adressesPool };
