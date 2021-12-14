@@ -67,6 +67,7 @@ const createHeader = (previousHash, merkleTree) => {
   var done = false;
   var selectedHash;
 
+  // check if it meets the difficulty
   while (done == false) {
     var hash = hashing(intNonce);
     if (hash <= difficulty) {
@@ -84,7 +85,7 @@ const createHeader = (previousHash, merkleTree) => {
     previousHash: previousHash,
     merkleTree: merkleTree,
     time: "2b80475f",
-    target: "00000000",
+    target: "00000000", //possible change to dynamic?
     nonce: nonce,
   };
 

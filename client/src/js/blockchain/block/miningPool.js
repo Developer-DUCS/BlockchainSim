@@ -11,10 +11,7 @@
 
 */
 
-import App from "../../../App";
 import { get_element_from_array } from "../../utils/array_utils";
-
-//var numMiners;
 
 // function to select random element
 const randomSelector = (min, max) => {
@@ -25,19 +22,20 @@ const randomSelector = (min, max) => {
 // function to update/create new mining pool
 const createMinerPool = (numMiners, user) => {
   var miningPool = [];
+
   for (var i = 0; i < numMiners - 1; i++) {
-    var miner = (Math.random() + 1).toString(36).substring(2);
-    miningPool.push(miner);
+    var miner = (Math.random() + 1).toString(36).substring(2); // create a random user
+    miningPool.push(miner); // add to the pool
   }
 
-  miningPool.push(user);
+  miningPool.push(user); // add person using the app
   return miningPool;
 };
 
 //function to choose random miner from pool
 const chooseMiner = (miningPool) => {
-  var randomMinerNum = randomSelector(0, miningPool.length - 1);
-  var selectedMiner = get_element_from_array(miningPool, randomMinerNum);
+  var randomMinerNum = randomSelector(0, miningPool.length - 1); // select a number
+  var selectedMiner = get_element_from_array(miningPool, randomMinerNum); // get person from the array
   return selectedMiner;
 };
 
