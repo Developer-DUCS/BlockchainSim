@@ -19,11 +19,11 @@ import styles from "./teamStyle.js";
 //Need Pictures of Dev Team
 
 import Laura from "../../../assets/Laura.png";
-import Ean from "../../../assets/not_Rick_Astley.png";
+import Ean from "../../../assets/Ean.jpg";
 import Bryan from "../../../assets/Bryan.png";
 import Dawson from "../../../assets/Dawson.jpg";
-//import person5 from "";
-//import person6 from "";
+import Sean from "../../../assets/Sean.jpg";
+import Seth from "../../../assets/Seth.jpg";
 
 const useStyles = makeStyles(styles);
 
@@ -95,7 +95,12 @@ export default function TeamSection() {
                 </small>
               </h4>
               <CardBody>
-                <p className={classes.description}>Description of Developer</p>
+                <p className={classes.description}>
+                  On BtB, I have worked on front end development and design, as
+                  well as research. I am a Software Engineering major with a
+                  minor in Cyber-Risk management. I am also apart of the Men's
+                  Swim team and Cyber Defense Club at Drury
+                </p>
               </CardBody>
               <CardFooter className={classes.justifyCenter}>
                 <Button
@@ -213,7 +218,7 @@ export default function TeamSection() {
           <GridItem xs={12} sm={12} md={4}>
             <Card plain>
               <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-                <img src={Ean} alt="..." className={imageClasses} />
+                <img src={Seth} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
                 Seth Workman
@@ -223,7 +228,12 @@ export default function TeamSection() {
                 </small>
               </h4>
               <CardBody>
-                <p className={classes.description}>Description of Developer</p>
+                <p className={classes.description}>
+                  I want to get a job and start working as a software developer
+                  after graduation. Favorite video game to play currently is New
+                  World. I primarily work on front end and any other fixes
+                  needed for the project.
+                </p>
               </CardBody>
               <CardFooter className={classes.justifyCenter}>
                 <Button
@@ -246,7 +256,7 @@ export default function TeamSection() {
           <GridItem xs={12} sm={12} md={4}>
             <Card plain>
               <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-                <img src={Ean} alt="..." className={imageClasses} />
+                <img src={Sean} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
                 Sean Lowery
@@ -256,7 +266,14 @@ export default function TeamSection() {
                 </small>
               </h4>
               <CardBody>
-                <p className={classes.description}>Description of Developer</p>
+                <p className={classes.description}>
+                  I'm currently looking for jobs after graduation. I would also
+                  prefer something remote so that I can travel while working. I
+                  like playing guitar, reading, writing, and yoga. I chose to do
+                  my senior honors project on blockchain and consensus
+                  mechanisms, and that has helped me with some of the research
+                  and back-end development on this project.
+                </p>
               </CardBody>
               <CardFooter className={classes.justifyCenter}>
                 <Button
