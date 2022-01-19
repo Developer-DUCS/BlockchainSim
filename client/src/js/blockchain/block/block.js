@@ -8,30 +8,38 @@
             * NOT adressed yet *
 */
 
-import chooseMiner from "./miningPool";
-import createMinerPool from "./miningPool";
 import createHeader from "../header";
 import createTransactions from "../transactions/transactions";
-//import createTimeStamp from "./timeStamp";
 
 const merkleTree = //TO DO: to not be hardcode
   "113459eb7bb31bddee85ade5230d6ad5d8b2fb52879e00a84ff6ae1067a210d3";
 
-const NUM_MINERS = 100; // TO DO: change when simulation connected
-
-const blockCreator = (numMiners, previousHash, timeStamp, miningPool) => {
-  var miner = chooseMiner(miningPool, numMiners);
-  var header = createHeader(previousHash, merkleTree);
+const blockCreator = (
+  previousHash,
+  timeStamp,
+  miner,
+  num_transactions,
+  block_height,
+  miningPool
+) => {
+  var header = createHeader(previousHash, merkleTree); // create header of the block
   var hashID = header[0];
   var headerJSON = header[1];
-  var transactionJSON = createTransactions();
-  //var timeStamp   TO DO: figure out how to connect this
 
+  // create transactions
+  var transactionJSON = createTransactions(
+    miner,
+    num_transactions,
+    block_height,
+    miningPool
+  );
+
+  // create the block object
   var blockJSON = {
     id_block: hashID,
     header: headerJSON,
     transaction: transactionJSON,
-    transaction_counter: 1, //coinbase transaction 
+    transaction_counter: 1,
     miner: miner,
     time_created: timeStamp,
   };

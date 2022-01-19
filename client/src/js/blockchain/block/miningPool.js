@@ -11,33 +11,33 @@
 
 */
 
-import App from "../../../App";
+import { get_element_from_array } from "../../utils/array_utils";
 
-//var numMiners;
-
+// function to select random element
 const randomSelector = (min, max) => {
   let num = Math.random() * (max - min) + min;
   return Math.floor(num);
 };
 
+// function to update/create new mining pool
+const createMinerPool = (numMiners, user) => {
   var miningPool = [];
 
-  const createMinerPool= (numMiners)=> {
-  for (var i = 0; i < numMiners; i++) {
-    var miner = (Math.random() + 1).toString(36).substring(2);
-    miningPool.push(miner);
+  for (var i = 0; i < numMiners - 1; i++) {
+    var miner = (Math.random() + 1).toString(36).substring(2); // create a random user
+    miningPool.push(miner); // add to the pool
   }
 
+  miningPool.push(user); // add person using the app
   return miningPool;
-}
+};
 
-const chooseMiner = (miningPool, numMiners) => {
-
-  var randomMinerNum = randomSelector(0, numMiners - 1);
-  var selectedMiner = miningPool[randomMinerNum];
-  //console.log(selectedMiner)
+//function to choose random miner from pool
+const chooseMiner = (miningPool) => {
+  var randomMinerNum = randomSelector(0, miningPool.length - 1); // select a number
+  var selectedMiner = get_element_from_array(miningPool, randomMinerNum); // get person from the array
   return selectedMiner;
 };
 
 export default chooseMiner;
-export {createMinerPool};
+export { createMinerPool };

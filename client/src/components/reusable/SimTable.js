@@ -14,7 +14,7 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { styled } from "@mui/material/styles";
-import lightTheme from "../js/themes/lightTheme";
+import lightTheme from "../../js/themes/lightTheme";
 import LaunchIcon from "@mui/icons-material/Launch";
 import { Link } from "react-router-dom";
 
@@ -38,24 +38,34 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, date, created, blocks, id) {
+function createData(
+  sim_id,
+  sim_name,
+  sim_created,
+  sim_modified,
+  sim_shared,
+  sim_description,
+  sim_blocks
+) {
   return {
-    name,
-    date,
-    created,
-    blocks,
-    id,
-    history: [
+    sim_id,
+    sim_name,
+    sim_created,
+    sim_modified,
+    sim_shared,
+    sim_description,
+    sim_blocks,
+    moreinfo: [
       {
-        date: "2020-01-05",
-        customerId: "11091700",
+        num_blocks: sim_blocks,
+        sim_shared: sim_shared,
         amount: 3,
       },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
+      // {
+      //   date: "2020-01-02",
+      //   customerId: "Anonymous",
+      //   amount: 1,
+      // },
     ],
   };
 }
@@ -63,6 +73,15 @@ function createData(name, date, created, blocks, id) {
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const options = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true,
+  };
 
   return (
     <React.Fragment>
@@ -73,7 +92,7 @@ function Row(props) {
             size="small"
             color="primary"
             component={Link}
-            to={`/simulation/${row.id}`}
+            to={`${process.env.PUBLIC_URL}/simulation/${row.sim_id}`}
           >
             <LaunchIcon />
           </IconButton>
@@ -86,39 +105,42 @@ function Row(props) {
           </IconButton>
         </StyledTableCell>
         <StyledTableCell component="th" scope="row">
-          {row.name}
+          {row.sim_id}
         </StyledTableCell>
-        <StyledTableCell align="right">{row.date}</StyledTableCell>
-        <StyledTableCell align="right">{row.created}</StyledTableCell>
-        <StyledTableCell align="right">{row.blocks}</StyledTableCell>
+        <StyledTableCell align="right">{row.sim_name}</StyledTableCell>
+        <StyledTableCell align="right">
+          {new Intl.DateTimeFormat("en-US", options).format(
+            new Date(row.sim_created)
+          )}
+        </StyledTableCell>
+        <StyledTableCell align="right">
+          {new Intl.DateTimeFormat("en-US", options).format(
+            new Date(row.sim_modified)
+          )}
+        </StyledTableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
-                History
+                {row.sim_name}
               </Typography>
+              <Typography sx={{ mb: 2 }}>{row.sim_description}</Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
+                    <TableCell>Number of Blocks</TableCell>
+                    <TableCell>Shared With</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
+                  {row.moreinfo.map((moreinfoRow) => (
+                    <TableRow key={moreinfoRow.num_blocks}>
                       <TableCell component="th" scope="row">
-                        {historyRow.date}
+                        {moreinfoRow.num_blocks}
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
+                      <TableCell>{moreinfoRow.sim_shared}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -131,26 +153,26 @@ function Row(props) {
   );
 }
 
-Row.propTypes = {
-  row: PropTypes.shape({
-    date: PropTypes.string.isRequired,
-    blocks: PropTypes.number.isRequired,
-    created: PropTypes.string.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-  }).isRequired,
-};
+// Row.propTypes = {
+//   row: PropTypes.shape({
+//     date: PropTypes.string.isRequired,
+//     blocks: PropTypes.number.isRequired,
+//     created: PropTypes.string.isRequired,
+//     moreinfo: PropTypes.arrayOf(
+//       PropTypes.shape({
+//         amount: PropTypes.number.isRequired,
+//         customerId: PropTypes.string.isRequired,
+//         date: PropTypes.string.isRequired,
+//       })
+//     ).isRequired,
+//     name: PropTypes.string.isRequired,
+//     id: PropTypes.number.isRequired,
+//   }).isRequired,
+// };
 
 const SimTable = (props) => {
   const { table } = props;
-
+  console.log("Table", table.rows);
   const rows = [
     // createData(table.rows[0].name, "10/28/2021", "10/20/2021", 24, 4.0, 3.99),
     // createData(
@@ -165,7 +187,17 @@ const SimTable = (props) => {
   ];
 
   table.rows.forEach((ele) =>
-    rows.push(createData(ele.name, ele.edited, ele.created, ele.blocks, ele.id))
+    rows.push(
+      createData(
+        ele.sim_id,
+        ele.sim_name,
+        ele.sim_created,
+        ele.sim_modified,
+        ele.sim_shared != "{}" ? ele.sim_shared : "",
+        ele.sim_description,
+        ele.sim_blocks ? ele.sim_blocks.length : "0"
+      )
+    )
   );
 
   return (
@@ -174,15 +206,15 @@ const SimTable = (props) => {
         <TableHead>
           <TableRow>
             <StyledTableCell />
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell align="right">Last Edited</StyledTableCell>
+            <StyledTableCell>ID</StyledTableCell>
+            <StyledTableCell align="right">Name</StyledTableCell>
             <StyledTableCell align="right">Date Created</StyledTableCell>
-            <StyledTableCell align="right">Number Of Blocks</StyledTableCell>
+            <StyledTableCell align="right">Last Modified</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <Row key={row.name} row={row} />
+            <Row key={row.sim_id} row={row} />
           ))}
         </TableBody>
       </Table>

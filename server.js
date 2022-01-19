@@ -3,10 +3,13 @@
 
 const express = require("express");
 const app = express();
-const port = 5000;
 const router = express.Router();
+const path = require("path");
+var cors = require("cors");
 
-app.use(express.static("public"));
+require("dotenv").config();
+
+//app.use(express.static("public"));
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "50mb" }));
@@ -22,8 +25,25 @@ app.use(function (req, res, next) {
 });
 
 // List of routes
-router.use("/api/users", require("./client/src/api/users"));
-router.use("/api/data", require("./client/src/api/data"));
+router.use("/api/users", require("./api/users"));
+router.use("/api/data", require("./api/data"));
+router.use("/api/share", require("./api/share"));
+
+// router.use("/api/users", require("./client/src/api/users"));
+// router.use("/api/data", require("./client/src/api/data"));
+// router.use("/api/share", require("./client/src/api/share"));
+// router.use(
+//   "/addresses",
+//   require("./client/src/js/blockchain/transactions/adresses")
+// );
+
+const root = path.join(__dirname, "client/build");
+app.use(express.static(root));
 
 app.use(router);
-app.listen(port, () => `Server running on port ${port}`);
+app.use(cors({ origin: true, credentials: true }));
+
+app.listen(
+  process.env.PORT,
+  () => `Server running on port ${process.env.PORT}`
+);

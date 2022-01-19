@@ -8,9 +8,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
+require("dotenv").config({ path: "../../../.env" });
 
 const SignIn = (props) => {
-  const { toggleSignIn } = props;
+  const { toggleSignIn, setFeedbackObj, setFeedback } = props;
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(false);
@@ -19,7 +20,7 @@ const SignIn = (props) => {
   // Checks to see if the user is already logged in and
   // redirects them to the home page if they are
   React.useEffect(() => {
-    fetch("http://localhost:5000/api/users/auth", {
+    fetch(`http://${process.env.REACT_APP_API_URL}/api/users/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +37,14 @@ const SignIn = (props) => {
       })
       .then((user) => {
         if (user) {
-          history.push("/simulation");
+          // Feedback
+          setFeedback(true);
+          setFeedbackObj({
+            message: "Signed in!",
+            severity: "success",
+          });
+
+          history.push(`${process.env.PUBLIC_URL}/simulation`);
         }
       })
       .catch((err) => {
@@ -52,7 +60,7 @@ const SignIn = (props) => {
     // API call to login to account
     // if successful, redirect to landing page
     // if not, display error message
-    fetch("http://localhost:5000/api/users/login", {
+    fetch(`http://${process.env.REACT_APP_API_URL}/api/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,18 +75,24 @@ const SignIn = (props) => {
         }
       })
       .then(async (res) => {
-        console.log(res);
-
         // Store token in cookie
         window.localStorage.setItem("token", res.token);
 
         // Toggle state of sign in
         toggleSignIn();
 
+        // Feedback
+        setFeedback(true);
+        setFeedbackObj({ message: "Signed in!", severity: "success" });
+
         //redirect
-        history.push("/simulation");
+        history.push(`${process.env.PUBLIC_URL}/simulation`);
       })
       .catch(async (err) => {
+        // Feedback
+        setFeedback(true);
+        setFeedbackObj({ message: "Sign In Error", severity: "error" });
+
         console.error(err);
       });
   };

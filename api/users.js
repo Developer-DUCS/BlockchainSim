@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
-const db = require("../../../dbConn");
+const db = require("../dbConn");
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
 const router = express.Router();
 const jwt = require("jwt-simple");
-const config = require("../../../configuration/config.json");
+const config = require("../configuration/config.json");
 
 // to parse JSON
 app.use(express.json());
@@ -105,6 +105,7 @@ router.post("/register", cors(), (req, res) => {
               transactions JSON NOT NULL,
               transaction_counter TINYINT NOT NULL, 
               miner VARCHAR(256) NOT NULL, 
+              balances JSON NOT NULL,
               time_created TIMESTAMP NOT NULL, 
               PRIMARY KEY (hash));`,
             (err, result) => {

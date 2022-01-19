@@ -83,7 +83,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const UserBar = (props) => {
   const theme = useTheme();
-
   // setTheme (broken)
   // barTitle: String
   // tabNames: Array<String>
@@ -152,14 +151,14 @@ const UserBar = (props) => {
             <Grid item xs />
           </Grid>
         </Toolbar>
-      </AppBar>
-      <AppBar
+        {/* </AppBar> */}
+        {/* <AppBar
         component="div"
         color="primary"
         position="static"
         elevation={0}
         sx={{ zIndex: 0 }}
-      >
+      > */}
         <Toolbar>
           <ClickAwayListener onClickAway={handleDrawerClose}>
             <div style={{ width: "50px" }}>
@@ -205,7 +204,7 @@ const UserBar = (props) => {
                     key={"home"}
                     onClick={handleDrawerClose}
                     component={Link}
-                    to={`/simulation`}
+                    to={`${process.env.PUBLIC_URL}/simulation`}
                   >
                     <ListItemIcon>
                       <HomeIcon />
@@ -217,7 +216,7 @@ const UserBar = (props) => {
                     key={"add"}
                     onClick={handleDrawerClose}
                     component={Link}
-                    to={`/createsimulation`}
+                    to={`${process.env.PUBLIC_URL}/createsimulation`}
                   >
                     <ListItemIcon>
                       <Add />
@@ -310,7 +309,7 @@ const UserBar = (props) => {
           </Grid>
 
           <Grid item>
-            <Switch onChange={toggleTheme} />
+            <Switch onChange={toggleTheme} color="secondary" />
           </Grid>
           <Grid item>
             <Tooltip title="Alerts • No alerts">
@@ -327,13 +326,13 @@ const UserBar = (props) => {
             </Tooltip>
           </Grid>
         </Toolbar>
-      </AppBar>
-      <AppBar
+        {/* </AppBar> */}
+        {/* <AppBar
         component="div"
         position="static"
         elevation={0}
         sx={{ zIndex: 20 }}
-      >
+      > */}
         <Tabs
           value={selectedTab}
           onChange={setSelectedTab}
