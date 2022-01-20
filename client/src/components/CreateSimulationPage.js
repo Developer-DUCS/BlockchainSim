@@ -41,7 +41,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import InfoTwoToneIcon from "@mui/icons-material/InfoTwoTone";
 import Tooltip from "@mui/material/Tooltip";
 import { Popover } from "@mui/material";
-import InfoButton from "./InfoButton";
+import InfoButton from "./reusable/InfoButton";
 import { Link } from "react-router-dom";
 const CreateSimulation = (props) => {
   const { setTheme, setFeedback, setFeedbackObj } = props;
@@ -212,8 +212,6 @@ const CreateSimulation = (props) => {
       simulation: newSimulation,
       blocks: simulation[1],
     };
-
-    console.log("New Simulation", data);
 
     // API call to create simulation
     // if successful, redirect to simulation page

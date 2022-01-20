@@ -27,6 +27,9 @@ router.post("/createsim", cors(), (req, res) => {
       console.log(err);
     }
   });
+
+  let qry2 = "";
+
   for (i = 0; i < req.body.blocks.length; i++) {
     const hash = req.body.blocks[i].id_block;
     const header = req.body.blocks[i].header;
@@ -36,14 +39,23 @@ router.post("/createsim", cors(), (req, res) => {
     const transaction_counter = req.body.blocks[i].transaction_counter;
     const miner = req.body.blocks[i].miner;
     const block_time_created = req.body.blocks[i].time_created;
-    let qry = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}');`;
-    db.query(qry, (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
+
+    if (i == 0) {
+      qry2 += `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}'),`;
+    } else if (i == req.body.blocks.length - 1) {
+      qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}');`;
+    } else {
+      qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}'),`;
+    }
   }
-  res.sendStatus(200);
+
+  db.query(qry2, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.sendStatus(200);
+    }
+  });
 });
 
 router.post("/deletesim", cors(), (req, res) => {

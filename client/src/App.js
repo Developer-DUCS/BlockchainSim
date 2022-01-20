@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import NavBar from "./components/reusable/NavBar";
 import SignUp from "./components/SignUp";
-import Demo from "./components/Demo";
 import Simulation from "./components/Simulation";
 
 // Imports for the theme
@@ -111,10 +110,6 @@ const App = () => {
                 />
               </>
             )}
-          />
-          <Route
-            path={`${process.env.PUBLIC_URL}/demo`}
-            render={() => <Demo setTheme={setTheme} />}
           />
           <Route
             path={`${process.env.PUBLIC_URL}/simulation`}

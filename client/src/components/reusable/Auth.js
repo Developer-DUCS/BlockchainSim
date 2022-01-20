@@ -2,12 +2,10 @@ import { Alert } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
-import { useHistory } from "react-router-dom";
 
 const Auth = (props) => {
   const { children, setUser } = props;
   const [auth, setAuth] = React.useState(null);
-  const history = useHistory();
 
   React.useEffect(() => {
     fetch(`http://${process.env.REACT_APP_API_URL}/api/users/auth`, {

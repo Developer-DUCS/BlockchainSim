@@ -5,6 +5,7 @@ import Auth from "./reusable/Auth";
 import UserBar from "./reusable/UserBar";
 import SimTable from "./reusable/SimTable";
 import TabPanel from "./reusable/TabPanel";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const SimulationHome = (props) => {
   const { setTheme } = props;
@@ -55,7 +56,6 @@ const SimulationHome = (props) => {
         })
         .then((simulations) => {
           setSharedSimulations({ rows: simulations });
-          console.log(simulations[0].sim_id);
         })
         .catch((err) => {
           console.error(err);
@@ -83,18 +83,13 @@ const SimulationHome = (props) => {
           Add New Simulation
         </Button>
         <TabPanel value={selectedTab} index={0}>
-          {/* <div>
-            User testing
-            <h4>userEmail: {user.email}</h4>
-          </div> */}
           <Grid container spacing={3} sx={{ p: 2 }}>
             <Grid item xs={12}>
               {simulations.rows ? (
                 <SimTable table={simulations} />
               ) : (
                 <>
-                  <p>0 Simulations</p>
-                  <p>Create a new simulation</p>
+                  <LinearProgress />
                 </>
               )}
             </Grid>
@@ -113,15 +108,6 @@ const SimulationHome = (props) => {
             </Grid>
           </Grid>
         </TabPanel>
-        {/* <Button
-          component={Link}
-          to={`${process.env.PUBLIC_URL}/createsimulation`}
-          color="secondary"
-          variant="contained"
-          sx={{ float: 500, ml: 2 }}
-        >
-          Add New Simulation
-        </Button> */}
       </Container>
     </Auth>
   );
