@@ -36,10 +36,8 @@ const App = () => {
       body: JSON.stringify({ token: window.localStorage.getItem("token") }),
     }).then((res) => {
       if (res.status == 200) {
-        console.log("Authorized");
         setSignIn(true);
       } else {
-        console.error("Unauthorized");
         setSignIn(false);
       }
     });
@@ -52,9 +50,9 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-
       <Router basename={basename}>
         <Switch>
+          {/* Route to "/" */}
           <Route
             path={`${process.env.PUBLIC_URL}/`}
             render={() => (
@@ -64,6 +62,8 @@ const App = () => {
             )}
             exact
           />
+
+          {/* Route to "/signin" */}
           <Route
             path={`${process.env.PUBLIC_URL}/signin`}
             render={() => (
@@ -81,20 +81,8 @@ const App = () => {
               </>
             )}
           />
-          <Route
-            path={`${process.env.PUBLIC_URL}/landing`}
-            component={LandingPage}
-          />
-          <Route
-            path={`${process.env.PUBLIC_URL}/createsimulation`}
-            render={() => (
-              <CreateSimulation
-                setTheme={setTheme}
-                setFeedback={setFeedback}
-                setFeedbackObj={setFeedbackObj}
-              />
-            )}
-          />
+
+          {/* Route to "/signup" */}
           <Route
             path={`${process.env.PUBLIC_URL}/signup`}
             render={() => (
@@ -111,11 +99,33 @@ const App = () => {
               </>
             )}
           />
+
+          {/* Route to "/landing" */}
+          <Route
+            path={`${process.env.PUBLIC_URL}/landing`}
+            component={LandingPage}
+          />
+
+          {/* Route to "/createsimulation" */}
+          <Route
+            path={`${process.env.PUBLIC_URL}/createsimulation`}
+            render={() => (
+              <CreateSimulation
+                setTheme={setTheme}
+                setFeedback={setFeedback}
+                setFeedbackObj={setFeedbackObj}
+              />
+            )}
+          />
+
+          {/* Route to "/simulation" */}
           <Route
             path={`${process.env.PUBLIC_URL}/simulation`}
             render={() => <SimulationHome setTheme={setTheme} />}
             exact
           />
+
+          {/* Route to "/simulation/:id" */}
           <Route
             path={`${process.env.PUBLIC_URL}/simulation/:id`}
             render={() => (
@@ -127,9 +137,12 @@ const App = () => {
             )}
           />
 
+          {/* Route to ERROR pages */}
           <Route component={Error} />
         </Switch>
       </Router>
+
+      {/* Feedback Modal */}
       <Feedback
         feedbackObj={feedbackObj}
         open={feedback}
