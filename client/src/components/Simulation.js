@@ -130,8 +130,6 @@ const Simulation = (props) => {
         }
       })
       .then((blocks) => {
-        console.log("FETCHED BLOCKS");
-        console.log(blocks);
         setSimulationBlocks(blocks);
       })
       .catch((err) => {
@@ -158,8 +156,6 @@ const Simulation = (props) => {
     };
     fetch(url, options)
       .then((res) => {
-        console.log(res);
-
         if (res.ok) {
           setFeedback(true);
           setFeedbackObj({
@@ -174,7 +170,6 @@ const Simulation = (props) => {
 
   const deleteSimulation = (e) => {
     e.preventDefault();
-    console.log("TEST");
 
     // Get Simulation ID
     let simID = id;
@@ -191,8 +186,6 @@ const Simulation = (props) => {
 
     fetch(url, options)
       .then((res) => {
-        console.log(res);
-
         if (res.ok) {
           setFeedback(true);
           setFeedbackObj({
@@ -201,7 +194,6 @@ const Simulation = (props) => {
           });
 
           // reroute back to simulations list
-
           history.push(`${process.env.PUBLIC_URL}/simulation`);
         }
       })

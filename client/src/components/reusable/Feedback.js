@@ -14,13 +14,8 @@ const Feedback = (props) => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpen(false);
   };
-
-  React.useEffect(() => {
-    console.log(feedbackObj);
-  }, [feedbackObj]);
 
   return (
     <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
