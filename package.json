@@ -9,7 +9,8 @@
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "cd client && npm run test"
+    "test": "cd client && npm run test",
+    "test-coverage": "cd client && npm run test -- --coverage --watchAll=false"
   },
   "author": "Seth Workman",
   "license": "Apache-2.0",
