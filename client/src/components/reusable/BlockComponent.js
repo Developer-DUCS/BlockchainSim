@@ -10,9 +10,13 @@ const BlockComponent = (props) => {
 
   React.useEffect(() => {
     if (block.header) {
-      block.header = JSON.parse(block.header);
-      block.transactions = JSON.parse(block.transactions);
-      setWaitForParse(false);
+      try {
+        block.header = JSON.parse(block.header);
+        block.transactions = JSON.parse(block.transactions);
+        setWaitForParse(false);
+      } catch (e) {
+        setWaitForParse(false);
+      }
     }
   }, [block]);
 
