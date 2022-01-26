@@ -44,7 +44,8 @@ const simulationCreator = (
   previousHash = initialHash;
 
   //initialize wallets
-  createWallet(miningPool);
+  var wallets = createWallet(miningPool);
+  console.log(wallets);
 
   //initialize adress/transaction pool
   createAdressPoolHeader(miningPool.length);
