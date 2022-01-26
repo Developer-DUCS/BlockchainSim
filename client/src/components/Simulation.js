@@ -321,7 +321,7 @@ const Simulation = (props) => {
             </Box>
             <div style={{ overflow: "auto", whiteSpace: "nowrap" }}>
               {simulationBlocks.length > 0 ? (
-                simulationBlocks.map((block) => (
+                simulationBlocks.map((block, index) => (
                   <Box
                     sx={{ mb: 2, mt: 2, mr: 2 }}
                     style={{ display: "inline-block", width: "500px" }}
@@ -329,6 +329,7 @@ const Simulation = (props) => {
                     <BlockComponent
                       block={block}
                       setSelectedTransaction={setSelectedTransaction}
+                      blockNumber={index}
                     />
                   </Box>
                 ))
