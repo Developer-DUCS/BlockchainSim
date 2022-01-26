@@ -3,6 +3,7 @@ import chooseMiner from "./block/miningPool";
 import createAdressPoolHeader, {
   adressesPool,
 } from "./transactions/adressesPool";
+import createWallet from "./wallet";
 
 /*
     --> SIMULATION.js 
@@ -41,6 +42,9 @@ const simulationCreator = (
   var blocks = []; // store block json objects
   var hashes = []; // store hash ID of each block
   previousHash = initialHash;
+
+  //initialize wallets
+  createWallet(miningPool);
 
   //initialize adress/transaction pool
   createAdressPoolHeader(miningPool.length);
