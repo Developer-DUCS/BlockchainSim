@@ -325,11 +325,12 @@ const Simulation = (props) => {
                   <Box
                     sx={{ mb: 2, mt: 2, mr: 2 }}
                     style={{ display: "inline-block", width: "500px" }}
+                    key={index}
                   >
                     <BlockComponent
                       block={block}
                       setSelectedTransaction={setSelectedTransaction}
-                      blockNumber={index}
+                      blockNumber={index + 1}
                     />
                   </Box>
                 ))
