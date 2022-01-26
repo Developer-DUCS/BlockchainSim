@@ -27,7 +27,13 @@ import { adressesPool } from "./adressesPool";
 var MINIMUM_DEPTH = 100; // TO CHANGE TO DYNAMIC
 
 // create ALL transactions for an individual block
-const createTransactions = (miner, numtransactions, b_heigth, miningPool) => {
+const createTransactions = (
+  miner,
+  numtransactions,
+  b_heigth,
+  miningPool,
+  wallets
+) => {
   var transactions = []; // list of all transactions
   var users = miningPool; // possible users
 
@@ -39,7 +45,7 @@ const createTransactions = (miner, numtransactions, b_heigth, miningPool) => {
     //create transactions
     for (let i = 0; i < numtransactions; i++) {
       //find a valid sender with valid money
-      var senderInfo = selectSender(miningPool, users, b_heigth); // sender adresses to be used
+      var senderInfo = selectSender(miningPool, users, b_heigth, wallets); // sender adresses to be used
 
       if (senderInfo != undefined) {
         var sender = senderInfo[0];
@@ -54,7 +60,13 @@ const createTransactions = (miner, numtransactions, b_heigth, miningPool) => {
         while (receiver == sender) receiver = chooseMiner(miningPool);
 
         //create transaction
-        var tx = singleTransaction(sender, receiver, adressSender, b_heigth);
+        var tx = singleTransaction(
+          sender,
+          receiver,
+          adressSender,
+          b_heigth,
+          wallets
+        );
         fee += tx.transaction_data.fee; //update fees
         transactions.push(tx); //add transaction to array
 
@@ -99,7 +111,7 @@ const createTransactions = (miner, numtransactions, b_heigth, miningPool) => {
 };
 
 //select a sender with valid money to create transaction
-const selectSender = (miningPool, users, block_height) => {
+const selectSender = (miningPool, users, block_height, wallets) => {
   var usersChecked = []; //users with no valid adresses
   var found = false;
   var counter = 0;

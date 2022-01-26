@@ -45,7 +45,6 @@ const simulationCreator = (
 
   //initialize wallets
   var wallets = createWallet(miningPool);
-  console.log(wallets);
 
   //initialize adress/transaction pool
   createAdressPoolHeader(miningPool.length);
@@ -64,7 +63,8 @@ const simulationCreator = (
       selectMiner,
       num_transactions,
       block_height,
-      miningPool
+      miningPool,
+      wallets
     );
     var hashID = newBlock[1];
     var blockJSON = newBlock[0];
