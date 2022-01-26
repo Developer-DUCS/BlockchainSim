@@ -1,7 +1,7 @@
 import singleTransaction from "./singleTransaction/singleTransaction";
 import chooseMiner from "../block/miningPool";
 import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
-import { adressesPool } from "./adressesPool";
+import { UTXO_Pool } from "./UTXO_Pool";
 
 /*
     --> TRANSACTIONS.JS FILE
@@ -126,8 +126,9 @@ const selectSender = (miningPool, users, block_height, wallets) => {
     var validHeigth = block_height - MINIMUM_DEPTH;
     var senderInfo;
 
-    for (let adressPos in adressesPool[senderPos]) {
-      var adress = adressesPool[senderPos][adressPos]; //get adress from adress pool
+    //TODO: right now we are getting UTXO, implement adress and get adress
+    for (let adressPos in UTXO_Pool[senderPos]) {
+      var adress = UTXO_Pool[senderPos][adressPos]; //get adress from adress pool
 
       // valid adress for a certain userfound
       if (adress[2] <= validHeigth) {
@@ -149,19 +150,19 @@ const selectSender = (miningPool, users, block_height, wallets) => {
 };
 
 //function to add adress to adresses pool
-const addAdress2Pool = (adress, users) => {
+const addUTXO2Pool = (myUTXO, users) => {
   var pos = users.findIndex((pos) => {
-    return pos == adress[0];
+    return pos == myUTXO[0];
   });
-  adressesPool[pos].push(adress);
+  UTXO_Pool[pos].push(myUTXO);
 };
 
 // fuction to create an adress
 const createAdress = (user, amount, weight, users) => {
-  var address = [user, amount, weight]; // create address
-  addAdress2Pool(address, users); // add it to the pool
+  var newUTXO = [user, amount, weight]; // create address
+  addUTXO2Pool(newUTXO, users); // add it to the pool
 
-  return address;
+  return newUTXO;
 };
 
 export default createTransactions;

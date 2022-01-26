@@ -1,4 +1,4 @@
-import { getAdress } from "../adressesPool";
+import { getAdress } from "../UTXO_Pool";
 import sjcl from "../../../../sjcl";
 
 /*

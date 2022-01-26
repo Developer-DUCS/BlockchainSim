@@ -1,6 +1,6 @@
 /*
     /*
-    --> ADRESSESPOOL.JS FILE
+    --> UTXO_POOL.JS FILE
 
     --> FUNCTIONS:
       - createAdressPoolHeader()
@@ -34,15 +34,15 @@
         * adressesPool (adressesPool.js) --> dynamic pool with all non spended UTXOs
 */
 
-const adressesPool = [];
+const UTXO_Pool = [];
 
-const createAdressPoolHeader = (numMiners) => {
-  if (adressesPool.length == 0) {
+const createUTXOPoolHeader = (numMiners) => {
+  if (UTXO_Pool.length == 0) {
     for (var i = 0; i < numMiners; i++) {
-      adressesPool.push([]);
+      UTXO_Pool.push([]);
     }
   }
 };
 
-export default createAdressPoolHeader;
-export { adressesPool };
+export default createUTXOPoolHeader;
+export { UTXO_Pool };
