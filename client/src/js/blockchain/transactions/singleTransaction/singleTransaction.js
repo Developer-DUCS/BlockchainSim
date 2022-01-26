@@ -1,4 +1,4 @@
-import { getAdress } from "../adressesPool";
+import { getAdress } from "../UTXO_Pool";
 import sjcl from "../../../../sjcl";
 
 /*
@@ -21,7 +21,13 @@ import sjcl from "../../../../sjcl";
 */
 
 // create a JSON object for a single transaction including hash
-function singleTransaction(sender, receiver, adressSender, block_height) {
+function singleTransaction(
+  sender,
+  receiver,
+  adressSender,
+  block_height,
+  wallets
+) {
   //create a fee for this transaction
   var fee =
     Math.trunc(0.00001 * Math.floor(Math.random() * 100) * 100000) / 100000; //TO BE DYNAMIC
