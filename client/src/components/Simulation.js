@@ -162,6 +162,7 @@ const Simulation = (props) => {
           setFeedbackObj({
             message: `Simulation shared`,
           });
+          toggleDialog();
         }
       })
       .catch((err) => {

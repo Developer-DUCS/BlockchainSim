@@ -30,7 +30,7 @@ const BlockComponent = (props) => {
           <Grid container>
             <Grid item xs={12}>
               <Typography variant="caption">{block.time_created}</Typography>
-              <Typography variant="caption" sx={{ float: "right" }}>
+              <Typography variant="subtitle2" sx={{ float: "right" }}>
                 #{blockNumber}
               </Typography>
               <br />

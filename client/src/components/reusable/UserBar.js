@@ -328,13 +328,6 @@ const UserBar = (props) => {
             </Tooltip>
           </Grid>
         </Toolbar>
-        {/* </AppBar> */}
-        {/* <AppBar
-        component="div"
-        position="static"
-        elevation={0}
-        sx={{ zIndex: 20 }}
-      > */}
         <Tabs
           value={selectedTab}
           onChange={setSelectedTab}
