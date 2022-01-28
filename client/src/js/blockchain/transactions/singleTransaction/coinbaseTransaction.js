@@ -47,7 +47,7 @@ const coinbaseTransaction = (miner, fee, block_height) => {
         "0000000000000000000000000000000000000000000000000000000000000000",
       receiver: miner,
       sender_leftover: 0,
-      fee: 0,
+      fee: fee,
       amount_sent: BLOCK_REWARD,
       amount_received: amount_sent,
     },
