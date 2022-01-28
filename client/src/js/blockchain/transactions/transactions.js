@@ -22,6 +22,10 @@ import { UTXO_Pool } from "./UTXO_Pool";
         * coinbaseTransaction() (coinbaseTransaction.js) --> create coin base transaction
         * singleTransaction() (singleTransaction.js) --> create a transaction between two users given an array of adresses
         * adressesPool (adressesPool.js) --> dynamic pool with all non spended UTXOs
+        * 
+        * 
+        * //TODO: right now we are getting UTXO, implement adress and get adress (line 129)
+        * //TODO: clean up code?
 */
 
 var MINIMUM_DEPTH = 100; // TO CHANGE TO DYNAMIC
