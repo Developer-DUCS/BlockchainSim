@@ -32,7 +32,8 @@ const createTransactions = (
   numtransactions,
   b_heigth,
   miningPool,
-  wallets
+  wallets,
+  subsidy
 ) => {
   var transactions = []; // list of all transactions
   var users = miningPool; // possible users
@@ -52,8 +53,8 @@ const createTransactions = (
         var adressSender = senderInfo[1]; //adress 2 use
 
         //delete selected adress from adresses pool
-        var adressPos = adressesPool[senderInfo[2]].indexOf(adressSender);
-        adressesPool[senderInfo[2]].splice(adressPos, 1);
+        var adressPos = UTXO_Pool[senderInfo[2]].indexOf(adressSender);
+        UTXO_Pool[senderInfo[2]].splice(adressPos, 1);
 
         //select receiver diferent than sender
         var receiver = chooseMiner(miningPool);
@@ -84,7 +85,7 @@ const createTransactions = (
     }
 
     //create coin base transaction + fees
-    var baseTX = coinbaseTransaction(miner, fee, b_heigth);
+    var baseTX = coinbaseTransaction(miner, fee, b_heigth, subsidy);
     transactions.unshift(baseTX); // add transaction to beguinning array
 
     createAdress(
@@ -95,7 +96,7 @@ const createTransactions = (
     ); // new adress from transaction
   } else {
     // <100 block height --> coinbase transaction with no fees
-    var baseTX = coinbaseTransaction(miner, 0, b_heigth);
+    var baseTX = coinbaseTransaction(miner, 0, b_heigth, subsidy);
     transactions.push(baseTX);
 
     // create + add adress it to adress pool

@@ -172,7 +172,7 @@ const CreateSimulation = (props) => {
       blockwin: blockWindow,
       numblocks: blocksCount,
       transactions: transactions,
-      subsidy: subsidy,
+      subsidy: parseInt(subsidy),
       coin: coin,
       mining: mine,
       numminers: numMiners,
@@ -195,7 +195,8 @@ const CreateSimulation = (props) => {
       timeStampArr,
       miningPool,
       user.email,
-      initValues.transactions
+      initValues.transactions,
+      initValues.subsidy
     );
 
     var newSimulation = {
