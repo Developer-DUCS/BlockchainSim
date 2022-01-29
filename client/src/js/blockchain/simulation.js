@@ -1,6 +1,6 @@
 import blockCreator from "./block/block";
 import chooseMiner from "./block/miningPool";
-import testValidation from "./testValidation";
+import createPublicKeyAndAdress from "./testValidation";
 import createUTXOPoolHeader, { UTXO_Pool } from "./transactions/UTXO_Pool";
 import createWallet from "./wallet";
 
@@ -78,7 +78,7 @@ const simulationCreator = (
 
   UTXO_Pool.length = 0; //reset adresses pool to be empty again
 
-  testValidation();
+  createPublicKeyAndAdress();
 
   return [hashes, blocks];
 };
