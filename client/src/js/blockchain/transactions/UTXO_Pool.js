@@ -34,6 +34,12 @@
         * adressesPool (adressesPool.js) --> dynamic pool with all non spended UTXOs
 */
 
+//UTXO pool is needed
+// what it is the structure of an UTXO exactly?
+// actual transaction form [amount, script locking size, script lock]
+// pay-to-public-hash script
+// locking script plus unlocking script
+
 const UTXO_Pool = [];
 
 const createUTXOPoolHeader = (numMiners) => {

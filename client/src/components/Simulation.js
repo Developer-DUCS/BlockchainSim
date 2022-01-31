@@ -9,6 +9,7 @@ import {
   Container,
   TextField,
   Card,
+  Chip,
   CardContent,
   Grid,
   Divider,
@@ -20,6 +21,12 @@ import {
   DialogContent,
   DialogTitle,
   DialogContentText,
+  FormControl,
+  OutlinedInput,
+  InputLabel,
+  Select,
+  Checkbox,
+  ListItemText,
 } from "@mui/material";
 import BlockComponent from "./reusable/BlockComponent";
 import UserBar from "./reusable/UserBar";
@@ -38,6 +45,8 @@ const Simulation = (props) => {
   const { setTheme, setFeedback, setFeedbackObj } = props;
   const [user, setUser] = React.useState({});
   const { id } = useParams();
+  const [category, setCategory] = React.useState(["hash"]);
+  const [searchResults, setSearchResults] = React.useState("");
 
   // Used for UserBar component to keep track of selected tab - Set Default to default tab index
   const [selectedTab, setSelectedTab] = React.useState(0);
@@ -47,6 +56,8 @@ const Simulation = (props) => {
 
   // Used to hold simulation blocks
   const [simulationBlocks, setSimulationBlocks] = React.useState([]);
+
+  const [filteredBlocks, setFilteredBlocks] = React.useState([]);
 
   // Used for options menu
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -71,6 +82,8 @@ const Simulation = (props) => {
     second: "numeric",
     hour12: true,
   };
+
+  const categories = ["hash", "block number"];
 
   const [simulation, setSimulation] = React.useState({
     email: "",
@@ -131,7 +144,12 @@ const Simulation = (props) => {
         }
       })
       .then((blocks) => {
+        // Add block number
+        blocks.map((block, index) => {
+          block.number = index + 1;
+        });
         setSimulationBlocks(blocks);
+        setFilteredBlocks(blocks);
       })
       .catch((err) => {
         console.error(err);
@@ -162,6 +180,7 @@ const Simulation = (props) => {
           setFeedbackObj({
             message: `Simulation shared`,
           });
+          toggleDialog();
         }
       })
       .catch((err) => {
@@ -201,6 +220,53 @@ const Simulation = (props) => {
       .catch((err) => {
         console.error(err);
       });
+  };
+
+  const searchBlocks = () => {
+    let search_value = document.getElementById("search").value;
+    let category_value = category;
+    let temp = [];
+    if (category_value == "hash") {
+      simulationBlocks.map((block) => {
+        if (block.hash.includes(search_value)) {
+          temp.push(block);
+        }
+      });
+      setFilteredBlocks(temp);
+      setSearchResults(temp.length);
+    } else if (category_value == "block number") {
+      simulationBlocks.map((block) => {
+        if (block.number.toString().includes(search_value)) {
+          temp.push(block);
+        }
+      });
+      setFilteredBlocks(temp);
+      setSearchResults(temp.length);
+    } else {
+      setFilteredBlocks(simulationBlocks);
+      setSearchResults(0);
+    }
+  };
+
+  const handleCategoryChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setCategory(
+      // On autofill we get a the stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  React.useEffect(() => {
+    if (simulationBlocks.length > 0) {
+      searchBlocks();
+    }
+  }, [category]);
+
+  const handleResultsDelete = () => {
+    setFilteredBlocks(simulationBlocks);
+    setSearchResults("");
   };
 
   return (
@@ -312,16 +378,49 @@ const Simulation = (props) => {
               <Button color="primary" variant="contained" sx={{ mr: 2 }}>
                 Add New Block
               </Button>
-              <TextField
-                size="small"
-                label="Search"
-                variant="outlined"
-                type="search"
-              />
+              <Box sx={{ mt: 2 }}>
+                <TextField
+                  size="small"
+                  label="Search"
+                  variant="outlined"
+                  type="search"
+                  id="search"
+                  onChange={searchBlocks}
+                  sx={{ mr: 1, mb: 1 }}
+                />
+                <FormControl sx={{ width: 229, mb: 1 }}>
+                  <InputLabel size="small" id="categoryLabel">
+                    Category
+                  </InputLabel>
+                  <Select
+                    size="small"
+                    labelId="categoryLabel"
+                    id="category"
+                    value={category}
+                    onChange={handleCategoryChange}
+                    input={<OutlinedInput size="small" label="Category" />}
+                    renderValue={(selected) => selected.join(", ")}
+                  >
+                    {categories.map((cat) => (
+                      <MenuItem key={cat} value={cat}>
+                        <Checkbox checked={category.indexOf(cat) > -1} />
+                        <ListItemText primary={cat} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
             </Box>
+            {searchResults != "" ? (
+              <Typography variant="overline">
+                <Chip label={searchResults} onDelete={handleResultsDelete} />
+              </Typography>
+            ) : (
+              <></>
+            )}
             <div style={{ overflow: "auto", whiteSpace: "nowrap" }}>
-              {simulationBlocks.length > 0 ? (
-                simulationBlocks.map((block, index) => (
+              {filteredBlocks.length > 0 ? (
+                filteredBlocks.map((block, index) => (
                   <Box
                     sx={{ mb: 2, mt: 2, mr: 2 }}
                     style={{ display: "inline-block", width: "500px" }}
@@ -330,7 +429,6 @@ const Simulation = (props) => {
                     <BlockComponent
                       block={block}
                       setSelectedTransaction={setSelectedTransaction}
-                      blockNumber={index + 1}
                     />
                   </Box>
                 ))

@@ -121,7 +121,7 @@ const CreateSimulation = (props) => {
   const [numMiners, setNumMiners] = React.useState("50");
   const [numMinersError, setNumMinersError] = React.useState(false);
   const [genDate, setGenDate] = React.useState("2009-01-09");
-  const NUM_MINERS = 100; //TODO: conect it with form
+  const NUM_MINERS = 100; //DELETE
 
   const handleChange = (event) => {
     setBlockWindow(event.target.value);
@@ -172,7 +172,7 @@ const CreateSimulation = (props) => {
       blockwin: blockWindow,
       numblocks: blocksCount,
       transactions: transactions,
-      subsidy: subsidy,
+      subsidy: parseInt(subsidy),
       coin: coin,
       mining: mine,
       numminers: numMiners,
@@ -195,7 +195,8 @@ const CreateSimulation = (props) => {
       timeStampArr,
       miningPool,
       user.email,
-      initValues.transactions
+      initValues.transactions,
+      initValues.subsidy
     );
 
     var newSimulation = {

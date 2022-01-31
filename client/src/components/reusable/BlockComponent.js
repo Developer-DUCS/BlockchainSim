@@ -4,7 +4,7 @@
 import { Divider, Grid, Button, Paper, Typography } from "@mui/material";
 import React from "react";
 const BlockComponent = (props) => {
-  const { block, setSelectedTransaction, blockNumber } = props;
+  const { block, setSelectedTransaction } = props;
 
   const [waitForParse, setWaitForParse] = React.useState(true);
 
@@ -30,8 +30,8 @@ const BlockComponent = (props) => {
           <Grid container>
             <Grid item xs={12}>
               <Typography variant="caption">{block.time_created}</Typography>
-              <Typography variant="caption" sx={{ float: "right" }}>
-                #{blockNumber}
+              <Typography variant="subtitle2" sx={{ float: "right" }}>
+                #{block.number}
               </Typography>
               <br />
               <Typography variant="caption">Miner: {block.miner}</Typography>
