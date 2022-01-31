@@ -1,13 +1,14 @@
 import { ripemd160, sha256 } from "hash-wasm";
 const ECKey = require("ec-key");
 const base58 = require("base58-encode");
-const BITCOIN_ELLIPTIC_CURVE = "secp256k1"; // Elliptic curve on use
-const CHARACTERS_FOR_CHECK_SUM = 7;
 
 // ENCRIPTATION PACKAGES AND THEIR DOCUMENTATION
 //ECKey npm package: https://github.com/usrz/ec-key#-tostring-format-
 //hash-wasm package : https://npm.io/package/hash-wasm
 //base58 npm package: https://www.npmjs.com/package/base58-encode
+
+const BITCOIN_ELLIPTIC_CURVE = "secp256k1"; // Elliptic curve on use
+const CHARACTERS_FOR_CHECK_SUM = 7;
 
 async function createKeysAdressSignature() {
   //create public and private key
@@ -37,7 +38,8 @@ async function createKeysAdressSignature() {
   var checkSum = addressS5Arr.slice(0, CHARACTERS_FOR_CHECK_SUM).toString();
   var addressCreationS6 = addressCreationS3 + checkSum;
   var address = base58(addressCreationS6); // the adress
-  console.log(address);
+
+  return;
 }
 
 //turn buffer of Unit8Array to haxdecimal number hash string
