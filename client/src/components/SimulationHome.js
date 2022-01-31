@@ -6,6 +6,7 @@ import UserBar from "./reusable/UserBar";
 import SimTable from "./reusable/SimTable";
 import TabPanel from "./reusable/TabPanel";
 import LinearProgress from "@mui/material/LinearProgress";
+import Parallax from "./HomePageComponents/Parallax";
 
 const SimulationHome = (props) => {
   const { setTheme } = props;
@@ -71,6 +72,7 @@ const SimulationHome = (props) => {
         selectedTab={selectedTab}
         setTheme={setTheme}
       />
+
       <Container>
         <Button
           component={Link}
