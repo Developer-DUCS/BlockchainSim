@@ -5,6 +5,8 @@ const db = require("../dbConn");
 const cors = require("cors");
 
 app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb" }));
 
 router.post("/createsim", cors(), (req, res) => {
   const email = req.body.simulation.user;
@@ -103,7 +105,7 @@ router.post("/getsimulations", cors(), (req, resp) => {
     if (err) {
       console.log(err);
     } else {
-      resp.send(res);
+      resp.status(200).send(res);
     }
   });
 });
@@ -115,7 +117,7 @@ router.post("/getsimulations/id", cors(), (req, resp) => {
     if (err) {
       console.log(err);
     } else {
-      resp.send(res);
+      resp.status(200).send(res);
     }
   });
 });
@@ -142,7 +144,7 @@ router.post("/getblocks", cors(), (req, resp) => {
     if (err) {
       console.log(err);
     } else {
-      resp.send(res);
+      resp.status(200).send(res);
     }
   });
 });
@@ -155,7 +157,7 @@ router.post("/getsharedsimulations", cors(), (req, resp) => {
       console.log(err);
       res.sendStatus(400);
     } else {
-      resp.send(res);
+      resp.status(200).send(res);
     }
   });
 });
