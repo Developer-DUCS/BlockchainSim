@@ -57,15 +57,10 @@ function createData(
     sim_blocks,
     moreinfo: [
       {
-        num_blocks: sim_blocks,
+        num_blocks: JSON.parse(sim_blocks),
         sim_shared: sim_shared,
         amount: 3,
       },
-      // {
-      //   date: "2020-01-02",
-      //   customerId: "Anonymous",
-      //   amount: 1,
-      // },
     ],
   };
 }
@@ -82,6 +77,10 @@ function Row(props) {
     second: "numeric",
     hour12: true,
   };
+
+  React.useEffect(() => {
+    console.log("row", row);
+  }, []);
 
   return (
     <React.Fragment>
@@ -123,10 +122,12 @@ function Row(props) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                {row.sim_name}
+              <Typography variant="body1" gutterBottom component="div">
+                <strong>Simulation Name:</strong> {row.sim_name}
               </Typography>
-              <Typography sx={{ mb: 2 }}>{row.sim_description}</Typography>
+              <Typography variant="caption" sx={{ mb: 2 }}>
+                <strong>Description:</strong> {row.sim_description}
+              </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
@@ -195,7 +196,7 @@ const SimTable = (props) => {
         ele.sim_modified,
         ele.sim_shared != "{}" ? ele.sim_shared : "",
         ele.sim_description,
-        ele.sim_blocks ? ele.sim_blocks.length : "0"
+        ele.sim_blocks ? JSON.parse(ele.sim_blocks).length : "0"
       )
     )
   );

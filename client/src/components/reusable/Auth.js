@@ -2,14 +2,14 @@ import { Alert } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
-import { useHistory } from "react-router-dom";
 
 const Auth = (props) => {
   const { children, setUser } = props;
   const [auth, setAuth] = React.useState(null);
-  const history = useHistory();
 
+  // On Page Load
   React.useEffect(() => {
+    // Fetch "/auth" via POST
     fetch(`http://${process.env.REACT_APP_API_URL}/api/users/auth`, {
       method: "POST",
       headers: {
@@ -22,15 +22,12 @@ const Auth = (props) => {
           // Process the httpservletresponse
           return res.json();
         } else {
-          console.error("Unauthorized");
           setAuth(false);
         }
       })
       .then((user) => {
         if (user) {
           setAuth(true);
-
-          // If user prop is passed a function
           if (setUser) {
             setUser(user);
           }

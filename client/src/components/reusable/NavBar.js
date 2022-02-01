@@ -6,8 +6,10 @@ import { Link } from "react-router-dom";
 import Switch from "@mui/material/Switch";
 import lightTheme from "../../js/themes/lightTheme";
 import darkTheme from "../../js/themes/darkTheme";
+import { createBrowserHistory } from "history";
 
 const NavBar = (props) => {
+  const history = createBrowserHistory({ forceRefresh: true });
   const { setTheme, signIn, toggleSignIn } = props;
   const [toggle, setToggle] = React.useState(false);
 
@@ -32,6 +34,7 @@ const NavBar = (props) => {
       toggleSignIn();
 
       // Refresh the page (make sure everything is in sync)
+      history.push(`${process.env.PUBLIC_URL}/signin`);
       history.go(0);
     }
   };

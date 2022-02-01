@@ -13,14 +13,12 @@ app.use(express.json());
 router.post("/login", (req, res) => {
   //check if email and password are sent
   if (!req.body.email || !req.body.password) {
-    res.status(401).json({ error: "Missing username and/or password" });
-    return;
+    return res.status(401).json({ error: "Missing username and/or password" });
   }
   // go into mysql and get info
   let qry = `select * from user where email = "${req.body.email}"`;
   db.query(qry, (err, rows) => {
     if (err) {
-      console.log(err);
       return res.status(500).json({ error: err });
     }
     // assert: no error - process the result set
@@ -54,7 +52,7 @@ router.post("/login", (req, res) => {
               token: token,
             });
           } else {
-            res.sendStatus(409);
+            res.sendStatus(401);
           }
         });
       }
@@ -132,8 +130,7 @@ router.post("/register", cors(), (req, res) => {
 router.post("/auth", cors(), (req, res) => {
   try {
     let user = jwt.decode(req.body.token, config.secret);
-    res.status(200);
-    res.send(user);
+    res.status(200).send(user);
   } catch (err) {
     res.sendStatus(401);
   }

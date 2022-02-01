@@ -33,6 +33,7 @@ import LockOpen from "@mui/icons-material/LockOpen";
 import Add from "@mui/icons-material/Add";
 import { ClickAwayListener } from "@mui/material";
 import { Link } from "react-router-dom";
+import { createBrowserHistory } from "history";
 
 const drawerWidth = 270;
 
@@ -82,6 +83,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const UserBar = (props) => {
+  const history = createBrowserHistory({ forceRefresh: true });
   const theme = useTheme();
   // setTheme (broken)
   // barTitle: String
@@ -102,7 +104,7 @@ const UserBar = (props) => {
       console.error(err);
     } finally {
       // Refresh the page (make sure everything is in sync)
-      history.go(0);
+      history.push(`${process.env.PUBLIC_URL}/signin`);
     }
   };
 
@@ -326,13 +328,6 @@ const UserBar = (props) => {
             </Tooltip>
           </Grid>
         </Toolbar>
-        {/* </AppBar> */}
-        {/* <AppBar
-        component="div"
-        position="static"
-        elevation={0}
-        sx={{ zIndex: 20 }}
-      > */}
         <Tabs
           value={selectedTab}
           onChange={setSelectedTab}

@@ -23,12 +23,16 @@ const SignUp = (props) => {
     e.preventDefault();
     // API call to create account
     // if successful, redirect to login page
+
+    // Fetch api "/register" via POST
+    // Config for post request
     const url = `http://${process.env.REACT_APP_API_URL}/api/users/register`;
     const payload = {
       id: email,
       pass: password,
       role: "dev",
     };
+
     fetch(url, {
       method: "post",
       headers: {

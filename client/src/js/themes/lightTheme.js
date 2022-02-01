@@ -15,6 +15,9 @@ const lightTheme = createTheme({
       disabled: "#034174",
     },
   },
+  paperContainer: {
+    backgroundImage: `url(${"../assets/main_background.png"})`,
+  },
 });
 
 export default lightTheme;

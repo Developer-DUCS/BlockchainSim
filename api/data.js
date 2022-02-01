@@ -5,6 +5,8 @@ const db = require("../dbConn");
 const cors = require("cors");
 
 app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb" }));
 
 router.post("/createsim", cors(), (req, res) => {
   const email = req.body.simulation.user;
@@ -27,6 +29,9 @@ router.post("/createsim", cors(), (req, res) => {
       console.log(err);
     }
   });
+
+  let qry2 = "";
+
   for (i = 0; i < req.body.blocks.length; i++) {
     const hash = req.body.blocks[i].id_block;
     const header = req.body.blocks[i].header;
@@ -36,14 +41,23 @@ router.post("/createsim", cors(), (req, res) => {
     const transaction_counter = req.body.blocks[i].transaction_counter;
     const miner = req.body.blocks[i].miner;
     const block_time_created = req.body.blocks[i].time_created;
-    let qry = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}');`;
-    db.query(qry, (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
+
+    if (i == 0) {
+      qry2 += `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}'),`;
+    } else if (i == req.body.blocks.length - 1) {
+      qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}');`;
+    } else {
+      qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}'),`;
+    }
   }
-  res.sendStatus(200);
+
+  db.query(qry2, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.sendStatus(200);
+    }
+  });
 });
 
 router.post("/deletesim", cors(), (req, res) => {
@@ -91,7 +105,7 @@ router.post("/getsimulations", cors(), (req, resp) => {
     if (err) {
       console.log(err);
     } else {
-      resp.send(res);
+      resp.status(200).send(res);
     }
   });
 });
@@ -103,7 +117,7 @@ router.post("/getsimulations/id", cors(), (req, resp) => {
     if (err) {
       console.log(err);
     } else {
-      resp.send(res);
+      resp.status(200).send(res);
     }
   });
 });
@@ -130,7 +144,7 @@ router.post("/getblocks", cors(), (req, resp) => {
     if (err) {
       console.log(err);
     } else {
-      resp.send(res);
+      resp.status(200).send(res);
     }
   });
 });
@@ -138,13 +152,12 @@ router.post("/getblocks", cors(), (req, resp) => {
 router.post("/getsharedsimulations", cors(), (req, resp) => {
   var email = req.body.email;
   let qry = `SELECT sim_id, sim_name, sim_created, sim_modified from simulation WHERE JSON_VALUE(sim_shared, '$.email') LIKE '%${email}%'`;
-  console.log(qry);
   db.query(qry, (err, res) => {
     if (err) {
       console.log(err);
       res.sendStatus(400);
     } else {
-      resp.send(res);
+      resp.status(200).send(res);
     }
   });
 });

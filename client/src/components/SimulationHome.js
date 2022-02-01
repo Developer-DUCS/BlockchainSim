@@ -5,6 +5,8 @@ import Auth from "./reusable/Auth";
 import UserBar from "./reusable/UserBar";
 import SimTable from "./reusable/SimTable";
 import TabPanel from "./reusable/TabPanel";
+import LinearProgress from "@mui/material/LinearProgress";
+import Parallax from "./HomePageComponents/Parallax";
 
 const SimulationHome = (props) => {
   const { setTheme } = props;
@@ -14,10 +16,11 @@ const SimulationHome = (props) => {
 
   const [user, setUser] = React.useState({});
 
-  // On page load - load simulations
-  // Fetch api "/getsimulations" via POST
+  // On page load
   React.useEffect(() => {
+    // If user is logged in, fetch simulation data
     if (user.email) {
+      // Fetch api "/getsimulations" via POST
       let url = `http://${process.env.REACT_APP_API_URL}/api/data/getsimulations`;
       let options = {
         method: "POST",
@@ -26,7 +29,6 @@ const SimulationHome = (props) => {
         },
         body: JSON.stringify({ email: user.email }),
       };
-
       fetch(url, options)
         .then((res) => {
           if (res.ok) {
@@ -42,9 +44,8 @@ const SimulationHome = (props) => {
           console.error(err);
         });
 
-      // Shared Simulations
+      // Fetch api "/getsharedsimulations" via GET
       url = `http://${process.env.REACT_APP_API_URL}/api/data/getsharedsimulations`;
-
       fetch(url, options)
         .then((res) => {
           if (res.ok) {
@@ -55,7 +56,6 @@ const SimulationHome = (props) => {
         })
         .then((simulations) => {
           setSharedSimulations({ rows: simulations });
-          console.log(simulations[0].sim_id);
         })
         .catch((err) => {
           console.error(err);
@@ -72,6 +72,7 @@ const SimulationHome = (props) => {
         selectedTab={selectedTab}
         setTheme={setTheme}
       />
+
       <Container>
         <Button
           component={Link}
@@ -83,18 +84,13 @@ const SimulationHome = (props) => {
           Add New Simulation
         </Button>
         <TabPanel value={selectedTab} index={0}>
-          {/* <div>
-            User testing
-            <h4>userEmail: {user.email}</h4>
-          </div> */}
           <Grid container spacing={3} sx={{ p: 2 }}>
             <Grid item xs={12}>
               {simulations.rows ? (
                 <SimTable table={simulations} />
               ) : (
                 <>
-                  <p>0 Simulations</p>
-                  <p>Create a new simulation</p>
+                  <LinearProgress />
                 </>
               )}
             </Grid>
@@ -107,21 +103,12 @@ const SimulationHome = (props) => {
                 <SimTable table={sharedSimulations} />
               ) : (
                 <>
-                  <p>0 Shared Simulations</p>
+                  <LinearProgress />
                 </>
               )}{" "}
             </Grid>
           </Grid>
         </TabPanel>
-        {/* <Button
-          component={Link}
-          to={`${process.env.PUBLIC_URL}/createsimulation`}
-          color="secondary"
-          variant="contained"
-          sx={{ float: 500, ml: 2 }}
-        >
-          Add New Simulation
-        </Button> */}
       </Container>
     </Auth>
   );

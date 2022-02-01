@@ -7,9 +7,6 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Switch from "@mui/material/Switch";
-import lightTheme from "../../js/themes/lightTheme";
-import darkTheme from "../../js/themes/darkTheme";
 
 // core components
 import Button from "./Button.js";
@@ -57,7 +54,6 @@ export default function HeaderLinks(props) {
           to={`${process.env.PUBLIC_URL}/signin`}
           color="transparent"
           fontSize="20px"
-          sx={{ mr: 2 }}
         >
           Sign In
         </Button>

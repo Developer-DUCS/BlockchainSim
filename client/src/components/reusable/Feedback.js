@@ -1,7 +1,5 @@
 import React from "react";
 import { Snackbar } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 
 import MuiAlert from "@mui/material/Alert";
 
@@ -16,13 +14,8 @@ const Feedback = (props) => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpen(false);
   };
-
-  React.useEffect(() => {
-    console.log(feedbackObj);
-  }, [feedbackObj]);
 
   return (
     <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>

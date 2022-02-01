@@ -1,6 +1,8 @@
+// CURRENT BLOCK DESIGN
+// UNKNOWN??
+
 import { Divider, Grid, Button, Paper, Typography } from "@mui/material";
 import React from "react";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 const BlockComponent = (props) => {
   const { block, setSelectedTransaction } = props;
 
@@ -8,19 +10,15 @@ const BlockComponent = (props) => {
 
   React.useEffect(() => {
     if (block.header) {
-      block.header = JSON.parse(block.header);
-      block.transactions = JSON.parse(block.transactions);
-      setWaitForParse(false);
-      console.log(block);
+      try {
+        block.header = JSON.parse(block.header);
+        block.transactions = JSON.parse(block.transactions);
+        setWaitForParse(false);
+      } catch (e) {
+        setWaitForParse(false);
+      }
     }
   }, [block]);
-
-  //   hash: "00225e6fc1937323dc5f86931479e875c387b6216b80ab35b67c2a4897801046"
-  // header: "{\"time\": \"2b80475f\", \"nonce\": \"ae352fcf\", \"target\": \"00000000\", \"version\": \"00000020\", \"merkleTree\": \"113459eb7bb31bddee85ade5230d6ad5d8b2fb52879e00a84ff6ae1067a210d3\", \"previousHash\": \"0122bc563d110768b6ac5dbd398b8b0b5f5479fb80ef5fabe77114ea5e1f9cc3\"}"
-  // miner: "1tuhgcl6rq"
-  // time_created: "2009-02-10T10:49:18.000Z"
-  // transaction_counter: 1
-  // transactions: "[\"01
 
   return (
     <>
@@ -32,6 +30,9 @@ const BlockComponent = (props) => {
           <Grid container>
             <Grid item xs={12}>
               <Typography variant="caption">{block.time_created}</Typography>
+              <Typography variant="subtitle2" sx={{ float: "right" }}>
+                #{block.number}
+              </Typography>
               <br />
               <Typography variant="caption">Miner: {block.miner}</Typography>
               <Typography variant="subtitle2">Merkle Tree:</Typography>
@@ -59,55 +60,6 @@ const BlockComponent = (props) => {
               >
                 View Transactions
               </Button>
-              {/* <Grid container> */}
-              {/*   {block.blockTransactions != undefined */}
-              {/*     ? block.blockTransactions.map((tx, index) => ( */}
-              {/*         <Grid */}
-              {/*           item */}
-              {/*           xs={12} */}
-              {/*           sx={{ pl: 1, pr: 1, pt: 0.5, pb: 0.5 }} */}
-              {/*           key={index} */}
-              {/*         > */}
-              {/*           <Grid container> */}
-              {/*             <Grid item xs={3}> */}
-              {/*               <Typography variant="subtitle2"> */}
-              {/*                 {tx.transactionNameFrom} */}
-              {/*               </Typography> */}
-              {/*               <Typography variant="caption"> */}
-              {/*                 {tx.transactionAddressFrom} */}
-              {/*               </Typography> */}
-              {/*             </Grid> */}
-              {/*             <Grid */}
-              {/*               item */}
-              {/*               xs={3} */}
-              {/*               style={{ */}
-              {/*                 display: "flex", */}
-              {/*                 justifyContent: "center", */}
-              {/*                 alignItems: "center", */}
-              {/*               }} */}
-              {/*             > */}
-              {/*               <ArrowForwardIcon /> */}
-              {/*             </Grid> */}
-              {/*             <Grid item xs={3}> */}
-              {/*               <Typography variant="subtitle2"> */}
-              {/*                 {tx.transactionNameTo} */}
-              {/*               </Typography> */}
-              {/*               <Typography variant="caption"> */}
-              {/*                 {tx.transactionAddressTo} */}
-              {/*               </Typography>{" "} */}
-              {/*             </Grid> */}
-              {/*             <Grid item xs={3} textAlign="right"> */}
-              {/*               <Typography variant="subtitle2"> */}
-              {/*                 {tx.transactionAmount} */}
-              {/*               </Typography> */}
-              {/*               <Typography variant="caption">BTC</Typography> */}
-              {/*             </Grid> */}
-              {/*           </Grid> */}
-              {/*           <Divider /> */}
-              {/*         </Grid> */}
-              {/*       )) */}
-              {/*     : "non"} */}
-              {/* </Grid> */}
             </Grid>
 
             <Grid item xs={12} sx={{ pt: 1 }}>

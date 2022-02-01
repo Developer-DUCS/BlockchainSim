@@ -1,7 +1,7 @@
 import singleTransaction from "./singleTransaction/singleTransaction";
 import chooseMiner from "../block/miningPool";
 import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
-import { adressesPool } from "./adressesPool";
+import { UTXO_Pool } from "./UTXO_Pool";
 
 /*
     --> TRANSACTIONS.JS FILE
@@ -22,12 +22,23 @@ import { adressesPool } from "./adressesPool";
         * coinbaseTransaction() (coinbaseTransaction.js) --> create coin base transaction
         * singleTransaction() (singleTransaction.js) --> create a transaction between two users given an array of adresses
         * adressesPool (adressesPool.js) --> dynamic pool with all non spended UTXOs
+        * 
+        * 
+        * //TODO: right now we are getting UTXO, implement adress and get adress (line 129)
+        * //TODO: clean up code?
 */
 
 var MINIMUM_DEPTH = 100; // TO CHANGE TO DYNAMIC
 
 // create ALL transactions for an individual block
-const createTransactions = (miner, numtransactions, b_heigth, miningPool) => {
+const createTransactions = (
+  miner,
+  numtransactions,
+  b_heigth,
+  miningPool,
+  wallets,
+  subsidy
+) => {
   var transactions = []; // list of all transactions
   var users = miningPool; // possible users
 
@@ -39,22 +50,28 @@ const createTransactions = (miner, numtransactions, b_heigth, miningPool) => {
     //create transactions
     for (let i = 0; i < numtransactions; i++) {
       //find a valid sender with valid money
-      var senderInfo = selectSender(miningPool, users, b_heigth); // sender adresses to be used
+      var senderInfo = selectSender(miningPool, users, b_heigth, wallets); // sender adresses to be used
 
       if (senderInfo != undefined) {
         var sender = senderInfo[0];
         var adressSender = senderInfo[1]; //adress 2 use
 
         //delete selected adress from adresses pool
-        var adressPos = adressesPool[senderInfo[2]].indexOf(adressSender);
-        adressesPool[senderInfo[2]].splice(adressPos, 1);
+        var adressPos = UTXO_Pool[senderInfo[2]].indexOf(adressSender);
+        UTXO_Pool[senderInfo[2]].splice(adressPos, 1);
 
         //select receiver diferent than sender
         var receiver = chooseMiner(miningPool);
         while (receiver == sender) receiver = chooseMiner(miningPool);
 
         //create transaction
-        var tx = singleTransaction(sender, receiver, adressSender, b_heigth);
+        var tx = singleTransaction(
+          sender,
+          receiver,
+          adressSender,
+          b_heigth,
+          wallets
+        );
         fee += tx.transaction_data.fee; //update fees
         transactions.push(tx); //add transaction to array
 
@@ -72,7 +89,7 @@ const createTransactions = (miner, numtransactions, b_heigth, miningPool) => {
     }
 
     //create coin base transaction + fees
-    var baseTX = coinbaseTransaction(miner, fee, b_heigth);
+    var baseTX = coinbaseTransaction(miner, fee, b_heigth, subsidy);
     transactions.unshift(baseTX); // add transaction to beguinning array
 
     createAdress(
@@ -83,7 +100,7 @@ const createTransactions = (miner, numtransactions, b_heigth, miningPool) => {
     ); // new adress from transaction
   } else {
     // <100 block height --> coinbase transaction with no fees
-    var baseTX = coinbaseTransaction(miner, 0, b_heigth);
+    var baseTX = coinbaseTransaction(miner, 0, b_heigth, subsidy);
     transactions.push(baseTX);
 
     // create + add adress it to adress pool
@@ -99,7 +116,7 @@ const createTransactions = (miner, numtransactions, b_heigth, miningPool) => {
 };
 
 //select a sender with valid money to create transaction
-const selectSender = (miningPool, users, block_height) => {
+const selectSender = (miningPool, users, block_height, wallets) => {
   var usersChecked = []; //users with no valid adresses
   var found = false;
   var counter = 0;
@@ -114,8 +131,9 @@ const selectSender = (miningPool, users, block_height) => {
     var validHeigth = block_height - MINIMUM_DEPTH;
     var senderInfo;
 
-    for (let adressPos in adressesPool[senderPos]) {
-      var adress = adressesPool[senderPos][adressPos]; //get adress from adress pool
+    //TODO: right now we are getting UTXO, implement adress and get adress
+    for (let adressPos in UTXO_Pool[senderPos]) {
+      var adress = UTXO_Pool[senderPos][adressPos]; //get adress from adress pool
 
       // valid adress for a certain userfound
       if (adress[2] <= validHeigth) {
@@ -137,19 +155,19 @@ const selectSender = (miningPool, users, block_height) => {
 };
 
 //function to add adress to adresses pool
-const addAdress2Pool = (adress, users) => {
+const addUTXO2Pool = (myUTXO, users) => {
   var pos = users.findIndex((pos) => {
-    return pos == adress[0];
+    return pos == myUTXO[0];
   });
-  adressesPool[pos].push(adress);
+  UTXO_Pool[pos].push(myUTXO);
 };
 
 // fuction to create an adress
 const createAdress = (user, amount, weight, users) => {
-  var address = [user, amount, weight]; // create address
-  addAdress2Pool(address, users); // add it to the pool
+  var newUTXO = [user, amount, weight]; // create address
+  addUTXO2Pool(newUTXO, users); // add it to the pool
 
-  return address;
+  return newUTXO;
 };
 
 export default createTransactions;
