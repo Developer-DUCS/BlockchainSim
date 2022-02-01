@@ -37,7 +37,7 @@ async function createKeysAdressSignature() {
   var addressS5Arr = addressCreationS5.slice("");
   var checkSum = addressS5Arr.slice(0, CHARACTERS_FOR_CHECK_SUM).toString();
   var addressCreationS6 = addressCreationS3 + checkSum;
-  var address = base58(addressCreationS6); // the adress
+  // var address = base58(addressCreationS6); // the adress
 
   return;
 }

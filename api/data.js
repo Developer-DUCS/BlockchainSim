@@ -32,7 +32,7 @@ router.post("/createsim", cors(), (req, res) => {
 
   let qry2 = "";
 
-  for (i = 0; i < req.body.blocks.length; i++) {
+  for (let i = 0; i < req.body.blocks.length; i++) {
     const hash = req.body.blocks[i].id_block;
     const header = req.body.blocks[i].header;
     const headerString = JSON.stringify(header);
@@ -72,7 +72,7 @@ router.post("/deletesim", cors(), (req, res) => {
       console.log(err);
     } else {
       // for each element in the sim blocks json object
-      resultData = JSON.stringify(result).replace(/[:\\\{\}]/g, "");
+      let resultData = JSON.stringify(result).replace(/[:\\\{\}]/g, "");
       resultData = resultData.slice(14, resultData.length - 2);
       var hashes = JSON.parse(resultData);
       for (var id in hashes) {
@@ -126,7 +126,6 @@ router.post("/getblocks", cors(), (req, resp) => {
   var blocks = JSON.parse(req.body.blocks);
   var owner = req.body.owner;
   let blockTable = "blocks_" + owner.replace(/[@.]/g, "_");
-  console.log(blockTable);
 
   let qry = ` SELECT * FROM ${blockTable} WHERE hash IN (`;
 
