@@ -39,6 +39,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useHistory } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
+import WalletComponent from "./reusable/WalletComponent";
 
 const Simulation = (props) => {
   const history = useHistory();
@@ -511,7 +512,7 @@ const Simulation = (props) => {
           </TabPanel>
 
           <TabPanel value={selectedTab} index={1}>
-            Wallet
+            <WalletComponent />
           </TabPanel>
         </Container>
       )}
