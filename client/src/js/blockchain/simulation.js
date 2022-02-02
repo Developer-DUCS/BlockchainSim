@@ -37,17 +37,15 @@ const simulationCreator = (
   miningPool,
   user,
   num_transactions,
-  subsidy
+  subsidy,
+  wallets
 ) => {
   var blocks = []; // store block json objects
   var hashes = []; // store hash ID of each block
   previousHash = initialHash;
 
-  //initialize wallets
-  var wallets = createWallet(miningPool);
-
   //initialize adress/transaction pool
-  createUTXOPoolHeader(miningPool.length);
+  createUTXOPoolHeader(wallets.length);
 
   for (var i = 0; i < numBlocks; i++) {
     var selectMiner;

@@ -3,7 +3,7 @@ import sjcl from "../../sjcl";
 
 // we would start by having a wallet per user.
 // every wallet intry would have:
-//[wallet_id, owner, simulation_id, adresses_aviable]
+// [wallet_id, owner, simulation_id, adresses_aviable]
 
 // TODO:  simulation ID missing
 // TODO: possibility of more than one wallet

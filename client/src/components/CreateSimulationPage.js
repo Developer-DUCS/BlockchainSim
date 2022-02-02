@@ -43,6 +43,8 @@ import Tooltip from "@mui/material/Tooltip";
 import { Popover } from "@mui/material";
 import InfoButton from "./reusable/InfoButton";
 import { Link } from "react-router-dom";
+import createWallet from "../js/blockchain/wallet";
+
 const CreateSimulation = (props) => {
   const { setTheme, setFeedback, setFeedbackObj } = props;
   const [user, setUser] = React.useState({});
@@ -179,6 +181,7 @@ const CreateSimulation = (props) => {
     };
 
     var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
+    var wallets = createWallet(miningPool);
 
     var bithash = sjcl.hash.sha256.hash(initValues.desc);
     var initialHash = sjcl.codec.hex.fromBits(bithash);
@@ -196,7 +199,8 @@ const CreateSimulation = (props) => {
       miningPool,
       user.email,
       initValues.transactions,
-      initValues.subsidy
+      initValues.subsidy,
+      wallets
     );
 
     var newSimulation = {

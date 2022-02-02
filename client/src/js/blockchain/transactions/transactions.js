@@ -40,7 +40,7 @@ const createTransactions = (
   subsidy
 ) => {
   var transactions = []; // list of all transactions
-  var users = miningPool; // possible users
+  var users = wallets; // possible users
 
   //more than only basecoin transaction is possible
   if (b_heigth > 99 && !done) {

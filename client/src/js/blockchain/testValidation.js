@@ -11,7 +11,7 @@ const BITCOIN_ELLIPTIC_CURVE = "secp256k1"; // Elliptic curve on use
 const CHARACTERS_FOR_CHECK_SUM = 7;
 
 async function createKeysAdressSignature() {
-  //create public and private key
+  // create public and private key
   var msg = "trial";
   var randomKey = ECKey.createECKey(BITCOIN_ELLIPTIC_CURVE);
   var privateKey = buf2hex(randomKey.d);
@@ -26,9 +26,9 @@ async function createKeysAdressSignature() {
   console.log("private key: ", privateKey);
   console.log("public key: ", publicKey);
   console.log("signature: ", signature);
-  console.log("varification: ", verify); //verify signature and msg?
+  console.log("varification: ", verify); // verify signature and msg?
 
-  //create address
+  // create address
   var addressCreationS1 = await sha256(publicKey);
   var encriptedPublicKey = await ripemd160(addressCreationS1);
   var addressCreationS3 = "00" + encriptedPublicKey; // add version
@@ -42,7 +42,7 @@ async function createKeysAdressSignature() {
   return;
 }
 
-//turn buffer of Unit8Array to haxdecimal number hash string
+// turn buffer of Unit8Array to haxdecimal number hash string
 function buf2hex(buffer) {
   // buffer is an ArrayBuffer
   return [...new Uint8Array(buffer)]
