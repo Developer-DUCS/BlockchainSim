@@ -1,11 +1,12 @@
 import { Typography } from "@mui/material";
 import { Card, CardContent, Grid } from "@mui/material";
-import EarningCard from "../WalletCards/EarningCards";
+import EarningCard from "../WalletCards/TotalBalanceCard";
 import Box from "@mui/material/Box";
+import TransactionCard from "../WalletCards/TransactionsCard";
 
 const WalletComponent = (props) => {
   return (
-    <Card sx={{ mt: 3, ml: 5, mr: 5, minHeight: 100 }}>
+    <Card sx={{ mt: 3, ml: 5, mr: 5, minHeight: 100, borderRadius: "16px" }}>
       <CardContent>
         <Grid
           container
@@ -14,7 +15,8 @@ const WalletComponent = (props) => {
           justify="space-between"
           alignItems="center"
         >
-          <EarningCard sx={{ ml: 10, width: 100 }}></EarningCard>
+          <EarningCard></EarningCard>
+          <TransactionCard />
         </Grid>
       </CardContent>
     </Card>

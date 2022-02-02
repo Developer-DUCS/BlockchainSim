@@ -6,7 +6,7 @@ import { styled, useTheme } from "@mui/material/styles";
 import { Avatar, Box, Grid, Menu, MenuItem, Typography } from "@mui/material";
 
 // project imports
-import MainCard from "../WalletCards/MainCard";
+import MainCard from "./MainCard";
 
 // assets
 import EarningIcon from "../../images/icons/earning.svg";
@@ -21,42 +21,12 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   color: "#fff",
-  overflow: "hidden",
+  // overflow: "hidden",
   position: "relative",
-  "&:after": {
-    content: '""',
-    position: "absolute",
-    width: 100,
-    height: 210,
-    background: theme.palette.secondary[800],
-    borderRadius: "50%",
-    top: -85,
-    right: -95,
-    [theme.breakpoints.down("sm")]: {
-      top: -105,
-      right: -140,
-    },
-  },
-  "&:before": {
-    content: '""',
-    position: "absolute",
-    width: 100,
-    height: 210,
-    background: theme.palette.secondary[800],
-    borderRadius: "50%",
-    top: -125,
-    right: -15,
-    opacity: 0.5,
-    [theme.breakpoints.down("sm")]: {
-      top: -155,
-      right: -70,
-    },
-  },
+  borderRadius: "16px",
 }));
 
-// ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
-
-const EarningCard = ({ isLoading }) => {
+const TotalBalanceCard = () => {
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -188,8 +158,4 @@ const EarningCard = ({ isLoading }) => {
   );
 };
 
-EarningCard.propTypes = {
-  isLoading: PropTypes.bool,
-};
-
-export default EarningCard;
+export default TotalBalanceCard;
