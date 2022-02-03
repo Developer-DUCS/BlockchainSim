@@ -41,7 +41,7 @@ const TotalBalanceCard = () => {
 
   return (
     <>
-      <CardWrapper border={false} content={false}>
+      <CardWrapper border={false} content={false} sx={{ ml: 5 }}>
         <Box sx={{ p: 2.25 }}>
           <Grid container direction="column">
             <Grid item>
@@ -132,10 +132,6 @@ const TotalBalanceCard = () => {
                     }}
                   >
                     <AttachMoneyIcon fontSize="inherit" />
-                    {/* <ArrowUpwardIcon
-                      fontSize="inherit"
-                      sx={{ transform: "rotate3d(1, 1, 1, 45deg)" }}
-                    /> */}
                   </Avatar>
                 </Grid>
               </Grid>
