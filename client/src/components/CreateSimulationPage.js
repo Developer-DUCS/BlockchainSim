@@ -114,7 +114,9 @@ const CreateSimulation = (props) => {
   const [transactions, setTransactions] = React.useState("5");
   const [transactionsError, setTransactionsError] = React.useState(false);
   const [subsidy, setSubsidy] = React.useState("50");
+  const [halvings, setHalvings] = React.useState("200");
   const [subsidyError, setSubsidyError] = React.useState(false);
+  const [halvingsError, setHalvingsError] = React.useState(false);
   const [blockWindow, setBlockWindow] = React.useState("10");
   const [coin, setCoin] = React.useState("btc");
   const [mine, setMining] = React.useState("pow");
@@ -130,7 +132,7 @@ const CreateSimulation = (props) => {
   };
 
   const verifyBlocksCount = (blocksCount) => {
-    if (blocksCount < 100 || blocksCount > 500) {
+    if (blocksCount < 100 || blocksCount > 1000) {
       setBlocksCountError(true);
     } else {
       setBlocksCountError(false);
@@ -148,6 +150,13 @@ const CreateSimulation = (props) => {
       setSubsidyError(true);
     } else {
       setSubsidyError(false);
+    }
+  };
+  const verifyHalvings = (halvings) => {
+    if (halvings < 10 || halvings > 500) {
+      setHalvingsError(true);
+    } else {
+      setHalvingsError(false);
     }
   };
   const verifyNumMiners = (numMiners) => {
@@ -173,6 +182,7 @@ const CreateSimulation = (props) => {
       numblocks: blocksCount,
       transactions: transactions,
       subsidy: parseInt(subsidy),
+      halvings: halvings,
       coin: coin,
       mining: mine,
       numminers: numMiners,
@@ -196,7 +206,8 @@ const CreateSimulation = (props) => {
       miningPool,
       user.email,
       initValues.transactions,
-      initValues.subsidy
+      initValues.subsidy,
+      initValues.halvings
     );
 
     var newSimulation = {
@@ -341,7 +352,7 @@ const CreateSimulation = (props) => {
                       id="numblocks"
                       label="Number of Blocks"
                       type="number"
-                      InputProps={{ inputProps: { min: 100, max: 500 } }}
+                      InputProps={{ inputProps: { min: 100, max: 1000 } }}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -352,7 +363,7 @@ const CreateSimulation = (props) => {
                       }}
                       helperText={
                         blocksCountError
-                          ? "*Blockchains must be between 100 and 500 blocks long"
+                          ? "*Blockchains must be between 100 and 1000 blocks long"
                           : ""
                       }
                       error={blocksCountError}
@@ -499,6 +510,41 @@ const CreateSimulation = (props) => {
                           <TextField
                             style={{ width: "90%" }}
                             sx={{ mt: 2, mr: 7 }}
+                            id="halvings"
+                            label="Set a Halving interval"
+                            type="number"
+                            defaultValue={"200"}
+                            InputProps={{ inputProps: { min: 10, max: 500 } }}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            onWheel={(e) => e.target.blur()}
+                            onChange={(e) => {
+                              if (e.target.value == "") {
+                                setHalvings("200");
+                              } else {
+                                verifyHalvings(e.target.value);
+                                setHalvings(e.target.value);
+                              }
+                            }}
+                            helperText={
+                              halvingsError
+                                ? "*The halving interval can be between 10 and 500"
+                                : ""
+                            }
+                            error={halvingsError}
+                            color={halvingsError ? "error" : "success"}
+                          />
+                          <InfoButton
+                            sx={{ ml: -5, mt: 4.5 }}
+                            title="Halving Interval"
+                            description={
+                              "This number will represent the number of blocks before a halving of Bitcoin reward occurs."
+                            }
+                          />
+                          <TextField
+                            style={{ width: "90%" }}
+                            sx={{ mt: 2, mr: 7 }}
                             defaultValue={"50"}
                             id="miners"
                             label="How many miners will be in the simulation:"
@@ -565,7 +611,8 @@ const CreateSimulation = (props) => {
                     blocksCountError ||
                     transactionsError ||
                     subsidyError ||
-                    numMinersError
+                    numMinersError ||
+                    halvingsError
                   }
                   fullWidth
                   type="submit"

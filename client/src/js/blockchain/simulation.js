@@ -37,7 +37,8 @@ const simulationCreator = (
   miningPool,
   user,
   num_transactions,
-  subsidy
+  subsidy,
+  halvings
 ) => {
   var blocks = []; // store block json objects
   var hashes = []; // store hash ID of each block
@@ -65,7 +66,8 @@ const simulationCreator = (
       block_height,
       miningPool,
       wallets,
-      subsidy
+      subsidy,
+      halvings
     );
     var hashID = newBlock[1];
     var blockJSON = newBlock[0];

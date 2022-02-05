@@ -19,16 +19,22 @@
 //      : Make scriptSig, scriptLength, scriptPubKey dynamic
 import sjcl from "../../../../sjcl";
 
-const coinbaseTransaction = (miner, fee, block_height, subsidy) => {
+const coinbaseTransaction = (miner, fee, block_height, subsidy, halvings) => {
   let BLOCK_REWARD = subsidy;
 
-  //create the object to hash
+  if (block_height / halvings >= 1) {
+    BLOCK_REWARD = subsidy / 2 ** Math.floor(block_height / halvings);
+  }
   var coinbase =
     '{ transaction_data: { UTXO: "0000000000000000000000000000000000000000000000000000000000000000", owner_UTXO: "0000000000000000000000000000000000000000000000000000000000000000", receiver: ' +
     miner +
     ", sender_leftover: 0, fee: " +
     fee +
-    ", amount_sent: 50, amount_received: 50, block_height: " +
+    ", amount_sent: " +
+    BLOCK_REWARD +
+    " , amount_received: " +
+    BLOCK_REWARD +
+    ", block_height: " +
     block_height +
     "} }";
 

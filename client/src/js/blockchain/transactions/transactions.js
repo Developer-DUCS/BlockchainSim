@@ -37,7 +37,8 @@ const createTransactions = (
   b_heigth,
   miningPool,
   wallets,
-  subsidy
+  subsidy,
+  halvings
 ) => {
   var transactions = []; // list of all transactions
   var users = miningPool; // possible users
@@ -89,7 +90,7 @@ const createTransactions = (
     }
 
     //create coin base transaction + fees
-    var baseTX = coinbaseTransaction(miner, fee, b_heigth, subsidy);
+    var baseTX = coinbaseTransaction(miner, fee, b_heigth, subsidy, halvings);
     transactions.unshift(baseTX); // add transaction to beguinning array
 
     createAdress(
@@ -100,7 +101,7 @@ const createTransactions = (
     ); // new adress from transaction
   } else {
     // <100 block height --> coinbase transaction with no fees
-    var baseTX = coinbaseTransaction(miner, 0, b_heigth, subsidy);
+    var baseTX = coinbaseTransaction(miner, 0, b_heigth, subsidy, halvings);
     transactions.push(baseTX);
 
     // create + add adress it to adress pool
