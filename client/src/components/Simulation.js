@@ -1,8 +1,5 @@
 import React from "react";
 import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Box,
   Typography,
   Button,
@@ -40,6 +37,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useHistory } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import WalletComponent from "./reusable/WalletComponent";
+import DataGrid from "./reusable/datagrid";
 
 const Simulation = (props) => {
   const history = useHistory();
@@ -345,35 +343,23 @@ const Simulation = (props) => {
               </MenuItem>
             </Menu>
           </Box>
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>Simulation Information</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography variant="body1">Simulation ID: {id}</Typography>
-              <Typography variant="body1">
-                Simulation Owner: {simulation.email}
+          <Card>
+            <CardContent>
+              <Typography variant="h4">
+                {simulation.sim_name}
+                <Typography
+                  variant="caption"
+                  sx={{ display: "inline-block", float: "right" }}
+                >
+                  Created on {simulation.sim_created}
+                </Typography>
               </Typography>
-              <Typography variant="body1">
-                Simulation Description: {simulation.sim_description}
+              <Typography variant="subtitle1">
+                {simulation.sim_description}
               </Typography>
-              <Typography variant="body1">
-                Created:{" "}
-                {new Intl.DateTimeFormat("en-US", options).format(
-                  new Date(simulation.sim_created)
-                )}
-              </Typography>
-              <Typography variant="body1">
-                Modified:{" "}
-                {new Intl.DateTimeFormat("en-US", options).format(
-                  new Date(simulation.sim_modified)
-                )}
-              </Typography>
-              <Typography variant="body1">
-                Shared With: {simulation.sim_shared}
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
+            </CardContent>
+          </Card>
+
           <TabPanel value={selectedTab} index={0}>
             <Box sx={{ mt: 2 }}>
               <Button color="primary" variant="contained" sx={{ mr: 2 }}>
@@ -414,29 +400,21 @@ const Simulation = (props) => {
             </Box>
             {searchResults != "" ? (
               <Typography variant="overline">
-                <Chip label={searchResults} onDelete={handleResultsDelete} />
+                <Chip
+                  label={searchResults}
+                  onDelete={handleResultsDelete}
+                  sx={{ mb: 1 }}
+                />
               </Typography>
             ) : (
               <></>
             )}
-            <div style={{ overflow: "auto", whiteSpace: "nowrap" }}>
-              {filteredBlocks.length > 0 ? (
-                filteredBlocks.map((block, index) => (
-                  <Box
-                    sx={{ mb: 2, mt: 2, mr: 2 }}
-                    style={{ display: "inline-block", width: "500px" }}
-                    key={index}
-                  >
-                    <BlockComponent
-                      block={block}
-                      setSelectedTransaction={setSelectedTransaction}
-                    />
-                  </Box>
-                ))
-              ) : (
-                <LinearProgress sx={{ m: 2 }} />
-              )}
-            </div>
+            {filteredBlocks.length > 0 ? (
+              <DataGrid
+                blocks={filteredBlocks}
+                setSelectedTransaction={setSelectedTransaction}
+              />
+            ) : null}
             {selectedTransaction ? (
               <Container
                 maxWidth="md"

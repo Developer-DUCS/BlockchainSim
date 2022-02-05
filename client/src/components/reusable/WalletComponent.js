@@ -56,7 +56,7 @@ const WalletComponent = (props) => {
           container
           spacing={2}
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="center"
         >
           <EarningCard />
