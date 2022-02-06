@@ -7,10 +7,9 @@ import sjcl from "../../sjcl";
 
 // TODO:  simulation ID missing
 // TODO: possibility of more than one wallet
+const walletArr = [];
 
 const createWallet = (miningPool) => {
-  var walletArr = [];
-
   //initialize wallets
   for (var i = 0; i < miningPool.length; i++) {
     var random = Math.floor(Math.random() * 1000).toString();
@@ -22,5 +21,14 @@ const createWallet = (miningPool) => {
   return walletArr;
 };
 
+const chooseWallet = (wallets) => {
+  var randomWalletNum = randomSelector(0, wallets.length - 1); // select a number
+  var selectedWallet = get_element_from_array(wallets, randomWalletNum); // get wallet entry from the array
+  var walletID = selectedWallet[0];
+  return walletID;
+};
+
 export default createWallet;
+export { chooseWallet, walletArr };
+
 //create a wallet per user
