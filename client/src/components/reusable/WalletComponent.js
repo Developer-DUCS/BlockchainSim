@@ -14,6 +14,9 @@ import {
 import EarningCard from "../WalletCards/TotalBalanceCard";
 import TransactionCard from "../WalletCards/TransactionsCard";
 import OwnerCard from "../WalletCards/OwnerCard";
+import TransactionButton from "../WalletCards/TransactionButton";
+import AddressesCard from "../WalletCards/AddressesCard";
+import LedgerCard from "../WalletCards/LedgerCard";
 
 const WalletComponent = (props) => {
   const miners = ["ean@drury.edu", "t5qcwgfkqh", "f3v80882q9"];
@@ -62,6 +65,16 @@ const WalletComponent = (props) => {
           <EarningCard />
           <TransactionCard />
           <OwnerCard />
+        </Grid>
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+        >
+          <AddressesCard />
+          <LedgerCard />
         </Grid>
       </CardContent>
     </Card>
