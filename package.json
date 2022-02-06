@@ -25,6 +25,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "*",
     "@material-ui/pickers": "^3.3.10",
+    "@mui/x-data-grid": "^5.5.0",
     "base58-encode": "^0.2.0",
     "bcrypt-nodejs": "^0.0.3",
     "bitcoin-address-generator": "^1.0.2",
