@@ -61,9 +61,12 @@ function coinbaseTransaction(users, minerWallet, fee, block_height, subsidy) {
         "00000000000000000000000000000000000000000000000000000000000000000",
       receiver: newAddress, //adress
       sender_leftover: 0,
+      sender_leftover_address:
+        "0000000000000000000000000000000000000000000000000000000000000000",
       fee: fee,
       amount_sent: BLOCK_REWARD, //to hash first?
       amount_received: amount_sent,
+      block_height: block_height,
     },
   };
   return coinbaseJSON;
