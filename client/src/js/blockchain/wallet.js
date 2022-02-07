@@ -9,6 +9,11 @@ import sjcl from "../../sjcl";
 // TODO: possibility of more than one wallet
 const walletArr = [];
 
+const randomSelector = (min, max) => {
+  let num = Math.random() * (max - min) + min;
+  return Math.floor(num);
+};
+
 const createWallet = (miningPool) => {
   //initialize wallets
   for (var i = 0; i < miningPool.length; i++) {
@@ -23,7 +28,7 @@ const createWallet = (miningPool) => {
 
 const chooseWallet = (wallets) => {
   var randomWalletNum = randomSelector(0, wallets.length - 1); // select a number
-  var selectedWallet = get_element_from_array(wallets, randomWalletNum); // get wallet entry from the array
+  var selectedWallet = walletArr[randomWalletNum]; // get wallet entry from the array
   var walletID = selectedWallet[0];
   return walletID;
 };

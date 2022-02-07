@@ -66,7 +66,6 @@ function coinbaseTransaction(users, minerWallet, fee, block_height, subsidy) {
       amount_received: amount_sent,
     },
   };
-  console.log(coinbaseJSON.transaction_data);
   return coinbaseJSON;
 }
 
