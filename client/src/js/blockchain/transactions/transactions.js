@@ -48,7 +48,6 @@ const createTransactions = (miner, numtransactions, b_heigth, subsidy) => {
     for (let i = 0; i < numtransactions; i++) {
       //find a valid sender with valid money
       var senderInfo = selectSender(users, b_heigth); // sender adresses to be used
-      console.log("sender Info: ", senderInfo);
 
       if (senderInfo != undefined) {
         var senderWallet = senderInfo[0];

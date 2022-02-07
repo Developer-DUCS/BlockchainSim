@@ -109,8 +109,6 @@ function singleTransaction(
       block_height: block_height,
     },
   };
-
-  console.log("new transaction: ", transactionJSON);
   return transactionJSON;
 }
 
