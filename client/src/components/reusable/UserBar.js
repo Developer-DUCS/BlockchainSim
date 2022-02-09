@@ -34,6 +34,7 @@ import Add from "@mui/icons-material/Add";
 import { ClickAwayListener } from "@mui/material";
 import { Link } from "react-router-dom";
 import { createBrowserHistory } from "history";
+import { useCookies } from "react-cookie";
 
 const drawerWidth = 270;
 
@@ -95,11 +96,12 @@ const UserBar = (props) => {
   const [toggle, setToggle] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
   const signOut = () => {
     try {
       // Remove token
-      window.localStorage.removeItem("token");
+      removeCookie("token", { path: "/BtB" });
     } catch (err) {
       console.error(err);
     } finally {

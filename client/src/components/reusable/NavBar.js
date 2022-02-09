@@ -7,11 +7,13 @@ import Switch from "@mui/material/Switch";
 import lightTheme from "../../js/themes/lightTheme";
 import darkTheme from "../../js/themes/darkTheme";
 import { createBrowserHistory } from "history";
+import { useCookies } from "react-cookie";
 
 const NavBar = (props) => {
   const history = createBrowserHistory({ forceRefresh: true });
   const { setTheme, signIn, toggleSignIn } = props;
   const [toggle, setToggle] = React.useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
   const toggleTheme = () => {
     if (toggle) {
@@ -26,7 +28,7 @@ const NavBar = (props) => {
   const signOut = () => {
     try {
       // Remove token
-      window.localStorage.removeItem("token");
+      removeCookie("token", { path: "/BtB" });
     } catch (err) {
       console.error(err);
     } finally {

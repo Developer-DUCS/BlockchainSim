@@ -46,6 +46,7 @@
     "node-forge": "^1.2.1",
     "path": "^0.12.7",
     "prop-types": "^15.7.2",
+    "react-cookie": "^4.1.1",
     "react-datepicker": "^4.3.0",
     "react-time-picker": "^4.4.3",
     "ssl-key-match": "0.0.4",
