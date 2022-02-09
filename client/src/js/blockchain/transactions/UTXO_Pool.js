@@ -41,14 +41,4 @@
 // locking script plus unlocking script
 
 const UTXO_Pool = [];
-
-const createUTXOPoolHeader = (numMiners) => {
-  if (UTXO_Pool.length == 0) {
-    for (var i = 0; i < numMiners; i++) {
-      UTXO_Pool.push([]);
-    }
-  }
-};
-
-export default createUTXOPoolHeader;
 export { UTXO_Pool };

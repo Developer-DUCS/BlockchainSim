@@ -442,11 +442,29 @@ const Simulation = (props) => {
                               key={index}
                             >
                               <Grid container>
-                                <Grid item xs={3}>
-                                  <Typography variant="subtitle2">
-                                    {tx.transaction_data.owner_UTXO.length > 63
-                                      ? "BLOCKCHAIN"
-                                      : tx.transaction_data.owner_UTXO}
+                                <Typography variant="subtitle2" sx={{ pr: 2 }}>
+                                  Hash:
+                                </Typography>
+                                <Typography variant="caption" sx={{ pr: 2 }}>
+                                  {tx.hash}
+                                </Typography>
+                              </Grid>
+                              <Grid container>
+                                <Grid item xs={5}>
+                                  <Typography
+                                    variant="caption"
+                                    sx={{ textAlign: "left" }}
+                                  >
+                                    {tx.transaction_data.owner_UTXO.slice(
+                                      0,
+                                      25
+                                    ) + "...  "}
+                                  </Typography>
+                                  <Typography
+                                    variant="caption"
+                                    sx={{ textAlign: "right" }}
+                                  >
+                                    {tx.transaction_data.amount_sent + "BTC"}
                                   </Typography>
                                   <Typography variant="caption">
                                     {tx.transactionAddressFrom}
@@ -454,7 +472,7 @@ const Simulation = (props) => {
                                 </Grid>
                                 <Grid
                                   item
-                                  xs={3}
+                                  xs={2}
                                   style={{
                                     display: "flex",
                                     justifyContent: "center",
@@ -463,19 +481,37 @@ const Simulation = (props) => {
                                 >
                                   <ArrowForwardIcon />
                                 </Grid>
-                                <Grid item xs={3}>
-                                  <Typography variant="subtitle2">
-                                    {tx.transaction_data.receiver}
+                                <Grid item xs={5}>
+                                  <Typography variant="caption">
+                                    {tx.transaction_data.receiver.slice(0, 25) +
+                                      "...  "}
+                                  </Typography>
+                                  <Typography variant="caption">
+                                    {tx.transaction_data.amount_received +
+                                      "BTC"}
                                   </Typography>
                                   <Typography variant="caption">
                                     {tx.transactionAddressFrom}
                                   </Typography>{" "}
                                 </Grid>
-                                <Grid item xs={3} textAlign="right">
-                                  <Typography variant="subtitle2">
-                                    {tx.transaction_data.amount_received}
+                              </Grid>
+                              <Grid container>
+                                <Grid item xs={5}></Grid>
+                                <Grid item xs={2}></Grid>
+                                <Grid item xs={5}>
+                                  <Typography variant="caption">
+                                    {tx.transaction_data.sender_leftover_address.slice(
+                                      0,
+                                      25
+                                    ) + "...  "}
                                   </Typography>
-                                  <Typography variant="caption">BTC</Typography>
+                                  <Typography variant="caption">
+                                    {tx.transaction_data.sender_leftover +
+                                      "BTC"}
+                                  </Typography>
+                                  <Typography variant="caption">
+                                    {tx.transactionAddressFrom}
+                                  </Typography>{" "}
                                 </Grid>
                               </Grid>
                               <Divider />

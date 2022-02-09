@@ -23,7 +23,7 @@
     "@date-io/moment": "^1.3.13",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "*",
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/pickers": "^3.3.10",
     "@mui/x-data-grid": "^5.5.0",
     "base58-encode": "^0.2.0",
@@ -51,6 +51,7 @@
     "react-time-picker": "^4.4.3",
     "ssl-key-match": "0.0.4",
     "supertest": "^6.2.2",
+    "x-data-grid": "^2.1.0",
     "yarn": "^1.22.17"
   }
 }

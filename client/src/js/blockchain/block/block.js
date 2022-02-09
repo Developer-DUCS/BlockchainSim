@@ -20,8 +20,6 @@ const blockCreator = (
   miner,
   num_transactions,
   block_height,
-  miningPool,
-  wallets,
   subsidy
 ) => {
   var header = createHeader(previousHash, merkleTree); // create header of the block
@@ -33,8 +31,6 @@ const blockCreator = (
     miner,
     num_transactions,
     block_height,
-    miningPool,
-    wallets,
     subsidy
   );
 
