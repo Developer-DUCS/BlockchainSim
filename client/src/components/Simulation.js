@@ -214,6 +214,15 @@ const Simulation = (props) => {
 
           // reroute back to simulations list
           history.push(`${process.env.PUBLIC_URL}/simulation`);
+        } else {
+          if (res.status == 403) {
+            setFeedback(true);
+            setFeedbackObj({
+              message: `You do not have permission to delete this simulation`,
+              severity: "error",
+            });
+            handleClose();
+          }
         }
       })
       .catch((err) => {
