@@ -150,7 +150,7 @@ router.post("/getblocks", cors(), (req, resp) => {
 
 router.post("/getsharedsimulations", cors(), (req, resp) => {
   var email = req.body.email;
-  let qry = `SELECT sim_id, sim_name, sim_created, sim_modified from simulation WHERE JSON_VALUE(sim_shared, '$.email') LIKE '%${email}%'`;
+  let qry = `SELECT sim_id, sim_name, sim_created, sim_modified, sim_shared, sim_description, sim_blocks from simulation WHERE JSON_VALUE(sim_shared, '$.email') LIKE '%${email}%'`;
   db.query(qry, (err, res) => {
     if (err) {
       console.log(err);
