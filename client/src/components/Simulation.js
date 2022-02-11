@@ -464,10 +464,7 @@ const Simulation = (props) => {
                                     variant="caption"
                                     sx={{ textAlign: "left" }}
                                   >
-                                    {tx.transaction_data.owner_UTXO.slice(
-                                      0,
-                                      25
-                                    ) + "...  "}
+                                    {tx.transaction_data.owner_UTXO}
                                   </Typography>
                                   <Typography
                                     variant="caption"
@@ -492,8 +489,7 @@ const Simulation = (props) => {
                                 </Grid>
                                 <Grid item xs={5}>
                                   <Typography variant="caption">
-                                    {tx.transaction_data.receiver.slice(0, 25) +
-                                      "...  "}
+                                    {tx.transaction_data.receiver}
                                   </Typography>
                                   <Typography variant="caption">
                                     {tx.transaction_data.amount_received +
@@ -509,10 +505,7 @@ const Simulation = (props) => {
                                 <Grid item xs={2}></Grid>
                                 <Grid item xs={5}>
                                   <Typography variant="caption">
-                                    {tx.transaction_data.sender_leftover_address.slice(
-                                      0,
-                                      25
-                                    ) + "...  "}
+                                    {tx.transaction_data.sender_leftover}
                                   </Typography>
                                   <Typography variant="caption">
                                     {tx.transaction_data.sender_leftover +

@@ -118,9 +118,15 @@ const CreateSimulation = (props) => {
   const [genDate, setGenDate] = React.useState("2009-01-09");
   const NUM_MINERS = 100; //DELETE
 
-  const handleChange = (event) => {
+  const handleWindowChange = (event) => {
     setBlockWindow(event.target.value);
+  };
+
+  const handleCoinChange = (event) => {
     setCoin(event.target.value);
+  };
+
+  const handleMiningChange = (event) => {
     setMining(event.target.value);
   };
 
@@ -371,7 +377,7 @@ const CreateSimulation = (props) => {
                       select
                       label="Select a type of Coin"
                       value={coin}
-                      onChange={handleChange}
+                      onChange={handleCoinChange}
                       SelectProps={{
                         native: true,
                       }}
@@ -402,7 +408,7 @@ const CreateSimulation = (props) => {
                             label="Select a time window between blocks"
                             helperText="* in minutes"
                             value={blockWindow}
-                            onChange={handleChange}
+                            onChange={handleWindowChange}
                             SelectProps={{
                               native: true,
                             }}
@@ -538,7 +544,7 @@ const CreateSimulation = (props) => {
                             select
                             label="Select a type of Verification"
                             value={mine}
-                            onChange={handleChange}
+                            onChange={handleMiningChange}
                             SelectProps={{
                               native: true,
                             }}
