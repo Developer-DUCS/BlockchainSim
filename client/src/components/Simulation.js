@@ -56,6 +56,7 @@ const Simulation = (props) => {
   // Used to hold simulation blocks
   const [simulationBlocks, setSimulationBlocks] = React.useState([]);
 
+  // Main blocks data, used for display/filtering of blocks
   const [filteredBlocks, setFilteredBlocks] = React.useState([]);
 
   // Used for options menu
