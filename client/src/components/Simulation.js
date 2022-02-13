@@ -293,7 +293,7 @@ const Simulation = (props) => {
         <Container maxWidth="xl" sx={{ mt: 2 }}>
           <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
             <Button
-              color="primary"
+              color="secondary"
               variant="contained"
               onClick={(e) => {
                 setAnchorEl(e.currentTarget);
@@ -372,7 +372,7 @@ const Simulation = (props) => {
 
           <TabPanel value={selectedTab} index={0}>
             <Box sx={{ mt: 2 }}>
-              <Button color="primary" variant="contained" sx={{ mr: 2 }}>
+              <Button color="secondary" variant="contained" sx={{ mr: 2 }}>
                 Add New Block
               </Button>
               <Box sx={{ mt: 2 }}>
