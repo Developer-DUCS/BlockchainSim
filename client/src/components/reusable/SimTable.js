@@ -79,7 +79,7 @@ function Row(props) {
   };
 
   React.useEffect(() => {
-    console.log("row", row);
+    //console.log("row", row);
   }, []);
 
   return (
@@ -156,7 +156,7 @@ function Row(props) {
 
 const SimTable = (props) => {
   const { table } = props;
-  console.log("Table", table.rows);
+  //console.log("Table", table.rows);
   const rows = [];
 
   table.rows.forEach((ele) =>

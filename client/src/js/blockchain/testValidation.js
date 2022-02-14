@@ -23,10 +23,10 @@ async function createKeysAdressSignature() {
     .createVerify("SHA256")
     .update(msg)
     .verify(signature, "base64");
-  console.log("private key: ", privateKey);
-  console.log("public key: ", publicKey);
-  console.log("signature: ", signature);
-  console.log("varification: ", verify); //verify signature and msg?
+  //console.log("private key: ", privateKey);
+  //console.log("public key: ", publicKey);
+  //console.log("signature: ", signature);
+  //console.log("varification: ", verify); //verify signature and msg?
 
   //create address
   var addressCreationS1 = await sha256(publicKey);
