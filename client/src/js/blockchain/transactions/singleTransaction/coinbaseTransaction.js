@@ -20,8 +20,15 @@ import { UTXO_Pool } from "./../UTXO_Pool";
         * sjcl() (sjcl.js) -->  used to create hashes and convert to hexadecimal
 */
 
+// TO DO: Add fees
+//      : Make scriptSig, scriptLength, scriptPubKey dynamic
+
 function coinbaseTransaction(users, minerWallet, fee, block_height, subsidy) {
   let BLOCK_REWARD = subsidy;
+ 
+  if (block_height / halvings >= 1) {
+    BLOCK_REWARD = subsidy / 2 ** Math.floor(block_height / halvings);
+  }
 
   var amount_sent = fee + BLOCK_REWARD; // calculate amount the miner is receiving
 
@@ -32,16 +39,15 @@ function coinbaseTransaction(users, minerWallet, fee, block_height, subsidy) {
     users
   );
 
-  //create the object to hash
   var coinbase =
     '{ transaction_data: { UTXO: "0000000000000000000000000000000000000000000000000000000000000000", owner_UTXO: "0000000000000000000000000000000000000000000000000000000000000000", receiver: ' +
     newAddress +
     ", sender_leftover: 0, fee: " +
     fee +
-    ", amount_sent:" +
+    ", amount_sent: " +
     BLOCK_REWARD +
-    ", amount_received:" +
-    amount_sent +
+    " , amount_received: " +
+    BLOCK_REWARD +
     ", block_height: " +
     block_height +
     "} }";

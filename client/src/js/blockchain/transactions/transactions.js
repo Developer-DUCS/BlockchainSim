@@ -32,7 +32,7 @@ import createAddress, { createPublicPrivateKey } from "../testValidation";
 var MINIMUM_DEPTH = 100; // TO CHANGE TO DYNAMIC
 
 // create ALL transactions for an individual block
-const createTransactions = (miner, numtransactions, b_heigth, subsidy) => {
+const createTransactions = (miner, numtransactions, b_heigth, subsidy, halvings) => {
   var transactions = []; // list of all transactions
   var users = []; // possible users
   for (let wallet in walletArr) {
@@ -87,7 +87,8 @@ const createTransactions = (miner, numtransactions, b_heigth, subsidy) => {
       minerWallet,
       fee,
       b_heigth,
-      subsidy
+      subsidy,
+      halvings
     );
     transactions.unshift(baseTX); // add transaction to beguinning array
   } else {
@@ -97,7 +98,7 @@ const createTransactions = (miner, numtransactions, b_heigth, subsidy) => {
         var minerWallet = walletArr[wallet][0];
       }
     }
-    var baseTX = coinbaseTransaction(users, minerWallet, 0, b_heigth, subsidy);
+    var baseTX = coinbaseTransaction(users, minerWallet, 0, b_heigth, subsidy, halvings);
     transactions.push(baseTX);
   }
 
