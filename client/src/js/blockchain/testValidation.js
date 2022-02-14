@@ -27,7 +27,7 @@ function createAddress(publicKey) {
   var addressS5Arr = addressCreationS5Hash.slice("");
   var checkSum = addressS5Arr.slice(0, CHARACTERS_FOR_CHECK_SUM).toString();
   var addressCreationS6 = addressCreationS3 + checkSum;
-  var address = base58(addressCreationS6); // the address
+  var address = base58(addressCreationS1Hash); // the address
 
   return address;
 }

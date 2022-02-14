@@ -31,7 +31,6 @@ const blockCreator = (
   );
 
   var merkleRoot = createMerkleTree(transactionJSON);
-  console.log("MerkleRoot created in block.js: " + merkleRoot);
   var header = createHeader(previousHash, merkleRoot); // create header of the block
   var hashID = header[0];
   var headerJSON = header[1];
@@ -45,7 +44,6 @@ const blockCreator = (
     miner: miner,
     time_created: timeStamp,
   };
-  console.log(blockJSON);
   return [blockJSON, hashID];
 };
 

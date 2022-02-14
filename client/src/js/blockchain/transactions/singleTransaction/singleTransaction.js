@@ -33,7 +33,6 @@ function singleTransaction(
 ) {
   //delete selected UTXO from UTXO_pool
   var utxoPos = UTXO_Pool.indexOf(UTXO_Sender);
-  console.log("Before: ", UTXO_Pool[utxoPos]);
   UTXO_Pool.splice(utxoPos, 1);
 
   //delete adress from wallet
