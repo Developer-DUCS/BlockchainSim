@@ -1,8 +1,6 @@
 import blockCreator from "./block/block";
 import chooseMiner from "./block/miningPool";
-import createKeysAdressSignature from "./testValidation";
-import createUTXOPoolHeader, { UTXO_Pool } from "./transactions/UTXO_Pool";
-import createWallet from "./wallet";
+import { UTXO_Pool } from "./transactions/UTXO_Pool";
 
 /*
     --> SIMULATION.js 
@@ -37,17 +35,12 @@ const simulationCreator = (
   miningPool,
   user,
   num_transactions,
-  subsidy
+  subsidy,
+  halvings
 ) => {
   var blocks = []; // store block json objects
   var hashes = []; // store hash ID of each block
   previousHash = initialHash;
-
-  //initialize wallets
-  var wallets = createWallet(miningPool);
-
-  //initialize adress/transaction pool
-  createUTXOPoolHeader(miningPool.length);
 
   for (var i = 0; i < numBlocks; i++) {
     var selectMiner;
@@ -63,9 +56,8 @@ const simulationCreator = (
       selectMiner,
       num_transactions,
       block_height,
-      miningPool,
-      wallets,
-      subsidy
+      subsidy,
+      halvings
     );
     var hashID = newBlock[1];
     var blockJSON = newBlock[0];
@@ -75,11 +67,7 @@ const simulationCreator = (
     blocks.push(blockJSON); //add to the list
     hashes.push(hashID);
   }
-
   UTXO_Pool.length = 0; //reset adresses pool to be empty again
-
-  createKeysAdressSignature();
-
   return [hashes, blocks];
 };
 

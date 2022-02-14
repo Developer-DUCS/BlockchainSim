@@ -18,18 +18,16 @@ const blockCreator = (
   miner,
   num_transactions,
   block_height,
-  miningPool,
-  wallets,
-  subsidy
+  subsidy,
+  halvings
 ) => {
   // create transactions - before Merkleroot
   var transactionJSON = createTransactions(
     miner,
     num_transactions,
     block_height,
-    miningPool,
-    wallets,
-    subsidy
+    subsidy,
+    halvings
   );
 
   var merkleRoot = createMerkleTree(transactionJSON);

@@ -23,7 +23,10 @@ router.post("/createsim", cors(), (req, res) => {
   const sim_blocks = req.body.simulation.sim_blocks;
   const sim_shared_string = JSON.stringify(sim_shared);
   const sim_blocks_string = JSON.stringify(sim_blocks);
-  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}');`;
+  const subsidy = req.body.simulation.subsidy;
+  const halvings = req.body.simulation.halvings;
+  const numtransactions = req.body.simulation.numtransactions;
+  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}');`;
   db.query(qry, (err) => {
     if (err) {
       console.log(err);
@@ -67,10 +70,14 @@ router.post("/deletesim", cors(), (req, res) => {
   // parse email where special characters = _
   const email_valid = email.replace(/[@.]/g, "_");
   let qry = `SELECT sim_blocks FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
+  let result = [];
   db.query(qry, (err, result) => {
     if (err) {
       console.log(err);
+    } else if (result.length == 0) {
+      res.sendStatus(403);
     } else {
+      result = result;
       // for each element in the sim blocks json object
       let resultData = JSON.stringify(result).replace(/[:\\\{\}]/g, "");
       resultData = resultData.slice(14, resultData.length - 2);
@@ -88,14 +95,16 @@ router.post("/deletesim", cors(), (req, res) => {
     }
   });
 
-  qry = `DELETE FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
-  db.query(qry, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.sendStatus(200);
-    }
-  });
+  if (result.length > 0) {
+    qry = `DELETE FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
+    db.query(qry, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.sendStatus(200);
+      }
+    });
+  }
 });
 
 router.post("/getsimulations", cors(), (req, resp) => {
@@ -150,7 +159,7 @@ router.post("/getblocks", cors(), (req, resp) => {
 
 router.post("/getsharedsimulations", cors(), (req, resp) => {
   var email = req.body.email;
-  let qry = `SELECT sim_id, sim_name, sim_created, sim_modified from simulation WHERE JSON_VALUE(sim_shared, '$.email') LIKE '%${email}%'`;
+  let qry = `SELECT sim_id, sim_name, sim_created, sim_modified, sim_shared, sim_description, sim_blocks from simulation WHERE JSON_VALUE(sim_shared, '$.email') LIKE '%${email}%'`;
   db.query(qry, (err, res) => {
     if (err) {
       console.log(err);
@@ -161,10 +170,73 @@ router.post("/getsharedsimulations", cors(), (req, resp) => {
   });
 });
 
-/* router.post("/getsimulation", cors(), (req, res) => {
-  var sim_name = req.body.sim_name;
+// Return information from the latest block in simulation to create new block
+router.post("/latestblockinfo", cors(), (req, resp) => {
+  var sim_id = req.body.sim_id;
   var email = req.body.email;
-  let qry = SELECT sim_name, 
-}); */
+  let email_valid = email.replace(/[@.]/g, "_");
+  // TODO : Add numMiners and blockWindow to database
+  // get subsidy halvings blocks
+  let qry = `SELECT subsidy, halvings, sim_blocks, numtransactions FROM simulation WHERE sim_id = '${sim_id}'`;
+  db.query(qry, (err, res) => {
+    if (err) {
+      console.log(err);
+      res.status(400);
+    } else {
+      let subsidy = res[0].subsidy;
+      let halvings = res[0].halvings;
+      let sim_blocks = JSON.parse(res[0].sim_blocks);
+      let previousHash = sim_blocks[sim_blocks.length - 1];
+      let num_transactions = res[0].numtransactions;
+      var block_height = sim_blocks.length + 1;
+      // get timestamp
+      let qry = `SELECT time_created FROM blocks_${email_valid} WHERE hash = '${previousHash}'`;
+      db.query(qry, (err, re) => {
+        if (err) {
+          console.log(err);
+          re.sendStatus(400);
+        } else {
+          timeStamp = new Date(re[0].time_created);
+          timeStamp.setMinutes(timeStamp.getMinutes() + 10);
+          resp
+            .status(200)
+            .send(
+              subsidy,
+              halvings,
+              previousHash,
+              num_transactions,
+              block_height,
+              timeStamp
+            );
+        }
+      });
+    }
+  });
+});
+
+// Add a new block to an existing simulation
+router.post("/addnewblock", cors(), (req, resp) => {
+  var email = req.body.email;
+  var sim_id = req.body.sim_id;
+  let qry = ``;
+  // Insert the new block hash into the simulation table's sim_blocks
+  db.query(qry, (err, res) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(400);
+    } else {
+      // Insert the new block into the blocks_user table
+      db.query(qry, (err, res) => {
+        if (err) {
+          console.log(err);
+          res.sendStatus(400);
+        } else {
+          // Insert the new block into the blocks_user table
+          resp.status(200).send(res);
+        }
+      });
+    }
+  });
+});
 
 module.exports = router;

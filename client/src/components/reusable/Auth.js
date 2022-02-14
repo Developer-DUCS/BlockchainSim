@@ -2,10 +2,12 @@ import { Alert } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
+import { useCookies } from "react-cookie";
 
 const Auth = (props) => {
   const { children, setUser } = props;
   const [auth, setAuth] = React.useState(null);
+  const [cookies, setCookie] = useCookies(["token"]);
 
   // On Page Load
   React.useEffect(() => {
@@ -15,7 +17,7 @@ const Auth = (props) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ token: window.localStorage.getItem("token") }),
+      body: JSON.stringify({ token: cookies.token }),
     })
       .then((res) => {
         if (res.status == 200) {

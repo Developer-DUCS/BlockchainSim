@@ -13,10 +13,13 @@ const datagrid = (props) => {
     let rowTemp = { id: 1 };
     let columnsTemp = [];
     blocks.map((block, index) => {
-      rowTemp[index] = { block: block };
+      rowTemp[index] = index;
+    });
+
+    blocks.map((block, index) => {
       columnsTemp.push({
         field: index,
-        headerName: index,
+        headerName: "",
         width: 515,
         renderCell: (params) => (
           <div>
@@ -24,10 +27,12 @@ const datagrid = (props) => {
               sx={{ mb: 2, mt: 2, mr: 2 }}
               style={{ display: "inline-block", width: "500px" }}
             >
-              <BlockComponent
-                block={params.value.block}
-                setSelectedTransaction={setSelectedTransaction}
-              />
+              {
+                <BlockComponent
+                  block={block}
+                  setSelectedTransaction={setSelectedTransaction}
+                />
+              }
             </Box>
           </div>
         ),
@@ -39,16 +44,14 @@ const datagrid = (props) => {
 
   return (
     <div style={{ height: 375, marginBottom: 12 }}>
-      {rows.length > 0 ? (
-        <DataGrid
-          rowHeight={350}
-          headerHeight={0}
-          rows={rows}
-          columns={cols}
-          hideFooter={true}
-          disableSelectionOnClick
-        />
-      ) : null}
+      <DataGrid
+        rowHeight={350}
+        headerHeight={0}
+        rows={rows}
+        columns={cols}
+        hideFooter={true}
+        disableSelectionOnClick
+      />
     </div>
   );
 };
