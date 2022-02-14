@@ -40,6 +40,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useHistory } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import WalletComponent from "./reusable/WalletComponent";
+import createBlock from "../js/blockchain/block/createBlock";
 
 const Simulation = (props) => {
   const history = useHistory();
@@ -223,6 +224,81 @@ const Simulation = (props) => {
       });
   };
 
+  const addNewBlock = (e) => {
+    e.preventDefault();
+
+    // Get sim id and user id
+    let simID = id;
+
+    // Fetch previousHash, timestamp, block height, subsidy, halvings
+    // Add block API Call
+    let url = `http://${process.env.REACT_APP_API_URL}/api/data/latestblockinfo`;
+    let getData = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: user.email, sim_id: simID }),
+    };
+
+    fetch(url, getData)
+      .then((res) => {
+        if (res.ok) {
+          // Create block
+          let subsidy = res.subsidy;
+          let halvings = res.halvings;
+          let previousHash = res.previousHash;
+          let num_transactions = res.num_transactions;
+          let block_height = res.block_height;
+          let timeStamp = res.timeStamp;
+          let newBlock = createBlock(
+            previousHash,
+            timeStamp,
+            num_transactions,
+            block_height,
+            subsidy,
+            halvings,
+            user.email
+          );
+          console.log(
+            "Hash of simulation: " +
+              newBlock[0] +
+              ". Block information: " +
+              newBlock[1]
+          );
+          /*
+          // Send block info to API
+          let url = `http://${process.env.REACT_APP_API_URL}/api/data/addnewblock`;
+          let newBlockData = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: user.email,
+              sim_id: simID,
+              hash: newBlock[0],
+              block: newBlock[1],
+            }),
+          };
+          fetch(url, createdata)
+            .then((res) => {
+              if (res.ok) {
+                // reroute back to simulation page to refresh blocks
+                history.push(`${process.env.PUBLIC_URL}/simulation/${id}`);
+              }
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+            */
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   const searchBlocks = () => {
     let search_value = document.getElementById("search").value;
     let category_value = category;
@@ -376,7 +452,12 @@ const Simulation = (props) => {
           </Accordion>
           <TabPanel value={selectedTab} index={0}>
             <Box sx={{ mt: 2 }}>
-              <Button color="primary" variant="contained" sx={{ mr: 2 }}>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={addNewBlock}
+                sx={{ mr: 2 }}
+              >
                 Add New Block
               </Button>
               <Box sx={{ mt: 2 }}>

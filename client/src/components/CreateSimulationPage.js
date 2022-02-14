@@ -218,6 +218,9 @@ const CreateSimulation = (props) => {
       sim_created: new Date(),
       sim_modified: new Date(),
       sim_blocks: simulation[0],
+      subsidy: initValues.subsidy,
+      halvings: initValues.halvings,
+      numtransactions: initValues.transactions,
     };
 
     var data = {
