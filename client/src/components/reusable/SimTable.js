@@ -141,7 +141,13 @@ function Row(props) {
                       <TableCell component="th" scope="row">
                         {moreinfoRow.num_blocks}
                       </TableCell>
-                      <TableCell>{moreinfoRow.sim_shared}</TableCell>
+                      <TableCell>
+                        {moreinfoRow.sim_shared
+                          ? JSON.parse(moreinfoRow.sim_shared).email.map(
+                              (email) => <div>{email}</div>
+                            )
+                          : null}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

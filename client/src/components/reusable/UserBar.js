@@ -235,21 +235,6 @@ const UserBar = (props) => {
                     <ListItemText primary={"Settings"} />
                   </ListItem>
                 </List>
-                <Divider />
-                <List>
-                  <ListItem button key={"pro"} onClick={handleDrawerClose}>
-                    <ListItemIcon>
-                      <LockOpen />
-                    </ListItemIcon>
-                    <ListItemText primary={"Unlock Pro"} />
-                  </ListItem>
-                  <ListItem button key={"contact"} onClick={handleDrawerClose}>
-                    <ListItemIcon>
-                      <MailIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={"Contact us"} />
-                  </ListItem>
-                </List>
               </Drawer>
             </div>
           </ClickAwayListener>
