@@ -16,6 +16,8 @@ import CreateSimulation from "./components/CreateSimulationPage";
 import SimulationHome from "./components/SimulationHome";
 import Feedback from "./components/reusable/Feedback";
 
+import { CookiesProvider, useCookies } from "react-cookie";
+
 const App = () => {
   const [theme, setTheme] = React.useState(lightTheme);
   const [signIn, setSignIn] = React.useState(false);
@@ -25,6 +27,7 @@ const App = () => {
     message: "",
     severity: "success",
   });
+  const [cookies, setCookie] = useCookies(["token"]);
 
   // Check if the user is signed in
   React.useEffect(() => {
@@ -33,7 +36,7 @@ const App = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ token: window.localStorage.getItem("token") }),
+      body: JSON.stringify({ token: cookies.token }),
     }).then((res) => {
       if (res.status == 200) {
         setSignIn(true);
@@ -48,107 +51,109 @@ const App = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router basename={basename}>
-        <Switch>
-          {/* Route to "/" */}
-          <Route
-            path={`${process.env.PUBLIC_URL}/`}
-            render={() => (
-              <>
-                <HomePage />
-              </>
-            )}
-            exact
-          />
+    <CookiesProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router basename={basename}>
+          <Switch>
+            {/* Route to "/" */}
+            <Route
+              path={`${process.env.PUBLIC_URL}/`}
+              render={() => (
+                <>
+                  <HomePage />
+                </>
+              )}
+              exact
+            />
 
-          {/* Route to "/signin" */}
-          <Route
-            path={`${process.env.PUBLIC_URL}/signin`}
-            render={() => (
-              <>
-                <NavBar
+            {/* Route to "/signin" */}
+            <Route
+              path={`${process.env.PUBLIC_URL}/signin`}
+              render={() => (
+                <>
+                  <NavBar
+                    setTheme={setTheme}
+                    signIn={signIn}
+                    toggleSignIn={toggleSignIn}
+                  />
+                  <SignIn
+                    toggleSignIn={toggleSignIn}
+                    setFeedback={setFeedback}
+                    setFeedbackObj={setFeedbackObj}
+                  />
+                </>
+              )}
+            />
+
+            {/* Route to "/signup" */}
+            <Route
+              path={`${process.env.PUBLIC_URL}/signup`}
+              render={() => (
+                <>
+                  <NavBar
+                    setTheme={setTheme}
+                    signIn={signIn}
+                    toggleSignIn={toggleSignIn}
+                  />
+                  <SignUp
+                    setFeedback={setFeedback}
+                    setFeedbackObj={setFeedbackObj}
+                  />
+                </>
+              )}
+            />
+
+            {/* Route to "/landing" */}
+            <Route
+              path={`${process.env.PUBLIC_URL}/landing`}
+              component={LandingPage}
+            />
+
+            {/* Route to "/createsimulation" */}
+            <Route
+              path={`${process.env.PUBLIC_URL}/createsimulation`}
+              render={() => (
+                <CreateSimulation
                   setTheme={setTheme}
-                  signIn={signIn}
-                  toggleSignIn={toggleSignIn}
-                />
-                <SignIn
-                  toggleSignIn={toggleSignIn}
                   setFeedback={setFeedback}
                   setFeedbackObj={setFeedbackObj}
                 />
-              </>
-            )}
-          />
+              )}
+            />
 
-          {/* Route to "/signup" */}
-          <Route
-            path={`${process.env.PUBLIC_URL}/signup`}
-            render={() => (
-              <>
-                <NavBar
+            {/* Route to "/simulation" */}
+            <Route
+              path={`${process.env.PUBLIC_URL}/simulation`}
+              render={() => <SimulationHome setTheme={setTheme} />}
+              exact
+            />
+
+            {/* Route to "/simulation/:id" */}
+            <Route
+              path={`${process.env.PUBLIC_URL}/simulation/:id`}
+              render={() => (
+                <Simulation
                   setTheme={setTheme}
-                  signIn={signIn}
-                  toggleSignIn={toggleSignIn}
-                />
-                <SignUp
                   setFeedback={setFeedback}
                   setFeedbackObj={setFeedbackObj}
                 />
-              </>
-            )}
-          />
+              )}
+            />
 
-          {/* Route to "/landing" */}
-          <Route
-            path={`${process.env.PUBLIC_URL}/landing`}
-            component={LandingPage}
-          />
+            {/* Route to ERROR pages */}
+            <Route component={Error} />
+          </Switch>
+        </Router>
 
-          {/* Route to "/createsimulation" */}
-          <Route
-            path={`${process.env.PUBLIC_URL}/createsimulation`}
-            render={() => (
-              <CreateSimulation
-                setTheme={setTheme}
-                setFeedback={setFeedback}
-                setFeedbackObj={setFeedbackObj}
-              />
-            )}
-          />
-
-          {/* Route to "/simulation" */}
-          <Route
-            path={`${process.env.PUBLIC_URL}/simulation`}
-            render={() => <SimulationHome setTheme={setTheme} />}
-            exact
-          />
-
-          {/* Route to "/simulation/:id" */}
-          <Route
-            path={`${process.env.PUBLIC_URL}/simulation/:id`}
-            render={() => (
-              <Simulation
-                setTheme={setTheme}
-                setFeedback={setFeedback}
-                setFeedbackObj={setFeedbackObj}
-              />
-            )}
-          />
-
-          {/* Route to ERROR pages */}
-          <Route component={Error} />
-        </Switch>
-      </Router>
-
-      {/* Feedback Modal */}
-      <Feedback
-        feedbackObj={feedbackObj}
-        open={feedback}
-        setOpen={setFeedback}
-      />
-    </ThemeProvider>
+        {/* Feedback Modal */}
+        <Feedback
+          feedbackObj={feedbackObj}
+          open={feedback}
+          setOpen={setFeedback}
+        />
+      </ThemeProvider>
+    </CookiesProvider>
   );
 };
 

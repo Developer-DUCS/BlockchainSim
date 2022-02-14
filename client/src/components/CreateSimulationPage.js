@@ -13,12 +13,11 @@
 //  - number of transactions per blocks
 //  - subsidy
 
-import React, { Fragment, useState } from "react";
+import React from "react";
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Box,
   Button,
   Grid,
   Container,
@@ -32,17 +31,13 @@ import Auth from "./reusable/Auth";
 import UserBar from "./reusable/UserBar";
 import timeStamp from "../js/blockchain/block/timeStamp";
 import simulationCreator from "../js/blockchain/simulation";
-import chooseMiner, {
-  createMinerPool,
-} from "../js/blockchain/block/miningPool";
+import { createMinerPool } from "../js/blockchain/block/miningPool";
 import sjcl from "../sjcl";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import InfoTwoToneIcon from "@mui/icons-material/InfoTwoTone";
-import Tooltip from "@mui/material/Tooltip";
-import { Popover } from "@mui/material";
 import InfoButton from "./reusable/InfoButton";
 import { Link } from "react-router-dom";
+import createWallet from "../js/blockchain/wallet";
+
 const CreateSimulation = (props) => {
   const { setTheme, setFeedback, setFeedbackObj } = props;
   const [user, setUser] = React.useState({});
@@ -125,9 +120,15 @@ const CreateSimulation = (props) => {
   const [genDate, setGenDate] = React.useState("2009-01-09");
   const NUM_MINERS = 100; //DELETE
 
-  const handleChange = (event) => {
+  const handleWindowChange = (event) => {
     setBlockWindow(event.target.value);
+  };
+
+  const handleCoinChange = (event) => {
     setCoin(event.target.value);
+  };
+
+  const handleMiningChange = (event) => {
     setMining(event.target.value);
   };
 
@@ -189,6 +190,7 @@ const CreateSimulation = (props) => {
     };
 
     var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
+    var wallets = createWallet(miningPool);
 
     var bithash = sjcl.hash.sha256.hash(initValues.desc);
     var initialHash = sjcl.codec.hex.fromBits(bithash);
@@ -389,7 +391,7 @@ const CreateSimulation = (props) => {
                       select
                       label="Select a type of Coin"
                       value={coin}
-                      onChange={handleChange}
+                      onChange={handleCoinChange}
                       SelectProps={{
                         native: true,
                       }}
@@ -420,7 +422,7 @@ const CreateSimulation = (props) => {
                             label="Select a time window between blocks"
                             helperText="* in minutes"
                             value={blockWindow}
-                            onChange={handleChange}
+                            onChange={handleWindowChange}
                             SelectProps={{
                               native: true,
                             }}
@@ -591,7 +593,7 @@ const CreateSimulation = (props) => {
                             select
                             label="Select a type of Verification"
                             value={mine}
-                            onChange={handleChange}
+                            onChange={handleMiningChange}
                             SelectProps={{
                               native: true,
                             }}

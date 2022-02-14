@@ -20,8 +20,6 @@ const blockCreator = (
   miner,
   num_transactions,
   block_height,
-  miningPool,
-  wallets,
   subsidy,
   halvings
 ) => {
@@ -34,8 +32,6 @@ const blockCreator = (
     miner,
     num_transactions,
     block_height,
-    miningPool,
-    wallets,
     subsidy,
     halvings
   );

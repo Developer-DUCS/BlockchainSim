@@ -70,10 +70,14 @@ router.post("/deletesim", cors(), (req, res) => {
   // parse email where special characters = _
   const email_valid = email.replace(/[@.]/g, "_");
   let qry = `SELECT sim_blocks FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
+  let result = [];
   db.query(qry, (err, result) => {
     if (err) {
       console.log(err);
+    } else if (result.length == 0) {
+      res.sendStatus(403);
     } else {
+      result = result;
       // for each element in the sim blocks json object
       let resultData = JSON.stringify(result).replace(/[:\\\{\}]/g, "");
       resultData = resultData.slice(14, resultData.length - 2);
@@ -91,14 +95,16 @@ router.post("/deletesim", cors(), (req, res) => {
     }
   });
 
-  qry = `DELETE FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
-  db.query(qry, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.sendStatus(200);
-    }
-  });
+  if (result.length > 0) {
+    qry = `DELETE FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
+    db.query(qry, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.sendStatus(200);
+      }
+    });
+  }
 });
 
 router.post("/getsimulations", cors(), (req, resp) => {
@@ -153,7 +159,7 @@ router.post("/getblocks", cors(), (req, resp) => {
 
 router.post("/getsharedsimulations", cors(), (req, resp) => {
   var email = req.body.email;
-  let qry = `SELECT sim_id, sim_name, sim_created, sim_modified from simulation WHERE JSON_VALUE(sim_shared, '$.email') LIKE '%${email}%'`;
+  let qry = `SELECT sim_id, sim_name, sim_created, sim_modified, sim_shared, sim_description, sim_blocks from simulation WHERE JSON_VALUE(sim_shared, '$.email') LIKE '%${email}%'`;
   db.query(qry, (err, res) => {
     if (err) {
       console.log(err);
