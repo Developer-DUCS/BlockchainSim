@@ -27,7 +27,7 @@ const HomePage = (props) => {
   const { ...rest } = props;
   return (
     <div>
-      {"This is the header where login and other aspects are kept."}
+      {/* This is the header where login and other aspects are kept. */}
       <Header
         color="transparent"
         routes={dashboardRoutes}
@@ -40,7 +40,7 @@ const HomePage = (props) => {
         }}
         {...rest}
       />
-      {"Basically the background of the top part of page"}
+      {/* {"Basically the background of the top part of page"} */}
       <Parallax filter image={require("../assets/nightSky.jpg").default}>
         <div className={classes.container}>
           <GridContainer>
@@ -48,7 +48,7 @@ const HomePage = (props) => {
               <h1 className={classes.title}>Beyond the Block</h1>
               <h4></h4>
               <br />
-              {"Tutorial Button"}
+              {/* {"Tutorial Button"} */}
               <Button
                 size="lg"
                 href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
@@ -64,7 +64,7 @@ const HomePage = (props) => {
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}></div>
-        {"The about our product sectiona and about our team sections."}
+        {/* {"The about our product sectiona and about our team sections."} */}
         <ProductSection />
         <TeamSection />
       </div>
