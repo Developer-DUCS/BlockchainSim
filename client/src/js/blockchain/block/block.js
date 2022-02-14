@@ -10,9 +10,7 @@
 
 import createHeader from "../header";
 import createTransactions from "../transactions/transactions";
-
-const merkleTree = //TO DO: to not be hardcode
-  "113459eb7bb31bddee85ade5230d6ad5d8b2fb52879e00a84ff6ae1067a210d3";
+import createMerkleTree from "./merkleTree";
 
 const blockCreator = (
   previousHash,
@@ -23,11 +21,7 @@ const blockCreator = (
   subsidy,
   halvings
 ) => {
-  var header = createHeader(previousHash, merkleTree); // create header of the block
-  var hashID = header[0];
-  var headerJSON = header[1];
-
-  // create transactions
+  // create transactions - before Merkleroot
   var transactionJSON = createTransactions(
     miner,
     num_transactions,
@@ -35,6 +29,12 @@ const blockCreator = (
     subsidy,
     halvings
   );
+
+  var merkleRoot = createMerkleTree(transactionJSON);
+  console.log("MerkleRoot created in block.js: " + merkleRoot);
+  var header = createHeader(previousHash, merkleRoot); // create header of the block
+  var hashID = header[0];
+  var headerJSON = header[1];
 
   // create the block object
   var blockJSON = {
@@ -45,7 +45,7 @@ const blockCreator = (
     miner: miner,
     time_created: timeStamp,
   };
-
+  console.log(blockJSON);
   return [blockJSON, hashID];
 };
 
