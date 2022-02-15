@@ -55,7 +55,7 @@ export default function ProductSection() {
           <GridItem xs={12} sm={12} md={4}>
             <InfoArea
               title="Share Your Projects"
-              description="Needing to teach, share a sim with colleagues, or work together with a friend? You can share your simulations with whom ever you wish! They only need their own account!"
+              description="Needing to teach, share a simulation with colleagues, or work together with a friend? You can share your simulations with whom ever you wish! They only need their own account!"
               icon={Share}
               iconColor="success"
               vertical

@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: lightTheme.palette.secondary.light,
+    backgroundColor: theme.palette.secondary.main,
     color: lightTheme.palette.text,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -79,7 +79,7 @@ function Row(props) {
   };
 
   React.useEffect(() => {
-    console.log("row", row);
+    //console.log("row", row);
   }, []);
 
   return (
@@ -141,7 +141,13 @@ function Row(props) {
                       <TableCell component="th" scope="row">
                         {moreinfoRow.num_blocks}
                       </TableCell>
-                      <TableCell>{moreinfoRow.sim_shared}</TableCell>
+                      <TableCell>
+                        {moreinfoRow.sim_shared
+                          ? JSON.parse(moreinfoRow.sim_shared).email.map(
+                              (email) => <div>{email}</div>
+                            )
+                          : null}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -154,38 +160,10 @@ function Row(props) {
   );
 }
 
-// Row.propTypes = {
-//   row: PropTypes.shape({
-//     date: PropTypes.string.isRequired,
-//     blocks: PropTypes.number.isRequired,
-//     created: PropTypes.string.isRequired,
-//     moreinfo: PropTypes.arrayOf(
-//       PropTypes.shape({
-//         amount: PropTypes.number.isRequired,
-//         customerId: PropTypes.string.isRequired,
-//         date: PropTypes.string.isRequired,
-//       })
-//     ).isRequired,
-//     name: PropTypes.string.isRequired,
-//     id: PropTypes.number.isRequired,
-//   }).isRequired,
-// };
-
 const SimTable = (props) => {
   const { table } = props;
-  console.log("Table", table.rows);
-  const rows = [
-    // createData(table.rows[0].name, "10/28/2021", "10/20/2021", 24, 4.0, 3.99),
-    // createData(
-    //   "Ean's Super Awesome Simulation",
-    //   "10/28/2021",
-    //   "10/28/2021",
-    //   37,
-    //   4.3,
-    //   4.99
-    // ),
-    // createData("BtB's Simulation", "10/28/2021", "10/28/2021", 24, 6.0, 3.79),
-  ];
+  //console.log("Table", table.rows);
+  const rows = [];
 
   table.rows.forEach((ele) =>
     rows.push(

@@ -16,8 +16,6 @@ const headerSX = {
   "& .MuiCardHeader-action": { mr: 0 },
 };
 
-// ==============================|| CUSTOM MAIN CARD ||============================== //
-
 const MainCard = forwardRef(
   (
     {
@@ -44,7 +42,6 @@ const MainCard = forwardRef(
         {...others}
         sx={{
           width: 400,
-          ml: 5,
           mt: 5,
           border: border ? "1px solid" : "none",
           borderColor: theme.palette.primary[200] + 75,

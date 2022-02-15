@@ -40,4 +40,4 @@ const chooseMiner = (miningPool) => {
 };
 
 export default chooseMiner;
-export { createMinerPool };
+export { createMinerPool, chooseMiner };

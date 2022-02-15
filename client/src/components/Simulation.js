@@ -1,8 +1,5 @@
 import React from "react";
 import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Box,
   Typography,
   Button,
@@ -39,6 +36,9 @@ import ShareIcon from "@mui/icons-material/Share";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useHistory } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
+import WalletComponent from "./reusable/WalletComponent";
+import createBlock from "../js/blockchain/block/createBlock";
+import DataGrid from "./reusable/datagrid";
 
 const Simulation = (props) => {
   const history = useHistory();
@@ -57,6 +57,7 @@ const Simulation = (props) => {
   // Used to hold simulation blocks
   const [simulationBlocks, setSimulationBlocks] = React.useState([]);
 
+  // Main blocks data, used for display/filtering of blocks
   const [filteredBlocks, setFilteredBlocks] = React.useState([]);
 
   // Used for options menu
@@ -215,6 +216,90 @@ const Simulation = (props) => {
 
           // reroute back to simulations list
           history.push(`${process.env.PUBLIC_URL}/simulation`);
+        } else {
+          if (res.status == 403) {
+            setFeedback(true);
+            setFeedbackObj({
+              message: `You do not have permission to delete this simulation`,
+              severity: "error",
+            });
+            handleClose();
+          }
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const addNewBlock = (e) => {
+    e.preventDefault();
+
+    // Get sim id and user id
+    let simID = id;
+
+    // Fetch previousHash, timestamp, block height, subsidy, halvings
+    // Add block API Call
+    let url = `http://${process.env.REACT_APP_API_URL}/api/data/latestblockinfo`;
+    let getData = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: user.email, sim_id: simID }),
+    };
+
+    fetch(url, getData)
+      .then((res) => {
+        if (res.ok) {
+          // Create block
+          let subsidy = res.subsidy;
+          let halvings = res.halvings;
+          let previousHash = res.previousHash;
+          let num_transactions = res.num_transactions;
+          let block_height = res.block_height;
+          let timeStamp = res.timeStamp;
+          let newBlock = createBlock(
+            previousHash,
+            timeStamp,
+            num_transactions,
+            block_height,
+            subsidy,
+            halvings,
+            user.email
+          );
+          console.log(
+            "Hash of simulation: " +
+              newBlock[0] +
+              ". Block information: " +
+              newBlock[1]
+          );
+          /*
+          // Send block info to API
+          let url = `http://${process.env.REACT_APP_API_URL}/api/data/addnewblock`;
+          let newBlockData = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: user.email,
+              sim_id: simID,
+              hash: newBlock[0],
+              block: newBlock[1],
+            }),
+          };
+          fetch(url, createdata)
+            .then((res) => {
+              if (res.ok) {
+                // reroute back to simulation page to refresh blocks
+                history.push(`${process.env.PUBLIC_URL}/simulation/${id}`);
+              }
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+            */
         }
       })
       .catch((err) => {
@@ -284,7 +369,7 @@ const Simulation = (props) => {
         <Container maxWidth="xl" sx={{ mt: 2 }}>
           <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
             <Button
-              color="primary"
+              color="secondary"
               variant="contained"
               onClick={(e) => {
                 setAnchorEl(e.currentTarget);
@@ -344,38 +429,31 @@ const Simulation = (props) => {
               </MenuItem>
             </Menu>
           </Box>
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>Simulation Information</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography variant="body1">Simulation ID: {id}</Typography>
-              <Typography variant="body1">
-                Simulation Owner: {simulation.email}
+          <Card>
+            <CardContent>
+              <Typography variant="h4">
+                {simulation.sim_name}
+                <Typography
+                  variant="caption"
+                  sx={{ display: "inline-block", float: "right" }}
+                >
+                  Created on {simulation.sim_created}
+                </Typography>
               </Typography>
-              <Typography variant="body1">
-                Simulation Description: {simulation.sim_description}
+              <Typography variant="subtitle1">
+                {simulation.sim_description}
               </Typography>
-              <Typography variant="body1">
-                Created:{" "}
-                {new Intl.DateTimeFormat("en-US", options).format(
-                  new Date(simulation.sim_created)
-                )}
-              </Typography>
-              <Typography variant="body1">
-                Modified:{" "}
-                {new Intl.DateTimeFormat("en-US", options).format(
-                  new Date(simulation.sim_modified)
-                )}
-              </Typography>
-              <Typography variant="body1">
-                Shared With: {simulation.sim_shared}
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
+            </CardContent>
+          </Card>
+
           <TabPanel value={selectedTab} index={0}>
             <Box sx={{ mt: 2 }}>
-              <Button color="primary" variant="contained" sx={{ mr: 2 }}>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={addNewBlock}
+                sx={{ mr: 2 }}
+              >
                 Add New Block
               </Button>
               <Box sx={{ mt: 2 }}>
@@ -413,29 +491,21 @@ const Simulation = (props) => {
             </Box>
             {searchResults != "" ? (
               <Typography variant="overline">
-                <Chip label={searchResults} onDelete={handleResultsDelete} />
+                <Chip
+                  label={searchResults}
+                  onDelete={handleResultsDelete}
+                  sx={{ mb: 1 }}
+                />
               </Typography>
             ) : (
               <></>
             )}
-            <div style={{ overflow: "auto", whiteSpace: "nowrap" }}>
-              {filteredBlocks.length > 0 ? (
-                filteredBlocks.map((block, index) => (
-                  <Box
-                    sx={{ mb: 2, mt: 2, mr: 2 }}
-                    style={{ display: "inline-block", width: "500px" }}
-                    key={index}
-                  >
-                    <BlockComponent
-                      block={block}
-                      setSelectedTransaction={setSelectedTransaction}
-                    />
-                  </Box>
-                ))
-              ) : (
-                <LinearProgress sx={{ m: 2 }} />
-              )}
-            </div>
+            {filteredBlocks.length > 0 ? (
+              <DataGrid
+                blocks={filteredBlocks}
+                setSelectedTransaction={setSelectedTransaction}
+              />
+            ) : null}
             {selectedTransaction ? (
               <Container
                 maxWidth="md"
@@ -463,11 +533,26 @@ const Simulation = (props) => {
                               key={index}
                             >
                               <Grid container>
-                                <Grid item xs={3}>
-                                  <Typography variant="subtitle2">
-                                    {tx.transaction_data.owner_UTXO.length > 63
-                                      ? "BLOCKCHAIN"
-                                      : tx.transaction_data.owner_UTXO}
+                                <Typography variant="subtitle2" sx={{ pr: 2 }}>
+                                  Hash:
+                                </Typography>
+                                <Typography variant="caption" sx={{ pr: 2 }}>
+                                  {tx.hash}
+                                </Typography>
+                              </Grid>
+                              <Grid container>
+                                <Grid item xs={5}>
+                                  <Typography
+                                    variant="caption"
+                                    sx={{ textAlign: "left" }}
+                                  >
+                                    {tx.transaction_data.owner_UTXO}
+                                  </Typography>
+                                  <Typography
+                                    variant="caption"
+                                    sx={{ textAlign: "right" }}
+                                  >
+                                    {tx.transaction_data.amount_sent + "BTC"}
                                   </Typography>
                                   <Typography variant="caption">
                                     {tx.transactionAddressFrom}
@@ -475,7 +560,7 @@ const Simulation = (props) => {
                                 </Grid>
                                 <Grid
                                   item
-                                  xs={3}
+                                  xs={2}
                                   style={{
                                     display: "flex",
                                     justifyContent: "center",
@@ -484,19 +569,33 @@ const Simulation = (props) => {
                                 >
                                   <ArrowForwardIcon />
                                 </Grid>
-                                <Grid item xs={3}>
-                                  <Typography variant="subtitle2">
+                                <Grid item xs={5}>
+                                  <Typography variant="caption">
                                     {tx.transaction_data.receiver}
+                                  </Typography>
+                                  <Typography variant="caption">
+                                    {tx.transaction_data.amount_received +
+                                      "BTC"}
                                   </Typography>
                                   <Typography variant="caption">
                                     {tx.transactionAddressFrom}
                                   </Typography>{" "}
                                 </Grid>
-                                <Grid item xs={3} textAlign="right">
-                                  <Typography variant="subtitle2">
-                                    {tx.transaction_data.amount_received}
+                              </Grid>
+                              <Grid container>
+                                <Grid item xs={5}></Grid>
+                                <Grid item xs={2}></Grid>
+                                <Grid item xs={5}>
+                                  <Typography variant="caption">
+                                    {tx.transaction_data.sender_leftover}
                                   </Typography>
-                                  <Typography variant="caption">BTC</Typography>
+                                  <Typography variant="caption">
+                                    {tx.transaction_data.sender_leftover +
+                                      "BTC"}
+                                  </Typography>
+                                  <Typography variant="caption">
+                                    {tx.transactionAddressFrom}
+                                  </Typography>{" "}
                                 </Grid>
                               </Grid>
                               <Divider />
@@ -511,7 +610,7 @@ const Simulation = (props) => {
           </TabPanel>
 
           <TabPanel value={selectedTab} index={1}>
-            Wallet
+            <WalletComponent />
           </TabPanel>
         </Container>
       )}

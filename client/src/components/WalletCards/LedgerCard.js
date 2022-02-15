@@ -6,7 +6,7 @@ import { styled, useTheme } from "@mui/material/styles";
 import { Avatar, Box, Grid, Menu, MenuItem, Typography } from "@mui/material";
 
 // project imports
-import MainCard from "../WalletCards/MainCard";
+import MainCard from "./MainCard";
 
 // assets
 import EarningIcon from "../../images/icons/earning.svg";
@@ -21,42 +21,12 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   color: "#fff",
-  overflow: "hidden",
+  // overflow: "hidden",
   position: "relative",
-  "&:after": {
-    content: '""',
-    position: "absolute",
-    width: 100,
-    height: 210,
-    background: theme.palette.secondary[800],
-    borderRadius: "50%",
-    top: -85,
-    right: -95,
-    [theme.breakpoints.down("sm")]: {
-      top: -105,
-      right: -140,
-    },
-  },
-  "&:before": {
-    content: '""',
-    position: "absolute",
-    width: 100,
-    height: 210,
-    background: theme.palette.secondary[800],
-    borderRadius: "50%",
-    top: -125,
-    right: -15,
-    opacity: 0.5,
-    [theme.breakpoints.down("sm")]: {
-      top: -155,
-      right: -70,
-    },
-  },
+  borderRadius: "16px",
 }));
 
-// ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
-
-const EarningCard = ({ isLoading }) => {
+const LedgerCard = () => {
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -71,7 +41,11 @@ const EarningCard = ({ isLoading }) => {
 
   return (
     <>
-      <CardWrapper border={false} content={false}>
+      <CardWrapper
+        border={false}
+        content={false}
+        sx={{ ml: 3, height: 500, width: 400 }}
+      >
         <Box sx={{ p: 2.25 }}>
           <Grid container direction="column">
             <Grid item>
@@ -138,48 +112,23 @@ const EarningCard = ({ isLoading }) => {
               </Grid>
             </Grid>
             <Grid item>
-              <Grid container alignItems="center">
+              <Grid container justifyContent="space-between">
                 <Grid item>
                   <Typography
                     sx={{
-                      fontSize: "2.125rem",
+                      fontSize: "1.50rem",
                       fontWeight: 500,
                       mr: 1,
-                      mt: 1.75,
+                      ml: 6,
+                      mt: -4,
                       mb: 0.75,
                     }}
                   >
-                    $500.00
+                    Ledger
                   </Typography>
                 </Grid>
-                <Grid item>
-                  <Avatar
-                    sx={{
-                      cursor: "pointer",
-                      ...theme.typography.smallAvatar,
-                      backgroundColor: theme.palette.secondary[200],
-                      color: theme.palette.secondary.dark,
-                    }}
-                  >
-                    <AttachMoneyIcon fontSize="inherit" />
-                    {/* <ArrowUpwardIcon
-                      fontSize="inherit"
-                      sx={{ transform: "rotate3d(1, 1, 1, 45deg)" }}
-                    /> */}
-                  </Avatar>
-                </Grid>
+                <Grid item></Grid>
               </Grid>
-            </Grid>
-            <Grid item sx={{ mb: 1.25 }}>
-              <Typography
-                sx={{
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  color: theme.palette.secondary[200],
-                }}
-              >
-                Total Balance
-              </Typography>
             </Grid>
           </Grid>
         </Box>
@@ -188,8 +137,4 @@ const EarningCard = ({ isLoading }) => {
   );
 };
 
-EarningCard.propTypes = {
-  isLoading: PropTypes.bool,
-};
-
-export default EarningCard;
+export default LedgerCard;

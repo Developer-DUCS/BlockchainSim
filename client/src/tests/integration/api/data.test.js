@@ -11,9 +11,19 @@ const request = require("supertest");
 const express = require("express");
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.urlencoded({ limit: "50mb" }));
 app.use(express.json({ limit: "50mb" }));
+app.use(
+  express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
+);
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 app.use("/", datapath);
 app.use("/users/", users);
@@ -26,17 +36,31 @@ const role = "dev";
 
 // Clear Database before testing (removes test data)
 beforeAll((done) => {
-  let qry = `DELETE FROM user WHERE email='${email1}' OR email='${email2}'`;
+  let qry = `DROP TABLE IF EXISTS blocks_testonly_test_com, blocks_onlytest_test_com`;
   db.query(qry, (err, result) => {
     if (err) {
       console.error(err);
     } else {
-      qry = `DROP TABLE IF EXISTS blocks_testonly_test_com, blocks_onlytest_test_com`;
+      qry = `TRUNCATE TABLE simulation`;
       db.query(qry, (err, result) => {
         if (err) {
           console.error(err);
         } else {
-          done();
+          qry = `ALTER TABLE simulation AUTO_INCREMENT = 1`;
+          db.query(qry, (err, result) => {
+            if (err) {
+              console.error(err);
+            } else {
+              qry = `DELETE FROM user WHERE email='${email1}' OR email='${email2}'`;
+              db.query(qry, (err, result) => {
+                if (err) {
+                  console.error(err);
+                } else {
+                  done();
+                }
+              });
+            }
+          });
         }
       });
     }
@@ -45,17 +69,31 @@ beforeAll((done) => {
 
 // Clear Database after testing (removes test data)
 afterAll((done) => {
-  let qry = `DELETE FROM user WHERE email='${email1}' OR email='${email2}'`;
+  let qry = `DROP TABLE IF EXISTS blocks_testonly_test_com, blocks_onlytest_test_com`;
   db.query(qry, (err, result) => {
     if (err) {
       console.error(err);
     } else {
-      qry = `DROP TABLE IF EXISTS blocks_testonly_test_com, blocks_onlytest_test_com`;
+      qry = `TRUNCATE TABLE simulation`;
       db.query(qry, (err, result) => {
         if (err) {
           console.error(err);
         } else {
-          done();
+          qry = `ALTER TABLE simulation AUTO_INCREMENT = 1`;
+          db.query(qry, (err, result) => {
+            if (err) {
+              console.error(err);
+            } else {
+              qry = `DELETE FROM user WHERE email='${email1}' OR email='${email2}'`;
+              db.query(qry, (err, result) => {
+                if (err) {
+                  console.error(err);
+                } else {
+                  done();
+                }
+              });
+            }
+          });
         }
       });
     }
@@ -143,7 +181,7 @@ test("Route /createsim works", (done) => {
   request(app)
     .post("/createsim")
     .type("form")
-    .send({ data })
+    .send(data)
     .expect(200)
     .then(() => {
       done();
@@ -159,7 +197,7 @@ test("Route /deletesim success", (done) => {
   request(app)
     .post("/deletesim")
     .type("form")
-    .send({ email: email1, sim_id: "18" })
+    .send({ email: email1, sim_id: "1" })
     .expect(200)
     .then(() => done())
     .catch((err) => {
@@ -197,7 +235,7 @@ test("Route /getblocks success", (done) => {
   request(app)
     .post("/getblocks")
     .type("form")
-    .send({ owner: email1, blocks: simulation.blocks })
+    .send({ owner: email1, blocks: JSON.stringify(data.simulation.sim_blocks) })
     .expect(200)
     .then(() => done())
     .catch((err) => {

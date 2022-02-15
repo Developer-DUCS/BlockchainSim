@@ -13,6 +13,7 @@ const BlockComponent = (props) => {
       try {
         block.header = JSON.parse(block.header);
         block.transactions = JSON.parse(block.transactions);
+        console.log("transactions", block.transactions);
         setWaitForParse(false);
       } catch (e) {
         setWaitForParse(false);
@@ -35,9 +36,9 @@ const BlockComponent = (props) => {
               </Typography>
               <br />
               <Typography variant="caption">Miner: {block.miner}</Typography>
-              <Typography variant="subtitle2">Merkle Tree:</Typography>
+              <Typography variant="subtitle2">Merkle Root:</Typography>
               <Typography variant="caption">
-                {block.header.merkleTree}
+                {block.header.merkleRoot}
               </Typography>
               <Divider sx={{ bgcolor: "primary.main" }} />
             </Grid>

@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 require("dotenv").config({ path: "../../../.env" });
+import { useCookies } from "react-cookie";
 
 const SignIn = (props) => {
   const { toggleSignIn, setFeedbackObj, setFeedback } = props;
@@ -16,6 +17,7 @@ const SignIn = (props) => {
   const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(false);
   const history = useHistory();
+  const [cookies, setCookie] = useCookies(["token"]);
 
   // Checks to see if the user is already logged in and
   // redirects them to the home page if they are
@@ -25,7 +27,7 @@ const SignIn = (props) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ token: window.localStorage.getItem("token") }),
+      body: JSON.stringify({ token: cookies.token }),
     })
       .then((res) => {
         if (res.status == 200) {
@@ -76,7 +78,7 @@ const SignIn = (props) => {
       })
       .then(async (res) => {
         // Store token in cookie
-        window.localStorage.setItem("token", res.token);
+        setCookie("token", res.token, { path: "/BtB", maxAge: 3600 * 24 });
 
         // Toggle state of sign in
         toggleSignIn();

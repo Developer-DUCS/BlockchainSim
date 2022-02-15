@@ -32,7 +32,7 @@ const random = (min = 268435456, max = 4294967295) => {
   return Math.floor(num);
 };
 
-const createHeader = (previousHash, merkleTree) => {
+const createHeader = (previousHash, merkleRoot) => {
   var difficulty =
     "1000000000000000000000000000000000000000000000000000000000000000";
   // Note: Difficulty is hard-coded, and the target difficulty in the header doesn't do anything.
@@ -48,7 +48,7 @@ const createHeader = (previousHash, merkleTree) => {
     blockHeader += blockHeader.concat(
       version,
       previousHash,
-      merkleTree,
+      merkleRoot,
       time,
       target,
       nonce
@@ -83,7 +83,7 @@ const createHeader = (previousHash, merkleTree) => {
   var objectJSON = {
     version: "00000020",
     previousHash: previousHash,
-    merkleTree: merkleTree,
+    merkleRoot: merkleRoot,
     time: "2b80475f",
     target: "00000000", //possible change to dynamic?
     nonce: nonce,
