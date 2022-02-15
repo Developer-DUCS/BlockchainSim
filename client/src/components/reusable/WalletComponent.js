@@ -11,7 +11,7 @@ import {
   Checkbox,
   ListItemText,
 } from "@mui/material";
-import EarningCard from "../WalletCards/TotalBalanceCard";
+import TotalBalanceCard from "../WalletCards/TotalBalanceCard";
 import TransactionCard from "../WalletCards/TransactionsCard";
 import OwnerCard from "../WalletCards/OwnerCard";
 import TransactionButton from "../WalletCards/TransactionButton";
@@ -62,9 +62,9 @@ const WalletComponent = (props) => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <EarningCard />
-          <TransactionCard />
-          <OwnerCard />
+          <TotalBalanceCard sx={{ width: 450, ml: 5 }} />
+          <TransactionCard sx={{ width: 500, ml: 0 }} />
+          <OwnerCard sx={{ mt: -8, ml: 8 }} />
         </Grid>
         <Grid
           container
@@ -73,8 +73,18 @@ const WalletComponent = (props) => {
           justify="space-between"
           alignItems="center"
         >
-          <AddressesCard />
-          <LedgerCard />
+          <TransactionButton sx={{ ml: 5, width: 638 }} />
+          <TransactionButton sx={{ ml: 3, width: 638 }} />
+        </Grid>
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+        >
+          <AddressesCard sx={{ ml: 5, height: 500, width: 875 }} />
+          <LedgerCard sx={{ ml: 3, height: 500, width: 400 }} />
         </Grid>
       </CardContent>
     </Card>

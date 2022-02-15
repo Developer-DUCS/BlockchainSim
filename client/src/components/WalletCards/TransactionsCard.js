@@ -34,7 +34,8 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   borderRadius: "16px",
 }));
 
-const TransactionCard = ({ isLoading }) => {
+const TransactionCard = (props) => {
+  const { sx } = props;
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -49,7 +50,7 @@ const TransactionCard = ({ isLoading }) => {
 
   return (
     <>
-      <CardWrapper border={false} content={false} sx={{ width: 450, ml: 3 }}>
+      <CardWrapper border={false} content={false} sx={sx}>
         <Box sx={{ p: 2.25 }}>
           <Grid container direction="column">
             <Grid item>

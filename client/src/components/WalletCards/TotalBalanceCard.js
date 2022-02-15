@@ -26,7 +26,8 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   borderRadius: "16px",
 }));
 
-const TotalBalanceCard = () => {
+const TotalBalanceCard = (props) => {
+  const { sx } = props;
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -41,7 +42,7 @@ const TotalBalanceCard = () => {
 
   return (
     <>
-      <CardWrapper border={false} content={false} sx={{ ml: 5 }}>
+      <CardWrapper border={false} content={false} sx={sx}>
         <Box sx={{ p: 2.25 }}>
           <Grid container direction="column">
             <Grid item>
