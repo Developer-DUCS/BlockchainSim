@@ -120,6 +120,7 @@ const createTransactions = (
 
 //select a sender with valid money to create transaction
 const selectSender = (users, block_height) => {
+  // TODO: make this method faster
   var usersChecked = []; //users with no valid adresses
   var found = false;
   var counter = 0;
@@ -138,10 +139,14 @@ const selectSender = (users, block_height) => {
       var utxos = UTXO_Pool.filter((ele) => ele[0] == address);
 
       // valid adress for a certain userfound
-      if (utxos[0][2] <= validHeigth) {
-        found = true;
-        var senderInfo = [senderWallet, address, utxos[0], senderPos]; // [laura, [laura, 50BTC, block 3], position 15]
-        return senderInfo;
+      console.log("new UTXO");
+      if (utxos.length != 0) {
+        if (utxos[0][2] <= validHeigth) {
+          console.log("found valid UTXO");
+          found = true;
+          var senderInfo = [senderWallet, address, utxos[0], senderPos]; // [laura, [laura, 50BTC, block 3], position 15]
+          return senderInfo;
+        }
       }
     }
 
