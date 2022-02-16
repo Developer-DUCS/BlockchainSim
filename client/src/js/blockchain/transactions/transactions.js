@@ -53,12 +53,12 @@ const createTransactions = (
     //create transactions
     for (let i = 0; i < numtransactions; i++) {
       //find a valid sender with valid money
-      var senderInfo = selectSender(users, b_heigth); // sender adresses to be used
+      var senderInfo = selectSender(b_heigth); // sender adresses to be used
+      // [senderWallet, utxoArr];
 
       if (senderInfo != undefined) {
         var senderWallet = senderInfo[0];
-        var addressSender = senderInfo[1]; //adress 2 use
-        var UTXO_Sender = senderInfo[2];
+        var UTXO_Sender = senderInfo[1][0]; // TO CHANGE TO BE ABLE TO GET THE OTHER UTXOS TOO
 
         //select receiver diferent than sender
         var receiverWallet = chooseWallet(walletArr);
@@ -69,7 +69,6 @@ const createTransactions = (
         var tx = singleTransaction(
           senderWallet,
           receiverWallet,
-          addressSender,
           UTXO_Sender,
           b_heigth,
           users
@@ -119,35 +118,36 @@ const createTransactions = (
 };
 
 //select a sender with valid money to create transaction
-const selectSender = (users, block_height) => {
+const selectSender = (block_height) => {
   // choose valid UTXO
   var index = 0;
   var utxo = UTXO_Pool[index];
   var validHeigth = block_height - MINIMUM_DEPTH;
+  var utxoArr = [];
 
-  console.log("First utxo in the pool:", utxo[2], validHeigth);
+  console.log(utxo);
   while (utxo[2] > validHeigth) {
     // in case the first UTXO is not valid
     index = index + 1;
     utxo = UTXO_Pool[index];
   }
+  utxoArr.push(utxo);
 
   //track address and get wallet
   var address2find = utxo[0];
+
   //find wallet with correct address
   var counter = 0;
   var found = false;
   var senderWallet;
-  var i,
-    j = 0;
+  var i = 0;
   while (!found && i != walletArr.length) {
     counter = counter + 1;
-    var w = walletArr[0];
+    var w = walletArr[i];
     i = i + 1;
-    console.log("current wallet: ", w);
+    var j = 0;
     while (!found && j < w[3].length) {
       counter = counter + 1;
-      console.log("addr: ", w[3][j]);
       if (w[3][j] == address2find) {
         found = true;
         senderWallet = w;
@@ -155,7 +155,16 @@ const selectSender = (users, block_height) => {
       j = j + 1;
     }
   }
+
+  //check if that wallet has more then one possible utxo.
+  if (senderWallet.length > 1) {
+    console.log("need to find more utxos");
+  }
   console.log("END: ", address2find, senderWallet, counter);
+
+  var senderInfo = [senderWallet, utxoArr]; // [laura, [askbvasebraienv, 50BTC, block 3]]
+
+  return senderInfo;
 
   /* // TODO: make this method faster
   var usersChecked = []; //users with no valid adresses

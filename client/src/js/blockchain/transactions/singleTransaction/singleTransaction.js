@@ -26,17 +26,18 @@ import createAddress, { createPublicPrivateKey } from "../../testValidation";
 function singleTransaction(
   senderWallet,
   receiverWallet,
-  addressSender,
   UTXO_Sender,
   block_height,
   users
 ) {
   //delete selected UTXO from UTXO_pool
+  var senderWalletId = senderWallet[0];
+  var addressSender = UTXO_Sender[0];
   var utxoPos = UTXO_Pool.indexOf(UTXO_Sender);
   UTXO_Pool.splice(utxoPos, 1);
 
   //delete adress from wallet
-  var walletSenderPos = users.indexOf(senderWallet);
+  var walletSenderPos = users.indexOf(senderWalletId);
   var addSenderPos = walletArr[walletSenderPos][3].indexOf(addressSender);
   walletArr[walletSenderPos][3].splice(addSenderPos, 1);
 
@@ -50,7 +51,7 @@ function singleTransaction(
   if (sender_leftover != 0) {
     // sender leftover new address
     var out_sender_address = createAddressInfo(
-      senderWallet,
+      senderWalletId,
       sender_leftover,
       block_height,
       users
@@ -70,7 +71,7 @@ function singleTransaction(
     "{ transaction_data: { UTXO: " +
     addressSender +
     ", owner_UTXO: " +
-    senderWallet +
+    senderWalletId +
     ", amount_sent: " +
     amount_received +
     ", receiver: " +
@@ -97,7 +98,7 @@ function singleTransaction(
     //all the data we are using to create transactions
     transaction_data: {
       UTXO: addressSender, //address: [user, currency, parent_block] represents UTXO
-      owner_UTXO: senderWallet, //user sending $
+      owner_UTXO: senderWalletId, //user sending $
       amount_sent: amount_sent, //full amount of UTXO (before transaction)
       receiver: receiverWallet, //user receiving $
       amount_received: amount_received, //amount received from transaction
@@ -108,6 +109,7 @@ function singleTransaction(
       block_height: block_height,
     },
   };
+  console.log("transaction created");
   return transactionJSON;
 }
 
