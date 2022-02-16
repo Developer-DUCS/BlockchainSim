@@ -4,28 +4,93 @@ const router = express.Router();
 const db = require("../dbConn");
 const cors = require("cors");
 
+const timeStamp = require("../client/src/js/blockchain/block/timeStamp");
+const simulationCreator = require("../client/src/js/blockchain/simulation");
+const {
+  createMinerPool,
+} = require("../client/src/js/blockchain/block/miningPool");
+const sjcl = require("../client/src/sjcl");
+const { createWallet } = require("../client/src/js/blockchain/wallet");
+
 app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb" }));
 
 router.post("/createsim", cors(), (req, res) => {
-  const email = req.body.simulation.user;
+  // Add in here
+  console.log(req.body);
+  const user = req.body.user;
+  const initValues = {
+    name: req.body.name,
+    desc: req.body.desc,
+    gendate: req.body.gendate,
+    gentime: req.body.gentime,
+    blockwin: req.body.blockwin,
+    numblocks: req.body.numblocks,
+    transactions: req.body.transactions,
+    subsidy: req.body.subsidy,
+    halvings: req.body.halvings,
+    coin: req.body.coin,
+    mining: req.body.mining,
+    numminers: req.body.numminers,
+  };
+
+  console.log(initValues, user);
+
+  var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
+  var wallets = createWallet(miningPool);
+
+  var bithash = sjcl.hash.sha256.hash(initValues.desc);
+  var initialHash = sjcl.codec.hex.fromBits(bithash);
+
+  let initTime = [initValues.gendate, initValues.gentime];
+  var timeStampArr = timeStamp(
+    initTime,
+    initValues.numblocks,
+    initValues.blockwin
+  );
+  var simulation = simulationCreator(
+    initValues.numblocks,
+    initialHash,
+    timeStampArr,
+    miningPool,
+    user.email,
+    initValues.transactions,
+    initValues.subsidy,
+    initValues.halvings
+  );
+
+  let data = {
+    simulation: {
+      user: user.email,
+      sim_name: initValues.name,
+      sim_shared: {},
+      sim_description: initValues.desc,
+      sim_created: new Date().toISOString().slice(0, 19).replace("T", " "),
+      sim_modified: new Date().toISOString().slice(0, 19).replace("T", " "),
+      sim_blocks: simulation[0],
+      subsidy: initValues.subsidy,
+      halvings: initValues.halvings,
+      numtransactions: initValues.transactions,
+    },
+    blocks: simulation[1],
+  };
+
+  // End
+
+  const email = data.simulation.user;
   const email_valid = email.replace(/[@.]/g, "_");
-  const sim_name = req.body.simulation.sim_name;
-  const sim_shared = req.body.simulation.sim_shared;
-  const sim_description = req.body.simulation.sim_description;
-  const sim_created = req.body.simulation.sim_created
-    .slice(0, 19)
-    .replace("T", " ");
-  const sim_modified = req.body.simulation.sim_modified
-    .slice(0, 19)
-    .replace("T", " ");
-  const sim_blocks = req.body.simulation.sim_blocks;
+  const sim_name = data.simulation.sim_name;
+  const sim_shared = data.simulation.sim_shared;
+  const sim_description = data.simulation.sim_description;
+  const sim_created = data.simulation.sim_created;
+  const sim_modified = data.simulation.sim_modified;
+  const sim_blocks = data.simulation.sim_blocks;
   const sim_shared_string = JSON.stringify(sim_shared);
   const sim_blocks_string = JSON.stringify(sim_blocks);
-  const subsidy = req.body.simulation.subsidy;
-  const halvings = req.body.simulation.halvings;
-  const numtransactions = req.body.simulation.numtransactions;
+  const subsidy = data.simulation.subsidy;
+  const halvings = data.simulation.halvings;
+  const numtransactions = data.simulation.numtransactions;
   let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}');`;
   db.query(qry, (err) => {
     if (err) {
@@ -35,22 +100,23 @@ router.post("/createsim", cors(), (req, res) => {
 
   let qry2 = "";
 
-  for (let i = 0; i < req.body.blocks.length; i++) {
-    const hash = req.body.blocks[i].id_block;
-    const header = req.body.blocks[i].header;
+  console.log("Length", data.blocks.length);
+  for (let i = 0; i < data.blocks.length; i++) {
+    const hash = data.blocks[i].id_block;
+    const header = data.blocks[i].header;
     const headerString = JSON.stringify(header);
-    const transaction = req.body.blocks[i].transaction;
+    const transaction = data.blocks[i].transaction;
     const transactionString = JSON.stringify(transaction);
-    const transaction_counter = req.body.blocks[i].transaction_counter;
-    const miner = req.body.blocks[i].miner;
-    const block_time_created = req.body.blocks[i].time_created;
+    const transaction_counter = data.blocks[i].transaction_counter;
+    const miner = data.blocks[i].miner;
+    const block_time_created = data.blocks[i].time_created;
 
     if (i == 0) {
-      qry2 += `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}'),`;
-    } else if (i == req.body.blocks.length - 1) {
-      qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}');`;
+      qry2 += `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}', '${block_time_created}'),`;
+    } else if (i == data.blocks.length - 1) {
+      qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}', '${block_time_created}');`;
     } else {
-      qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}'),`;
+      qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}', '${block_time_created}'),`;
     }
   }
 

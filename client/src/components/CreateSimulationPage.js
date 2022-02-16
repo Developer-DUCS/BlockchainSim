@@ -29,14 +29,9 @@ import {
 import { useHistory } from "react-router-dom";
 import Auth from "./reusable/Auth";
 import UserBar from "./reusable/UserBar";
-import timeStamp from "../js/blockchain/block/timeStamp";
-import simulationCreator from "../js/blockchain/simulation";
-import { createMinerPool } from "../js/blockchain/block/miningPool";
-import sjcl from "../sjcl";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InfoButton from "./reusable/InfoButton";
 import { Link } from "react-router-dom";
-import createWallet from "../js/blockchain/wallet";
 
 const CreateSimulation = (props) => {
   const { setTheme, setFeedback, setFeedbackObj } = props;
@@ -187,47 +182,7 @@ const CreateSimulation = (props) => {
       coin: coin,
       mining: mine,
       numminers: numMiners,
-    };
-
-    var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
-    var wallets = createWallet(miningPool);
-
-    var bithash = sjcl.hash.sha256.hash(initValues.desc);
-    var initialHash = sjcl.codec.hex.fromBits(bithash);
-
-    let initTime = [initValues.gendate, initValues.gentime];
-    var timeStampArr = timeStamp(
-      initTime,
-      initValues.numblocks,
-      initValues.blockwin
-    );
-    var simulation = simulationCreator(
-      initValues.numblocks,
-      initialHash,
-      timeStampArr,
-      miningPool,
-      user.email,
-      initValues.transactions,
-      initValues.subsidy,
-      initValues.halvings
-    );
-
-    var newSimulation = {
-      user: user.email,
-      sim_name: initValues.name,
-      sim_shared: {},
-      sim_description: initValues.desc,
-      sim_created: new Date(),
-      sim_modified: new Date(),
-      sim_blocks: simulation[0],
-      subsidy: initValues.subsidy,
-      halvings: initValues.halvings,
-      numtransactions: initValues.transactions,
-    };
-
-    var data = {
-      simulation: newSimulation,
-      blocks: simulation[1],
+      user: user,
     };
 
     // API call to create simulation
@@ -238,7 +193,7 @@ const CreateSimulation = (props) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(initValues),
     }).then((res) => {
       if (res.status == 200) {
         // Set Feedback Message Properties
@@ -247,6 +202,9 @@ const CreateSimulation = (props) => {
 
         //redirect
         history.push(`${process.env.PUBLIC_URL}/simulation`);
+      } else {
+        setFeedback(true);
+        setFeedbackObj({ message: "Error", severity: "error" });
       }
     });
   };

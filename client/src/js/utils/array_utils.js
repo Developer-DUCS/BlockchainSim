@@ -28,4 +28,4 @@ function forEach(array, f) {
   }
 }
 
-export { add_element_to_array, get_element_from_array, reduce };
+module.exports = { add_element_to_array, get_element_from_array, reduce };

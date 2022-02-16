@@ -1,6 +1,6 @@
 const ECKey = require("ec-key");
 const base58 = require("base58-encode");
-import sjcl from "../../sjcl";
+const sjcl = require("../../sjcl");
 
 // ENCRIPTATION PACKAGES AND THEIR DOCUMENTATION
 //ECKey npm package: https://github.com/usrz/ec-key#-tostring-format-
@@ -53,5 +53,9 @@ function buf2hex(buffer) {
     .map((x) => x.toString(16).padStart(2, "0"))
     .join("");
 }
-export default createAddress;
-export { validateSignature, createSignature, createPublicPrivateKey };
+module.exports = {
+  validateSignature,
+  createSignature,
+  createPublicPrivateKey,
+  createAddress,
+};

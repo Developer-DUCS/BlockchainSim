@@ -1,8 +1,8 @@
-import singleTransaction from "./singleTransaction/singleTransaction";
-import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
-import { UTXO_Pool } from "./UTXO_Pool";
-import { walletArr, chooseWallet } from "../wallet";
-import createAddress, { createPublicPrivateKey } from "../testValidation";
+const singleTransaction = require("./singleTransaction/singleTransaction");
+const coinbaseTransaction = require("./singleTransaction/coinbaseTransaction");
+const { UTXO_Pool } = require("./UTXO_Pool");
+const { walletArr, chooseWallet } = require("../wallet");
+// import createAddress, { createPublicPrivateKey } from "../testValidation";
 
 /*
     --> TRANSACTIONS.JS FILE
@@ -157,4 +157,4 @@ const selectSender = (users, block_height) => {
   return senderInfo;
 };
 
-export default createTransactions;
+module.exports = createTransactions;

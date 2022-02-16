@@ -1,7 +1,10 @@
-import sjcl from "../../../../sjcl";
-import createAddress, { createPublicPrivateKey } from "../../testValidation";
-import { walletArr } from "../../wallet";
-import { UTXO_Pool } from "./../UTXO_Pool";
+const sjcl = require("../../../../sjcl");
+const {
+  createAddress,
+  createPublicPrivateKey,
+} = require("../../testValidation");
+const { walletArr } = require("../../wallet");
+const { UTXO_Pool } = require("./../UTXO_Pool");
 
 /*
     --> BasecoinTransaction.JS FILE
@@ -23,9 +26,16 @@ import { UTXO_Pool } from "./../UTXO_Pool";
 // TO DO: Add fees
 //      : Make scriptSig, scriptLength, scriptPubKey dynamic
 
-function coinbaseTransaction(users, minerWallet, fee, block_height, subsidy) {
+function coinbaseTransaction(
+  users,
+  minerWallet,
+  fee,
+  block_height,
+  subsidy,
+  halvings
+) {
   let BLOCK_REWARD = subsidy;
- 
+
   if (block_height / halvings >= 1) {
     BLOCK_REWARD = subsidy / 2 ** Math.floor(block_height / halvings);
   }
@@ -88,4 +98,4 @@ function createAddressInfo(wallet, amount, weight, users) {
   return address;
 }
 
-export default coinbaseTransaction;
+module.exports = coinbaseTransaction;

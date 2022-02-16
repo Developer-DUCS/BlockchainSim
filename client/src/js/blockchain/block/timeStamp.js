@@ -52,4 +52,4 @@ const createTimeStamp = (initTime, numblocks, windowTime) => {
   return stampTimes;
 };
 
-export default createTimeStamp;
+module.exports = createTimeStamp;

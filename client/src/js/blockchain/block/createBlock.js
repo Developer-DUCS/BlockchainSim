@@ -17,9 +17,9 @@
       - File calls: 
         * 
 */
-import blockCreator from "./block";
-import createWallet from "../wallet";
-import { createMinerPool, chooseMiner } from "./miningPool";
+const blockCreator = require("./block");
+const { createWallet } = require("../wallet");
+const { createMinerPool, chooseMiner } = require("./miningPool");
 
 const createBlock = (
   previousHash,

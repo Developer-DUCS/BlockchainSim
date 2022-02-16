@@ -1,6 +1,6 @@
-import blockCreator from "./block/block";
-import chooseMiner from "./block/miningPool";
-import { UTXO_Pool } from "./transactions/UTXO_Pool";
+const blockCreator = require("./block/block");
+const { chooseMiner } = require("./block/miningPool");
+const { UTXO_Pool } = require("./transactions/UTXO_Pool");
 
 /*
     --> SIMULATION.js 
@@ -71,4 +71,4 @@ const simulationCreator = (
   return [hashes, blocks];
 };
 
-export default simulationCreator;
+module.exports = simulationCreator;

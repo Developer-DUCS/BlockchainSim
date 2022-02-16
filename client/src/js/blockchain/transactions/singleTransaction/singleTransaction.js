@@ -1,7 +1,10 @@
-import sjcl from "../../../../sjcl";
-import { UTXO_Pool } from "../UTXO_Pool";
-import { walletArr } from "../../wallet";
-import createAddress, { createPublicPrivateKey } from "../../testValidation";
+const sjcl = require("../../../../sjcl");
+const { UTXO_Pool } = require("../UTXO_Pool");
+const { walletArr } = require("../../wallet");
+const {
+  createAddress,
+  createPublicPrivateKey,
+} = require("../../testValidation");
 
 /*
     --> SINGLETRANSACTION.JS FILE
@@ -129,4 +132,4 @@ const createAddressInfo = (wallet, amount, weight, users) => {
   return address;
 };
 
-export default singleTransaction;
+module.exports = singleTransaction;

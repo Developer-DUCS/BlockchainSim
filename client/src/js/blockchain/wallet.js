@@ -1,4 +1,4 @@
-import sjcl from "../../sjcl";
+const sjcl = require("../../sjcl");
 //initial file to code the wallet
 
 // we would start by having a wallet per user.
@@ -33,7 +33,6 @@ const chooseWallet = (wallets) => {
   return walletID;
 };
 
-export default createWallet;
-export { chooseWallet, walletArr };
+module.exports = { chooseWallet, walletArr, createWallet };
 
 //create a wallet per user
