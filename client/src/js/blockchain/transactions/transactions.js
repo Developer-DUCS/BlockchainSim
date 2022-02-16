@@ -2,7 +2,6 @@ import singleTransaction from "./singleTransaction/singleTransaction";
 import coinbaseTransaction from "./singleTransaction/coinbaseTransaction";
 import { UTXO_Pool } from "./UTXO_Pool";
 import { walletArr, chooseWallet } from "../wallet";
-import createAddress, { createPublicPrivateKey } from "../testValidation";
 
 /*
     --> TRANSACTIONS.JS FILE
@@ -44,11 +43,16 @@ const createTransactions = (
   for (let wallet in walletArr) {
     users.push(walletArr[wallet][0]);
   }
+  var numUsers = users.length;
 
   //more than only basecoin transaction is possible
-  if (b_heigth > 99 && !done) {
+  if (b_heigth > MINIMUM_DEPTH - 1 && !done) {
     var fee = 0; //cumulation of fees in the block
     var done = false; // check if there is still possible transactions
+    var max_transactions = ~~(b_heigth / MINIMUM_DEPTH); // ~~ truncates number 1.0 --> 1
+    console.log(max_transactions);
+
+    if (max_transactions < numtransactions) numtransactions = max_transactions;
 
     //create transactions
     for (let i = 0; i < numtransactions; i++) {
@@ -125,18 +129,19 @@ const selectSender = (block_height) => {
   var validHeigth = block_height - MINIMUM_DEPTH;
   var utxoArr = [];
 
-  console.log(utxo);
-  while (utxo[2] > validHeigth) {
+  var utxoHeigth = utxo[2];
+  console.log("utxo: ", utxo, "valid height: ", validHeigth);
+  while (utxoHeigth > validHeigth) {
     // in case the first UTXO is not valid
     index = index + 1;
     utxo = UTXO_Pool[index];
+    console.log(utxo);
+    utxoHeigth = utxo[2];
   }
   utxoArr.push(utxo);
 
   //track address and get wallet
   var address2find = utxo[0];
-
-  //find wallet with correct address
   var counter = 0;
   var found = false;
   var senderWallet;
