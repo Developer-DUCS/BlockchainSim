@@ -43,14 +43,13 @@ const createTransactions = (
   for (let wallet in walletArr) {
     users.push(walletArr[wallet][0]);
   }
-  var numUsers = users.length;
 
   //more than only basecoin transaction is possible
   if (b_heigth > MINIMUM_DEPTH - 1 && !done) {
     var fee = 0; //cumulation of fees in the block
     var done = false; // check if there is still possible transactions
     var max_transactions = ~~(b_heigth / MINIMUM_DEPTH); // ~~ truncates number 1.0 --> 1
-    console.log(max_transactions);
+    //console.log(max_transactions);
 
     if (max_transactions < numtransactions) numtransactions = max_transactions;
 
@@ -130,7 +129,7 @@ const selectSender = (block_height) => {
   var utxoArr = [];
 
   var utxoHeigth = utxo[2];
-  console.log("utxo: ", utxo, "valid height: ", validHeigth);
+  //console.log("utxo: ", utxo, "valid height: ", validHeigth);
   while (utxoHeigth > validHeigth) {
     // in case the first UTXO is not valid
     index = index + 1;
@@ -163,54 +162,13 @@ const selectSender = (block_height) => {
 
   //check if that wallet has more then one possible utxo.
   if (senderWallet.length > 1) {
-    console.log("need to find more utxos");
+    //console.log("need to find more utxos");
   }
-  console.log("END: ", address2find, senderWallet, counter);
+  //console.log("END: ", address2find, senderWallet, counter);
 
   var senderInfo = [senderWallet, utxoArr]; // [laura, [askbvasebraienv, 50BTC, block 3]]
 
   return senderInfo;
-
-  /* // TODO: make this method faster
-  var usersChecked = []; //users with no valid adresses
-  var found = false;
-  var counter = 0;
-  var senderWallet = chooseWallet(walletArr); //select a random sender
-  var senderPos = users.findIndex((pos) => {
-    return pos == senderWallet;
-  });
-  while (found == false && counter < walletArr.length) {
-    usersChecked.push(senderWallet); //add current sender to checked users
-
-    // check if there is any valid adreess
-    var validHeigth = block_height - MINIMUM_DEPTH;
-    var senderInfo;
-    for (let i in walletArr[senderPos][3]) {
-      var address = walletArr[senderPos][3][i];
-      var utxos = UTXO_Pool.filter((ele) => ele[0] == address);
-
-      // valid adress for a certain userfound
-      console.log("new UTXO");
-      if (utxos.length != 0) {
-        if (utxos[0][2] <= validHeigth) {
-          console.log("found valid UTXO");
-          found = true;
-          var senderInfo = [senderWallet, address, utxos[0], senderPos]; // [laura, [laura, 50BTC, block 3], position 15]
-          return senderInfo;
-        }
-      }
-    }
-
-    //valid adress for certain user not found
-    if (!found) {
-      senderPos + 1 >= walletArr.length
-        ? (senderPos = senderPos + 1 - walletArr.length)
-        : senderPos++;
-      senderWallet = walletArr[senderPos][0];
-    }
-    counter++;
-  }
-  return senderInfo; */
 };
 
 export default createTransactions;

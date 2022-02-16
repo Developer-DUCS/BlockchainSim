@@ -626,6 +626,7 @@ const CreateSimulation = (props) => {
                 >
                   Create New Simulation
                 </Button>
+                <CircularProgress color="success" />
               </Grid>
             </Grid>
           </form>

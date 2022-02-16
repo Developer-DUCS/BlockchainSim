@@ -21,7 +21,7 @@ const blockCreator = (
   subsidy,
   halvings
 ) => {
-  console.log("Block num: ", block_height);
+  //console.log("Block num: ", block_height);
   // create transactions - before Merkleroot
   var transactionJSON = createTransactions(
     miner,
