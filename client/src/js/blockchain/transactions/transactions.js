@@ -120,7 +120,44 @@ const createTransactions = (
 
 //select a sender with valid money to create transaction
 const selectSender = (users, block_height) => {
-  // TODO: make this method faster
+  // choose valid UTXO
+  var index = 0;
+  var utxo = UTXO_Pool[index];
+  var validHeigth = block_height - MINIMUM_DEPTH;
+
+  console.log("First utxo in the pool:", utxo[2], validHeigth);
+  while (utxo[2] > validHeigth) {
+    // in case the first UTXO is not valid
+    index = index + 1;
+    utxo = UTXO_Pool[index];
+  }
+
+  //track address and get wallet
+  var address2find = utxo[0];
+  //find wallet with correct address
+  var counter = 0;
+  var found = false;
+  var senderWallet;
+  var i,
+    j = 0;
+  while (!found && i != walletArr.length) {
+    counter = counter + 1;
+    var w = walletArr[0];
+    i = i + 1;
+    console.log("current wallet: ", w);
+    while (!found && j < w[3].length) {
+      counter = counter + 1;
+      console.log("addr: ", w[3][j]);
+      if (w[3][j] == address2find) {
+        found = true;
+        senderWallet = w;
+      }
+      j = j + 1;
+    }
+  }
+  console.log("END: ", address2find, senderWallet, counter);
+
+  /* // TODO: make this method faster
   var usersChecked = []; //users with no valid adresses
   var found = false;
   var counter = 0;
@@ -159,7 +196,7 @@ const selectSender = (users, block_height) => {
     }
     counter++;
   }
-  return senderInfo;
+  return senderInfo; */
 };
 
 export default createTransactions;
