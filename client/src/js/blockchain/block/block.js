@@ -8,9 +8,9 @@
             * NOT adressed yet *
 */
 
-import createHeader from "../header";
-import createTransactions from "../transactions/transactions";
-import createMerkleTree from "./merkleTree";
+const createHeader = require("../header");
+const createTransactions = require("../transactions/transactions");
+const createMerkleTree = require("./merkleTree");
 
 const blockCreator = (
   previousHash,
@@ -48,4 +48,4 @@ const blockCreator = (
   return [blockJSON, hashID];
 };
 
-export default blockCreator;
+module.exports = blockCreator;

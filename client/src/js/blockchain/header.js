@@ -18,7 +18,7 @@
                 }
 */
 
-import sjcl from "../../sjcl";
+const sjcl = require("../../sjcl");
 
 const version = "00000020";
 const time = "2b80475f";
@@ -92,4 +92,4 @@ const createHeader = (previousHash, merkleRoot) => {
   return [selectedHash, objectJSON];
 };
 
-export default createHeader;
+module.exports = createHeader;

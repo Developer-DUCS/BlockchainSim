@@ -41,4 +41,4 @@
 // locking script plus unlocking script
 
 const UTXO_Pool = [];
-export { UTXO_Pool };
+module.exports = { UTXO_Pool };

@@ -1,4 +1,4 @@
-import sjcl from "../../../sjcl";
+const sjcl = require("../../../sjcl");
 
 /*
     --> MERKLETREE.JS FILE
@@ -65,4 +65,4 @@ const hashify = (hash1, hash2) => {
   return hash;
 };
 
-export default createMerkleTree;
+module.exports = createMerkleTree;
