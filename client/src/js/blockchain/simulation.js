@@ -28,7 +28,7 @@ const { UTXO_Pool } = require("./transactions/UTXO_Pool");
 */
 
 const totalCoinBlockChain = (subsidy, numBlocks, halving) => {
-  //first calculate coin in transit manually
+  //calculate coin in transit manually
   var curSubsidy = subsidy;
   console.log(curSubsidy, numBlocks, halving);
   var totalTransit = 0;
@@ -39,7 +39,6 @@ const totalCoinBlockChain = (subsidy, numBlocks, halving) => {
     }
     totalTransit += curSubsidy;
   }
-
   console.log("Total coin that should be in transit: ", totalTransit);
 };
 
@@ -52,9 +51,10 @@ const simulationCreator = (
   user,
   num_transactions,
   subsidy,
-  halvings
+  halvings,
+  totalCoin
 ) => {
-  totalCoinBlockChain(subsidy, numBlocks, halvings);
+  var totalCoin = 0;
   var blocks = []; // store block json objects
   var hashes = []; // store hash ID of each block
   previousHash = initialHash;
@@ -74,16 +74,21 @@ const simulationCreator = (
       num_transactions,
       block_height,
       subsidy,
-      halvings
+      halvings,
+      totalCoin
     );
     var hashID = newBlock[1];
     var blockJSON = newBlock[0];
+    totalCoin = newBlock[2];
 
     previousHash = hashID; // store hash to add to next block
 
     blocks.push(blockJSON); //add to the list
     hashes.push(hashID);
   }
+
+  totalCoinBlockChain(subsidy, numBlocks, halvings); // calculate coin in transaction
+  console.log("Total coin in transaction: ", totalCoin);
   UTXO_Pool.length = 0; //reset adresses pool to be empty again
   return [hashes, blocks];
 };

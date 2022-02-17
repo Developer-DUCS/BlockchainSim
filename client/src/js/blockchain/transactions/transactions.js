@@ -37,7 +37,8 @@ const createTransactions = (
   numtransactions,
   b_heigth,
   subsidy,
-  halvings
+  halvings,
+  totalCoin
 ) => {
   var transactions = []; // list of all transactions
   var users = []; // possible users
@@ -45,7 +46,7 @@ const createTransactions = (
     users.push(walletArr[wallet][0]);
   }
 
-  //more than only basecoin transaction is possible
+  //more than one transaction is possible
   if (b_heigth > MINIMUM_DEPTH - 1 && !done) {
     var fee = 0; //cumulation of fees in the block
     var done = false; // check if there is still possible transactions
@@ -89,14 +90,18 @@ const createTransactions = (
       if (walletArr[wallet][1] == miner) var minerWallet = walletArr[wallet][0];
     }
     //create coin base transaction + fees
-    var baseTX = coinbaseTransaction(
+    var transInfo = coinbaseTransaction(
       users,
       minerWallet,
       fee,
       b_heigth,
       subsidy,
-      halvings
+      halvings,
+      totalCoin
     );
+    var baseTX = transInfo[0];
+    totalCoin = transInfo[1];
+
     transactions.unshift(baseTX); // add transaction to beguinning array
   } else {
     // <100 block height --> coinbase transaction with no fees
@@ -105,18 +110,21 @@ const createTransactions = (
         var minerWallet = walletArr[wallet][0];
       }
     }
-    var baseTX = coinbaseTransaction(
+    var transInfo = coinbaseTransaction(
       users,
       minerWallet,
       0,
       b_heigth,
       subsidy,
-      halvings
+      halvings,
+      totalCoin
     );
+    var baseTX = transInfo[0];
+    totalCoin = transInfo[1];
     transactions.push(baseTX);
   }
 
-  return transactions;
+  return [transactions, totalCoin];
 };
 
 //select a sender with valid money to create transaction
