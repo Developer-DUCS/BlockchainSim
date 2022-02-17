@@ -46,19 +46,23 @@ const createTransactions = (
   }
 
   //more than only basecoin transaction is possible
-  if (b_heigth > 99 && !done) {
+  if (b_heigth > MINIMUM_DEPTH - 1 && !done) {
     var fee = 0; //cumulation of fees in the block
     var done = false; // check if there is still possible transactions
+    var max_transactions = ~~(b_heigth / MINIMUM_DEPTH); // ~~ truncates number 1.0 --> 1
+    //console.log(max_transactions);
+
+    if (max_transactions < numtransactions) numtransactions = max_transactions;
 
     //create transactions
     for (let i = 0; i < numtransactions; i++) {
       //find a valid sender with valid money
-      var senderInfo = selectSender(users, b_heigth); // sender adresses to be used
+      var senderInfo = selectSender(b_heigth); // sender adresses to be used
+      // [senderWallet, utxoArr];
 
       if (senderInfo != undefined) {
         var senderWallet = senderInfo[0];
-        var addressSender = senderInfo[1]; //adress 2 use
-        var UTXO_Sender = senderInfo[2];
+        var UTXO_Sender = senderInfo[1][0]; // TO CHANGE TO BE ABLE TO GET THE OTHER UTXOS TOO
 
         //select receiver diferent than sender
         var receiverWallet = chooseWallet(walletArr);
@@ -69,7 +73,6 @@ const createTransactions = (
         var tx = singleTransaction(
           senderWallet,
           receiverWallet,
-          addressSender,
           UTXO_Sender,
           b_heigth,
           users
@@ -119,41 +122,53 @@ const createTransactions = (
 };
 
 //select a sender with valid money to create transaction
-const selectSender = (users, block_height) => {
-  var usersChecked = []; //users with no valid adresses
-  var found = false;
-  var counter = 0;
-  var senderWallet = chooseWallet(walletArr); //select a random sender
-  var senderPos = users.findIndex((pos) => {
-    return pos == senderWallet;
-  });
-  while (found == false && counter < walletArr.length) {
-    usersChecked.push(senderWallet); //add current sender to checked users
+const selectSender = (block_height) => {
+  // choose valid UTXO
+  var index = 0;
+  var utxo = UTXO_Pool[index];
+  var validHeigth = block_height - MINIMUM_DEPTH;
+  var utxoArr = [];
 
-    // check if there is any valid adreess
-    var validHeigth = block_height - MINIMUM_DEPTH;
-    var senderInfo;
-    for (let i in walletArr[senderPos][3]) {
-      var address = walletArr[senderPos][3][i];
-      var utxos = UTXO_Pool.filter((ele) => ele[0] == address);
-
-      // valid adress for a certain userfound
-      if (utxos[0][2] <= validHeigth) {
-        found = true;
-        var senderInfo = [senderWallet, address, utxos[0], senderPos]; // [laura, [laura, 50BTC, block 3], position 15]
-        return senderInfo;
-      }
-    }
-
-    //valid adress for certain user not found
-    if (!found) {
-      senderPos + 1 >= walletArr.length
-        ? (senderPos = senderPos + 1 - walletArr.length)
-        : senderPos++;
-      senderWallet = walletArr[senderPos][0];
-    }
-    counter++;
+  var utxoHeigth = utxo[2];
+  //console.log("utxo: ", utxo, "valid height: ", validHeigth);
+  while (utxoHeigth > validHeigth) {
+    // in case the first UTXO is not valid
+    index = index + 1;
+    utxo = UTXO_Pool[index];
+    console.log(utxo);
+    utxoHeigth = utxo[2];
   }
+  utxoArr.push(utxo);
+
+  //track address and get wallet
+  var address2find = utxo[0];
+  var counter = 0;
+  var found = false;
+  var senderWallet;
+  var i = 0;
+  while (!found && i != walletArr.length) {
+    counter = counter + 1;
+    var w = walletArr[i];
+    i = i + 1;
+    var j = 0;
+    while (!found && j < w[3].length) {
+      counter = counter + 1;
+      if (w[3][j] == address2find) {
+        found = true;
+        senderWallet = w;
+      }
+      j = j + 1;
+    }
+  }
+
+  //check if that wallet has more then one possible utxo.
+  if (senderWallet.length > 1) {
+    //console.log("need to find more utxos");
+  }
+  //console.log("END: ", address2find, senderWallet, counter);
+
+  var senderInfo = [senderWallet, utxoArr]; // [laura, [askbvasebraienv, 50BTC, block 3]]
+
   return senderInfo;
 };
 

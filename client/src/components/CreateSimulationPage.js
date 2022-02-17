@@ -25,6 +25,7 @@ import {
   Typography,
   TextField,
   Divider,
+  CircularProgress,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import Auth from "./reusable/Auth";
@@ -591,6 +592,7 @@ const CreateSimulation = (props) => {
                 >
                   Create New Simulation
                 </Button>
+                <CircularProgress color="success" />
               </Grid>
             </Grid>
           </form>
