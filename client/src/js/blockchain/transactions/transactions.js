@@ -50,8 +50,6 @@ const createTransactions = (
     var fee = 0; //cumulation of fees in the block
     var done = false; // check if there is still possible transactions
     var max_transactions = ~~(b_heigth / MINIMUM_DEPTH); // ~~ truncates number 1.0 --> 1
-    //console.log(max_transactions);
-
     if (max_transactions < numtransactions) numtransactions = max_transactions;
 
     //create transactions
@@ -130,12 +128,10 @@ const selectSender = (block_height) => {
   var utxoArr = [];
 
   var utxoHeigth = utxo[2];
-  //console.log("utxo: ", utxo, "valid height: ", validHeigth);
   while (utxoHeigth > validHeigth) {
     // in case the first UTXO is not valid
     index = index + 1;
     utxo = UTXO_Pool[index];
-    console.log(utxo);
     utxoHeigth = utxo[2];
   }
   utxoArr.push(utxo);

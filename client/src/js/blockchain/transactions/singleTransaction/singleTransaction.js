@@ -112,7 +112,6 @@ function singleTransaction(
       block_height: block_height,
     },
   };
-  //console.log("transaction created");
   return transactionJSON;
 }
 

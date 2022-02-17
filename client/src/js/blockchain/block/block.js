@@ -22,7 +22,6 @@ const blockCreator = (
   halvings
 ) => {
   //console.log("Block num: ", block_height);
-  // create transactions - before Merkleroot
   var transactionJSON = createTransactions(
     miner,
     num_transactions,
