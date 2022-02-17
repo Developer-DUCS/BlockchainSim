@@ -185,6 +185,14 @@ const CreateSimulation = (props) => {
       user: user,
     };
 
+    setFeedback(true);
+    setFeedbackObj({
+      message: "Creating Simulation!",
+      severity: "warning",
+      loading: true,
+      duration: 999999,
+    });
+
     // API call to create simulation
     // if successful, redirect to simulation page
     const url = `http://${process.env.REACT_APP_API_URL}/api/data/createsim`;

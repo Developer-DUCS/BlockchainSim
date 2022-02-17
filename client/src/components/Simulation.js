@@ -367,86 +367,99 @@ const Simulation = (props) => {
         <LinearProgress sx={{ m: 5 }} />
       ) : (
         <Container maxWidth="xl" sx={{ mt: 2 }}>
-          <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={(e) => {
-                setAnchorEl(e.currentTarget);
-              }}
-            >
-              Options
-            </Button>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              PaperProps={{
-                elevation: 0,
-                sx: {
-                  overflow: "visible",
-                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                  mt: 1.5,
-                  "& .MuiAvatar-root": {
-                    width: 32,
-                    height: 32,
-                    ml: -0.5,
-                    mr: 1,
-                  },
-                  "&:before": {
-                    display: "block",
-                    position: "absolute",
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: "background.paper",
-                    transform: "translateY(-50%) rotate(45deg)",
-                    zIndex: 0,
-                  },
-                },
-              }}
-              transformOrigin={{ horizontal: "right", vertical: "top" }}
-              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            >
-              <MenuItem
-                onClick={() => {
-                  handleClose();
-                  toggleDialog();
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={(e) => {
+              history.goBack();
+            }}
+          >
+            Back
+          </Button>
+          <TabPanel value={selectedTab} index={0}>
+            <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={(e) => {
+                  setAnchorEl(e.currentTarget);
                 }}
               >
-                <ListItemIcon>
-                  <ShareIcon />
-                </ListItemIcon>
-                Share
-              </MenuItem>
-              <MenuItem sx={{ color: "error.main" }} onClick={deleteSimulation}>
-                <ListItemIcon sx={{ color: "error.main" }}>
-                  <DeleteIcon />
-                </ListItemIcon>
-                Delete
-              </MenuItem>
-            </Menu>
-          </Box>
-          <Card>
-            <CardContent>
-              <Typography variant="h4">
-                {simulation.sim_name}
-                <Typography
-                  variant="caption"
-                  sx={{ display: "inline-block", float: "right" }}
-                >
-                  Created on {simulation.sim_created}
-                </Typography>
-              </Typography>
-              <Typography variant="subtitle1">
-                {simulation.sim_description}
-              </Typography>
-            </CardContent>
-          </Card>
+                Options
+              </Button>
 
-          <TabPanel value={selectedTab} index={0}>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    "&:before": {
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: "background.paper",
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    handleClose();
+                    toggleDialog();
+                  }}
+                >
+                  <ListItemIcon>
+                    <ShareIcon />
+                  </ListItemIcon>
+                  Share
+                </MenuItem>
+                <MenuItem
+                  sx={{ color: "error.main" }}
+                  onClick={deleteSimulation}
+                >
+                  <ListItemIcon sx={{ color: "error.main" }}>
+                    <DeleteIcon />
+                  </ListItemIcon>
+                  Delete
+                </MenuItem>
+              </Menu>
+            </Box>
+            <Card>
+              <CardContent>
+                <Typography variant="h4">
+                  {simulation.sim_name}
+                  <Typography
+                    variant="caption"
+                    sx={{ display: "inline-block", float: "right" }}
+                  >
+                    Created on {simulation.sim_created}
+                  </Typography>
+                </Typography>
+                <Typography variant="subtitle1">
+                  {simulation.sim_description}
+                </Typography>
+              </CardContent>
+            </Card>
+
             <Box sx={{ mt: 2 }}>
               <Button
                 color="primary"
