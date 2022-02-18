@@ -123,6 +123,7 @@ router.post("/createsim", cors(), (req, res) => {
   db.query(qry2, (err) => {
     if (err) {
       console.log(err);
+      res.sendStatus(500);
     } else {
       res.sendStatus(200);
     }
