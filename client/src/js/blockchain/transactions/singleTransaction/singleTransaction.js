@@ -33,23 +33,45 @@ function singleTransaction(
   block_height,
   users
 ) {
+  //create a fee for this transaction
+  var feePerInput =
+    Math.trunc(0.00001 * Math.floor(Math.random() * 100) * 100000) / 100000; //TO BE DYNAMIC
+  var fee = feePerInput * UTXO_Sender.length;
+
   //delete selected UTXO from UTXO_pool
   var senderWalletId = senderWallet[0];
-  var addressSender = UTXO_Sender[0];
-  var utxoPos = UTXO_Pool.indexOf(UTXO_Sender);
-  UTXO_Pool.splice(utxoPos, 1);
+  //var addressSender = UTXO_Sender[0];
 
-  //delete adress from wallet
-  var walletSenderPos = users.indexOf(senderWalletId);
-  var addSenderPos = walletArr[walletSenderPos][3].indexOf(addressSender);
-  walletArr[walletSenderPos][3].splice(addSenderPos, 1);
+  //select amount to spend
+  var total = 0;
+  for (var i = 0; i < UTXO_Sender.length; i++) {
+    total = total + UTXO_Sender[i][1];
+  }
 
-  //create a fee for this transaction
-  var fee =
-    Math.trunc(0.00001 * Math.floor(Math.random() * 100) * 100000) / 100000; //TO BE DYNAMIC
-  var amount_sent = parseFloat(UTXO_Sender[1]); //all of the $ in this address - UTXO
-  var amount_received = randomAmount(UTXO_Sender); //get a random amount to be paid
-  var sender_leftover = amount_sent - amount_received - fee; //compute the leftover currency from this TX
+  var total2Spend = total - fee;
+  var amount_sent = Math.random() * total2Spend;
+  var amount_received = amount_sent;
+
+  var left = amount_sent;
+  var selectedUTXO = [];
+  var i = 0;
+  while (left > 0 && left - UTXO_Sender[i][1] < 0) {
+    // POSSIBLE ERROR HERE
+    selectedUTXO.push(UTXO_Sender[i]);
+    left = left - UTXO_Sender[i][1];
+  }
+  var sender_leftover = left; //leftover currency from this TX
+
+  // delete UTXOs that are going to be spent
+  var wallPos = users.indexOf(senderWalletId);
+  var addressesSender = [];
+  for (var i = 0; i < selectedUTXO.length; i++) {
+    addressesSender.push(selectedUTXO[i][0]);
+    var UTXOpos = UTXO_Pool.indexOf(selectedUTXO[i]);
+    UTXO_Pool.splice(UTXOpos, 1);
+    var adrPos = walletArr[wallPos][3].indexOf(selectedUTXO[i][0]);
+    walletArr[wallPos][3].splice(adrPos, 1);
+  }
 
   if (sender_leftover != 0) {
     // sender leftover new address
@@ -71,12 +93,12 @@ function singleTransaction(
 
   //create a transaction JSON object string to be hashed
   var transaction =
-    "{ transaction_data: { UTXO: " +
-    addressSender +
+    "{ transaction_data: { addresses_input_UTXO: " +
+    addressesSender +
     ", owner_UTXO: " +
     senderWalletId +
     ", amount_sent: " +
-    amount_received +
+    amount_sent +
     ", receiver: " +
     receiverWallet +
     ", amount_received: " +
@@ -100,7 +122,7 @@ function singleTransaction(
     hash: transactionHash, //hash created above
     //all the data we are using to create transactions
     transaction_data: {
-      UTXO: addressSender, //address: [user, currency, parent_block] represents UTXO
+      addresses_input_UTXO: addressesSender, //array with addreses [khbvusvues,bidcyvweuvfyc,kshcbiwvyie]
       owner_UTXO: senderWalletId, //user sending $
       amount_sent: amount_sent, //full amount of UTXO (before transaction)
       receiver: receiverWallet, //user receiving $
@@ -112,6 +134,8 @@ function singleTransaction(
       block_height: block_height,
     },
   };
+
+  console.log(transactionJSON);
   return transactionJSON;
 }
 

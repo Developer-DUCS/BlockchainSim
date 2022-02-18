@@ -60,8 +60,8 @@ const createTransactions = (
       // [senderWallet, utxoArr];
 
       if (senderInfo != undefined) {
-        var senderWallet = senderInfo[0];
-        var UTXO_Sender = senderInfo[1][0]; // TO CHANGE TO BE ABLE TO GET THE OTHER UTXOS TOO
+        var senderWallet = senderInfo[0]; // sender wallet for transaction
+        var UTXOs_Sender = senderInfo[1]; // UTXOs input for transaction
 
         //select receiver diferent than sender
         var receiverWallet = chooseWallet(walletArr);
@@ -72,7 +72,7 @@ const createTransactions = (
         var tx = singleTransaction(
           senderWallet,
           receiverWallet,
-          UTXO_Sender,
+          UTXOs_Sender,
           b_heigth,
           users
         );
@@ -167,9 +167,20 @@ const selectSender = (block_height) => {
 
   //check if that wallet has more then one possible utxo.
   if (senderWallet.length > 1) {
-    //console.log("need to find more utxos");
+    //get total amount of valid UTXOS in wallet
+    var addressesArr = senderWallet[3];
+    // find UTXOs attached to address
+    var utxosFound = UTXO_Pool.filter((utx) => {
+      return addressesArr.indexOf(utx[0]) != -1;
+    });
+
+    // get valid UTXOs
+    utxoArr = utxosFound.filter((utx) => {
+      return utx[2] <= validHeigth;
+    });
+
+    //if (validUtxos.length > 1) console.log("valid utxos: ", validUtxos);
   }
-  //console.log("END: ", address2find, senderWallet, counter);
 
   var senderInfo = [senderWallet, utxoArr]; // [laura, [askbvasebraienv, 50BTC, block 3]]
 
