@@ -33,34 +33,14 @@ function singleTransaction(
   block_height,
   users
 ) {
-  //create a fee for this transaction
-  var feePerInput =
-    Math.trunc(0.00001 * Math.floor(Math.random() * 100) * 100000) / 100000; //TO BE DYNAMIC
-  var fee = feePerInput * UTXO_Sender.length;
-
-  //delete selected UTXO from UTXO_pool
   var senderWalletId = senderWallet[0];
-  //var addressSender = UTXO_Sender[0];
 
-  //select amount to spend
-  var total = 0;
-  for (var i = 0; i < UTXO_Sender.length; i++) {
-    total = total + UTXO_Sender[i][1];
-  }
-
-  var total2Spend = total - fee;
-  var amount_sent = Math.random() * total2Spend;
-  var amount_received = amount_sent;
-
-  var left = amount_sent;
-  var selectedUTXO = [];
-  var i = 0;
-  while (left > 0 && left - UTXO_Sender[i][1] < 0) {
-    // POSSIBLE ERROR HERE
-    selectedUTXO.push(UTXO_Sender[i]);
-    left = left - UTXO_Sender[i][1];
-  }
-  var sender_leftover = left; //leftover currency from this TX
+  // select amount and UTXOs to spend
+  var coinInputIfo = selectAmount2Spend(UTXO_Sender);
+  var fee = coinInputIfo[0];
+  var amount_sent = coinInputIfo[1];
+  var sender_leftover = coinInputIfo[2];
+  var selectedUTXO = coinInputIfo[3];
 
   // delete UTXOs that are going to be spent
   var wallPos = users.indexOf(senderWalletId);
@@ -86,7 +66,7 @@ function singleTransaction(
   //address receiver
   var out_receiver_address = createAddressInfo(
     receiverWallet,
-    amount_received,
+    amount_sent,
     block_height,
     users
   );
@@ -102,7 +82,7 @@ function singleTransaction(
     ", receiver: " +
     receiverWallet +
     ", amount_received: " +
-    amount_received +
+    amount_sent +
     ", receiver_address: " +
     out_receiver_address +
     ", sender_leftover: " +
@@ -126,7 +106,7 @@ function singleTransaction(
       owner_UTXO: senderWalletId, //user sending $
       amount_sent: amount_sent, //full amount of UTXO (before transaction)
       receiver: receiverWallet, //user receiving $
-      amount_received: amount_received, //amount received from transaction
+      amount_received: amount_sent, //amount received from transaction
       receiver_address: out_receiver_address, //adress of the new UTXO tio the receiver
       sender_leftover: sender_leftover, //remaining $ after transaction and fee
       sender_leftover_address: out_sender_address,
@@ -135,18 +115,11 @@ function singleTransaction(
     },
   };
 
-  console.log(transactionJSON);
+  //if (addressesSender.length > 1) console.log(transactionJSON);
   return transactionJSON;
 }
 
-//random number function ranging from .00001 to .0009 to simulate fees
-const randomAmount = (adressSender) => {
-  var balance = adressSender[1];
-  var percent = Math.trunc(Math.random() * 100) / 100;
-  var amount = Math.trunc(balance * percent * 100) / 100;
-  return amount;
-};
-
+// create an address given a wallet, amount of coin, weight of the block and a list of wallets
 const createAddressInfo = (wallet, amount, weight, users) => {
   var keys = createPublicPrivateKey();
   var address = createAddress(keys[2]);
@@ -155,6 +128,42 @@ const createAddressInfo = (wallet, amount, weight, users) => {
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
   return address;
+};
+
+// select the amount of coin to spend in the transactions and the UTXOs to use
+const selectAmount2Spend = (UTXO_Sender) => {
+  // create a fee for this transaction
+  var feePerInput =
+    Math.trunc(0.00001 * Math.floor(Math.random() * 100) * 100000) / 100000; //TO BE DYNAMIC
+  var fee = feePerInput * UTXO_Sender.length;
+
+  //select amount to spend
+  var total = 0;
+  for (var i = 0; i < UTXO_Sender.length; i++) {
+    total = total + UTXO_Sender[i][1];
+  }
+  var total2Spend = total - fee;
+  var amount_sent = Math.random() * total2Spend;
+
+  // only one UTXO input
+  if (UTXO_Sender.length == 1) {
+    var sender_leftover = total2Spend - amount_sent;
+    selectedUTXO = UTXO_Sender;
+  }
+  //more than one UTXO input
+  else {
+    var left = amount_sent;
+    var selectedUTXO = [];
+    var i = 0;
+    while (left > 0 && left - UTXO_Sender[i][1] < 0) {
+      // POSSIBLE ERROR HERE
+      selectedUTXO.push(UTXO_Sender[i]);
+      left = left - UTXO_Sender[i][1];
+    }
+    var sender_leftover = left; //leftover currency from this TX
+  }
+
+  return [fee, amount_sent, sender_leftover, selectedUTXO];
 };
 
 module.exports = singleTransaction;

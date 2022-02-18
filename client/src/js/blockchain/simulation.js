@@ -30,12 +30,10 @@ const { UTXO_Pool } = require("./transactions/UTXO_Pool");
 const totalCoinBlockChain = (subsidy, numBlocks, halving) => {
   //calculate coin in transit manually
   var curSubsidy = subsidy;
-  console.log(curSubsidy, numBlocks, halving);
   var totalTransit = 0;
   for (var i = 1; i <= numBlocks; i++) {
     if (i != 1 && (i - 1) % halving == 0) {
       curSubsidy = curSubsidy / 2;
-      console.log("Change subsidy:", curSubsidy, i);
     }
     totalTransit += curSubsidy;
   }
