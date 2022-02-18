@@ -33,23 +33,25 @@ function singleTransaction(
   block_height,
   users
 ) {
-  //delete selected UTXO from UTXO_pool
   var senderWalletId = senderWallet[0];
-  var addressSender = UTXO_Sender[0];
-  var utxoPos = UTXO_Pool.indexOf(UTXO_Sender);
-  UTXO_Pool.splice(utxoPos, 1);
 
-  //delete adress from wallet
-  var walletSenderPos = users.indexOf(senderWalletId);
-  var addSenderPos = walletArr[walletSenderPos][3].indexOf(addressSender);
-  walletArr[walletSenderPos][3].splice(addSenderPos, 1);
+  // select amount and UTXOs to spend
+  var coinInputIfo = selectAmount2Spend(UTXO_Sender);
+  var fee = coinInputIfo[0];
+  var amount_sent = coinInputIfo[1];
+  var sender_leftover = coinInputIfo[2];
+  var selectedUTXO = coinInputIfo[3];
 
-  //create a fee for this transaction
-  var fee =
-    Math.trunc(0.00001 * Math.floor(Math.random() * 100) * 100000) / 100000; //TO BE DYNAMIC
-  var amount_sent = parseFloat(UTXO_Sender[1]); //all of the $ in this address - UTXO
-  var amount_received = randomAmount(UTXO_Sender); //get a random amount to be paid
-  var sender_leftover = amount_sent - amount_received - fee; //compute the leftover currency from this TX
+  // delete UTXOs that are going to be spent
+  var wallPos = users.indexOf(senderWalletId);
+  var addressesSender = [];
+  for (var i = 0; i < selectedUTXO.length; i++) {
+    addressesSender.push(selectedUTXO[i][0]);
+    var UTXOpos = UTXO_Pool.indexOf(selectedUTXO[i]);
+    UTXO_Pool.splice(UTXOpos, 1);
+    var adrPos = walletArr[wallPos][3].indexOf(selectedUTXO[i][0]);
+    walletArr[wallPos][3].splice(adrPos, 1);
+  }
 
   if (sender_leftover != 0) {
     // sender leftover new address
@@ -64,23 +66,23 @@ function singleTransaction(
   //address receiver
   var out_receiver_address = createAddressInfo(
     receiverWallet,
-    amount_received,
+    amount_sent,
     block_height,
     users
   );
 
   //create a transaction JSON object string to be hashed
   var transaction =
-    "{ transaction_data: { UTXO: " +
-    addressSender +
+    "{ transaction_data: { addresses_input_UTXO: " +
+    addressesSender +
     ", owner_UTXO: " +
     senderWalletId +
     ", amount_sent: " +
-    amount_received +
+    amount_sent +
     ", receiver: " +
     receiverWallet +
     ", amount_received: " +
-    amount_received +
+    amount_sent +
     ", receiver_address: " +
     out_receiver_address +
     ", sender_leftover: " +
@@ -100,11 +102,11 @@ function singleTransaction(
     hash: transactionHash, //hash created above
     //all the data we are using to create transactions
     transaction_data: {
-      UTXO: addressSender, //address: [user, currency, parent_block] represents UTXO
+      addresses_input_UTXO: addressesSender, //array with addreses [khbvusvues,bidcyvweuvfyc,kshcbiwvyie]
       owner_UTXO: senderWalletId, //user sending $
       amount_sent: amount_sent, //full amount of UTXO (before transaction)
       receiver: receiverWallet, //user receiving $
-      amount_received: amount_received, //amount received from transaction
+      amount_received: amount_sent, //amount received from transaction
       receiver_address: out_receiver_address, //adress of the new UTXO tio the receiver
       sender_leftover: sender_leftover, //remaining $ after transaction and fee
       sender_leftover_address: out_sender_address,
@@ -112,18 +114,12 @@ function singleTransaction(
       block_height: block_height,
     },
   };
-  //console.log("transaction created");
+
+  //if (addressesSender.length > 1) console.log(transactionJSON);
   return transactionJSON;
 }
 
-//random number function ranging from .00001 to .0009 to simulate fees
-const randomAmount = (adressSender) => {
-  var balance = adressSender[1];
-  var percent = Math.trunc(Math.random() * 100) / 100;
-  var amount = Math.trunc(balance * percent * 100) / 100;
-  return amount;
-};
-
+// create an address given a wallet, amount of coin, weight of the block and a list of wallets
 const createAddressInfo = (wallet, amount, weight, users) => {
   var keys = createPublicPrivateKey();
   var address = createAddress(keys[2]);
@@ -132,6 +128,42 @@ const createAddressInfo = (wallet, amount, weight, users) => {
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
   return address;
+};
+
+// select the amount of coin to spend in the transactions and the UTXOs to use
+const selectAmount2Spend = (UTXO_Sender) => {
+  // create a fee for this transaction
+  var feePerInput =
+    Math.trunc(0.00001 * Math.floor(Math.random() * 100) * 100000) / 100000; //TO BE DYNAMIC
+  var fee = feePerInput * UTXO_Sender.length;
+
+  //select amount to spend
+  var total = 0;
+  for (var i = 0; i < UTXO_Sender.length; i++) {
+    total = total + UTXO_Sender[i][1];
+  }
+  var total2Spend = total - fee;
+  var amount_sent = Math.random() * total2Spend;
+
+  // only one UTXO input
+  if (UTXO_Sender.length == 1) {
+    var sender_leftover = total2Spend - amount_sent;
+    selectedUTXO = UTXO_Sender;
+  }
+  //more than one UTXO input
+  else {
+    var left = amount_sent;
+    var selectedUTXO = [];
+    var i = 0;
+    while (left > 0 && left - UTXO_Sender[i][1] < 0) {
+      // POSSIBLE ERROR HERE
+      selectedUTXO.push(UTXO_Sender[i]);
+      left = left - UTXO_Sender[i][1];
+    }
+    var sender_leftover = left; //leftover currency from this TX
+  }
+
+  return [fee, amount_sent, sender_leftover, selectedUTXO];
 };
 
 module.exports = singleTransaction;

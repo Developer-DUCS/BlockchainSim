@@ -37,7 +37,8 @@ const createTransactions = (
   numtransactions,
   b_heigth,
   subsidy,
-  halvings
+  halvings,
+  totalCoin
 ) => {
   var transactions = []; // list of all transactions
   var users = []; // possible users
@@ -45,13 +46,11 @@ const createTransactions = (
     users.push(walletArr[wallet][0]);
   }
 
-  //more than only basecoin transaction is possible
+  //more than one transaction is possible
   if (b_heigth > MINIMUM_DEPTH - 1 && !done) {
     var fee = 0; //cumulation of fees in the block
     var done = false; // check if there is still possible transactions
     var max_transactions = ~~(b_heigth / MINIMUM_DEPTH); // ~~ truncates number 1.0 --> 1
-    //console.log(max_transactions);
-
     if (max_transactions < numtransactions) numtransactions = max_transactions;
 
     //create transactions
@@ -61,8 +60,8 @@ const createTransactions = (
       // [senderWallet, utxoArr];
 
       if (senderInfo != undefined) {
-        var senderWallet = senderInfo[0];
-        var UTXO_Sender = senderInfo[1][0]; // TO CHANGE TO BE ABLE TO GET THE OTHER UTXOS TOO
+        var senderWallet = senderInfo[0]; // sender wallet for transaction
+        var UTXOs_Sender = senderInfo[1]; // UTXOs input for transaction
 
         //select receiver diferent than sender
         var receiverWallet = chooseWallet(walletArr);
@@ -73,7 +72,7 @@ const createTransactions = (
         var tx = singleTransaction(
           senderWallet,
           receiverWallet,
-          UTXO_Sender,
+          UTXOs_Sender,
           b_heigth,
           users
         );
@@ -91,14 +90,18 @@ const createTransactions = (
       if (walletArr[wallet][1] == miner) var minerWallet = walletArr[wallet][0];
     }
     //create coin base transaction + fees
-    var baseTX = coinbaseTransaction(
+    var transInfo = coinbaseTransaction(
       users,
       minerWallet,
       fee,
       b_heigth,
       subsidy,
-      halvings
+      halvings,
+      totalCoin
     );
+    var baseTX = transInfo[0];
+    totalCoin = transInfo[1];
+
     transactions.unshift(baseTX); // add transaction to beguinning array
   } else {
     // <100 block height --> coinbase transaction with no fees
@@ -107,18 +110,21 @@ const createTransactions = (
         var minerWallet = walletArr[wallet][0];
       }
     }
-    var baseTX = coinbaseTransaction(
+    var transInfo = coinbaseTransaction(
       users,
       minerWallet,
       0,
       b_heigth,
       subsidy,
-      halvings
+      halvings,
+      totalCoin
     );
+    var baseTX = transInfo[0];
+    totalCoin = transInfo[1];
     transactions.push(baseTX);
   }
 
-  return transactions;
+  return [transactions, totalCoin];
 };
 
 //select a sender with valid money to create transaction
@@ -130,12 +136,10 @@ const selectSender = (block_height) => {
   var utxoArr = [];
 
   var utxoHeigth = utxo[2];
-  //console.log("utxo: ", utxo, "valid height: ", validHeigth);
   while (utxoHeigth > validHeigth) {
     // in case the first UTXO is not valid
     index = index + 1;
     utxo = UTXO_Pool[index];
-    console.log(utxo);
     utxoHeigth = utxo[2];
   }
   utxoArr.push(utxo);
@@ -163,9 +167,20 @@ const selectSender = (block_height) => {
 
   //check if that wallet has more then one possible utxo.
   if (senderWallet.length > 1) {
-    //console.log("need to find more utxos");
+    //get total amount of valid UTXOS in wallet
+    var addressesArr = senderWallet[3];
+    // find UTXOs attached to address
+    var utxosFound = UTXO_Pool.filter((utx) => {
+      return addressesArr.indexOf(utx[0]) != -1;
+    });
+
+    // get valid UTXOs
+    utxoArr = utxosFound.filter((utx) => {
+      return utx[2] <= validHeigth;
+    });
+
+    //if (validUtxos.length > 1) console.log("valid utxos: ", validUtxos);
   }
-  //console.log("END: ", address2find, senderWallet, counter);
 
   var senderInfo = [senderWallet, utxoArr]; // [laura, [askbvasebraienv, 50BTC, block 3]]
 

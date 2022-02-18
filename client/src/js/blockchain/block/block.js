@@ -19,17 +19,21 @@ const blockCreator = (
   num_transactions,
   block_height,
   subsidy,
-  halvings
+  halvings,
+  totalCoin
 ) => {
   //console.log("Block num: ", block_height);
-  // create transactions - before Merkleroot
-  var transactionJSON = createTransactions(
+  var transInfo = createTransactions(
     miner,
     num_transactions,
     block_height,
     subsidy,
-    halvings
+    halvings,
+    totalCoin
   );
+
+  var transactionJSON = transInfo[0];
+  totalCoin = transInfo[1];
 
   var merkleRoot = createMerkleTree(transactionJSON);
   var header = createHeader(previousHash, merkleRoot); // create header of the block
@@ -45,7 +49,7 @@ const blockCreator = (
     miner: miner,
     time_created: timeStamp,
   };
-  return [blockJSON, hashID];
+  return [blockJSON, hashID, totalCoin];
 };
 
 module.exports = blockCreator;
