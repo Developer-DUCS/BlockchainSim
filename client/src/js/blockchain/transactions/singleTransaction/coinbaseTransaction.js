@@ -32,15 +32,16 @@ function coinbaseTransaction(
   fee,
   block_height,
   subsidy,
-  halvings
+  halvings,
+  totalCoin
 ) {
-  let BLOCK_REWARD = subsidy;
-
   if (block_height / halvings >= 1) {
-    BLOCK_REWARD = subsidy / 2 ** Math.floor(block_height / halvings);
+    subsidy = subsidy / 2 ** Math.floor(block_height / halvings);
   }
 
-  var amount_sent = fee + BLOCK_REWARD; // calculate amount the miner is receiving
+  totalCoin = totalCoin + subsidy;
+
+  var amount_sent = fee + subsidy; // calculate amount the miner is receiving
 
   var newAddress = createAddressInfo(
     minerWallet,
@@ -55,9 +56,9 @@ function coinbaseTransaction(
     ", sender_leftover: 0, fee: " +
     fee +
     ", amount_sent: " +
-    BLOCK_REWARD +
+    subsidy +
     " , amount_received: " +
-    BLOCK_REWARD +
+    subsidy +
     ", block_height: " +
     block_height +
     "} }";
@@ -80,12 +81,12 @@ function coinbaseTransaction(
       sender_leftover_address:
         "0000000000000000000000000000000000000000000000000000000000000000",
       fee: fee,
-      amount_sent: BLOCK_REWARD, //to hash first?
+      amount_sent: subsidy, //to hash first?
       amount_received: amount_sent,
       block_height: block_height,
     },
   };
-  return coinbaseJSON;
+  return [coinbaseJSON, totalCoin];
 }
 
 function createAddressInfo(wallet, amount, weight, users) {
