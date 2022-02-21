@@ -5,9 +5,11 @@ import {
   CardContent,
   Typography,
   Button,
-  Divider,
   Grid,
+  IconButton,
+  Box,
 } from "@mui/material";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
@@ -21,30 +23,43 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
     >
       <Card>
         <CardContent>
-          <Typography variant="h4">Transaction Details</Typography>
-          <Typography variant="subtitle2">
-            for block{" "}
-            {transaction[0].transaction_data
-              ? transaction[0].transaction_data.block_height
-              : "N/A"}
-          </Typography>
-
           <Button
             color="secondary"
             variant="contained"
-            sx={{ m: 2 }}
             size="small"
             onClick={() => setSelectedTransaction()}
+            sx={{ float: "left" }}
           >
             Hide Transactions
           </Button>
+          <Typography variant="h4">Transaction Details</Typography>
+          <Typography variant="subtitle2">
+            Block{" "}
+            {transaction[0].transaction_data
+              ? transaction[0].transaction_data.block_height + 1
+              : "N/A"}
+          </Typography>
+
+          <Box>
+            <IconButton color="primary" size="large">
+              <AccountTreeIcon fontSize="inherit" />
+            </IconButton>
+          </Box>
+
+          <Button color="primary" variant="contained" size="small">
+            Inputs/Outputs
+          </Button>
+
           <Grid container>
             {transaction
               ? transaction.map((tx, index) => (
                   <Grid
                     item
                     xs={12}
-                    sx={{ pl: 1, pr: 1, pt: 0.5, pb: 0.5 }}
+                    sx={{
+                      pb: 1,
+                      background: index % 2 ? "#ebe8e4" : "inherit",
+                    }}
                     key={index}
                   >
                     <Grid container>
@@ -65,11 +80,44 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                     </Grid>
                     <Grid container>
                       <Grid item xs={5}>
+                        <Typography variant="caption" sx={{ p: 1 }}>
+                          <strong>UTXO:</strong>
+                        </Typography>
                         <Typography
                           variant="caption"
                           sx={{ textAlign: "left", p: 1 }}
                         >
-                          {tx.transaction_data.owner_UTXO.slice(0, 20)}...
+                          {tx.transaction_data.owner_UTXO.slice(0, 15)}...
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={2}
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <ArrowForwardIcon />
+                      </Grid>
+                      <Grid item xs={5}>
+                        <Typography variant="caption" sx={{ p: 1 }}>
+                          <strong>UTXO:</strong>
+                        </Typography>
+                        <Typography variant="caption" sx={{ p: 1 }}>
+                          {tx.transaction_data.receiver.slice(0, 15)}...
+                        </Typography>
+                      </Grid>
+                    </Grid>
+
+                    <Grid container>
+                      <Grid item xs={5}>
+                        <Typography
+                          variant="caption"
+                          sx={{ textAlign: "right", p: 1 }}
+                        >
+                          <strong>Sent:</strong>
                         </Typography>
                         <Typography
                           variant="caption"
@@ -87,22 +135,22 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                           alignItems: "center",
                         }}
                       >
-                        <ArrowForwardIcon />
+                        <Typography variant="caption" sx={{ p: 1 }}>
+                          <strong>Fee:</strong>
+                        </Typography>
+                        <Typography variant="caption" sx={{ p: 1 }}>
+                          {tx.transaction_data.fee + "BTC"}
+                        </Typography>
                       </Grid>
                       <Grid item xs={5}>
                         <Typography variant="caption" sx={{ p: 1 }}>
-                          {tx.transaction_data.receiver.slice(0, 20)}...
+                          <strong>Received:</strong>
                         </Typography>
                         <Typography variant="caption" sx={{ p: 1 }}>
                           {tx.transaction_data.amount_received + "BTC"}
                         </Typography>
-                        <Typography variant="caption" sx={{ p: 1 }}>
-                          {tx.transactionAddressFrom}
-                        </Typography>{" "}
                       </Grid>
                     </Grid>
-
-                    <Divider />
                   </Grid>
                 ))
               : "non"}
