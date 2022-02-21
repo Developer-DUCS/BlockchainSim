@@ -94,7 +94,7 @@ function coinbaseTransaction(
       sender_leftover: "0", //remaining $ after transaction and fee
       sender_leftover_address:"000000000000000000000000000000000000000000000000000000000000000000000000000000",
       fee: fee, //random fee to be dynamic
-      block_height: block_height,
+      block_height: block_height,//change
     },
   };
   return [coinbaseJSON, totalCoin];
