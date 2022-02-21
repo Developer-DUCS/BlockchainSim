@@ -84,7 +84,15 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                           variant="caption"
                           sx={{ textAlign: "left", p: 1 }}
                         >
-                          {tx.transaction_data.owner_UTXO.slice(0, 15)}...
+                          {tx.transaction_data.addresses_input_UTXO &&
+                          tx.transaction_data.addresses_input_UTXO.length > 0
+                            ? tx.transaction_data.addresses_input_UTXO.map(
+                                (utxo, index) => (
+                                  <>{utxo.slice(0, 15) + "..."}</>
+                                )
+                              )
+                            : tx.transaction_data.owner_UTXO.slice(0, 15) +
+                              "..."}
                         </Typography>
                       </Grid>
                       <Grid
@@ -125,7 +133,12 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                       </Grid>
                       <Grid item xs={2}>
                         <Typography variant="caption" sx={{ p: 1 }}>
-                          <strong>Fee:</strong>
+                          {tx.transaction_data.UTXO ==
+                          "000000000000000000000000000000000000000000000000000000000000000000000000000000" ? (
+                            <strong>Fees:</strong>
+                          ) : (
+                            <strong>Fee:</strong>
+                          )}
                         </Typography>
                         <Typography variant="caption" sx={{ p: 1 }}>
                           {tx.transaction_data.fee.toFixed(5) + "BTC"}
