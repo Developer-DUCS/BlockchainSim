@@ -130,7 +130,7 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                           variant="caption"
                           sx={{ textAlign: "right", p: 1 }}
                         >
-                          {tx.transaction_data.amount_sent.toFixed(5) + "BTC"}
+                          {tx.transaction_data.amount_sent + "BTC"}
                         </Typography>
                       </Grid>
                       <Grid item xs={2}>
@@ -151,8 +151,7 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                           <strong>Received:</strong>
                         </Typography>
                         <Typography variant="caption" sx={{ p: 1 }}>
-                          {tx.transaction_data.amount_received.toFixed(5) +
-                            "BTC"}
+                          {tx.transaction_data.amount_received + "BTC"}
                         </Typography>
                       </Grid>
                     </Grid>
@@ -177,9 +176,8 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                           <strong>Leftover Amount:</strong>
                         </Typography>
                         <Typography variant="caption" sx={{ p: 1 }}>
-                          {parseFloat(
-                            tx.transaction_data.sender_leftover
-                          ).toFixed(5) + "BTC"}
+                          {parseFloat(tx.transaction_data.sender_leftover) +
+                            "BTC"}
                         </Typography>
                       </Grid>
                     </Grid>
