@@ -37,6 +37,7 @@ function coinbaseTransaction(
 ) {
   if (block_height / halvings >= 1) {
     subsidy = subsidy / 2 ** Math.floor(block_height / halvings);
+    
   }
 
   totalCoin = totalCoin + subsidy;
@@ -70,21 +71,6 @@ function coinbaseTransaction(
   //create json object
   var coinbaseJSON = {
     hash: transactionHash,
-    /* transaction_data: {
-      UTXO: "000000000000000000000000000000000000000000000000000000000000000000000000000000",
-      owner_UTXO:
-        "0000000000000000000000000000000000000000000000000000000000000000",
-      owner_UTXO:
-        "00000000000000000000000000000000000000000000000000000000000000000",
-      receiver: newAddress, //adress
-      sender_leftover: 0,
-      sender_leftover_address:
-        "0000000000000000000000000000000000000000000000000000000000000000",
-      fee: fee,
-      amount_sent: subsidy, //to hash first?
-      amount_received: amount_sent,
-      block_height: block_height,
-    }, */
 
     transaction_data: {
       addresses_input_UTXO: ["000000000000000000000000000000000000000000000000000000000000000000000000000000"], //array with addreses [khbvusvues,bidcyvweuvfyc,kshcbiwvyie]
@@ -94,7 +80,7 @@ function coinbaseTransaction(
       sender_leftover: "0", //remaining $ after transaction and fee
       sender_leftover_address:"000000000000000000000000000000000000000000000000000000000000000000000000000000",
       fee: fee, //random fee to be dynamic
-      block_height: block_height,//change
+      block_height: block_height,
     },
   };
   return [coinbaseJSON, totalCoin];

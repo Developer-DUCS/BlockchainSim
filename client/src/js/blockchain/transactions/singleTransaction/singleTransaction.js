@@ -132,6 +132,7 @@ const selectAmount2Spend = (UTXO_Sender) => {
   // create a fee for this transaction
   var feePerInput =
     Math.trunc(0.00001 * Math.floor(Math.random() * 100) * 100000) / 100000; //TO BE DYNAMIC
+  feePerInput = Math.round( ( feePerInput + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
   var fee = feePerInput * UTXO_Sender.length;
 
   //select amount to spend
@@ -141,6 +142,7 @@ const selectAmount2Spend = (UTXO_Sender) => {
   }
   var total2Spend = total - fee;
   var amount_sent = Math.random() * total2Spend;
+  amount_sent = Math.round( ( amount_sent + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
 
   // only one UTXO input
   if (UTXO_Sender.length == 1) {
