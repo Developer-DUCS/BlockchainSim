@@ -39,6 +39,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import WalletComponent from "./reusable/WalletComponent";
 import createBlock from "../js/blockchain/block/createBlock";
 import DataGrid from "./reusable/datagrid";
+import TransactionComponent from "./reusable/TransactionComponent";
 
 const Simulation = (props) => {
   const history = useHistory();
@@ -520,105 +521,10 @@ const Simulation = (props) => {
               />
             ) : null}
             {selectedTransaction ? (
-              <Container
-                maxWidth="md"
-                sx={{ m: 2, textAlign: "center", ml: "auto", mr: "auto" }}
-              >
-                <Card>
-                  <CardContent>
-                    <Typography variant="h4">Transaction Details</Typography>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      sx={{ m: 2 }}
-                      size="small"
-                      onClick={() => setSelectedTransaction(null)}
-                    >
-                      Hide Transactions
-                    </Button>
-                    <Grid container>
-                      {selectedTransaction
-                        ? selectedTransaction.map((tx, index) => (
-                            <Grid
-                              item
-                              xs={12}
-                              sx={{ pl: 1, pr: 1, pt: 0.5, pb: 0.5 }}
-                              key={index}
-                            >
-                              <Grid container>
-                                <Typography variant="subtitle2" sx={{ pr: 2 }}>
-                                  Hash:
-                                </Typography>
-                                <Typography variant="caption" sx={{ pr: 2 }}>
-                                  {tx.hash}
-                                </Typography>
-                              </Grid>
-                              <Grid container>
-                                <Grid item xs={5}>
-                                  <Typography
-                                    variant="caption"
-                                    sx={{ textAlign: "left" }}
-                                  >
-                                    {tx.transaction_data.owner_UTXO}
-                                  </Typography>
-                                  <Typography
-                                    variant="caption"
-                                    sx={{ textAlign: "right" }}
-                                  >
-                                    {tx.transaction_data.amount_sent + "BTC"}
-                                  </Typography>
-                                  <Typography variant="caption">
-                                    {tx.transactionAddressFrom}
-                                  </Typography>
-                                </Grid>
-                                <Grid
-                                  item
-                                  xs={2}
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <ArrowForwardIcon />
-                                </Grid>
-                                <Grid item xs={5}>
-                                  <Typography variant="caption">
-                                    {tx.transaction_data.receiver}
-                                  </Typography>
-                                  <Typography variant="caption">
-                                    {tx.transaction_data.amount_received +
-                                      "BTC"}
-                                  </Typography>
-                                  <Typography variant="caption">
-                                    {tx.transactionAddressFrom}
-                                  </Typography>{" "}
-                                </Grid>
-                              </Grid>
-                              <Grid container>
-                                <Grid item xs={5}></Grid>
-                                <Grid item xs={2}></Grid>
-                                <Grid item xs={5}>
-                                  <Typography variant="caption">
-                                    {tx.transaction_data.sender_leftover}
-                                  </Typography>
-                                  <Typography variant="caption">
-                                    {tx.transaction_data.sender_leftover +
-                                      "BTC"}
-                                  </Typography>
-                                  <Typography variant="caption">
-                                    {tx.transactionAddressFrom}
-                                  </Typography>{" "}
-                                </Grid>
-                              </Grid>
-                              <Divider />
-                            </Grid>
-                          ))
-                        : "non"}
-                    </Grid>
-                  </CardContent>
-                </Card>
-              </Container>
+              <TransactionComponent
+                transaction={selectedTransaction}
+                setSelectedTransaction={setSelectedTransaction}
+              />
             ) : null}
           </TabPanel>
 
