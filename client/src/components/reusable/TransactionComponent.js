@@ -17,18 +17,15 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
     console.log(transaction);
   }, []);
   return (
-    <Container
-      maxWidth="md"
-      sx={{ m: 2, textAlign: "center", ml: "auto", mr: "auto" }}
-    >
+    <Container maxWidth="md" sx={{ mb: 2 }}>
       <Card>
-        <CardContent>
+        <CardContent sx={{ textAlign: "center", position: "relative" }}>
           <Button
             color="secondary"
             variant="contained"
             size="small"
             onClick={() => setSelectedTransaction()}
-            sx={{ float: "left" }}
+            sx={{ left: 20, position: "absolute", top: 20 }}
           >
             Hide Transactions
           </Button>
@@ -123,23 +120,15 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                           variant="caption"
                           sx={{ textAlign: "right", p: 1 }}
                         >
-                          {tx.transaction_data.amount_sent + "BTC"}
+                          {tx.transaction_data.amount_sent.toFixed(5) + "BTC"}
                         </Typography>
                       </Grid>
-                      <Grid
-                        item
-                        xs={2}
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
+                      <Grid item xs={2}>
                         <Typography variant="caption" sx={{ p: 1 }}>
                           <strong>Fee:</strong>
                         </Typography>
                         <Typography variant="caption" sx={{ p: 1 }}>
-                          {tx.transaction_data.fee + "BTC"}
+                          {tx.transaction_data.fee.toFixed(5) + "BTC"}
                         </Typography>
                       </Grid>
                       <Grid item xs={5}>
@@ -147,7 +136,8 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                           <strong>Received:</strong>
                         </Typography>
                         <Typography variant="caption" sx={{ p: 1 }}>
-                          {tx.transaction_data.amount_received + "BTC"}
+                          {tx.transaction_data.amount_received.toFixed(5) +
+                            "BTC"}
                         </Typography>
                       </Grid>
                     </Grid>
