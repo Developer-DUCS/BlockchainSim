@@ -100,12 +100,9 @@ function singleTransaction(
   //create transaction JSON object
   var transactionJSON = {
     hash: transactionHash, //hash created above
-    //all the data we are using to create transactions
     transaction_data: {
       addresses_input_UTXO: addressesSender, //array with addreses [khbvusvues,bidcyvweuvfyc,kshcbiwvyie]
-      owner_UTXO: senderWalletId, //user sending $
       amount_sent: amount_sent, //full amount of UTXO (before transaction)
-      receiver: receiverWallet, //user receiving $
       amount_received: amount_sent, //amount received from transaction
       receiver_address: out_receiver_address, //adress of the new UTXO tio the receiver
       sender_leftover: sender_leftover, //remaining $ after transaction and fee

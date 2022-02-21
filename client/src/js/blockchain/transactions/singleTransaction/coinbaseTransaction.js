@@ -70,7 +70,7 @@ function coinbaseTransaction(
   //create json object
   var coinbaseJSON = {
     hash: transactionHash,
-    transaction_data: {
+    /* transaction_data: {
       UTXO: "000000000000000000000000000000000000000000000000000000000000000000000000000000",
       owner_UTXO:
         "0000000000000000000000000000000000000000000000000000000000000000",
@@ -83,6 +83,17 @@ function coinbaseTransaction(
       fee: fee,
       amount_sent: subsidy, //to hash first?
       amount_received: amount_sent,
+      block_height: block_height,
+    }, */
+
+    transaction_data: {
+      addresses_input_UTXO: ["000000000000000000000000000000000000000000000000000000000000000000000000000000"], //array with addreses [khbvusvues,bidcyvweuvfyc,kshcbiwvyie]
+      amount_sent: subsidy, //full amount of UTXO (before transaction)
+      amount_received: amount_sent, //amount received from transaction
+      receiver_address: newAddress, //adress of the new UTXO tio the receiver
+      sender_leftover: "0", //remaining $ after transaction and fee
+      sender_leftover_address:"000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      fee: fee, //random fee to be dynamic
       block_height: block_height,
     },
   };
