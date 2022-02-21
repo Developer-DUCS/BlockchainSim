@@ -8,6 +8,7 @@ import {
   Grid,
   IconButton,
   Box,
+  Divider,
 } from "@mui/material";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -78,21 +79,22 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                     <Grid container>
                       <Grid item xs={5}>
                         <Typography variant="caption" sx={{ p: 1 }}>
-                          <strong>UTXO:</strong>
+                          <strong>Address:</strong>
                         </Typography>
                         <Typography
                           variant="caption"
                           sx={{ textAlign: "left", p: 1 }}
                         >
-                          {tx.transaction_data.addresses_input_UTXO &&
-                          tx.transaction_data.addresses_input_UTXO.length > 0
-                            ? tx.transaction_data.addresses_input_UTXO.map(
-                                (utxo, index) => (
-                                  <>{utxo.slice(0, 15) + "..."}</>
-                                )
-                              )
-                            : tx.transaction_data.owner_UTXO.slice(0, 15) +
-                              "..."}
+                          {tx.transaction_data.addresses_input_UTXO.map(
+                            (utxo) => (
+                              <>
+                                {utxo ==
+                                "000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                                  ? "BLOCKCHAIN"
+                                  : utxo.slice(0, 15) + "..."}
+                              </>
+                            )
+                          )}
                         </Typography>
                       </Grid>
                       <Grid
@@ -108,10 +110,10 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                       </Grid>
                       <Grid item xs={5}>
                         <Typography variant="caption" sx={{ p: 1 }}>
-                          <strong>UTXO:</strong>
+                          <strong>Address:</strong>
                         </Typography>
                         <Typography variant="caption" sx={{ p: 1 }}>
-                          {tx.transaction_data.receiver.slice(0, 15)}...
+                          {tx.transaction_data.receiver_address.slice(0, 15)}...
                         </Typography>
                       </Grid>
                     </Grid>
@@ -133,7 +135,7 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                       </Grid>
                       <Grid item xs={2}>
                         <Typography variant="caption" sx={{ p: 1 }}>
-                          {tx.transaction_data.UTXO ==
+                          {tx.transaction_data.addresses_input_UTXO[0] ==
                           "000000000000000000000000000000000000000000000000000000000000000000000000000000" ? (
                             <strong>Fees:</strong>
                           ) : (
@@ -151,6 +153,33 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                         <Typography variant="caption" sx={{ p: 1 }}>
                           {tx.transaction_data.amount_received.toFixed(5) +
                             "BTC"}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    <Divider />
+                    <Grid container>
+                      <Grid item xs={6}>
+                        <Typography variant="caption" sx={{ p: 1 }}>
+                          <strong>Leftover Address:</strong>
+                        </Typography>
+                        <Typography variant="caption" sx={{ p: 1 }}>
+                          {tx.transaction_data.sender_leftover_address ==
+                          "000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                            ? "BLOCKCHAIN"
+                            : tx.transaction_data.sender_leftover_address.slice(
+                                0,
+                                15
+                              ) + "..."}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="caption" sx={{ p: 1 }}>
+                          <strong>Leftover Amount:</strong>
+                        </Typography>
+                        <Typography variant="caption" sx={{ p: 1 }}>
+                          {parseFloat(
+                            tx.transaction_data.sender_leftover
+                          ).toFixed(5) + "BTC"}
                         </Typography>
                       </Grid>
                     </Grid>
