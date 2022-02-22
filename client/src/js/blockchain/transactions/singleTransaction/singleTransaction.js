@@ -39,6 +39,7 @@ function singleTransaction(
   var coinInputIfo = selectAmount2Spend(UTXO_Sender);
   var fee = coinInputIfo[0];
   var amount_sent = coinInputIfo[1];
+  if (amount_sent == "undefined") console.log("   Line 42: amount_sent: ", amount_sent)
   var sender_leftover = coinInputIfo[2];
   var selectedUTXO = coinInputIfo[3];
 
@@ -53,7 +54,7 @@ function singleTransaction(
     walletArr[wallPos][3].splice(adrPos, 1);
   }
 
-  if (sender_leftover != 0) {
+  if (typeof(sender_leftover) != undefined) {
     // sender leftover new address
     var out_sender_address = createAddressInfo(
       senderWalletId,
@@ -122,6 +123,8 @@ const createAddressInfo = (wallet, amount, weight, users) => {
   var address = createAddress(keys[2]);
   var walletPos = users.indexOf(wallet);
   walletArr[walletPos][3].push(address); // add adress to wallet
+  //console.log(typeof(amount));
+  if (typeof(amount) != "number" ) console.log("    Line 125: Invalid transaction here, AMOUNT:", amount)
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
   return address;
@@ -129,38 +132,60 @@ const createAddressInfo = (wallet, amount, weight, users) => {
 
 // select the amount of coin to spend in the transactions and the UTXOs to use
 const selectAmount2Spend = (UTXO_Sender) => {
-  // create a fee for this transaction
+  var sender_leftover = 0;
   var feePerInput =
     Math.trunc(0.00001 * Math.floor(Math.random() * 100) * 100000) / 100000; //TO BE DYNAMIC
   feePerInput = Math.round( ( feePerInput + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
-  var fee = feePerInput * UTXO_Sender.length;
 
-  //select amount to spend
-  var total = 0;
-  for (var i = 0; i < UTXO_Sender.length; i++) {
-    total = total + UTXO_Sender[i][1];
-  }
-  var total2Spend = total - fee;
-  var amount_sent = Math.random() * total2Spend;
-  amount_sent = Math.round( ( amount_sent + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
-
-  // only one UTXO input
   if (UTXO_Sender.length == 1) {
-    var sender_leftover = total2Spend - amount_sent;
+    var fee = feePerInput;
+    var total2Spend = UTXO_Sender[0][1] - fee;
+    var amount_sent = Math.round( ( (Math.random() * total2Spend) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
+    sender_leftover = Math.round( ( (total2Spend - amount_sent) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
     selectedUTXO = UTXO_Sender;
   }
   //more than one UTXO input
   else {
-    var left = amount_sent;
-    var selectedUTXO = [];
-    var i = 0;
-    while (left > 0 && left - UTXO_Sender[i][1] < 0) {
-      // POSSIBLE ERROR HERE
-      selectedUTXO.push(UTXO_Sender[i]);
-      left = left - UTXO_Sender[i][1];
+    console.log("   Line 169: more than one input");
+    //select amount to spend
+    var total = 0;
+    for (var i = 1; i < UTXO_Sender.length - 1; i++) {
+      total = total + UTXO_Sender[i][1];
     }
-    var sender_leftover = left; //leftover currency from this TX
+    var left = Math.round( ( (Math.random() * total) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
+    var amount_sent = left + UTXO_Sender[0][1];
+
+    var selectedUTXO = [];
+    selectedUTXO.push(UTXO_Sender[0]);
+    var i = 1;
+    //while (left > 0 && left - UTXO_Sender[i][1] < 0)
+    console.log("   Line 182: amount_sent: ", amount_sent);
+    while (left > 0 && i < UTXO_Sender.length ) {
+      // POSSIBLE ERROR HERE
+      if( (left - UTXO_Sender[i][0]) > 0){
+        selectedUTXO.push(UTXO_Sender[i]);
+        left = left - UTXO_Sender[i][1];
+        console.log("   Line 186, Getting inputs: ", UTXO_Sender[i], left);
+      }
+      i = i+1;
+    }
+    sender_leftover = left; //leftover currency from this TX
+    console.log("   Line 188: UTXOS selected: ", selectedUTXO.length, sender_leftover);
+
+    // create a fee for this transaction
+    var fee = feePerInput * UTXO_Sender.length;
+
+    //select amount to spend
+  var total = 0;
+  for (var i = 0; i < selectedUTXO.length; i++) {
+    total = total + selectedUTXO
+    [i][1];
   }
+  var total2Spend = total - fee;
+  var amount_sent = Math.random() * total2Spend;
+  amount_sent = Math.round( ( amount_sent + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
+  }
+  //console.log("Line 190: sender_leftover: ", sender_leftover)
 
   return [fee, amount_sent, sender_leftover, selectedUTXO];
 };

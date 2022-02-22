@@ -49,6 +49,8 @@ const blockCreator = (
     miner: miner,
     time_created: timeStamp,
   };
+
+  if (block_height > 100)console.log("BLOCK HEIGHT: ", block_height);
   return [blockJSON, hashID, totalCoin];
 };
 
