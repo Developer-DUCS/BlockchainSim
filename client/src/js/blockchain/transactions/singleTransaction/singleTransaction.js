@@ -141,12 +141,6 @@ const selectAmount2Spend = (UTXO_Sender) => {
     sender_leftover = Math.round( ( (amount_sent - total2Spend) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
     selectedUTXO = UTXO_Sender;
     var amount_received = total2Spend;
-
-   /*  console.log("   ONE UTXO")
-    console.log("   selected UTXOs: ", selectedUTXO);
-    console.log("   Amount_sent: ", amount_sent);
-    console.log("   Amount_received: ", amount_received);
-    console.log("   Sender_leftover: ", sender_leftover); */
   }
   //more than one UTXO input
   else {
@@ -163,7 +157,6 @@ const selectAmount2Spend = (UTXO_Sender) => {
       ? coinLastUTXO = UTXO_Sender[i][1]
       : total = total + UTXO_Sender[i][1]
     }
-    console.log("TOTAL: ", total)
     // 4) select random amount to spend
     var amount2spendLast = Math.round( ( (Math.random() * coinLastUTXO) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
     var amount_received = Math.round( ( (total + amount2spendLast) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
@@ -173,15 +166,6 @@ const selectAmount2Spend = (UTXO_Sender) => {
     // 5) get UTXOs to be used
     var selectedUTXO = [];
     for(var i=0;i<numaddresses2use;i++) selectedUTXO.push(UTXO_Sender[i])
-
-    // make sure numbers are right
-    console.log("   MORE THAN ONE UTXO")
-    console.log("   selected UTXOs: ", selectedUTXO);
-    console.log("   Amount_sent: ", amount_sent);
-    console.log("   Amount_received: ", amount_received);
-    console.log("   Sender_leftover: ", sender_leftover);
-    console.log("   Fees: ", fee)
-    if(amount_sent == undefined || amount_received == undefined || sender_leftover == undefined) console.log("PROBLEM >>> PROBLEM >>> PROBLEM >>> PROBLEM")
   }
 
   return [fee, amount_sent, sender_leftover, selectedUTXO, amount_received];
