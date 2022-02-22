@@ -140,54 +140,51 @@ const selectAmount2Spend = (UTXO_Sender) => {
     var total2Spend = Math.round( ( (Math.random() * amount_sent) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
     sender_leftover = Math.round( ( (amount_sent - total2Spend) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
     selectedUTXO = UTXO_Sender;
-    received = total2Spend;
+    var amount_received = total2Spend;
+
+   /*  console.log("   ONE UTXO")
+    console.log("   selected UTXOs: ", selectedUTXO);
+    console.log("   Amount_sent: ", amount_sent);
+    console.log("   Amount_received: ", amount_received);
+    console.log("   Sender_leftover: ", sender_leftover); */
   }
   //more than one UTXO input
   else {
-    //select amount to spend not counting first UTXO
+
+    // 1) select # UTXOs to spend
+    var numaddresses2use = Math.floor(Math.random() * (UTXO_Sender.length - 1) + 1 );
+    // 2) calculate fees
+    var fee = Math.round( ( (feePerInput * numaddresses2use) + Number.EPSILON ) * 100000 ) / 100000;
+    // 3) calculate total possible to be spent
     var total = 0;
-    for (var i = 1; i < UTXO_Sender.length - 1; i++) {
-      total = total + UTXO_Sender[i][1];
+    var coinLastUTXO;
+    for (var i = 0; i < numaddresses2use ; i++) {
+      (i == numaddresses2use - 1) 
+      ? coinLastUTXO = UTXO_Sender[i][1]
+      : total = total + UTXO_Sender[i][1]
     }
-    var left = Math.round( ( (Math.random() * total) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
+    console.log("TOTAL: ", total)
+    // 4) select random amount to spend
+    var amount2spendLast = Math.round( ( (Math.random() * coinLastUTXO) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
+    var amount_received = Math.round( ( (total + amount2spendLast) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
+    var amount_sent = Math.round( ( (total + coinLastUTXO) + Number.EPSILON ) * 100000 ) / 100000
+    var sender_leftover = Math.round( ( (coinLastUTXO - amount2spendLast - fee) + Number.EPSILON ) * 100000 ) / 100000
 
-    //NOT SURE IF AMOUNT SENT IS CORRECT
-    var amount_sent = Math.round( ( (left + UTXO_Sender[0][1]) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
-
-    //select UTXOs to use
+    // 5) get UTXOs to be used
     var selectedUTXO = [];
-    selectedUTXO.push(UTXO_Sender[0]);
-    var received = UTXO_Sender[0][1];
-    var i = 1;
+    for(var i=0;i<numaddresses2use;i++) selectedUTXO.push(UTXO_Sender[i])
 
-    while (left > 0 && i < UTXO_Sender.length ) {
-      if( (left - UTXO_Sender[i][1]) > 0){ // Make sure the leftover does not turn negative 
-        selectedUTXO.push(UTXO_Sender[i]); // add UTXOs to selected list
-        left = left - UTXO_Sender[i][1]; // substract from total left
-        received = received + UTXO_Sender[i][1]; // add to received coin
-      }
-      i = i+1; //pass to next UTXO
-    }
-    if(selectedUTXO.length > 1) console.log("check here");
-    received = Math.round( ( received + Number.EPSILON ) * 100000 ) / 100000 //leftover currency from this TX
-    sender_leftover = Math.round( ( left + Number.EPSILON ) * 100000 ) / 100000 //leftover currency from this TX
-    if((sender_leftover+received) != amount_sent) console.log("SOMETHING IS NOT ROUNDED")
-
-    // create a fee for this transaction
-    var fee = feePerInput * UTXO_Sender.length;
-
-    //select amount to spend
-  var total = 0;
-  for (var i = 0; i < selectedUTXO.length; i++) {
-    total = total + selectedUTXO
-    [i][1];
-  }
-  var total2Spend = total - fee;
-  var amount_sent = Math.random() * total2Spend;
-  amount_sent = Math.round( ( amount_sent + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
+    // make sure numbers are right
+    console.log("   MORE THAN ONE UTXO")
+    console.log("   selected UTXOs: ", selectedUTXO);
+    console.log("   Amount_sent: ", amount_sent);
+    console.log("   Amount_received: ", amount_received);
+    console.log("   Sender_leftover: ", sender_leftover);
+    console.log("   Fees: ", fee)
+    if(amount_sent == undefined || amount_received == undefined || sender_leftover == undefined) console.log("PROBLEM >>> PROBLEM >>> PROBLEM >>> PROBLEM")
   }
 
-  return [fee, amount_sent, sender_leftover, selectedUTXO, received];
+  return [fee, amount_sent, sender_leftover, selectedUTXO, amount_received];
 };
 
 module.exports = singleTransaction;
