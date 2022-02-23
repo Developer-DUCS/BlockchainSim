@@ -91,7 +91,18 @@ router.post("/createsim", cors(), (req, res) => {
   const subsidy = data.simulation.subsidy;
   const halvings = data.simulation.halvings;
   const numtransactions = data.simulation.numtransactions;
-  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}');`;
+
+  for (let i = 0; i < wallets.length; i++) {
+    wallets[i] = {
+      hash: wallets[i][0],
+      miner: wallets[i][1],
+      simulation_id: wallets[i][2],
+      addresses: wallets[i][3],
+    };
+  }
+  const wallets_string = JSON.stringify(wallets);
+
+  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${wallets_string}');`;
   db.query(qry, (err) => {
     if (err) {
       console.log(err);
@@ -302,6 +313,18 @@ router.post("/addnewblock", cors(), (req, resp) => {
           resp.status(200).send(res);
         }
       });
+    }
+  });
+});
+
+router.post("/getwallets/id", cors(), (req, resp) => {
+  var id = req.body.id;
+  let qry = `SELECT wallets FROM simulation WHERE sim_id='${id}'`;
+  db.query(qry, (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      resp.status(200).send(JSON.parse(res[0].wallets));
     }
   });
 });
