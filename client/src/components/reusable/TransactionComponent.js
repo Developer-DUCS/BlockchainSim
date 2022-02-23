@@ -78,24 +78,46 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                     </Grid>
                     <Grid container>
                       <Grid item xs={5}>
-                        <Typography variant="caption" sx={{ p: 1 }}>
-                          <strong>Address:</strong>
-                        </Typography>
-                        <Typography
-                          variant="caption"
-                          sx={{ textAlign: "left", p: 1 }}
-                        >
-                          {tx.transaction_data.addresses_input_UTXO.map(
-                            (utxo) => (
-                              <>
-                                {utxo ==
-                                "000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                                  ? "BLOCKCHAIN"
-                                  : utxo.slice(0, 15) + "..."}
-                              </>
-                            )
-                          )}
-                        </Typography>
+                        {tx.transaction_data.addresses_input_UTXO.map(
+                          (utxo, index) => (
+                            <React.Fragment key={index}>
+                              {utxo ==
+                              "000000000000000000000000000000000000000000000000000000000000000000000000000000" ? (
+                                <Grid container>
+                                  <Grid item xs={6} sx={{ textAlign: "right" }}>
+                                    <Typography
+                                      variant="caption"
+                                      sx={{ pr: 1 }}
+                                    >
+                                      <strong>Address:</strong>
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={6} sx={{ textAlign: "left" }}>
+                                    <Typography variant="caption">
+                                      BLOCKCHAIN
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                              ) : (
+                                <Grid container>
+                                  <Grid item xs={6} sx={{ textAlign: "right" }}>
+                                    <Typography
+                                      variant="caption"
+                                      sx={{ pr: 1 }}
+                                    >
+                                      <strong>Address[{index + 1}]:</strong>
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={6} sx={{ textAlign: "left" }}>
+                                    <Typography variant="caption">
+                                      {utxo.slice(0, 15)}...
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                              )}
+                            </React.Fragment>
+                          )
+                        )}
                       </Grid>
                       <Grid
                         item
@@ -109,12 +131,22 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                         <ArrowForwardIcon />
                       </Grid>
                       <Grid item xs={5}>
-                        <Typography variant="caption" sx={{ p: 1 }}>
-                          <strong>Address:</strong>
-                        </Typography>
-                        <Typography variant="caption" sx={{ p: 1 }}>
-                          {tx.transaction_data.receiver_address.slice(0, 15)}...
-                        </Typography>
+                        <Grid container>
+                          <Grid item xs={6} sx={{ textAlign: "right" }}>
+                            <Typography variant="caption" sx={{ pr: 1 }}>
+                              <strong>Address[1]:</strong>
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={6} sx={{ textAlign: "left" }}>
+                            <Typography variant="caption">
+                              {tx.transaction_data.receiver_address.slice(
+                                0,
+                                15
+                              )}
+                              ...
+                            </Typography>
+                          </Grid>
+                        </Grid>
                       </Grid>
                     </Grid>
 

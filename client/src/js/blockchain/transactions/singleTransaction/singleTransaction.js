@@ -6,6 +6,7 @@ const {
   createPublicPrivateKey,
 } = require("../../testValidation");
 
+const NUMBER_DECIMALS = 100000;
 /*
     --> SINGLETRANSACTION.JS FILE
 
@@ -129,26 +130,27 @@ const createAddressInfo = (wallet, amount, weight, users) => {
 
 // select the amount of coin to spend in the transactions and the UTXOs to use
 const selectAmount2Spend = (UTXO_Sender) => {
-  var sender_leftover = 0;
-  var feePerInput =
-    Math.trunc(0.00001 * Math.floor(Math.random() * 100) * 100000) / 100000; //TO BE DYNAMIC
-  feePerInput = Math.round( ( feePerInput + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
 
+  // calculate how much fee per input is chosen
+  var feePerInput =
+    Math.trunc(0.00001 * Math.floor(Math.random() * 100) * NUMBER_DECIMALS) / NUMBER_DECIMALS; //TO BE DYNAMIC
+  feePerInput = Math.round( ( feePerInput + Number.EPSILON ) * NUMBER_DECIMALS ) / NUMBER_DECIMALS // round to 5 decimals
+
+  // CASE 1: ony one possible input
   if (UTXO_Sender.length == 1) {
-    var fee = feePerInput;
-    var amount_sent = UTXO_Sender[0][1] - fee;
-    var total2Spend = Math.round( ( (Math.random() * amount_sent) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
-    sender_leftover = Math.round( ( (amount_sent - total2Spend) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
-    selectedUTXO = UTXO_Sender;
-    var amount_received = total2Spend;
+    var fee = feePerInput; 
+    var amount_sent = UTXO_Sender[0][1]; 
+    var amount_received = Math.round( ( (Math.random() * amount_sent - fee) + Number.EPSILON ) * NUMBER_DECIMALS ) / NUMBER_DECIMALS
+    var sender_leftover = Math.round( ( (amount_sent - amount_received) + Number.EPSILON ) * NUMBER_DECIMALS ) / NUMBER_DECIMALS 
+    var selectedUTXO = [UTXO_Sender]; 
   }
-  //more than one UTXO input
+  // CASE 2: more than one UTXO input possible
   else {
 
     // 1) select # UTXOs to spend
     var numaddresses2use = Math.floor(Math.random() * (UTXO_Sender.length - 1) + 1 );
     // 2) calculate fees
-    var fee = Math.round( ( (feePerInput * numaddresses2use) + Number.EPSILON ) * 100000 ) / 100000;
+    var fee = Math.round( ( (feePerInput * numaddresses2use) + Number.EPSILON ) * NUMBER_DECIMALS ) / NUMBER_DECIMALS;
     // 3) calculate total possible to be spent
     var total = 0;
     var coinLastUTXO;
@@ -158,11 +160,10 @@ const selectAmount2Spend = (UTXO_Sender) => {
       : total = total + UTXO_Sender[i][1]
     }
     // 4) select random amount to spend
-    var amount2spendLast = Math.round( ( (Math.random() * coinLastUTXO) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
-    var amount_received = Math.round( ( (total + amount2spendLast) + Number.EPSILON ) * 100000 ) / 100000 // round to 5 decimals
-    var amount_sent = Math.round( ( (total + coinLastUTXO) + Number.EPSILON ) * 100000 ) / 100000
-    var sender_leftover = Math.round( ( (coinLastUTXO - amount2spendLast - fee) + Number.EPSILON ) * 100000 ) / 100000
-
+    var amount2spendLast = Math.round( ( (Math.random() * coinLastUTXO) + Number.EPSILON ) * NUMBER_DECIMALS) / NUMBER_DECIMALS // round to 5 decimals
+    var amount_received = Math.round( ( (total + amount2spendLast) + Number.EPSILON ) * NUMBER_DECIMALS ) / NUMBER_DECIMALS 
+    var amount_sent = Math.round( ( (total + coinLastUTXO) + Number.EPSILON ) * NUMBER_DECIMALS ) / NUMBER_DECIMALS
+    var sender_leftover = Math.round( ( (coinLastUTXO - amount2spendLast - fee) + Number.EPSILON ) * NUMBER_DECIMALS ) / NUMBER_DECIMALS
     // 5) get UTXOs to be used
     var selectedUTXO = [];
     for(var i=0;i<numaddresses2use;i++) selectedUTXO.push(UTXO_Sender[i])
