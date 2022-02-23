@@ -86,13 +86,13 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                           sx={{ textAlign: "left", p: 1 }}
                         >
                           {tx.transaction_data.addresses_input_UTXO.map(
-                            (utxo) => (
-                              <>
+                            (utxo, index) => (
+                              <React.Fragment key={index}>
                                 {utxo ==
                                 "000000000000000000000000000000000000000000000000000000000000000000000000000000"
                                   ? "BLOCKCHAIN"
                                   : utxo.slice(0, 15) + "..."}
-                              </>
+                              </React.Fragment>
                             )
                           )}
                         </Typography>
