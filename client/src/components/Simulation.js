@@ -40,6 +40,7 @@ import WalletComponent from "./reusable/WalletComponent";
 import createBlock from "../js/blockchain/block/createBlock";
 import DataGrid from "./reusable/datagrid";
 import TransactionComponent from "./reusable/TransactionComponent";
+import InputsOutputs from "./reusable/InputsOutputs";
 
 const Simulation = (props) => {
   const history = useHistory();
@@ -521,10 +522,16 @@ const Simulation = (props) => {
               />
             ) : null}
             {selectedTransaction ? (
-              <TransactionComponent
-                transaction={selectedTransaction}
-                setSelectedTransaction={setSelectedTransaction}
-              />
+              <>
+                <TransactionComponent
+                  transaction={selectedTransaction}
+                  setSelectedTransaction={setSelectedTransaction}
+                />
+                <InputsOutputs
+                  transaction={selectedTransaction}
+                  blockData={simulationBlocks}
+                />
+              </>
             ) : null}
           </TabPanel>
 

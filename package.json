@@ -49,6 +49,7 @@
     "react-cookie": "^4.1.1",
     "react-datepicker": "^4.3.0",
     "react-time-picker": "^4.4.3",
+    "react-xarrows": "^2.0.2",
     "ssl-key-match": "0.0.4",
     "supertest": "^6.2.2",
     "x-data-grid": "^2.1.0",
