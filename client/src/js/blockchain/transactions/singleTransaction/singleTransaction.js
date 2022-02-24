@@ -49,7 +49,10 @@ function singleTransaction(
   var addressesSender = [];
   for (var i = 0; i < selectedUTXO.length; i++) {
     addressesSender.push(selectedUTXO[i][0]);
+    console.log(selectedUTXO[i])
+    console.log(UTXO_Pool)
     var UTXOpos = UTXO_Pool.indexOf(selectedUTXO[i]);
+    console.log(UTXOpos);
     UTXO_Pool.splice(UTXOpos, 1);
     var adrPos = walletArr[wallPos][3].indexOf(selectedUTXO[i][0]);
     walletArr[wallPos][3].splice(adrPos, 1);
