@@ -53,6 +53,7 @@ function buf2hex(buffer) {
     .map((x) => x.toString(16).padStart(2, "0"))
     .join("");
 }
+
 module.exports = {
   validateSignature,
   createSignature,
