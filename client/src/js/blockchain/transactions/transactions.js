@@ -40,6 +40,7 @@ const createTransactions = (
   halvings,
   totalCoin
 ) => {
+  console.log("   BLOCK: ", b_heigth);
   var transactions = []; // list of all transactions
   var users = []; // possible users
   for (let wallet in walletArr) {
@@ -56,6 +57,7 @@ const createTransactions = (
     //create transactions
     for (let i = 0; i < numtransactions; i++) {
       //find a valid sender with valid money
+      console.log("   TRANS NUM: ", i)
       var senderInfo = selectSender(b_heigth); // sender adresses to be used
       // [senderWallet, utxoArr];
 
@@ -143,6 +145,7 @@ const selectSender = (block_height) => {
     utxoHeigth = utxo[2];
   }
   utxoArr.push(utxo);
+  console.log( " utxoArr : ", utxoArr)
 
   //track address and get wallet
   var address2find = utxo[0];
