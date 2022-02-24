@@ -3,7 +3,7 @@
 // where is it connected
 // do I need to call the API of do already have all the block needed?
 
-const trackAddres = (adr) => {
+const trackAddres = (adr, blocks) => {
 
 
 }
