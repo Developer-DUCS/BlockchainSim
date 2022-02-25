@@ -40,7 +40,7 @@ const createTransactions = (
   halvings,
   totalCoin
 ) => {
-  console.log("   BLOCK: ", b_heigth);
+  if(b_heigth == 150) console.log(" wallets: ", walletArr)
   var transactions = []; // list of all transactions
   var users = []; // possible users
   for (let wallet in walletArr) {
@@ -57,7 +57,6 @@ const createTransactions = (
     //create transactions
     for (let i = 0; i < numtransactions; i++) {
       //find a valid sender with valid money
-      console.log("   TRANS NUM: ", i)
       var senderInfo = selectSender(b_heigth); // sender adresses to be used
       // [senderWallet, utxoArr];
 
@@ -160,6 +159,15 @@ const selectSender = (block_height) => {
       senderWallet = walletArr[i]
     }
     i++;
+  }
+
+  // check if wallet is undefined
+  if(senderWallet == undefined){
+    if(block_height%20 == 0)console.log("PROBLEM WAS HERE", block_height);
+    var wallP = Math.floor(Math.random() * walletArr.length);
+    senderWallet = walletArr[wallP];
+    senderWallet[3].push(address2find);
+    
   }
 
   //check if that wallet has more then one possible utxo.
