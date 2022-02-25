@@ -145,27 +145,21 @@ const selectSender = (block_height) => {
     utxoHeigth = utxo[2];
   }
   utxoArr.push(utxo);
-  console.log( " utxoArr : ", utxoArr)
+  //console.log( " utxoArr : ", utxoArr)
 
-  //track address and get wallet
+  //track address and get wallet --> RECHECK THIS
   var address2find = utxo[0];
-  var counter = 0;
   var found = false;
   var senderWallet;
   var i = 0;
-  while (!found && i != walletArr.length) {
-    counter = counter + 1;
-    var w = walletArr[i];
-    i = i + 1;
-    var j = 0;
-    while (!found && j < w[3].length) {
-      counter = counter + 1;
-      if (w[3][j] == address2find) {
-        found = true;
-        senderWallet = w;
-      }
-      j = j + 1;
+  while (!found && i < walletArr.length){
+    adrs = walletArr[i][3];
+    //console.log(" addrs wallet ",i," : ",adrs)
+    if(adrs.indexOf(address2find) != -1){
+      found = true
+      senderWallet = walletArr[i]
     }
+    i++;
   }
 
   //check if that wallet has more then one possible utxo.
@@ -181,8 +175,6 @@ const selectSender = (block_height) => {
     utxoArr = utxosFound.filter((utx) => {
       return utx[2] <= validHeigth;
     });
-
-    //if (validUtxos.length > 1) console.log("valid utxos: ", validUtxos);
   }
 
   var senderInfo = [senderWallet, utxoArr]; // [laura, [askbvasebraienv, 50BTC, block 3]]

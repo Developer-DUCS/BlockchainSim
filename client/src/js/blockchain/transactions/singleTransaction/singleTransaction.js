@@ -49,10 +49,8 @@ function singleTransaction(
   var addressesSender = [];
   for (var i = 0; i < selectedUTXO.length; i++) {
     addressesSender.push(selectedUTXO[i][0]);
-    console.log(selectedUTXO[i])
-    console.log(UTXO_Pool)
-    var UTXOpos = UTXO_Pool.indexOf(selectedUTXO[i]);
-    console.log(UTXOpos);
+
+    var UTXOpos = UTXO_Pool.indexOf(selectedUTXO[i][0]);
     UTXO_Pool.splice(UTXOpos, 1);
     var adrPos = walletArr[wallPos][3].indexOf(selectedUTXO[i][0]);
     walletArr[wallPos][3].splice(adrPos, 1);
@@ -125,6 +123,7 @@ const createAddressInfo = (wallet, amount, weight, users) => {
   var keys = createPublicPrivateKey();
   var address = createAddress(keys[2]);
   var walletPos = users.indexOf(wallet);
+
   walletArr[walletPos][3].push(address); // add adress to wallet
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
