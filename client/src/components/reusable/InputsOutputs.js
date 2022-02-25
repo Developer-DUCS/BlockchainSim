@@ -52,8 +52,20 @@ const InputsOutputs = ({ transaction, blockData }) => {
               ></Box>
             ))}
 
-            <Xarrow start="parent" end="7" path="straight" headSize={3} />
-            <Xarrow start="parent" end="700" path="straight" headSize={3} />
+            <Xarrow
+              start="parent"
+              end="7"
+              path="smooth"
+              curveness={0.5}
+              headSize={3}
+            />
+            <Xarrow
+              start="parent"
+              end="700"
+              path="smooth"
+              curveness={0.5}
+              headSize={3}
+            />
           </>
         )}
       </CardContent>
