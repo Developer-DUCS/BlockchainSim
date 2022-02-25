@@ -16,6 +16,8 @@ app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb" }));
 
+// Creating a Simulation
+// This will add a new row to the simulation and blocks table
 router.post("/createsim", cors(), (req, res) => {
   // Add in here
   console.log(req.body);
@@ -38,7 +40,7 @@ router.post("/createsim", cors(), (req, res) => {
   console.log(initValues, user);
 
   var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
-  var wallets = createWallet(miningPool);
+  var wallets = createWallet(miningPool); // <-- [wallet_id, owner, simulation_id, adresses_aviable]
 
   var bithash = sjcl.hash.sha256.hash(initValues.desc);
   var initialHash = sjcl.codec.hex.fromBits(bithash);
@@ -58,7 +60,7 @@ router.post("/createsim", cors(), (req, res) => {
     initValues.transactions,
     initValues.subsidy,
     initValues.halvings
-  );
+  ); // <-- [hashes, blocks]
 
   let data = {
     simulation: {
@@ -91,16 +93,18 @@ router.post("/createsim", cors(), (req, res) => {
   const subsidy = data.simulation.subsidy;
   const halvings = data.simulation.halvings;
   const numtransactions = data.simulation.numtransactions;
+  const walletsJSON = [];
 
   for (let i = 0; i < wallets.length; i++) {
-    wallets[i] = {
+    walletsJSON.push({
       hash: wallets[i][0],
-      miner: wallets[i][1],
+      owner: wallets[i][1],
       simulation_id: wallets[i][2],
       addresses: wallets[i][3],
-    };
+      balance: 0,
+    });
   }
-  const wallets_string = JSON.stringify(wallets);
+  const wallets_string = JSON.stringify(walletsJSON);
 
   let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${wallets_string}');`;
   db.query(qry, (err) => {
