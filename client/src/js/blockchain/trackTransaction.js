@@ -3,9 +3,9 @@
 // where is it connected
 // do I need to call the API of do already have all the block needed?
 
-const trackAddres = (adr, blocks) => {
-    var adrTreeHist = []; // [ [input, output], [input, output]] --> do we include amout?
-    var blockHist = []; // [ [hash,heigth] , [hash,heigth] ]
+const trackAddres = (transactionHash, blocks) => {
+    var iputs = []; // [ [input, output], [input, output]] --> do we include amout?
+    var outputs = []; // [ [hash,heigth] , [hash,heigth] ]
 
     //find first address block appearance
     // check if it is an input of an output
@@ -14,7 +14,7 @@ const trackAddres = (adr, blocks) => {
     // do I want to store the transaction hash so we show it too?
 
 
-    return [adrTreeHist, blockHist]
+    return [inputs, outputs]
 }
 
 module.exports = { trackAddres}

@@ -91,9 +91,11 @@ function createAddressInfo(wallet, amount, weight, users) {
   var address = createAddress(keys[2]);
   var walletPos = users.indexOf(wallet);
   walletArr[walletPos][3].push(address); // add adress to wallet
+  //if (weight < 100 ) console.log( "wallet after adding address: ", walletArr[walletPos][3])
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
   return address;
 }
+//
 
 module.exports = coinbaseTransaction;
