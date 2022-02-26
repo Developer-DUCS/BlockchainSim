@@ -40,7 +40,6 @@ const createTransactions = (
   halvings,
   totalCoin
 ) => {
-  if(b_heigth == 150) console.log(" wallets: ", walletArr)
   var transactions = []; // list of all transactions
   var users = []; // possible users
   for (let wallet in walletArr) {
@@ -144,16 +143,14 @@ const selectSender = (block_height) => {
     utxoHeigth = utxo[2];
   }
   utxoArr.push(utxo);
-  //console.log( " utxoArr : ", utxoArr)
 
-  //track address and get wallet --> RECHECK THIS
+  //track address and get wallet
   var address2find = utxo[0];
   var found = false;
   var senderWallet;
   var i = 0;
   while (!found && i < walletArr.length){
     adrs = walletArr[i][3];
-    //console.log(" addrs wallet ",i," : ",adrs)
     if(adrs.indexOf(address2find) != -1){
       found = true
       senderWallet = walletArr[i]
@@ -163,11 +160,9 @@ const selectSender = (block_height) => {
 
   // check if wallet is undefined
   if(senderWallet == undefined){
-    if(block_height%20 == 0)console.log("PROBLEM WAS HERE", block_height);
     var wallP = Math.floor(Math.random() * walletArr.length);
     senderWallet = walletArr[wallP];
-    senderWallet[3].push(address2find);
-    
+    senderWallet[3].push(address2find); 
   }
 
   //check if that wallet has more then one possible utxo.

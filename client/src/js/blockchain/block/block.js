@@ -22,7 +22,6 @@ const blockCreator = (
   halvings,
   totalCoin
 ) => {
-  //console.log("Block num: ", block_height);
   var transInfo = createTransactions(
     miner,
     num_transactions,
