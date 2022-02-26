@@ -12,7 +12,11 @@ import {
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
+const TransactionComponent = ({
+  transaction,
+  setSelectedTransaction,
+  setShowInputsOutputs,
+}) => {
   React.useEffect(() => {
     console.log(transaction);
   }, []);
@@ -35,16 +39,6 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
             ? transaction[0].transaction_data.block_height + 1
             : "N/A"}
         </Typography>
-
-        <Box>
-          <IconButton color="primary" size="large">
-            <AccountTreeIcon fontSize="inherit" />
-          </IconButton>
-        </Box>
-
-        <Button color="primary" variant="contained" size="small">
-          Inputs/Outputs
-        </Button>
 
         <Grid container>
           {transaction
@@ -178,7 +172,7 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                   </Grid>
                   <Divider />
                   <Grid container>
-                    <Grid item xs={6}>
+                    <Grid item xs={5}>
                       <Typography variant="caption" sx={{ p: 1 }}>
                         <strong>Leftover Address:</strong>
                       </Typography>
@@ -192,7 +186,20 @@ const TransactionComponent = ({ transaction, setSelectedTransaction }) => {
                             ) + "..."}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={2}>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setShowInputsOutputs(tx);
+                        }}
+                      >
+                        <AccountTreeIcon fontSize="inherit" />
+                      </Button>
+                    </Grid>
+                    <Grid item xs={5}>
                       <Typography variant="caption" sx={{ p: 1 }}>
                         <strong>Leftover Amount:</strong>
                       </Typography>

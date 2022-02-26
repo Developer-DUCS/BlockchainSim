@@ -56,6 +56,9 @@ const Simulation = (props) => {
   // Used to click transactions
   const [selectedTransaction, setSelectedTransaction] = React.useState(null);
 
+  // Used to show/hide inputs/outputs
+  const [showInputsOutputs, setShowInputsOutputs] = React.useState({});
+
   // Used to hold simulation blocks
   const [simulationBlocks, setSimulationBlocks] = React.useState([]);
 
@@ -526,10 +529,7 @@ const Simulation = (props) => {
                 <TransactionComponent
                   transaction={selectedTransaction}
                   setSelectedTransaction={setSelectedTransaction}
-                />
-                <InputsOutputs
-                  transaction={selectedTransaction}
-                  blockData={simulationBlocks}
+                  setShowInputsOutputs={setShowInputsOutputs}
                 />
               </>
             ) : null}
@@ -540,6 +540,28 @@ const Simulation = (props) => {
           </TabPanel>
         </Container>
       )}
+
+      {/* Dialog for inputs/outputs */}
+      <Dialog
+        fullWidth={true}
+        maxWidth="xl"
+        scroll="body"
+        open={!_.isEmpty(showInputsOutputs)}
+        onClose={(e) => {
+          e.preventDefault();
+          setShowInputsOutputs({});
+        }}
+      >
+        <DialogTitle>Inputs/Outputs</DialogTitle>
+        <DialogContent>
+          {_.isEmpty(showInputsOutputs) ? null : (
+            <InputsOutputs
+              transaction={showInputsOutputs}
+              blockData={simulationBlocks}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Dialog for sharing */}
       <Dialog open={dialog} onClose={toggleDialog}>
