@@ -40,7 +40,7 @@ router.post("/createsim", cors(), (req, res) => {
   console.log(initValues, user);
 
   var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
-  var wallets = createWallet(miningPool); // <-- [wallet_id, owner, simulation_id, adresses_aviable]
+  var wallets = createWallet(miningPool); // <-- [wallet_id, owner, simulation_id, adresses_aviable, balance]
 
   var bithash = sjcl.hash.sha256.hash(initValues.desc);
   var initialHash = sjcl.codec.hex.fromBits(bithash);
@@ -96,15 +96,21 @@ router.post("/createsim", cors(), (req, res) => {
   const walletsJSON = [];
 
   for (let i = 0; i < wallets.length; i++) {
+    miner = wallets[i][1];
+
     walletsJSON.push({
       hash: wallets[i][0],
-      owner: wallets[i][1],
+      owner: miner,
       simulation_id: wallets[i][2],
       addresses: wallets[i][3],
-      balance: 0,
+      balance: wallets[i][4],
     });
   }
   const wallets_string = JSON.stringify(walletsJSON);
+  // Go through each miner's wallet
+  // Get their addresses
+  // Look up transactions based upon that miner
+  // See how much they have recieved
 
   let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${wallets_string}');`;
   db.query(qry, (err) => {
@@ -329,6 +335,22 @@ router.post("/getwallets/id", cors(), (req, resp) => {
       console.log(err);
     } else {
       resp.status(200).send(JSON.parse(res[0].wallets));
+    }
+  });
+});
+
+router.post("/getminertransaction/miner", cors(), (req, resp) => {
+  var miner = req.body.miner;
+  var email = req.body.email;
+  let email_valid = email.replace(/[@.]/g, "_");
+
+  let qry = `SELECT transactions FROM blocks_${email_valid} WHERE miner=${miner};`;
+
+  db.query(qry, (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      resp.status(200).send(res[0]);
     }
   });
 });

@@ -21,7 +21,7 @@ const createWallet = (miningPool) => {
     var newIdbitHash = sjcl.hash.sha256.hash(miningPool[i] + random);
     var hash = sjcl.codec.hex.fromBits(newIdbitHash);
     // TODO: add balance field for wallets?
-    var newWallet = [hash, miningPool[i], "simulationTest", []]; // TODO: DELETE SIMULATION TEST
+    var newWallet = [hash, miningPool[i], "simulationTest", [], 0]; // TODO: DELETE SIMULATION TEST
     walletArr.push(newWallet);
   }
   return walletArr;
