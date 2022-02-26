@@ -36,15 +36,21 @@ const InputsOutputs = ({ transaction, blockData }) => {
       console.log("outputTransactions", outputTransactions);
 
       //call track address here with ur data
-      //trackAddres() -> Hint: blockData var is the blocks
-      //You should have all the data here, lmk if u dont
+      //trackAddres()
+      // Should should need
+      // inputTransactions
+      // outputTransactions
+      // blockData
+      // as variables
 
-      // GOOD LUCK
+      // lmk if u don't understand anything
+
+      // GOOD LUCK :)
 
       // Set the inputs and outputs for drawing the arrows
       // This should be the block number or blockchain/utxo_pool
-      setInputs(["blockchain", 45]);
-      setOutputs([86, "utxo_pool"]);
+      setInputs(["blockchain", 45]); // Example - inputs from blockchain and block 45
+      setOutputs([86, "utxo_pool"]); // Example - outputs to block 86 and utxo_pool
 
       // Sets the loading state to false
       setLoading(false);
