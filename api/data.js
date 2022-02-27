@@ -267,16 +267,15 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
           let timeStamp = new Date(re[0].time_created);
           timeStamp.setMinutes(timeStamp.getMinutes() + 10);
           timeStamp = timeStamp.toISOString().slice(0, 19).replace("T", " "); // transform to ISO format
-          resp
-            .status(200)
-            .send(
-              subsidy,
-              halvings,
-              previousHash,
-              num_transactions,
-              block_height,
-              timeStamp
-            );
+
+          resp.status(200).json({
+            subsidy: subsidy,
+            halvings: halvings,
+            previousHash: previousHash,
+            num_transactions: num_transactions,
+            blockHeight: block_height,
+            timeStamp: timeStamp,
+          });
         }
       });
     }
@@ -320,20 +319,15 @@ router.post("/addnewblock", cors(), (req, resp) => {
           console.log(err);
           resp.status(400);
         } else {
-          // Insert the new block into the blocks_user table
-          console.log("success");
-          // This variable is undefined
-          console.log("Time created : " + block_time_created);
           // I hardcoded a date into this query, so it would go through
           let q = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '2022-01-01 10:40:00')`;
-          console.log("unsuccessful query : " + q);
           db.query(q, (err, r) => {
             if (err) {
               console.log(err);
               resp.status(400);
             } else {
               // Insert the new block into the blocks_user table
-              resp.status(200);
+              resp.sendStatus(200);
             }
           });
         }

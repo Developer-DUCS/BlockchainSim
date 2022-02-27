@@ -40,6 +40,7 @@ import WalletComponent from "./reusable/WalletComponent";
 import createBlock from "../js/blockchain/block/createBlock";
 import DataGrid from "./reusable/datagrid";
 import TransactionComponent from "./reusable/TransactionComponent";
+import { ContactsOutlined } from "@material-ui/icons";
 
 const Simulation = (props) => {
   const history = useHistory();
@@ -60,6 +61,9 @@ const Simulation = (props) => {
 
   // Main blocks data, used for display/filtering of blocks
   const [filteredBlocks, setFilteredBlocks] = React.useState([]);
+
+  // Used for refreshing
+  const [refresh, setRefresh] = React.useState(false);
 
   // Used for options menu
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -125,7 +129,8 @@ const Simulation = (props) => {
           console.error(err);
         });
     }
-  }, [user]);
+    if (refresh) setRefresh(false);
+  }, [user, refresh]);
 
   const getBlocks = (hashes, owner) => {
     let url = `http://${process.env.REACT_APP_API_URL}/api/data/getblocks`;
@@ -253,81 +258,54 @@ const Simulation = (props) => {
     fetch(url, getData)
       .then((res) => {
         if (res.ok) {
-          // Create block
-          let subsidy = res.subsidy;
-          let halvings = res.halvings;
-          let previousHash = res.previousHash;
-          let num_transactions = res.num_transactions;
-          let block_height = res.block_height;
-          let timeStamp = res.timeStamp;
-          // this timeStamp is undefined even though its a string that has a value on the API
-          console.log("Timestamp : " + timeStamp);
-          let newBlock = createBlock(
-            previousHash,
-            timeStamp,
-            num_transactions,
-            block_height,
-            subsidy,
-            halvings,
-            user.email
-          );
-          console.log(
-            "Hash of simulation: " +
-              newBlock[1] +
-              ". Block information: " +
-              newBlock[0].header
-          );
-          // Send block info to API
-          let url = `http://${process.env.REACT_APP_API_URL}/api/data/addnewblock`;
-          let createData = {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: user.email,
-              sim_id: simID,
-              hash: newBlock[1],
-              block: newBlock[0],
-            }),
-          };
-          fetch(url, createData)
-            .then((res) => {
-              if (res.ok) {
-                // Refresh blocks
-                // Need help here don't know how to refresh
-                console.log("begin refresh blocks");
-                let url = `http://${process.env.REACT_APP_API_URL}/api/data/getsimulations/id`;
-                let options = {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({ id: simID }),
-                };
-
-                fetch(url, options)
-                  .then((res) => {
-                    if (res.ok) {
-                      return res.json();
-                    } else {
-                      console.error("failed to fetch");
-                    }
-                  })
-                  .then((simulation) => {
-                    console.log("successfull query");
-                    setSimulation(simulation[0]);
-                    getBlocks(simulation[0].sim_blocks, simulation[0].email);
-                  })
-                  .catch((err) => {
-                    console.error(err);
-                  });
-              }
-            })
-            .catch((err) => {
-              console.error(err);
-            });
+          return res.json();
         }
+      })
+      .then((res) => {
+        // Create block
+        let subsidy = res.subsidy;
+        let halvings = res.halvings;
+        let previousHash = res.previousHash;
+        let num_transactions = res.num_transactions;
+        let block_height = res.block_height;
+        let timeStamp = res.timeStamp;
+
+        let newBlock = createBlock(
+          previousHash,
+          timeStamp,
+          num_transactions,
+          block_height,
+          subsidy,
+          halvings,
+          user.email
+        );
+
+        // Send block info to API
+        let url = `http://${process.env.REACT_APP_API_URL}/api/data/addnewblock`;
+        let createData = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: user.email,
+            sim_id: simID,
+            hash: newBlock[1],
+            block: newBlock[0],
+          }),
+        };
+        fetch(url, createData)
+          .then((res) => {
+            if (res.ok) {
+              // Refresh blocks
+              // Need help here don't know how to refresh
+              console.log("begin refresh blocks");
+              setRefresh(true);
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       })
       .catch((err) => {
         console.error(err);
