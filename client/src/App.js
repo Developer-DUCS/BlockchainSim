@@ -7,6 +7,7 @@ import LandingPage from "./components/LandingPage";
 import NavBar from "./components/reusable/NavBar";
 import SignUp from "./components/SignUp";
 import Simulation from "./components/Simulation";
+import TutorialMerkle from "./components/TutorialMerkle";
 
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
@@ -140,7 +141,17 @@ const App = () => {
                 />
               )}
             />
-
+            {/*Route to "/merkle"*/}
+            <Route
+              path={`${process.env.PUBLIC_URL}/merkle`}
+              render={() => (
+                <TutorialMerkle
+                  setTheme={setTheme}
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
+              )}
+            />
             {/* Route to ERROR pages */}
             <Route component={Error} />
           </Switch>
