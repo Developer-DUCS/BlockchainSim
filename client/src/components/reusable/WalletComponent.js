@@ -23,9 +23,10 @@ import LedgerCard from "../WalletCards/LedgerCard";
 const WalletComponent = (props) => {
   const [user, setUser] = React.useState({});
   const { id } = useParams();
-  // const miners = ["ean@drury.edu", "t5qcwgfkqh", "f3v80882q9"];
+  const [wallets, setWallets] = React.useState([]);
   const [miners, setMiners] = React.useState([]);
   const [miner, setMiner] = React.useState([]);
+  const [balance, setBalance] = React.useState(0);
 
   React.useEffect(() => {
     if (user.email) {
@@ -47,15 +48,23 @@ const WalletComponent = (props) => {
           }
         })
         .then((wallets) => {
+          setWallets(wallets);
           const minersArr = [];
           for (let i = 0; i < wallets.length; i++) {
-            console.log(minersArr);
             minersArr.push(wallets[i].owner);
           }
           setMiners(minersArr);
         });
     }
   }, [user]);
+
+  React.useEffect(() => {
+    for (let i = 0; i < wallets.length; i++) {
+      if (wallets[i].owner == miner) {
+        setBalance(wallets[i].balance);
+      }
+    }
+  }, [miner]);
 
   const handleMinerChange = (event) => {
     const {
@@ -93,7 +102,7 @@ const WalletComponent = (props) => {
           </Grid>
           <Grid container rowSpacing={-1} spacing={2}>
             <Grid item lg={6}>
-              <TotalBalanceCard sx={{ width: "100%" }} />
+              <TotalBalanceCard sx={{ width: "100%" }} balance={0} />
             </Grid>
             <Grid item lg={6}>
               <TransactionCard sx={{ width: "100%" }} />

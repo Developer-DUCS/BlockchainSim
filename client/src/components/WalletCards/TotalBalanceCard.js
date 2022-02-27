@@ -27,7 +27,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 }));
 
 const TotalBalanceCard = (props) => {
-  const { sx } = props;
+  const { sx, balance } = props;
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -120,7 +120,7 @@ const TotalBalanceCard = (props) => {
                       mb: 0.75,
                     }}
                   >
-                    $500.00
+                    ${balance}
                   </Typography>
                 </Grid>
                 <Grid item>
