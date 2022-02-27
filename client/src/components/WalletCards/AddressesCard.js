@@ -17,6 +17,7 @@ import FileCopyTwoToneIcon from "@mui/icons-material/FileCopyOutlined";
 import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfOutlined";
 import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import DnsIcon from "@mui/icons-material/Dns";
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: theme.palette.primary.light,
@@ -27,7 +28,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 }));
 
 const AddressesCard = (props) => {
-  const { sx } = props;
+  const { sx, addresses } = props;
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -57,7 +58,8 @@ const AddressesCard = (props) => {
                       mt: 1,
                     }}
                   >
-                    <img src={EarningIcon} alt="Notification" />
+                    {/* <img src={EarningIcon} alt="Notification" /> */}
+                    <DnsIcon />
                   </Avatar>
                 </Grid>
                 <Grid item>
@@ -115,15 +117,26 @@ const AddressesCard = (props) => {
                         fontSize: "1.50rem",
                         fontWeight: 500,
                         mr: 1,
-                        ml: 6,
-                        mt: -4,
-                        mb: 0.75,
+                        ml: 7,
+                        mt: -4.5,
+                        mb: 2,
                       }}
                     >
                       Addresses
                     </Typography>
+                    {addresses.map((address, i) => (
+                      <Typography
+                        sx={{
+                          fontSize: "1.5rem",
+                          fontWeight: 300,
+                          mt: 1.5,
+                          ml: 1,
+                        }}
+                      >
+                        <strong>{i}:</strong> {address.slice(0, 28)}...
+                      </Typography>
+                    ))}
                   </Grid>
-                  <Grid item></Grid>
                 </Grid>
               </Grid>
             </Grid>
