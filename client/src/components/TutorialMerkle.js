@@ -1,9 +1,13 @@
 import { Container, Typography } from "@mui/material";
 import React from "react";
 import UserBar from "./reusable/UserBar";
+import Auth from "./reusable/Auth";
 
-const TutorialMerkle = () => {
+const TutorialMerkle = (props) => {
   const { setTheme } = props;
+
+  const [user, setUser] = React.useState(null);
+  const [selectedTab, setSelectedTab] = React.useState(0);
   return (
     <Auth setUser={setUser}>
       <UserBar
