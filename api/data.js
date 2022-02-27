@@ -350,7 +350,11 @@ router.post("/getminertransaction/miner", cors(), (req, resp) => {
     if (err) {
       console.log(err);
     } else {
-      resp.status(200).send(res[0]);
+      //have to go through every element and turn them into a json object
+      for (let i = 0; i < res.length; i++) {
+        res[i] = JSON.parse(res[i].transactions);
+      }
+      resp.status(200).send(res);
     }
   });
 });
