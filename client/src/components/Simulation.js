@@ -260,6 +260,8 @@ const Simulation = (props) => {
           let num_transactions = res.num_transactions;
           let block_height = res.block_height;
           let timeStamp = res.timeStamp;
+          // this timeStamp is undefined even though its a string that has a value on the API
+          console.log("Timestamp : " + timeStamp);
           let newBlock = createBlock(
             previousHash,
             timeStamp,
@@ -271,14 +273,13 @@ const Simulation = (props) => {
           );
           console.log(
             "Hash of simulation: " +
-              newBlock[0] +
+              newBlock[1] +
               ". Block information: " +
-              newBlock[1]
+              newBlock[0].header
           );
-          /*
           // Send block info to API
           let url = `http://${process.env.REACT_APP_API_URL}/api/data/addnewblock`;
-          let newBlockData = {
+          let createData = {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -286,21 +287,46 @@ const Simulation = (props) => {
             body: JSON.stringify({
               email: user.email,
               sim_id: simID,
-              hash: newBlock[0],
-              block: newBlock[1],
+              hash: newBlock[1],
+              block: newBlock[0],
             }),
           };
-          fetch(url, createdata)
+          fetch(url, createData)
             .then((res) => {
               if (res.ok) {
-                // reroute back to simulation page to refresh blocks
-                history.push(`${process.env.PUBLIC_URL}/simulation/${id}`);
+                // Refresh blocks
+                // Need help here don't know how to refresh
+                console.log("begin refresh blocks");
+                let url = `http://${process.env.REACT_APP_API_URL}/api/data/getsimulations/id`;
+                let options = {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ id: simID }),
+                };
+
+                fetch(url, options)
+                  .then((res) => {
+                    if (res.ok) {
+                      return res.json();
+                    } else {
+                      console.error("failed to fetch");
+                    }
+                  })
+                  .then((simulation) => {
+                    console.log("successfull query");
+                    setSimulation(simulation[0]);
+                    getBlocks(simulation[0].sim_blocks, simulation[0].email);
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                  });
               }
             })
             .catch((err) => {
               console.error(err);
             });
-            */
         }
       })
       .catch((err) => {
