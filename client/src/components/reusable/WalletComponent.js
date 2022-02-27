@@ -10,8 +10,11 @@ import {
   Select,
   Checkbox,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
+import Autocomplete from "@mui/material/Autocomplete";
 import Auth from "./Auth";
 import TotalBalanceCard from "../WalletCards/TotalBalanceCard";
 import TransactionCard from "../WalletCards/TransactionsCard";
@@ -21,6 +24,7 @@ import AddressesCard from "../WalletCards/AddressesCard";
 import LedgerCard from "../WalletCards/LedgerCard";
 
 const WalletComponent = (props) => {
+  const theme = useTheme();
   const [user, setUser] = React.useState({});
   const { id } = useParams();
   const [wallets, setWallets] = React.useState([]);
@@ -78,29 +82,44 @@ const WalletComponent = (props) => {
     <Auth setUser={setUser}>
       <Card sx={{ mt: 3, ml: 5, mr: 5, borderRadius: "16px", width: "75%" }}>
         <CardContent>
-          <Grid>
-            <FormControl sx={{ ml: 3, color: "primary" }}>
-              <InputLabel size="large" id="caregoryLabel">
-                Miner
-              </InputLabel>
-              <Select
-                sx={{ width: 400 }}
-                size="large"
-                labelId="minerLabel"
-                id="Miner"
-                value={miner}
-                onChange={handleMinerChange}
-                input={<OutlinedInput size="small" label="Miner" />}
-                renderValue={(selected) => selected.join(", ")}
+          <Grid container rowSpacing={-1} spacing={2}>
+            <Grid item lg={6}>
+              <Typography
+                sx={{
+                  fontSize: "2.125rem",
+                  fontWeight: 500,
+                }}
               >
-                {miners.map((mine) => (
-                  <MenuItem key={mine} value={mine}>
-                    <Checkbox checked={miner.indexOf(mine) > -1} />
-                    <ListItemText primary={mine} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+                <string style={{ color: theme.palette.primary.main }}>
+                  MINER:{" "}
+                </string>
+                <strong>{miner}</strong>
+              </Typography>
+            </Grid>
+            <Grid item lg={6}>
+              <FormControl sx={{ color: "primary", width: "100%" }}>
+                <InputLabel size="large" id="caregoryLabel">
+                  Miner
+                </InputLabel>
+                <Select
+                  sx={{ width: "100%" }}
+                  size="large"
+                  labelId="minerLabel"
+                  id="Miner"
+                  value={miner}
+                  onChange={handleMinerChange}
+                  input={<OutlinedInput size="small" label="Miner" />}
+                  renderValue={(selected) => selected.join(", ")}
+                >
+                  {miners.map((mine) => (
+                    <MenuItem key={mine} value={mine}>
+                      <Checkbox checked={miner.indexOf(mine) > -1} />
+                      <ListItemText primary={mine} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
           <Grid container rowSpacing={-1} spacing={2}>
             <Grid item lg={6}>

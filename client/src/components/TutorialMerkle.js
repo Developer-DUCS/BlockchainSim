@@ -6,9 +6,12 @@ import styles from "./HomePageComponents/Sections/productStyle";
 
 const useStyles = makeStyles(styles);
 
-const TutorialMerkle = () => {
+const TutorialMerkle = (props) => {
   const { setTheme } = props;
   const classes = useStyles();
+
+  const [user, setUser] = React.useState(null);
+  const [selectedTab, setSelectedTab] = React.useState(0);
   return (
     <div className={classNames(classes.main, classes.mainRaised)}>
       <UserBar barTitle={`Tutorial`} setTheme={setTheme} />

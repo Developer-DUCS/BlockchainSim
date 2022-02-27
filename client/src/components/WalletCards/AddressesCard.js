@@ -119,10 +119,10 @@ const AddressesCard = (props) => {
                         mr: 1,
                         ml: 7,
                         mt: -4.5,
-                        mb: 2,
+                        mb: 3,
                       }}
                     >
-                      Addresses
+                      Transactions Addresses
                     </Typography>
                     {addresses.map((address, i) => (
                       <Typography
