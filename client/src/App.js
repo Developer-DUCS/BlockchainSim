@@ -7,7 +7,7 @@ import LandingPage from "./components/LandingPage";
 import NavBar from "./components/reusable/NavBar";
 import SignUp from "./components/SignUp";
 import Simulation from "./components/Simulation";
-import TutorialMerkle from "./components/TutorialMerkle";
+import TutorialHome from "./components/TutorialHome";
 
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
@@ -141,11 +141,11 @@ const App = () => {
                 />
               )}
             />
-            {/*Route to "/merkle"*/}
+            {/*Route to "/tutorialHome"*/}
             <Route
-              path={`${process.env.PUBLIC_URL}/merkle`}
+              path={`${process.env.PUBLIC_URL}/tutorialHome`}
               render={() => (
-                <TutorialMerkle
+                <TutorialHome
                   setTheme={setTheme}
                   setFeedback={setFeedback}
                   setFeedbackObj={setFeedbackObj}
