@@ -105,10 +105,12 @@ function singleTransaction(
   var transactionJSON = {
     hash: transactionHash, // hash created above
     transaction_data: {
+      sender_wallet: senderWallet[0],
       addresses_input_UTXO: addressesSender, // array with addreses [khbvusvues,bidcyvweuvfyc,kshcbiwvyie]
       amount_sent: amount_sent, // full amount of UTXO (before transaction)
       amount_received: amount_received, // amount received from transaction
       receiver_address: out_receiver_address, // adress of the new UTXO tio the receiver
+      receiver_wallet: receiverWallet,
       sender_leftover: sender_leftover, // remaining $ after transaction and fee
       sender_leftover_address: out_sender_address,
       fee: fee, // random fee to be dynamic

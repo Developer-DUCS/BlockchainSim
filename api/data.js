@@ -344,7 +344,9 @@ router.post("/getminertransaction/miner", cors(), (req, resp) => {
   var email = req.body.email;
   let email_valid = email.replace(/[@.]/g, "_");
 
-  let qry = `SELECT transactions FROM blocks_${email_valid} WHERE miner=${miner};`;
+  // owner = miner
+  let hash = 00; //select id from wallet row in simulation of owner
+  let qry = `SELECT transactions FROM blocks_${email_valid} WHERE sender_wallet=${hash} OR receiver_wallet=${hash};`;
 
   db.query(qry, (err, res) => {
     if (err) {
