@@ -10,7 +10,7 @@ import { container } from "./HomePageComponents/extra_components/material-kit-re
 
 const useStyles = makeStyles(styles);
 
-const TutorialMerkle = (props) => {
+const TutorialHome = (props) => {
   const { setTheme } = props;
   const classes = useStyles();
 
@@ -33,4 +33,4 @@ const TutorialMerkle = (props) => {
     </div>
   );
 };
-export default TutorialMerkle;
+export default TutorialHome;
