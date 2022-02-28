@@ -37,7 +37,6 @@ function coinbaseTransaction(
 ) {
   if (block_height / halvings >= 1) {
     subsidy = subsidy / 2 ** Math.floor(block_height / halvings);
-    
   }
 
   totalCoin = totalCoin + subsidy;
@@ -73,12 +72,18 @@ function coinbaseTransaction(
     hash: transactionHash,
 
     transaction_data: {
-      addresses_input_UTXO: ["000000000000000000000000000000000000000000000000000000000000000000000000000000"], //array with addreses [khbvusvues,bidcyvweuvfyc,kshcbiwvyie]
+      sender_wallet:
+        "000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      addresses_input_UTXO: [
+        "000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      ], //array with addreses [khbvusvues,bidcyvweuvfyc,kshcbiwvyie]
       amount_sent: subsidy, //full amount of UTXO (before transaction)
       amount_received: amount_sent, //amount received from transaction
       receiver_address: newAddress, //adress of the new UTXO tio the receiver
+      receiver_wallet: minerWallet,
       sender_leftover: "0", //remaining $ after transaction and fee
-      sender_leftover_address:"000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      sender_leftover_address:
+        "000000000000000000000000000000000000000000000000000000000000000000000000000000",
       fee: fee, //random fee to be dynamic
       block_height: block_height,
     },

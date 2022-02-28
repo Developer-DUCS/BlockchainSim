@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import React, { useState } from "react";
 
 // material-ui
 import { styled, useTheme } from "@mui/material/styles";
@@ -17,6 +17,7 @@ import FileCopyTwoToneIcon from "@mui/icons-material/FileCopyOutlined";
 import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfOutlined";
 import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import { Icon } from "@iconify/react";
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
@@ -27,10 +28,32 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 }));
 
 const TotalBalanceCard = (props) => {
+  const [bitcoinPrice, setBitcoinPrice] = React.useState();
+  React.useEffect(() => {
+    let url =
+      "https://web.scraper.workers.dev/?url=https%3A%2F%2Fwww.google.com%2Ffinance%2Fquote%2FBTC-USD%3Fsa%3DX%26ved%3D2ahUKEwj65fnJ9If2AhWlkIkEHReYCTUQ-fUHegQIFRAS&selector=div.YMlKec.fxKbKc&scrape=text&pretty=true";
+    let options = {
+      method: "GET",
+    };
+
+    fetch(url, options)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          console.log("error");
+        }
+      })
+      .then((res) => {
+        res = res.result;
+        setBitcoinPrice(res["div.YMlKec.fxKbKc"][0]);
+      });
+  });
   const { sx, balance } = props;
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [currency, setCurrency] = React.useState("USD");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -38,6 +61,13 @@ const TotalBalanceCard = (props) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const setUSD = () => {
+    setAnchorEl(null);
+    // setCurrency("USD");
+    //going from BTC to USD
+    balance = balance / bitcoinPrice;
   };
 
   return (
@@ -92,17 +122,17 @@ const TotalBalanceCard = (props) => {
                       horizontal: "right",
                     }}
                   >
-                    <MenuItem onClick={handleClose}>
-                      <GetAppTwoToneIcon sx={{ mr: 1.75 }} /> View Balance
+                    <MenuItem onClick={setUSD}>
+                      <AttachMoneyIcon /> View in USD
                     </MenuItem>
                     <MenuItem onClick={handleClose}>
-                      <FileCopyTwoToneIcon sx={{ mr: 1.75 }} /> Copy Data
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <PictureAsPdfTwoToneIcon sx={{ mr: 1.75 }} /> Export
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <ArchiveTwoToneIcon sx={{ mr: 1.75 }} /> Archive File
+                      <Icon
+                        icon="mdi:bitcoin"
+                        width="27.5"
+                        height="27.5"
+                        color="theme.palette.secondary.dark"
+                      />{" "}
+                      View in BTC
                     </MenuItem>
                   </Menu>
                 </Grid>
@@ -140,7 +170,7 @@ const TotalBalanceCard = (props) => {
             <Grid item sx={{ mb: 1.25 }}>
               <Typography
                 sx={{
-                  fontSize: "1rem",
+                  fontSize: "1.25rem",
                   fontWeight: 500,
                   color: theme.palette.secondary[200],
                 }}
