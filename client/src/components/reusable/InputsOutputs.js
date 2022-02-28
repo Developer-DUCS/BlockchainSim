@@ -36,7 +36,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
       console.log("outputTransactions", outputTransactions);
 
       //call track address here with ur data
-      //trackAddres()
+      trackAddres(inputTransactions,outputTransactions,blockData);
       // Should should need
       // inputTransactions
       // outputTransactions

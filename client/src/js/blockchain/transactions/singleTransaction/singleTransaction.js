@@ -47,15 +47,17 @@ function singleTransaction(
   // delete UTXOs that are going to be spent
   var wallPos = users.indexOf(senderWalletId);
   walletArr[wallPos][4] -= amount_sent; // update wallet amount
-  var addressesSender = [];
+  var adrsSender = [];
   for (var i = 0; i < selectedUTXO.length; i++) {
-    addressesSender.push(selectedUTXO[i][0]);
+    adrsSender.push(selectedUTXO[i][0]);
+    //addresesSender.push[selectedUTXO]
 
     var UTXOpos = UTXO_Pool.indexOf(selectedUTXO[i][0]);
     UTXO_Pool.splice(UTXOpos, 1);
     var adrPos = walletArr[wallPos][3].indexOf(selectedUTXO[i][0]);
     walletArr[wallPos][3].splice(adrPos, 1);
   }
+  if(adrsSender[0].length == 3) console.log("adresses: ",adrsSender,"selected UTXO: ", selectedUTXO);
 
   if (typeof sender_leftover != undefined) {
     // sender leftover new address
@@ -78,7 +80,7 @@ function singleTransaction(
   //create a transaction JSON object string to be hashed
   var transaction =
     "{ transaction_data: { addresses_input_UTXO: " +
-    addressesSender +
+    adrsSender +
     ", owner_UTXO: " +
     senderWalletId +
     ", amount_sent: " +
@@ -106,7 +108,7 @@ function singleTransaction(
     hash: transactionHash, // hash created above
     transaction_data: {
       sender_wallet: senderWallet[0],
-      addresses_input_UTXO: addressesSender, // array with addreses [khbvusvues,bidcyvweuvfyc,kshcbiwvyie]
+      addresses_input_UTXO: adrsSender, // array with addreses [khbvusvues,bidcyvweuvfyc,kshcbiwvyie]
       amount_sent: amount_sent, // full amount of UTXO (before transaction)
       amount_received: amount_received, // amount received from transaction
       receiver_address: out_receiver_address, // adress of the new UTXO tio the receiver
@@ -155,7 +157,7 @@ const selectAmount2Spend = (UTXO_Sender) => {
       Math.round(
         (amount_sent - amount_received + Number.EPSILON) * NUMBER_DECIMALS
       ) / NUMBER_DECIMALS;
-    var selectedUTXO = [UTXO_Sender];
+    var selectedUTXO = UTXO_Sender;
   }
   // CASE 2: more than one UTXO input possible
   else {
