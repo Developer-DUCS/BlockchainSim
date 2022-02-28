@@ -20,11 +20,11 @@ const sjcl = require("../../../sjcl");
         
     --> The Merkle tree is included in the block header. 
         Merkle trees include hashes of all the transactions 
-        organized in a data structure. 
+        organized in a data structure
 */
 
 const createMerkleTree = (transactions) => {
-  //collect all transaction hashes in a block
+  //collect all transaction hashes from 1 block
   const txHashes = [];
   for (let i = 0; i < transactions.length; i++) {
     txHashes.push(transactions[i].hash);
