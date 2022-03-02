@@ -133,7 +133,7 @@ const AddressesCard = (props) => {
                           ml: 1,
                         }}
                       >
-                        <strong>{i}:</strong> {address.slice(0, 28)}...
+                        <strong>{i}:</strong> {address.slice(0, 23)}...
                       </Typography>
                     ))}
                   </Grid>
