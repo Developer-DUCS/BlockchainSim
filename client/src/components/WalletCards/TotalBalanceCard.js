@@ -150,7 +150,7 @@ const TotalBalanceCard = (props) => {
                       mb: 0.75,
                     }}
                   >
-                    ${balance}
+                    ${balance.toFixed(5)}
                   </Typography>
                 </Grid>
                 <Grid item>
