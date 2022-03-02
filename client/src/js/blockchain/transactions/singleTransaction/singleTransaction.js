@@ -57,7 +57,6 @@ function singleTransaction(
     var adrPos = walletArr[wallPos][3].indexOf(selectedUTXO[i][0]);
     walletArr[wallPos][3].splice(adrPos, 1);
   }
-  if(adrsSender[0].length == 3) console.log("adresses: ",adrsSender,"selected UTXO: ", selectedUTXO);
 
   if (typeof sender_leftover != undefined) {
     // sender leftover new address
