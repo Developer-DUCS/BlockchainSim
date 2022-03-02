@@ -1,151 +1,46 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  Grid,
-  MenuItem,
-  FormControl,
-  OutlinedInput,
-  InputLabel,
-  Select,
-  Checkbox,
-  ListItemText,
-  Typography,
-} from "@mui/material";
-import { useParams } from "react-router-dom";
-import { useTheme } from "@mui/material/styles";
-import Autocomplete from "@mui/material/Autocomplete";
+import { Grid, Box } from "@mui/material";
+import Button from "@mui/material/Button";
+import { DataGrid } from "@mui/x-data-grid";
 import Auth from "./Auth";
-import TotalBalanceCard from "../WalletCards/TotalBalanceCard";
-import TransactionCard from "../WalletCards/TransactionsCard";
-import OwnerCard from "../WalletCards/OwnerCard";
-import TransactionButton from "../WalletCards/TransactionButton";
-import AddressesCard from "../WalletCards/AddressesCard";
-import LedgerCard from "../WalletCards/LedgerCard";
+import WalletCard from "../WalletCards/WalletCard";
+
+const Wallet_Card = () => {
+  return (
+    <Grid item sm={8}>
+      <WalletCard />
+    </Grid>
+  );
+};
 
 const WalletComponent = (props) => {
-  const theme = useTheme();
   const [user, setUser] = React.useState({});
-  const { id } = useParams();
-  const [wallets, setWallets] = React.useState([]);
-  const [miners, setMiners] = React.useState([]);
-  const [miner, setMiner] = React.useState([]);
-  const [balance, setBalance] = React.useState(0);
-  const [addresses, setAddresses] = React.useState([]);
+  const [WalletCards, setWalletCards] = React.useState([]);
+  const rows = [];
 
-  React.useEffect(() => {
-    if (user.email) {
-      let url = `http://${process.env.REACT_APP_API_URL}/api/data/getwallets/id`;
-      let options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: id }),
-      };
-
-      fetch(url, options)
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          } else {
-            console.error("failed to fetch");
-          }
-        })
-        .then((wallets) => {
-          setWallets(wallets);
-          const minersArr = [];
-          for (let i = 0; i < wallets.length; i++) {
-            minersArr.push(wallets[i].owner);
-          }
-          setMiners(minersArr);
-        });
-    }
-  }, [user]);
-
-  React.useEffect(() => {
-    for (let i = 0; i < wallets.length; i++) {
-      if (wallets[i].owner == miner) {
-        setBalance(wallets[i].balance);
-        setAddresses(wallets[i].addresses);
-      }
-    }
-  }, [miner]);
-
-  const handleMinerChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setMiner(typeof value === "string" ? value.split(",") : value);
+  const onAddBtnClick = (event) => {
+    setWalletCards(
+      WalletCards.concat(<Wallet_Card key={WalletCards.length} />)
+    );
   };
+
   return (
     <Auth setUser={setUser}>
-      <Card sx={{ mt: 3, ml: 5, mr: 5, borderRadius: "16px", width: "75%" }}>
-        <CardContent>
-          <Grid container rowSpacing={-1} spacing={2}>
-            <Grid item lg={6}>
-              <Typography
-                sx={{
-                  fontSize: "2.125rem",
-                  fontWeight: 500,
-                }}
-              >
-                <string style={{ color: theme.palette.primary.main }}>
-                  MINER:{" "}
-                </string>
-                <strong>{miner}</strong>
-              </Typography>
-            </Grid>
-            <Grid item lg={6}>
-              <FormControl sx={{ color: "primary", width: "100%" }}>
-                <InputLabel size="large" id="caregoryLabel">
-                  Miner
-                </InputLabel>
-                <Select
-                  sx={{ width: "100%" }}
-                  size="large"
-                  labelId="minerLabel"
-                  id="Miner"
-                  value={miner}
-                  onChange={handleMinerChange}
-                  input={<OutlinedInput size="small" label="Miner" />}
-                  renderValue={(selected) => selected.join(", ")}
-                >
-                  {miners.map((mine) => (
-                    <MenuItem key={mine} value={mine}>
-                      <Checkbox checked={miner.indexOf(mine) > -1} />
-                      <ListItemText primary={mine} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid container rowSpacing={-1} spacing={2}>
-            <Grid item lg={6}>
-              <TotalBalanceCard sx={{ width: "100%" }} balance={balance} />
-            </Grid>
-            <Grid item lg={6}>
-              <TransactionCard sx={{ width: "100%" }} />
-            </Grid>
-            <Grid item lg={6}>
-              <AddressesCard
-                sx={{ width: "100%", height: 500 }}
-                addresses={addresses}
-              />
-            </Grid>
-            <Grid item lg={6}>
-              <LedgerCard sx={{ width: "100%", height: 500 }} />
-            </Grid>
-            <Grid item lg={6}>
-              <TransactionButton sx={{ width: "100%" }} />
-            </Grid>
-            <Grid item lg={6}>
-              <TransactionButton sx={{ width: "100%" }} />
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+      <Grid container>
+        <Grid item sm={8}>
+          <WalletCard />
+        </Grid>
+        {WalletCards}
+        <Grid item sm={4}>
+          <Button
+            onClick={onAddBtnClick} //need to add a new card here
+            variant="contained"
+            sx={{ borderRadius: 9, size: 1 }}
+          >
+            +
+          </Button>
+        </Grid>
+      </Grid>
     </Auth>
   );
 };
