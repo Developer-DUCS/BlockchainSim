@@ -19,6 +19,8 @@ import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { Icon } from "@iconify/react";
 import Button from "@mui/material/Button";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
@@ -26,6 +28,19 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   // overflow: "hidden",
   position: "relative",
   borderRadius: "16px",
+}));
+
+const MyToolTipStyle = styled(({ className, ...props }) => (
+  <Tooltip arrow placement="top" {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: "#f5f5f9",
+    color: "rgba(0, 0, 0, 0.87)",
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: "1px solid #dadde9",
+    fontSize: 15,
+  },
 }));
 
 const TotalBalanceCard = (props) => {
@@ -65,18 +80,7 @@ const TotalBalanceCard = (props) => {
 
   const theme = useTheme();
 
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const toggleCurrency = (event) => {
-    console.log("changing currency");
     //if they are currently viewing BTC
     //and want to see it in USD
     if (btc) {
@@ -108,50 +112,34 @@ const TotalBalanceCard = (props) => {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Avatar
-                    variant="rounded"
-                    sx={{
-                      ...theme.typography.commonAvatar,
-                      ...theme.typography.mediumAvatar,
-                      backgroundColor: theme.palette.secondary.dark,
-                      color: theme.palette.secondary[200],
-                      zIndex: 1,
-                    }}
-                    aria-controls="menu-earning-card"
-                    aria-haspopup="true"
-                    onClick={handleClick}
+                  <MyToolTipStyle
+                    disableFocusListener
+                    disableTouchListener
+                    title={
+                      <React.Fragment>
+                        <Typography color="inherit">
+                          <b>
+                            <em>Curious about how we got these numbers?</em>
+                          </b>
+                        </Typography>
+                      </React.Fragment>
+                    }
                   >
-                    <MoreHorizIcon fontSize="inherit" />
-                  </Avatar>
-                  {/* <Menu
-                    id="menu-earning-card"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                    variant="selectedMenu"
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                  >
-                    <MenuItem onClick={console.log("hey")}>
-                      <AttachMoneyIcon /> View in USD
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <Icon
-                        icon="mdi:bitcoin"
-                        width="27.5"
-                        height="27.5"
-                        color="theme.palette.secondary.dark"
-                      />{" "}
-                      View in BTC
-                    </MenuItem>
-                  </Menu> */}
+                    <Avatar
+                      variant="rounded"
+                      sx={{
+                        ...theme.typography.commonAvatar,
+                        ...theme.typography.mediumAvatar,
+                        backgroundColor: theme.palette.secondary.dark,
+                        color: theme.palette.secondary[200],
+                        zIndex: 1,
+                      }}
+                      aria-controls="menu-earning-card"
+                      aria-haspopup="true"
+                    >
+                      <MoreHorizIcon fontSize="inherit" />
+                    </Avatar>
+                  </MyToolTipStyle>
                 </Grid>
               </Grid>
             </Grid>
