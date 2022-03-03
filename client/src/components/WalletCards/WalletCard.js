@@ -94,7 +94,7 @@ const WalletCard = (props) => {
                 <string style={{ color: theme.palette.primary.main }}>
                   MINER:{" "}
                 </string>
-                <bold>{miner}</bold>
+                <strong>{miner}</strong>
               </Typography>
             </Grid>
             <Grid item lg={6}>
