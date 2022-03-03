@@ -9,11 +9,10 @@ const trackAddres = (inputs,outputs, blocks) => {
   var adrInputs = []
   var adrOutputs = []
   var allInfoInputs = []
-  var allInfoOutpus = []
+  var allInfoOutputs = []
   
   var posInput
-  var outFound = false;
-  var inFound = false;
+  var end = false;
   var numAdr2Find = outputs.length + inputs.length
 
   //var curOutput = outputs[0];
@@ -28,8 +27,9 @@ const trackAddres = (inputs,outputs, blocks) => {
         //console.log(t.length)
       }else{ //only one transaction
   
-        // i need to get two output but i am getting one only
-        for (let ele=0; ele<t.transaction_data.addresses_input_UTXO.length;ele++){
+        // Look throught the throught the output array for matching posterior inputs
+        // TODO: check if the output has not been used yet
+        for (let ele=0; ele < outputs.length; ele++){
           var found = t.transaction_data.addresses_input_UTXO.find(adr => {
             if(adr == outputs[ele]){return adr}
             else if (adr.includes("00000000000000") && outputs[ele].includes("00000000000000")){ return adr} 
@@ -38,14 +38,40 @@ const trackAddres = (inputs,outputs, blocks) => {
             var b_weigth = t.transaction_data.block_height;
             var newInput = [found, b_weigth];
             allInfoInputs.push(newInput);
-            console.log(" new input found: ", newInput)
             wInputs.push(b_weigth);
             adrInputs.push(found);
           }
         }
 
+        // Look throught the input array for matching previous outputs
+        while (!end){
+          if (!inputs[0].includes("00000000000000")){
+            for (let ele=0; ele < inputs.length; ele++){
+              if(t.transaction_data.receiver_address == inputs[ele]){
+              var foundOut = t.transaction_data.receiver_address;
+              }
+              else if (t.transaction_data.sender_leftover_address == inputs[ele]){
+                foundOut = t.transaction_data.sender_leftover_address;
+              }
+              else{ found = undefined}
+              if (foundOut != undefined && !adrOutputs.includes(foundOut)){
+                var b_weigth = t.transaction_data.block_height;
+                var newOutput = [foundOut, b_weigth];
+                allInfoOutputs.push(newOutput);
+                wOutputs.push(b_weigth);
+                adrOutputs.push(foundOut);
+              }
+            }
+          }
+          else{ // input is BLOCKCHAIN so there is no possible previous output
+            var newOutput = [ "BLOCKHAIN", -1];
+            allInfoOutputs.push(newOutput);
+            wOutputs.push(-1);
+            adrOutputs.push("BLOCKCHAIN");
+            end = true;
+          }
+        }
       }
-
     }
   }
 
@@ -53,6 +79,9 @@ const trackAddres = (inputs,outputs, blocks) => {
   console.log(" full info found inputs: ", allInfoInputs);
   console.log(" addresses inputs found: ", adrInputs)
 
+  console.log(" blocks found for outputs: ", wOutputs);
+  console.log(" full info found outputs: ", allInfoOutputs);
+  console.log(" addresses inputs outputs: ", adrOutputs)
   return [inputs, wInputs];
 };
 
