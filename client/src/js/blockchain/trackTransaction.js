@@ -41,9 +41,9 @@ const trackAddres = (inputs,outputs, blocks) => {
             adrInputs.push(found);
           }
         }
-        while (!(wInputs.length == outputs.length)){
+        /* while (!(wInputs.length == outputs.length)){
           wInputs.push(-2) //indicates that address is still on utxo_pool
-        }
+        } */ 
         
 
         // Look throught the input array for matching previous outputs
