@@ -36,21 +36,20 @@ const InputsOutputs = ({ transaction, blockData }) => {
       console.log("outputTransactions", outputTransactions);
 
       //call track address here with ur data
-      trackAddres(inputTransactions,outputTransactions,blockData);
-      // Should should need
-      // inputTransactions
-      // outputTransactions
-      // blockData
-      // as variables
+      let inputsOutputs = trackAddres(
+        inputTransactions,
+        outputTransactions,
+        blockData
+      );
 
-      // lmk if u don't understand anything
-
-      // GOOD LUCK :)
+      console.log("inputs/outputs", inputsOutputs);
 
       // Set the inputs and outputs for drawing the arrows
       // This should be the block number or blockchain/utxo_pool
-      setInputs(["blockchain", 45]); // Example - inputs from blockchain and block 45
-      setOutputs([86, "utxo_pool"]); // Example - outputs to block 86 and utxo_pool
+      // setInputs(inputsOutputs[0]); // Example - inputs from blockchain and block 45
+      // setOutputs(inputsOutputs[1]); // Example - outputs to block 86 and utxo_pool
+      setInputs(inputsOutputs[0]);
+      setOutputs(inputsOutputs[1]);
 
       // Sets the loading state to false
       setLoading(false);
@@ -67,7 +66,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
             <Grid container>
               <Grid item xs={2}>
                 <Box
-                  id="blockchain"
+                  id="-1"
                   sx={{
                     width: 100,
                     height: 50,
@@ -100,7 +99,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
               </Grid>
               <Grid item xs={2}>
                 <Box
-                  id="utxo_pool"
+                  id="-2"
                   sx={{
                     width: 100,
                     height: 50,
@@ -139,7 +138,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
                 headSize={3}
                 color="green"
                 startAnchor={{
-                  position: input == "blockchain" ? "right" : "top",
+                  position: input == -2 ? "right" : "top",
                 }}
                 endAnchor={{ position: "auto" }}
               />
@@ -154,7 +153,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
                 headSize={3}
                 color="red"
                 startAnchor={{ position: "auto" }}
-                endAnchor={{ position: output == "utxo_pool" ? "left" : "top" }}
+                endAnchor={{ position: output == -1 ? "left" : "top" }}
               />
             ))}
           </>
