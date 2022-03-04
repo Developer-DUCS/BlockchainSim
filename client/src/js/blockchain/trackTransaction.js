@@ -15,8 +15,7 @@ const trackAddres = (inputs,outputs, blocks) => {
   var end = false;
   var numAdr2Find = outputs.length + inputs.length
 
-  //var curOutput = outputs[0];
-  console.log(" Output to find: ", outputs, blocks.length);
+  console.log(" Output to find: ", outputs);
   console.log(" Inputs: ", inputs);
   for (let j=0; j < blocks.length; j++){ // change for while loop
     var ts = blocks[j].transactions;
@@ -42,46 +41,49 @@ const trackAddres = (inputs,outputs, blocks) => {
             adrInputs.push(found);
           }
         }
+        while (!(wInputs.length == outputs.length)){
+          wInputs.push(-2) //indicates that address is still on utxo_pool
+        }
+        
 
         // Look throught the input array for matching previous outputs
-        while (!end){
-          if (!inputs[0].includes("00000000000000")){
-            for (let ele=0; ele < inputs.length; ele++){
-              if(t.transaction_data.receiver_address == inputs[ele]){
-              var foundOut = t.transaction_data.receiver_address;
-              }
-              else if (t.transaction_data.sender_leftover_address == inputs[ele]){
-                foundOut = t.transaction_data.sender_leftover_address;
-              }
-              else{ found = undefined}
-              if (foundOut != undefined && !adrOutputs.includes(foundOut)){
-                var b_weigth = t.transaction_data.block_height;
-                var newOutput = [foundOut, b_weigth];
-                allInfoOutputs.push(newOutput);
-                wOutputs.push(b_weigth);
-                adrOutputs.push(foundOut);
-              }
+        if (!inputs[0].includes("00000000000000")){
+          for (let ele=0; ele < inputs.length; ele++){
+            if(t.transaction_data.receiver_address == inputs[ele]){
+            var foundOut = t.transaction_data.receiver_address;
+            }
+            else if (t.transaction_data.sender_leftover_address == inputs[ele]){
+              foundOut = t.transaction_data.sender_leftover_address;
+            }
+            else{ found = undefined}
+            if (foundOut != undefined && !adrOutputs.includes(foundOut)){
+              var b_weigth = t.transaction_data.block_height;
+              var newOutput = [foundOut, b_weigth];
+              allInfoOutputs.push(newOutput);
+              wOutputs.push(b_weigth);
+              adrOutputs.push(foundOut);
             }
           }
-          else{ // input is BLOCKCHAIN so there is no possible previous output
-            var newOutput = [ "BLOCKHAIN", -1];
-            allInfoOutputs.push(newOutput);
-            wOutputs.push(-1);
-            adrOutputs.push("BLOCKCHAIN");
-            end = true;
-          }
         }
+        else if (!end){ // input is BLOCKCHAIN so there is no possible previous output
+          var newOutput = [ "BLOCKHAIN", -1];
+          allInfoOutputs.push(newOutput);
+          wOutputs.push(-1);
+          adrOutputs.push("BLOCKCHAIN");
+          end = true;
+        }
+      
       }
     }
   }
 
   console.log(" blocks found for inputs: ", wInputs);
-  console.log(" full info found inputs: ", allInfoInputs);
-  console.log(" addresses inputs found: ", adrInputs)
+  //console.log(" full info found inputs: ", allInfoInputs);
+  //console.log(" addresses inputs found: ", adrInputs)
 
   console.log(" blocks found for outputs: ", wOutputs);
-  console.log(" full info found outputs: ", allInfoOutputs);
-  console.log(" addresses inputs outputs: ", adrOutputs)
+  //console.log(" full info found outputs: ", allInfoOutputs);
+  //console.log(" addresses inputs outputs: ", adrOutputs) 
   return [inputs, wInputs];
 };
 
