@@ -34,11 +34,13 @@ const trackAddres = (inputs,outputs, blocks) => {
             else if (adr.includes("00000000000000") && outputs[ele].includes("00000000000000")){ return adr} 
           });
           if (found != undefined && !adrInputs.includes(found)){
-            var b_weigth = t.transaction_data.block_height;
-            var newInput = [found, b_weigth];
-            allInfoInputs.push(newInput);
-            wInputs.push(b_weigth);
-            adrInputs.push(found);
+            if(!found.includes("0000000000000")){
+              var b_weigth = t.transaction_data.block_height;
+              var newInput = [found, b_weigth];
+              allInfoInputs.push(newInput);
+              wInputs.push(b_weigth + 1);
+              adrInputs.push(found);
+            }
           }
         }
         /* while (!(wInputs.length == outputs.length)){
@@ -60,7 +62,7 @@ const trackAddres = (inputs,outputs, blocks) => {
               var b_weigth = t.transaction_data.block_height;
               var newOutput = [foundOut, b_weigth];
               allInfoOutputs.push(newOutput);
-              wOutputs.push(b_weigth);
+              wOutputs.push(b_weigth + 1);
               adrOutputs.push(foundOut);
             }
           }
@@ -84,7 +86,7 @@ const trackAddres = (inputs,outputs, blocks) => {
   console.log(" blocks found for outputs: ", wOutputs);
   //console.log(" full info found outputs: ", allInfoOutputs);
   //console.log(" addresses inputs outputs: ", adrOutputs) 
-  return [inputs, wInputs];
+  return [wOutputs, wInputs];
 };
 
 export default trackAddres;
