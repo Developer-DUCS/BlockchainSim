@@ -30,7 +30,9 @@ const createBlock = (
   subsidy,
   halvings,
   miningPool,
-  wallets
+  wallets,
+  UTXO_Pool,
+  totalCoin
 ) => {
   var miner = chooseMiner(miningPool);
   let newBlock = blockCreator(
@@ -39,10 +41,11 @@ const createBlock = (
     miner,
     num_transactions,
     block_height,
-    miningPool,
-    wallets,
     subsidy,
-    halvings
+    halvings,
+    totalCoin,
+    wallets,
+    UTXO_Pool
   );
   return newBlock;
 };
