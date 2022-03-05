@@ -38,7 +38,6 @@ router.post("/createsim", cors(), (req, res) => {
   console.log(initValues, user);
 
   var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
-  var wallets = createWallet(miningPool);
 
   var bithash = sjcl.hash.sha256.hash(initValues.desc);
   var initialHash = sjcl.codec.hex.fromBits(bithash);
@@ -76,6 +75,8 @@ router.post("/createsim", cors(), (req, res) => {
     blocks: simulation[1],
   };
 
+  console.log( " data after simulation created: ", data)
+
   // End
 
   const email = data.simulation.user;
@@ -100,7 +101,7 @@ router.post("/createsim", cors(), (req, res) => {
 
   let qry2 = "";
 
-  console.log("Length", data.blocks.length);
+  console.log("Length", data.blocks.length[0]);
   for (let i = 0; i < data.blocks.length; i++) {
     const hash = data.blocks[i].id_block;
     const header = data.blocks[i].header;

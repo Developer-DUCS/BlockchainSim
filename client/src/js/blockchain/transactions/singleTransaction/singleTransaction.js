@@ -1,6 +1,6 @@
 const sjcl = require("../../../../sjcl");
-const { UTXO_Pool } = require("../UTXO_Pool");
-const { walletArr } = require("../../wallet");
+//const { UTXO_Pool } = require("../UTXO_Pool");
+//const { walletArr } = require("../../wallet");
 const {
   createAddress,
   createPublicPrivateKey,
@@ -31,7 +31,9 @@ function singleTransaction(
   receiverWallet,
   UTXO_Sender,
   block_height,
-  users
+  users,
+  walletArr,
+  UTXO_Pool
 ) {
   var senderWalletId = senderWallet[0];
 
@@ -56,21 +58,32 @@ function singleTransaction(
 
   if (typeof(sender_leftover) != undefined) {
     // sender leftover new address
-    var out_sender_address = createAddressInfo(
+    var out_sender_address_info = createAddressInfo(
       senderWalletId,
       sender_leftover,
       block_height,
-      users
+      users,
+      walletArr,
+      UTXO_Pool
     );
+    var out_sender_address = out_sender_address_info[0];
+    walletArr = out_sender_address_info[1];
+    UTXO_Pool = out_sender_address_info[2];
   }
 
   //address receiver
-  var out_receiver_address = createAddressInfo(
+  var out_receiver_address_info = createAddressInfo(
     receiverWallet,
     amount_received,
     block_height,
-    users
+    users,
+    walletArr,
+    UTXO_Pool
   );
+  var out_receiver_address = out_receiver_address_info[0];
+  walletArr = out_receiver_address_info[1];
+  UTXO_Pool = out_receiver_address_info[2];
+
 
   //create a transaction JSON object string to be hashed
   var transaction =
@@ -113,18 +126,18 @@ function singleTransaction(
     },
   };
 
-  return transactionJSON;
+  return [transactionJSON, walletArr, UTXO_Pool, walletArr, UTXO_Pool];
 }
 
 // create an address given a wallet, amount of coin, weight of the block and a list of wallets
-const createAddressInfo = (wallet, amount, weight, users) => {
+const createAddressInfo = (wallet, amount, weight, users, walletArr, UTXO_Pool) => {
   var keys = createPublicPrivateKey();
   var address = createAddress(keys[2]);
   var walletPos = users.indexOf(wallet);
   walletArr[walletPos][3].push(address); // add adress to wallet
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
-  return address;
+  return [address, walletArr, UTXO_Pool];
 };
 
 // select the amount of coin to spend in the transactions and the UTXOs to use

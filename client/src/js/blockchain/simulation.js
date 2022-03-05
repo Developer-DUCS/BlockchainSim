@@ -1,6 +1,7 @@
 const blockCreator = require("./block/block");
 const { chooseMiner } = require("./block/miningPool");
-const { UTXO_Pool } = require("./transactions/UTXO_Pool");
+const { createWallet } = require("./wallet");
+//const { UTXO_Pool } = require("./transactions/UTXO_Pool");
 
 /*
     --> SIMULATION.js 
@@ -50,14 +51,21 @@ const simulationCreator = (
   num_transactions,
   subsidy,
   halvings,
-  totalCoin
+  totalCoin,
+  wallets
 ) => {
   var totalCoin = 0;
   var blocks = []; // store block json objects
   var hashes = []; // store hash ID of each block
+  var UTXO_pool = [];
   previousHash = initialHash;
+  var wallets = createWallet(miningPool);
+
+  console.log(" Create Sim --> wallets: ", wallets);
+  console.log(" Create Sim --> UTXO_POOL: ", UTXO_pool.length);
 
   for (var i = 0; i < numBlocks; i++) {
+    console.log(" BLOCK: ", i);
     var selectMiner;
 
     //first block assigned to user, rest random
@@ -73,21 +81,30 @@ const simulationCreator = (
       block_height,
       subsidy,
       halvings,
-      totalCoin
+      totalCoin,
+      wallets,
+      UTXO_pool
     );
+
+    //console.log(" Wallets after creating block: ", wallets);
+    //console.log(" UTXO_Pool after creating blokc: ", UTXO_pool);
     var hashID = newBlock[1];
     var blockJSON = newBlock[0];
     totalCoin = newBlock[2];
-
+    wallets = newBlock[3];
+    UTXO_Pool = newBlock[4];
     previousHash = hashID; // store hash to add to next block
-
     blocks.push(blockJSON); //add to the list
     hashes.push(hashID);
   }
 
+  console.log(" Wallets after creating block: ", wallets);
+  console.log(" UTXO_Pool after creating blokc: ", UTXO_pool);
+
   totalCoinBlockChain(subsidy, numBlocks, halvings); // calculate coin in transaction
   console.log("Total coin in transaction: ", totalCoin);
-  UTXO_Pool.length = 0; //reset adresses pool to be empty again
+  //UTXO_Pool.length = 0; //reset adresses pool to be empty again
+  //return [hashes, blocks,wallets,UTXO_pool];
   return [hashes, blocks];
 };
 

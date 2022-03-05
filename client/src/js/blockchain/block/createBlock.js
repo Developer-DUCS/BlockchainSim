@@ -17,6 +17,8 @@
       - File calls: 
         * 
 */
+
+// TODO: we may need to store the UTXO_Pool in the data base
 const blockCreator = require("./block");
 const { createWallet } = require("../wallet");
 const { createMinerPool, chooseMiner } = require("./miningPool");
