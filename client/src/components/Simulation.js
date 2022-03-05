@@ -177,7 +177,7 @@ const Simulation = (props) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email: email, sim_id: simID }),
+      body: JSON.stringify({ email: email, sim_id: simID, user: user.email }),
     };
     fetch(url, options)
       .then((res) => {
@@ -187,10 +187,24 @@ const Simulation = (props) => {
             message: `Simulation shared`,
           });
           toggleDialog();
+        } else if (res.status == 401) {
+          setFeedback(true);
+          setFeedbackObj({
+            message: `Simulation already shared to ${email}`,
+            severity: "error",
+          });
+          toggleDialog();
+        } else if (res.status == 403) {
+          setFeedback(true);
+          setFeedbackObj({
+            message: `You do not have permission to share this simulation`,
+            severity: "error",
+          });
+          handleClose();
         }
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   };
 
