@@ -38,7 +38,6 @@ router.post("/createsim", cors(), (req, res) => {
   console.log(initValues, user);
 
   var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
-  var wallets = createWallet(miningPool);
 
   var bithash = sjcl.hash.sha256.hash(initValues.desc);
   var initialHash = sjcl.codec.hex.fromBits(bithash);
@@ -72,12 +71,17 @@ router.post("/createsim", cors(), (req, res) => {
       subsidy: initValues.subsidy,
       halvings: initValues.halvings,
       numtransactions: initValues.transactions,
+      wallets: {},
+      miningPool: miningPool,
+      utxoPool: {},
+      blockwin: 0,
     },
     blocks: simulation[1],
   };
 
-  // End
+  console.log(" data after simulation created: ", data);
 
+  // End
   const email = data.simulation.user;
   const email_valid = email.replace(/[@.]/g, "_");
   const sim_name = data.simulation.sim_name;
@@ -91,9 +95,11 @@ router.post("/createsim", cors(), (req, res) => {
   const subsidy = data.simulation.subsidy;
   const halvings = data.simulation.halvings;
   const numtransactions = data.simulation.numtransactions;
-  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,miningPool,wallets,blockwin) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${JSON.stringify(
-    miningPool
-  )}', '${JSON.stringify(wallets)}', '${initValues.blockwin}');`;
+  const swallets = data.simulation.wallets;
+  const sminingPool = data.simulation.miningPool;
+  const utxoPool = data.simulation.utxoPool;
+  const blockwin = data.simulation.blockwin;
+  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets,miningPool,utxoPool,blockwin) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${swallets}', '${sminingPool}' , '${utxoPool}' , '${blockwin} );`;
   db.query(qry, (err) => {
     if (err) {
       console.log(err);
@@ -102,7 +108,7 @@ router.post("/createsim", cors(), (req, res) => {
 
   let qry2 = "";
 
-  console.log("Length", data.blocks.length);
+  console.log("Length", data.blocks.length[0]);
   for (let i = 0; i < data.blocks.length; i++) {
     const hash = data.blocks[i].id_block;
     const header = data.blocks[i].header;
