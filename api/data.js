@@ -91,7 +91,9 @@ router.post("/createsim", cors(), (req, res) => {
   const subsidy = data.simulation.subsidy;
   const halvings = data.simulation.halvings;
   const numtransactions = data.simulation.numtransactions;
-  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}');`;
+  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,miningPool,wallets,blockwin) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${JSON.stringify(
+    miningPool
+  )}', '${JSON.stringify(wallets)}', '${initValues.blockwin}');`;
   db.query(qry, (err) => {
     if (err) {
       console.log(err);
@@ -244,7 +246,7 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
   let email_valid = email.replace(/[@.]/g, "_");
   // TODO : Add numMiners and blockWindow to database
   // get subsidy halvings blocks
-  let qry = `SELECT subsidy, halvings, sim_blocks, numtransactions FROM simulation WHERE sim_id = '${sim_id}'`;
+  let qry = `SELECT subsidy, halvings, sim_blocks, numtransactions, miningPool, wallets, blockwin FROM simulation WHERE sim_id = '${sim_id}'`;
   db.query(qry, (err, res) => {
     if (err) {
       console.log(err);
@@ -256,6 +258,10 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
       let previousHash = sim_blocks[sim_blocks.length - 1];
       let num_transactions = res[0].numtransactions;
       var block_height = sim_blocks.length + 1;
+      let miningPool = res[0].miningPool;
+      let wallets = res[0].wallets;
+      let blockwin = res[0].blockwin;
+
       // get timestamp
       let qry = `SELECT time_created FROM blocks_${email_valid} WHERE hash = '${previousHash}'`;
       db.query(qry, (err, re) => {
@@ -265,7 +271,7 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
         } else {
           // Time stamp holds a value here, when its received, it is undefined.
           let timeStamp = new Date(re[0].time_created);
-          timeStamp.setMinutes(timeStamp.getMinutes() + 10);
+          timeStamp.setMinutes(timeStamp.getMinutes() + blockwin);
           timeStamp = timeStamp.toISOString().slice(0, 19).replace("T", " "); // transform to ISO format
 
           resp.status(200).json({
@@ -275,6 +281,8 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
             num_transactions: num_transactions,
             blockHeight: block_height,
             timeStamp: timeStamp,
+            miningPool: miningPool,
+            wallets: wallets,
           });
         }
       });

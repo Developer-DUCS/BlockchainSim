@@ -18,8 +18,7 @@
         * 
 */
 const blockCreator = require("./block");
-const { createWallet } = require("../wallet");
-const { createMinerPool, chooseMiner } = require("./miningPool");
+const { chooseMiner } = require("./miningPool");
 
 const createBlock = (
   previousHash,
@@ -28,10 +27,9 @@ const createBlock = (
   block_height,
   subsidy,
   halvings,
-  email
+  miningPool,
+  wallets
 ) => {
-  var miningPool = createMinerPool(50, email);
-  var wallets = createWallet(miningPool);
   var miner = chooseMiner(miningPool);
   let newBlock = blockCreator(
     previousHash,

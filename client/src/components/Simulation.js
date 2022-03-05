@@ -269,6 +269,11 @@ const Simulation = (props) => {
         let num_transactions = res.num_transactions;
         let block_height = res.block_height;
         let timeStamp = res.timeStamp;
+        let miningPool = res.miningPool;
+        let wallets = res.wallets;
+
+        console.log("MINING POOL : " + miningPool);
+        console.log("WALLETS : " + wallets);
 
         let newBlock = createBlock(
           previousHash,
@@ -277,7 +282,8 @@ const Simulation = (props) => {
           block_height,
           subsidy,
           halvings,
-          user.email
+          miningPool,
+          wallets
         );
 
         // Send block info to API
@@ -294,6 +300,7 @@ const Simulation = (props) => {
             block: newBlock[0],
           }),
         };
+        console.log("TRANSACTIONS: " + JSON.stringify(newBlock[0].transaction));
         fetch(url, createData)
           .then((res) => {
             if (res.ok) {
