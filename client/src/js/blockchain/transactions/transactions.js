@@ -58,7 +58,7 @@ const createTransactions = (
     //create transactions
     for (let i = 0; i < numtransactions; i++) {
       //find a valid sender with valid money
-      var senderInfo = selectSender(b_heigth); // sender adresses to be used
+      var senderInfo = selectSender(b_heigth, walletArr, UTXO_Pool); // sender adresses to be used
       // [senderWallet, utxoArr];
 
       if (senderInfo != undefined) {
@@ -144,7 +144,7 @@ const createTransactions = (
 };
 
 //select a sender with valid money to create transaction
-const selectSender = (block_height) => {
+const selectSender = (block_height, walletArr, UTXO_Pool) => {
   // choose valid UTXO
   var index = 0;
   var utxo = UTXO_Pool[index];
