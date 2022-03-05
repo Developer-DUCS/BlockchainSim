@@ -138,7 +138,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
                 headSize={3}
                 color="green"
                 startAnchor={{
-                  position: input == -2 ? "right" : "top",
+                  position: input == -1 ? "right" : "top",
                 }}
                 endAnchor={{ position: "auto" }}
               />
