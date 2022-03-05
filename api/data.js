@@ -74,7 +74,7 @@ router.post("/createsim", cors(), (req, res) => {
       wallets: {},
       miningPool: miningPool,
       utxoPool: {},
-      blockwin: 0,
+      blockwin: 10,
     },
     blocks: simulation[1],
   };
@@ -95,11 +95,11 @@ router.post("/createsim", cors(), (req, res) => {
   const subsidy = data.simulation.subsidy;
   const halvings = data.simulation.halvings;
   const numtransactions = data.simulation.numtransactions;
-  const swallets = data.simulation.wallets;
-  const sminingPool = data.simulation.miningPool;
-  const utxoPool = data.simulation.utxoPool;
+  const swallets = JSON.stringify(data.simulation.wallets);
+  const sminingPool = JSON.stringify(data.simulation.miningPool);
+  const utxoPool = JSON.stringify(data.simulation.utxoPool);
   const blockwin = data.simulation.blockwin;
-  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets,miningPool,utxoPool,blockwin) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${swallets}', '${sminingPool}' , '${utxoPool}' , '${blockwin} );`;
+  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets,miningPool,utxoPool,blockwin) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${swallets}', '${sminingPool}' , '${utxoPool}' , '${blockwin}' );`;
   db.query(qry, (err) => {
     if (err) {
       console.log(err);
