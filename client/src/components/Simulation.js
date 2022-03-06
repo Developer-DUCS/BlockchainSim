@@ -41,6 +41,7 @@ import createBlock from "../js/blockchain/block/createBlock";
 import DataGrid from "./reusable/datagrid";
 import TransactionComponent from "./reusable/TransactionComponent";
 import InputsOutputs from "./reusable/InputsOutputs";
+import AuthSimulation from "./reusable/AuthSimulation";
 
 const Simulation = (props) => {
   const history = useHistory();
@@ -375,235 +376,245 @@ const Simulation = (props) => {
 
   return (
     <Auth setUser={setUser}>
-      <UserBar
-        barTitle={`Simulation ${simulation.sim_name}`}
-        tabNames={["Main Chain", "Wallet"]}
-        setSelectedTab={(e, newValue) => setSelectedTab(newValue)}
-        selectedTab={selectedTab}
-        setTheme={setTheme}
-      />
-      {simulation.email == "" ? (
-        <LinearProgress sx={{ m: 5 }} />
-      ) : (
-        <Container maxWidth="xl" sx={{ mt: 2 }}>
-          <Button
-            color="secondary"
-            variant="contained"
-            onClick={(e) => {
-              history.goBack();
-            }}
-          >
-            Back
-          </Button>
-          <TabPanel value={selectedTab} index={0}>
-            <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+      {user == {} ? null : (
+        <AuthSimulation email={user.email} sim_id={id}>
+          <UserBar
+            barTitle={`Simulation ${simulation.sim_name}`}
+            tabNames={["Main Chain", "Wallet"]}
+            setSelectedTab={(e, newValue) => setSelectedTab(newValue)}
+            selectedTab={selectedTab}
+            setTheme={setTheme}
+          />
+          {simulation.email == "" ? (
+            <LinearProgress sx={{ m: 5 }} />
+          ) : (
+            <Container maxWidth="xl" sx={{ mt: 2 }}>
               <Button
-                color="primary"
+                color="secondary"
                 variant="contained"
                 onClick={(e) => {
-                  setAnchorEl(e.currentTarget);
+                  history.goBack();
                 }}
               >
-                Options
+                Back
               </Button>
-
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    overflow: "visible",
-                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                    mt: 1.5,
-                    "& .MuiAvatar-root": {
-                      width: 32,
-                      height: 32,
-                      ml: -0.5,
-                      mr: 1,
-                    },
-                    "&:before": {
-                      display: "block",
-                      position: "absolute",
-                      top: 0,
-                      right: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: "background.paper",
-                      transform: "translateY(-50%) rotate(45deg)",
-                      zIndex: 0,
-                    },
-                  },
-                }}
-                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-              >
-                <MenuItem
-                  onClick={() => {
-                    handleClose();
-                    toggleDialog();
-                  }}
+              <TabPanel value={selectedTab} index={0}>
+                <Box
+                  sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}
                 >
-                  <ListItemIcon>
-                    <ShareIcon />
-                  </ListItemIcon>
-                  Share
-                </MenuItem>
-                <MenuItem
-                  sx={{ color: "error.main" }}
-                  onClick={deleteSimulation}
-                >
-                  <ListItemIcon sx={{ color: "error.main" }}>
-                    <DeleteIcon />
-                  </ListItemIcon>
-                  Delete
-                </MenuItem>
-              </Menu>
-            </Box>
-            <Card>
-              <CardContent>
-                <Typography variant="h4">
-                  {simulation.sim_name}
-                  <Typography
-                    variant="caption"
-                    sx={{ display: "inline-block", float: "right" }}
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={(e) => {
+                      setAnchorEl(e.currentTarget);
+                    }}
                   >
-                    Created on {simulation.sim_created}
+                    Options
+                  </Button>
+
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    PaperProps={{
+                      elevation: 0,
+                      sx: {
+                        overflow: "visible",
+                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                        mt: 1.5,
+                        "& .MuiAvatar-root": {
+                          width: 32,
+                          height: 32,
+                          ml: -0.5,
+                          mr: 1,
+                        },
+                        "&:before": {
+                          display: "block",
+                          position: "absolute",
+                          top: 0,
+                          right: 14,
+                          width: 10,
+                          height: 10,
+                          bgcolor: "background.paper",
+                          transform: "translateY(-50%) rotate(45deg)",
+                          zIndex: 0,
+                        },
+                      },
+                    }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        toggleDialog();
+                      }}
+                    >
+                      <ListItemIcon>
+                        <ShareIcon />
+                      </ListItemIcon>
+                      Share
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: "error.main" }}
+                      onClick={deleteSimulation}
+                    >
+                      <ListItemIcon sx={{ color: "error.main" }}>
+                        <DeleteIcon />
+                      </ListItemIcon>
+                      Delete
+                    </MenuItem>
+                  </Menu>
+                </Box>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h4">
+                      {simulation.sim_name}
+                      <Typography
+                        variant="caption"
+                        sx={{ display: "inline-block", float: "right" }}
+                      >
+                        Created on {simulation.sim_created}
+                      </Typography>
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      {simulation.sim_description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+
+                <Box sx={{ mt: 2 }}>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={addNewBlock}
+                    sx={{ mr: 2 }}
+                  >
+                    Add New Block
+                  </Button>
+                  <Box sx={{ mt: 2 }}>
+                    <TextField
+                      size="small"
+                      label="Search"
+                      variant="outlined"
+                      type="search"
+                      id="search"
+                      onChange={searchBlocks}
+                      sx={{ mr: 1, mb: 1 }}
+                    />
+                    <FormControl sx={{ width: 229, mb: 1 }}>
+                      <InputLabel size="small" id="categoryLabel">
+                        Category
+                      </InputLabel>
+                      <Select
+                        size="small"
+                        labelId="categoryLabel"
+                        id="category"
+                        value={category}
+                        onChange={handleCategoryChange}
+                        input={<OutlinedInput size="small" label="Category" />}
+                        renderValue={(selected) => selected.join(", ")}
+                      >
+                        {categories.map((cat) => (
+                          <MenuItem key={cat} value={cat}>
+                            <Checkbox checked={category.indexOf(cat) > -1} />
+                            <ListItemText primary={cat} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </Box>
+                {searchResults != "" ? (
+                  <Typography variant="overline">
+                    <Chip
+                      label={searchResults}
+                      onDelete={handleResultsDelete}
+                      sx={{ mb: 1 }}
+                    />
                   </Typography>
-                </Typography>
-                <Typography variant="subtitle1">
-                  {simulation.sim_description}
-                </Typography>
-              </CardContent>
-            </Card>
+                ) : (
+                  <></>
+                )}
+                {filteredBlocks.length > 0 ? (
+                  <DataGrid
+                    blocks={filteredBlocks}
+                    setSelectedTransaction={setSelectedTransaction}
+                  />
+                ) : null}
+                {selectedTransaction ? (
+                  <>
+                    <TransactionComponent
+                      transaction={selectedTransaction}
+                      setSelectedTransaction={setSelectedTransaction}
+                      setShowInputsOutputs={setShowInputsOutputs}
+                    />
+                  </>
+                ) : null}
+              </TabPanel>
 
-            <Box sx={{ mt: 2 }}>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={addNewBlock}
-                sx={{ mr: 2 }}
-              >
-                Add New Block
-              </Button>
-              <Box sx={{ mt: 2 }}>
-                <TextField
-                  size="small"
-                  label="Search"
-                  variant="outlined"
-                  type="search"
-                  id="search"
-                  onChange={searchBlocks}
-                  sx={{ mr: 1, mb: 1 }}
-                />
-                <FormControl sx={{ width: 229, mb: 1 }}>
-                  <InputLabel size="small" id="categoryLabel">
-                    Category
-                  </InputLabel>
-                  <Select
-                    size="small"
-                    labelId="categoryLabel"
-                    id="category"
-                    value={category}
-                    onChange={handleCategoryChange}
-                    input={<OutlinedInput size="small" label="Category" />}
-                    renderValue={(selected) => selected.join(", ")}
-                  >
-                    {categories.map((cat) => (
-                      <MenuItem key={cat} value={cat}>
-                        <Checkbox checked={category.indexOf(cat) > -1} />
-                        <ListItemText primary={cat} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-            </Box>
-            {searchResults != "" ? (
-              <Typography variant="overline">
-                <Chip
-                  label={searchResults}
-                  onDelete={handleResultsDelete}
-                  sx={{ mb: 1 }}
-                />
-              </Typography>
-            ) : (
-              <></>
-            )}
-            {filteredBlocks.length > 0 ? (
-              <DataGrid
-                blocks={filteredBlocks}
-                setSelectedTransaction={setSelectedTransaction}
-              />
-            ) : null}
-            {selectedTransaction ? (
-              <>
-                <TransactionComponent
-                  transaction={selectedTransaction}
-                  setSelectedTransaction={setSelectedTransaction}
-                  setShowInputsOutputs={setShowInputsOutputs}
-                />
-              </>
-            ) : null}
-          </TabPanel>
-
-          <TabPanel value={selectedTab} index={1}>
-            <WalletComponent />
-          </TabPanel>
-        </Container>
-      )}
-
-      {/* Dialog for inputs/outputs */}
-      <Dialog
-        fullWidth={true}
-        maxWidth="xl"
-        scroll="body"
-        open={!_.isEmpty(showInputsOutputs)}
-        onClose={(e) => {
-          e.preventDefault();
-          setShowInputsOutputs({});
-        }}
-      >
-        <DialogTitle>Inputs/Outputs</DialogTitle>
-        <DialogContent>
-          {_.isEmpty(showInputsOutputs) ? null : (
-            <InputsOutputs
-              transaction={showInputsOutputs}
-              blockData={simulationBlocks}
-            />
+              <TabPanel value={selectedTab} index={1}>
+                <WalletComponent />
+              </TabPanel>
+            </Container>
           )}
-        </DialogContent>
-      </Dialog>
 
-      {/* Dialog for sharing */}
-      <Dialog open={dialog} onClose={toggleDialog}>
-        <DialogTitle>Share</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To share this simulation, please enter the email address of the
-            person you wish to share with.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="email"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" color="error" onClick={toggleDialog}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="primary" onClick={shareSimulation}>
-            Subscribe
-          </Button>
-        </DialogActions>
-      </Dialog>
+          {/* Dialog for inputs/outputs */}
+          <Dialog
+            fullWidth={true}
+            maxWidth="xl"
+            scroll="body"
+            open={!_.isEmpty(showInputsOutputs)}
+            onClose={(e) => {
+              e.preventDefault();
+              setShowInputsOutputs({});
+            }}
+          >
+            <DialogTitle>Inputs/Outputs</DialogTitle>
+            <DialogContent>
+              {_.isEmpty(showInputsOutputs) ? null : (
+                <InputsOutputs
+                  transaction={showInputsOutputs}
+                  blockData={simulationBlocks}
+                />
+              )}
+            </DialogContent>
+          </Dialog>
+
+          {/* Dialog for sharing */}
+          <Dialog open={dialog} onClose={toggleDialog}>
+            <DialogTitle>Share</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                To share this simulation, please enter the email address of the
+                person you wish to share with.
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="email"
+                label="Email Address"
+                type="email"
+                fullWidth
+                variant="standard"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button variant="contained" color="error" onClick={toggleDialog}>
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={shareSimulation}
+              >
+                Subscribe
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </AuthSimulation>
+      )}
     </Auth>
   );
 };
