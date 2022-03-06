@@ -1,6 +1,6 @@
 import { Container, Typography } from "@mui/material";
 import React from "react";
-import UserBar from "./reusable/UserBar";
+import TutorialBar from "./reusable/TutorialBar";
 import { makeStyles } from "@material-ui/core/styles";
 import styles from "./HomePageComponents/Sections/productStyle";
 import GridContainer from "./HomePageComponents/GridContainer";
@@ -18,7 +18,7 @@ const TutorialHome = (props) => {
   const [selectedTab, setSelectedTab] = React.useState(0);
   return (
     <div>
-      <UserBar barTitle={`Tutorial`} setTheme={setTheme} />
+      <TutorialBar barTitle={`Tutorial`} setTheme={setTheme} />
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}></div>
         <div className={classes.section}>
