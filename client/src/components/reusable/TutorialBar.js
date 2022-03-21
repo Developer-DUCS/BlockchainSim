@@ -102,6 +102,12 @@ const UserBar = (props) => {
   const [toggle, setToggle] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const setOpen2 = React.useState(false);
+  const open2 = React.useState(true);
+
+  const handleDrawerClick = () => {
+    setOpen2(!open2);
+  };
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
   const signOut = () => {
@@ -221,13 +227,13 @@ const UserBar = (props) => {
                     </ListItemIcon>
                     <ListItemText primary={"Home"} />
                   </ListItem>
-                  <ListItem button key={""} onClick={handleClick}>
+                  <ListItemButton onClick={handleDrawerClick}>
                     <ListItemIcon>
                       <Add />
                     </ListItemIcon>
                     <ListItemText primary={"Beyond the Block Tutorials"} />
                     {open ? <ExpandLess /> : <ExpandMore />}
-                  </ListItem>
+                  </ListItemButton>
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       <ListItemButton sx={{ pl: 4 }}>
