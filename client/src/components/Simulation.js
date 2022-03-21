@@ -271,6 +271,7 @@ const Simulation = (props) => {
         let timeStamp = res.timeStamp;
         let miningPool = res.miningPool;
         let wallets = res.wallets;
+        let utxoPool = res.utxoPool;
 
         console.log("MINING POOL : " + miningPool);
         console.log("WALLETS : " + wallets);
@@ -283,7 +284,8 @@ const Simulation = (props) => {
           subsidy,
           halvings,
           miningPool,
-          wallets
+          wallets,
+          utxoPool
         );
 
         // Send block info to API

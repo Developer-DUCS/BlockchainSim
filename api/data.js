@@ -18,7 +18,6 @@ app.use(express.urlencoded({ limit: "50mb" }));
 
 router.post("/createsim", cors(), (req, res) => {
   // Add in here
-  console.log(req.body);
   const user = req.body.user;
   const initValues = {
     name: req.body.name,
@@ -35,9 +34,9 @@ router.post("/createsim", cors(), (req, res) => {
     numminers: req.body.numminers,
   };
 
-  console.log(initValues, user);
-
   var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
+  // Added to have wallets maybe
+  var wallets = createWallet(miningPool); // <-- [wallet_id, owner, simulation_id, adresses_aviable, balance]
 
   var bithash = sjcl.hash.sha256.hash(initValues.desc);
   var initialHash = sjcl.codec.hex.fromBits(bithash);
@@ -56,7 +55,9 @@ router.post("/createsim", cors(), (req, res) => {
     user.email,
     initValues.transactions,
     initValues.subsidy,
-    initValues.halvings
+    initValues.halvings,
+    // Added here to pass in wallets
+    wallets
   );
 
   let data = {
@@ -79,8 +80,6 @@ router.post("/createsim", cors(), (req, res) => {
     blocks: simulation[1],
   };
 
-  console.log(" data after simulation created: ", data);
-
   // End
   const email = data.simulation.user;
   const email_valid = email.replace(/[@.]/g, "_");
@@ -95,10 +94,27 @@ router.post("/createsim", cors(), (req, res) => {
   const subsidy = data.simulation.subsidy;
   const halvings = data.simulation.halvings;
   const numtransactions = data.simulation.numtransactions;
-  const swallets = JSON.stringify(data.simulation.wallets);
+  // const swallets = JSON.stringify(data.simulation.wallets);
   const sminingPool = JSON.stringify(data.simulation.miningPool);
   const utxoPool = JSON.stringify(data.simulation.utxoPool);
   const blockwin = data.simulation.blockwin;
+
+  // Added this to try and have real wallets in the simulation -- not {}
+  const walletsJSON = [];
+
+  for (let i = 0; i < wallets.length; i++) {
+    miner = wallets[i][1];
+
+    walletsJSON.push({
+      hash: wallets[i][0],
+      owner: miner,
+      simulation_id: wallets[i][2],
+      addresses: wallets[i][3],
+      balance: wallets[i][4],
+    });
+  }
+  const swallets = JSON.stringify(walletsJSON);
+
   let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets,miningPool,utxoPool,blockwin) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${swallets}', '${sminingPool}' , '${utxoPool}' , '${blockwin}' );`;
   db.query(qry, (err) => {
     if (err) {
@@ -252,7 +268,7 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
   let email_valid = email.replace(/[@.]/g, "_");
   // TODO : Add numMiners and blockWindow to database
   // get subsidy halvings blocks
-  let qry = `SELECT subsidy, halvings, sim_blocks, numtransactions, miningPool, wallets, blockwin FROM simulation WHERE sim_id = '${sim_id}'`;
+  let qry = `SELECT subsidy, halvings, sim_blocks, numtransactions, miningPool, wallets, blockwin, utxoPool FROM simulation WHERE sim_id = '${sim_id}'`;
   db.query(qry, (err, res) => {
     if (err) {
       console.log(err);
@@ -267,6 +283,9 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
       let miningPool = res[0].miningPool;
       let wallets = res[0].wallets;
       let blockwin = res[0].blockwin;
+      let utxoPool = res[0].utxoPool;
+      console.log("Server side wallets[0]: " + wallets[1]);
+      console.log("Server side mining pool[0]: " + miningPool[1]);
 
       // get timestamp
       let qry = `SELECT time_created FROM blocks_${email_valid} WHERE hash = '${previousHash}'`;
@@ -289,6 +308,7 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
             timeStamp: timeStamp,
             miningPool: miningPool,
             wallets: wallets,
+            utxoPool: utxoPool,
           });
         }
       });

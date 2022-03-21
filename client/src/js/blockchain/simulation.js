@@ -51,7 +51,7 @@ const simulationCreator = (
   num_transactions,
   subsidy,
   halvings,
-  totalCoin,
+  //totalCoin, COMMENTED THIS OUT BC TOTALCOIN INIT TO 0 AND IDK WHAT TO PASS IN FROM SIM CREATOR IN DATA.JS
   wallets
 ) => {
   var totalCoin = 0;
@@ -59,10 +59,11 @@ const simulationCreator = (
   var hashes = []; // store hash ID of each block
   var UTXO_pool = [];
   previousHash = initialHash;
-  var wallets = createWallet(miningPool);
+  console.log("simulation.js Wallets[0]: " + wallets[0]);
+  //var wallets = createWallet(miningPool); COMMENTED THIS OUT BC WALLETS BEING PASSED IN
 
-  console.log(" Create Sim --> wallets: ", wallets);
-  console.log(" Create Sim --> UTXO_POOL: ", UTXO_pool.length);
+  //console.log(" Create Sim --> wallets: ", wallets);
+  //console.log(" Create Sim --> UTXO_POOL: ", UTXO_pool.length);
 
   for (var i = 0; i < numBlocks; i++) {
     console.log(" BLOCK: ", i);
@@ -98,8 +99,8 @@ const simulationCreator = (
     hashes.push(hashID);
   }
 
-  console.log(" Wallets after creating block: ", wallets);
-  console.log(" UTXO_Pool after creating blokc: ", UTXO_pool);
+  //console.log(" Wallets after creating block: ", wallets);
+  //console.log(" UTXO_Pool after creating blokc: ", UTXO_pool);
 
   totalCoinBlockChain(subsidy, numBlocks, halvings); // calculate coin in transaction
   console.log("Total coin in transaction: ", totalCoin);
