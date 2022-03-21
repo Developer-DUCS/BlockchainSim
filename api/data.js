@@ -158,14 +158,24 @@ router.post("/deletesim", cors(), (req, res) => {
   // parse email where special characters = _
   const email_valid = email.replace(/[@.]/g, "_");
   let qry = `SELECT sim_blocks FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
-  let result = [];
   db.query(qry, (err, result) => {
     if (err) {
       console.log(err);
     } else if (result.length == 0) {
+      // Not authorized to delete the simulation (not the owner)
       res.sendStatus(403);
     } else {
-      result = result;
+      // Delete Simulation
+      qry = `DELETE FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
+      db.query(qry, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.sendStatus(200);
+        }
+      });
+
+      // Delete Blocks
       // for each element in the sim blocks json object
       let resultData = JSON.stringify(result).replace(/[:\\\{\}]/g, "");
       resultData = resultData.slice(14, resultData.length - 2);
@@ -181,15 +191,6 @@ router.post("/deletesim", cors(), (req, res) => {
           }
         });
       }
-    }
-  });
-
-  qry = `DELETE FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
-  db.query(qry, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.sendStatus(200);
     }
   });
 });
