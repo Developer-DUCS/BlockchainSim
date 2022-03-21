@@ -177,22 +177,21 @@ router.post("/deletesim", cors(), (req, res) => {
         db.query(qry, (err) => {
           if (err) {
             console.log(err);
+          } else {
           }
         });
       }
     }
   });
 
-  if (result.length > 0) {
-    qry = `DELETE FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
-    db.query(qry, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.sendStatus(200);
-      }
-    });
-  }
+  qry = `DELETE FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
+  db.query(qry, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.sendStatus(200);
+    }
+  });
 });
 
 router.post("/getsimulations", cors(), (req, resp) => {

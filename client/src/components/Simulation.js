@@ -210,7 +210,7 @@ const Simulation = (props) => {
   };
 
   const deleteSimulation = (e) => {
-    e.preventDefault();
+    console.log("delete simulation");
 
     // Get Simulation ID
     let simID = id;

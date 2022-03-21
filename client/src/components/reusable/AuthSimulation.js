@@ -8,25 +8,29 @@ const AuthSimulation = (props) => {
 
   // On Page Load
   React.useEffect(() => {
-    // Fetch "/auth" via POST
-    fetch(`http://${process.env.REACT_APP_API_URL}/api/users/auth/simulation`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: email, sim_id: sim_id }),
-    })
-      .then((res) => {
-        if (res.status == 200) {
-          console.log("200");
-          setAuth(true);
-        } else {
-          setAuth(false);
+    if (email) {
+      // Fetch "/auth" via POST
+      fetch(
+        `http://${process.env.REACT_APP_API_URL}/api/users/auth/simulation`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: email, sim_id: sim_id }),
         }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      )
+        .then((res) => {
+          if (res.status == 200) {
+            setAuth(true);
+          } else {
+            setAuth(false);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }, [email]);
 
   return (
