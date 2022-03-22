@@ -72,13 +72,15 @@ router.post("/createsim", cors(), (req, res) => {
       subsidy: initValues.subsidy,
       halvings: initValues.halvings,
       numtransactions: initValues.transactions,
-      wallets: {},
+      wallets: simulation[2], //change
       miningPool: miningPool,
-      utxoPool: {},
+      utxoPool: simulation[3], // change
       blockwin: 10,
     },
     blocks: simulation[1],
   };
+
+  console.log("LINE 83 --> data: ", data.simulation, miningPool);
 
   // End
   const email = data.simulation.user;
@@ -124,7 +126,7 @@ router.post("/createsim", cors(), (req, res) => {
 
   let qry2 = "";
 
-  console.log("Length", data.blocks.length[0]);
+  //console.log("Length", data.blocks.length[0]);
   for (let i = 0; i < data.blocks.length; i++) {
     const hash = data.blocks[i].id_block;
     const header = data.blocks[i].header;
@@ -284,8 +286,8 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
       let wallets = res[0].wallets;
       let blockwin = res[0].blockwin;
       let utxoPool = res[0].utxoPool;
-      console.log("Server side wallets[0]: " + wallets[1]);
-      console.log("Server side mining pool[0]: " + miningPool[1]);
+      //console.log("Server side wallets[0]: " + wallets[1]);
+      //console.log("Server side mining pool[0]: " + miningPool[1]);
 
       // get timestamp
       let qry = `SELECT time_created FROM blocks_${email_valid} WHERE hash = '${previousHash}'`;

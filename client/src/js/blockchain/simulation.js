@@ -93,7 +93,7 @@ const simulationCreator = (
     var blockJSON = newBlock[0];
     totalCoin = newBlock[2];
     wallets = newBlock[3];
-    UTXO_Pool = newBlock[4];
+    UTXO_pool = newBlock[4];
     previousHash = hashID; // store hash to add to next block
     blocks.push(blockJSON); //add to the list
     hashes.push(hashID);
@@ -105,8 +105,8 @@ const simulationCreator = (
   totalCoinBlockChain(subsidy, numBlocks, halvings); // calculate coin in transaction
   console.log("Total coin in transaction: ", totalCoin);
   //UTXO_Pool.length = 0; //reset adresses pool to be empty again
-  //return [hashes, blocks,wallets,UTXO_pool];
-  return [hashes, blocks];
+  return [hashes, blocks, wallets, UTXO_pool];
+  //return [hashes, blocks];
 };
 
 module.exports = simulationCreator;
