@@ -78,12 +78,15 @@ function coinbaseTransaction(
     hash: transactionHash,
 
     transaction_data: {
+      sender_wallet:
+        "000000000000000000000000000000000000000000000000000000000000000000000000000000",
       addresses_input_UTXO: [
         "000000000000000000000000000000000000000000000000000000000000000000000000000000",
       ], //array with addreses [khbvusvues,bidcyvweuvfyc,kshcbiwvyie]
       amount_sent: subsidy, //full amount of UTXO (before transaction)
       amount_received: amount_sent, //amount received from transaction
       receiver_address: newAddress, //adress of the new UTXO tio the receiver
+      receiver_wallet: minerWallet,
       sender_leftover: "0", //remaining $ after transaction and fee
       sender_leftover_address:
         "000000000000000000000000000000000000000000000000000000000000000000000000000000",
@@ -110,5 +113,6 @@ function createAddressInfo(
   UTXO_Pool.push(newUTXO); //add UTXO to pool
   return [address, walletArr, UTXO_Pool];
 }
+//
 
 module.exports = coinbaseTransaction;

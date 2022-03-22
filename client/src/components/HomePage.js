@@ -3,6 +3,8 @@ import React from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+// react components for routing our app without refresh
+import { Link } from "react-router-dom";
 
 // core components
 import Header from "./HomePageComponents/Header";
@@ -50,8 +52,8 @@ const HomePage = (props) => {
               <br />
               {/* {"Tutorial Button"} */}
               <Button
-                size="lg"
-                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                component={Link}
+                to={`${process.env.PUBLIC_URL}/tutorialHome`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

@@ -162,23 +162,23 @@ const selectSender = (block_height, walletArr, UTXO_Pool) => {
 
   //track address and get wallet
   var address2find = utxo[0];
-  var counter = 0;
   var found = false;
   var senderWallet;
   var i = 0;
-  while (!found && i != walletArr.length) {
-    counter = counter + 1;
-    var w = walletArr[i];
-    i = i + 1;
-    var j = 0;
-    while (!found && j < w[3].length) {
-      counter = counter + 1;
-      if (w[3][j] == address2find) {
-        found = true;
-        senderWallet = w;
-      }
-      j = j + 1;
+  while (!found && i < walletArr.length){
+    adrs = walletArr[i][3];
+    if(adrs.indexOf(address2find) != -1){
+      found = true
+      senderWallet = walletArr[i]
     }
+    i++;
+  }
+
+  // check if wallet is undefined
+  if(senderWallet == undefined){
+    var wallP = Math.floor(Math.random() * walletArr.length);
+    senderWallet = walletArr[wallP];
+    senderWallet[3].push(address2find); 
   }
   // check if wallet is undefined
   if (senderWallet == undefined) {

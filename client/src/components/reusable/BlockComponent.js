@@ -52,7 +52,7 @@ const BlockComponent = (props) => {
             </Grid>
             <Grid item xs={12} textAlign="center">
               <Button
-                color="secondary"
+                color="primary"
                 variant="contained"
                 sx={{ m: 1 }}
                 size="small"
