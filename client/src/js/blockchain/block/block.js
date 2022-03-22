@@ -24,7 +24,6 @@ const blockCreator = (
   wallets,
   UTXO_Pool
 ) => {
-  //console.log("Block num: ", block_height);
   var transInfo = createTransactions(
     miner,
     num_transactions,

@@ -273,9 +273,6 @@ const Simulation = (props) => {
         let wallets = res.wallets;
         let utxoPool = res.utxoPool;
 
-        console.log("MINING POOL : " + miningPool);
-        console.log("WALLETS : " + wallets);
-
         let totalCoin = 0;
 
         let newBlock = createBlock(
@@ -305,13 +302,9 @@ const Simulation = (props) => {
             block: newBlock[0],
           }),
         };
-        console.log("TRANSACTIONS: " + JSON.stringify(newBlock[0].transaction));
         fetch(url, createData)
           .then((res) => {
             if (res.ok) {
-              // Refresh blocks
-              // Need help here don't know how to refresh
-              console.log("begin refresh blocks");
               setRefresh(true);
             }
           })

@@ -304,7 +304,6 @@ const CreateSimulation = (props) => {
                       defaultValue={values.someTime}
                       onBlur={(e) => {
                         genTime = e.target.value;
-                        //console.log(genTime);
                       }}
                     />
                     <InfoButton

@@ -45,7 +45,6 @@ router.post("/", cors(), (req, res) => {
         email = JSON.stringify({ email: [email] });
       } else {
         let s_emails = shared_emails["email"];
-        console.log("shread", s_emails);
         s_emails.push(email);
 
         email = JSON.stringify({ email: s_emails });

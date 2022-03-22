@@ -37,7 +37,6 @@ const createMerkleTree = (transactions) => {
 const recursiveHashing = (txList) => {
   //if only 1 tx exists, return it
   if (txList.length == 1) {
-    //console.log("returned 1 hash: " + txList[0]);
     return txList[0];
   }
 

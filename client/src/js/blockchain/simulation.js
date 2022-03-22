@@ -59,11 +59,6 @@ const simulationCreator = (
   var hashes = []; // store hash ID of each block
   var UTXO_pool = [];
   previousHash = initialHash;
-  console.log("simulation.js Wallets[0]: " + wallets[0]);
-  //var wallets = createWallet(miningPool); COMMENTED THIS OUT BC WALLETS BEING PASSED IN
-
-  //console.log(" Create Sim --> wallets: ", wallets);
-  //console.log(" Create Sim --> UTXO_POOL: ", UTXO_pool.length);
 
   for (var i = 0; i < numBlocks; i++) {
     console.log(" BLOCK: ", i);
@@ -87,8 +82,6 @@ const simulationCreator = (
       UTXO_pool
     );
 
-    //console.log(" Wallets after creating block: ", wallets);
-    //console.log(" UTXO_Pool after creating blokc: ", UTXO_pool);
     var hashID = newBlock[1];
     var blockJSON = newBlock[0];
     totalCoin = newBlock[2];
@@ -99,14 +92,8 @@ const simulationCreator = (
     hashes.push(hashID);
   }
 
-  //console.log(" Wallets after creating block: ", wallets);
-  //console.log(" UTXO_Pool after creating blokc: ", UTXO_pool);
-
   totalCoinBlockChain(subsidy, numBlocks, halvings); // calculate coin in transaction
-  console.log("Total coin in transaction: ", totalCoin);
-  //UTXO_Pool.length = 0; //reset adresses pool to be empty again
   return [hashes, blocks, wallets, UTXO_pool];
-  //return [hashes, blocks];
 };
 
 module.exports = simulationCreator;

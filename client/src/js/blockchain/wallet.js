@@ -29,21 +29,7 @@ const createWallet = (miningPool) => {
 
 const chooseWallet = (wallets) => {
   var randomWalletNum = randomSelector(0, wallets.length - 1); // select a number
-  var selectedWallet = walletArr[randomWalletNum]; // get wallet entry from the array
-  console.log(selectedWallet);
-  console.log(typeof selectedWallet);
-  if (typeof selectedWallet == "object") {
-    temp_selectedWallet = [];
-    Object.entries(selectedWallet).forEach(([key, value]) => {
-      if (key == "addresses") {
-        temp_selectedWallet.push(JSON.stringify(value).split(","));
-      } else {
-        temp_selectedWallet.push(value);
-      }
-    });
-    selectedWallet = temp_selectedWallet;
-  }
-  console.log("**SELECTED WALLET**" + selectedWallet);
+  var selectedWallet = wallets[randomWalletNum]; // get wallet entry from the array
   var walletID = selectedWallet[0];
   return walletID;
 };

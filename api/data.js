@@ -80,8 +80,6 @@ router.post("/createsim", cors(), (req, res) => {
     blocks: simulation[1],
   };
 
-  console.log("LINE 83 --> data: ", data.simulation, miningPool);
-
   // End
   const email = data.simulation.user;
   const email_valid = email.replace(/[@.]/g, "_");
@@ -286,8 +284,6 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
       let wallets = res[0].wallets;
       let blockwin = res[0].blockwin;
       let utxoPool = res[0].utxoPool;
-      //console.log("Server side wallets[0]: " + wallets[1]);
-      //console.log("Server side mining pool[0]: " + miningPool[1]);
 
       // get timestamp
       let qry = `SELECT time_created FROM blocks_${email_valid} WHERE hash = '${previousHash}'`;
