@@ -276,6 +276,8 @@ const Simulation = (props) => {
         console.log("MINING POOL : " + miningPool);
         console.log("WALLETS : " + wallets);
 
+        let totalCoin = 0;
+
         let newBlock = createBlock(
           previousHash,
           timeStamp,
@@ -285,7 +287,8 @@ const Simulation = (props) => {
           halvings,
           miningPool,
           wallets,
-          utxoPool
+          utxoPool,
+          totalCoin
         );
 
         // Send block info to API

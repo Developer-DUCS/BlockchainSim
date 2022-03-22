@@ -281,7 +281,7 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
       let sim_blocks = JSON.parse(res[0].sim_blocks);
       let previousHash = sim_blocks[sim_blocks.length - 1];
       let num_transactions = res[0].numtransactions;
-      var block_height = sim_blocks.length + 1;
+      var block_height = sim_blocks.length;
       let miningPool = res[0].miningPool;
       let wallets = res[0].wallets;
       let blockwin = res[0].blockwin;
@@ -306,7 +306,7 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
             halvings: halvings,
             previousHash: previousHash,
             num_transactions: num_transactions,
-            blockHeight: block_height,
+            block_height: block_height,
             timeStamp: timeStamp,
             miningPool: miningPool,
             wallets: wallets,

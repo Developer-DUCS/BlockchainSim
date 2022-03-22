@@ -1,7 +1,7 @@
 const singleTransaction = require("./singleTransaction/singleTransaction");
 const coinbaseTransaction = require("./singleTransaction/coinbaseTransaction");
 //const { UTXO_Pool } = require("./UTXO_Pool");
-const {chooseWallet } = require("../wallet");
+const { chooseWallet } = require("../wallet");
 // import createAddress, { createPublicPrivateKey } from "../testValidation";
 
 /*
@@ -66,6 +66,7 @@ const createTransactions = (
         var UTXOs_Sender = senderInfo[1]; // UTXOs input for transaction
 
         //select receiver diferent than sender
+        console.log("******" + walletArr);
         var receiverWallet = chooseWallet(walletArr);
         while (receiverWallet == senderWallet)
           receiverWallet = chooseWallet(walletArr);
@@ -97,6 +98,7 @@ const createTransactions = (
     for (let wallet in walletArr) {
       if (walletArr[wallet][1] == miner) var minerWallet = walletArr[wallet][0];
     }
+    console.log("Miner wallet in transactions.js: " + minerWallet);
     //create coin base transaction + fees
     var transInfo = coinbaseTransaction(
       users,
@@ -171,6 +173,23 @@ const selectSender = (block_height, walletArr, UTXO_Pool) => {
     var w = walletArr[i];
     i = i + 1;
     var j = 0;
+
+    if (typeof w == "object") {
+      temp_w = [];
+      Object.entries(w).forEach(([key, value]) => {
+        if (key == "addresses") {
+          temp_w.push(JSON.stringify(value).split(","));
+          console.log("OBJECT ENTRIES VALUE: " + typeof value);
+        } else {
+          temp_w.push(value);
+        }
+      });
+      w = temp_w;
+    }
+    console.log(" W : " + w);
+    //w = Object.keys(w).map((key) => [key, w[key]]);
+    console.log(senderWallet);
+    //console.log("***** W: " + Object.keys(w));
     while (!found && j < w[3].length) {
       counter = counter + 1;
       if (w[3][j] == address2find) {
@@ -179,6 +198,25 @@ const selectSender = (block_height, walletArr, UTXO_Pool) => {
       }
       j = j + 1;
     }
+  }
+  // check if wallet is undefined
+  if (senderWallet == undefined) {
+    var wallP = Math.floor(Math.random() * walletArr.length);
+    senderWallet = walletArr[wallP];
+    console.log(senderWallet);
+    if (typeof senderWallet == "object") {
+      temp_senderWallet = [];
+      Object.entries(senderWallet).forEach(([key, value]) => {
+        if (key == "addresses") {
+          temp_senderWallet.push(JSON.stringify(value).split(","));
+          console.log("OBJECT ENTRIES VALUE: " + typeof value);
+        } else {
+          temp_senderWallet.push(value);
+        }
+      });
+      senderWallet = temp_senderWallet;
+    }
+    senderWallet[3].push(address2find);
   }
 
   //check if that wallet has more then one possible utxo.

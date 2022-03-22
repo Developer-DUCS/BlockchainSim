@@ -44,7 +44,7 @@ function coinbaseTransaction(
   totalCoin = totalCoin + subsidy;
 
   var amount_sent = fee + subsidy; // calculate amount the miner is receiving
-
+  console.log("Miner Wallet before CAI: " + minerWallet);
   //console.log("coinbaseTransaction.js utxoPool: " + UTXO_Pool);
   var newAddressInfo = createAddressInfo(
     minerWallet,
@@ -104,12 +104,13 @@ function createAddressInfo(
   walletArr,
   UTXO_Pool
 ) {
-  //console.log("Wallet in CAI: " + walletArr);
-  //console.log("UTXO Pool in CAI: " + UTXO_Pool);
+  console.log("Wallet in CAI: " + wallet);
+  console.log("Wallet Array in CAI: " + walletArr);
+  console.log("UTXO Pool in CAI: " + UTXO_Pool);
   var keys = createPublicPrivateKey();
   var address = createAddress(keys[2]);
   var walletPos = users.indexOf(wallet);
-  //console.log("Wallet position in CAI: " + walletPos);
+  console.log("Wallet position in CAI: " + walletPos);
   walletArr[walletPos][3].push(address); // add adress to wallet
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
