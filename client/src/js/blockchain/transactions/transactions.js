@@ -1,7 +1,7 @@
 const singleTransaction = require("./singleTransaction/singleTransaction");
 const coinbaseTransaction = require("./singleTransaction/coinbaseTransaction");
-const { UTXO_Pool } = require("./UTXO_Pool");
-const { walletArr, chooseWallet } = require("../wallet");
+//const { UTXO_Pool } = require("./UTXO_Pool");
+const { chooseWallet } = require("../wallet");
 // import createAddress, { createPublicPrivateKey } from "../testValidation";
 
 /*
@@ -38,7 +38,9 @@ const createTransactions = (
   b_heigth,
   subsidy,
   halvings,
-  totalCoin
+  totalCoin,
+  walletArr,
+  UTXO_Pool
 ) => {
   var transactions = []; // list of all transactions
   var users = []; // possible users
@@ -56,7 +58,7 @@ const createTransactions = (
     //create transactions
     for (let i = 0; i < numtransactions; i++) {
       //find a valid sender with valid money
-      var senderInfo = selectSender(b_heigth); // sender adresses to be used
+      var senderInfo = selectSender(b_heigth, walletArr, UTXO_Pool); // sender adresses to be used
       // [senderWallet, utxoArr];
 
       if (senderInfo != undefined) {
@@ -74,11 +76,17 @@ const createTransactions = (
           receiverWallet,
           UTXOs_Sender,
           b_heigth,
-          users
+          users,
+          walletArr,
+          UTXO_Pool
         );
 
-        fee += tx.transaction_data.fee; //update fees
-        transactions.push(tx); //add transaction to array
+        var txInfo = tx[0];
+        walletArr = tx[1];
+        UTXO_Pool = tx[2];
+
+        fee += txInfo.transaction_data.fee; //update fees
+        transactions.push(txInfo); //add transaction to array
       } else {
         //no more possible transactions
         done = true;
@@ -97,10 +105,14 @@ const createTransactions = (
       b_heigth,
       subsidy,
       halvings,
-      totalCoin
+      totalCoin,
+      walletArr,
+      UTXO_Pool
     );
     var baseTX = transInfo[0];
     totalCoin = transInfo[1];
+    walletArr = transInfo[2];
+    UTXO_Pool = transInfo[3];
 
     transactions.unshift(baseTX); // add transaction to beguinning array
   } else {
@@ -117,18 +129,22 @@ const createTransactions = (
       b_heigth,
       subsidy,
       halvings,
-      totalCoin
+      totalCoin,
+      walletArr,
+      UTXO_Pool
     );
     var baseTX = transInfo[0];
     totalCoin = transInfo[1];
+    walletArr = transInfo[2];
+    UTXO_Pool = transInfo[3];
     transactions.push(baseTX);
   }
 
-  return [transactions, totalCoin];
+  return [transactions, totalCoin, walletArr, UTXO_Pool];
 };
 
 //select a sender with valid money to create transaction
-const selectSender = (block_height) => {
+const selectSender = (block_height, walletArr, UTXO_Pool) => {
   // choose valid UTXO
   var index = 0;
   var utxo = UTXO_Pool[index];
@@ -163,6 +179,12 @@ const selectSender = (block_height) => {
     var wallP = Math.floor(Math.random() * walletArr.length);
     senderWallet = walletArr[wallP];
     senderWallet[3].push(address2find); 
+  }
+  // check if wallet is undefined
+  if (senderWallet == undefined) {
+    var wallP = Math.floor(Math.random() * walletArr.length);
+    senderWallet = walletArr[wallP];
+    senderWallet[3].push(address2find);
   }
 
   //check if that wallet has more then one possible utxo.

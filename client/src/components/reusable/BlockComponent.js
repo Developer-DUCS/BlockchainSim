@@ -13,7 +13,6 @@ const BlockComponent = (props) => {
       try {
         block.header = JSON.parse(block.header);
         block.transactions = JSON.parse(block.transactions);
-        console.log("transactions", block.transactions);
         setWaitForParse(false);
       } catch (e) {
         setWaitForParse(false);

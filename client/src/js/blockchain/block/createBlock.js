@@ -17,9 +17,12 @@
       - File calls: 
         * 
 */
+
+import { ContactSupportOutlined } from "@material-ui/icons";
+
+// TODO: we may need to store the UTXO_Pool in the data base
 const blockCreator = require("./block");
-const { createWallet } = require("../wallet");
-const { createMinerPool, chooseMiner } = require("./miningPool");
+const { chooseMiner } = require("./miningPool");
 
 const createBlock = (
   previousHash,
@@ -28,21 +31,48 @@ const createBlock = (
   block_height,
   subsidy,
   halvings,
-  email
+  miningPool,
+  wallets,
+  UTXO_Pool,
+  totalCoin
 ) => {
-  var miningPool = createMinerPool(50, email);
-  var wallets = createWallet(miningPool);
-  var miner = chooseMiner(miningPool);
+  let miningPool_to_array = JSON.parse(miningPool);
+  var miner = chooseMiner(miningPool_to_array);
+  let wallets_to_array = JSON.parse(wallets);
+  let utxo_to_array = JSON.parse(UTXO_Pool);
+  let wallet_array = [];
+
+  for (let i = 0; i < wallets_to_array.length; i++) {
+    let temp_wallet = [];
+    Object.entries(wallets_to_array[i]).forEach(([key, value]) => {
+      let temp_addresses = [];
+      if (key == "hash") {
+        temp_wallet.push(value);
+      } else if (key == "owner") {
+        temp_wallet.push(value);
+      } else if (key == "simulation_id") {
+        temp_wallet.push(value);
+      } else if (key == "balance") {
+        temp_wallet.push(value);
+      } else if (key == "addresses") {
+        value.forEach((element) => temp_addresses.push(element));
+        temp_wallet.push(temp_addresses);
+      }
+    });
+    wallet_array.push(temp_wallet);
+  }
+
   let newBlock = blockCreator(
     previousHash,
     timeStamp,
     miner,
     num_transactions,
     block_height,
-    miningPool,
-    wallets,
     subsidy,
-    halvings
+    halvings,
+    totalCoin,
+    wallet_array,
+    utxo_to_array
   );
   return newBlock;
 };

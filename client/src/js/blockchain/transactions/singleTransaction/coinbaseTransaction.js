@@ -3,8 +3,8 @@ const {
   createAddress,
   createPublicPrivateKey,
 } = require("../../testValidation");
-const { walletArr } = require("../../wallet");
-const { UTXO_Pool } = require("./../UTXO_Pool");
+//const { walletArr } = require("../../wallet");
+//const { UTXO_Pool } = require("./../UTXO_Pool");
 
 /*
     --> BasecoinTransaction.JS FILE
@@ -33,7 +33,9 @@ function coinbaseTransaction(
   block_height,
   subsidy,
   halvings,
-  totalCoin
+  totalCoin,
+  walletArr,
+  UTXO_Pool
 ) {
   if (block_height / halvings >= 1) {
     subsidy = subsidy / 2 ** Math.floor(block_height / halvings);
@@ -42,13 +44,17 @@ function coinbaseTransaction(
   totalCoin = totalCoin + subsidy;
 
   var amount_sent = fee + subsidy; // calculate amount the miner is receiving
-
-  var newAddress = createAddressInfo(
+  var newAddressInfo = createAddressInfo(
     minerWallet,
     amount_sent,
     block_height,
-    users
+    users,
+    walletArr,
+    UTXO_Pool
   );
+  var newAddress = newAddressInfo[0];
+  walletArr = newAddressInfo[1];
+  UTXO_Pool = newAddressInfo[2];
 
   var coinbase =
     '{ transaction_data: { UTXO: "0000000000000000000000000000000000000000000000000000000000000000", owner_UTXO: "0000000000000000000000000000000000000000000000000000000000000000", receiver: ' +
@@ -88,17 +94,24 @@ function coinbaseTransaction(
       block_height: block_height,
     },
   };
-  return [coinbaseJSON, totalCoin];
+  return [coinbaseJSON, totalCoin, walletArr, UTXO_Pool];
 }
 
-function createAddressInfo(wallet, amount, weight, users) {
+function createAddressInfo(
+  wallet,
+  amount,
+  weight,
+  users,
+  walletArr,
+  UTXO_Pool
+) {
   var keys = createPublicPrivateKey();
   var address = createAddress(keys[2]);
   var walletPos = users.indexOf(wallet);
   walletArr[walletPos][3].push(address); // add adress to wallet
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
-  return address;
+  return [address, walletArr, UTXO_Pool];
 }
 //
 
