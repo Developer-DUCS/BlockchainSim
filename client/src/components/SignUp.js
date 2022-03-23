@@ -10,12 +10,35 @@ import { useHistory } from "react-router-dom";
 import React from "react";
 require("dotenv").config({ path: "../../../.env" });
 
+var passwordValidator = require("password-validator");
+
+// Create a schema
+var schema = new passwordValidator();
+
+// Add properties to it
+schema
+  .is()
+  .min(6) // Minimum length 6
+  .is()
+  .max(16) // Maximum length 16
+  .has()
+  .uppercase() // Must have uppercase letters
+  .has()
+  .lowercase() // Must have lowercase letters
+  .has()
+  .digits(1) // Must have at least 1 digits
+  .has()
+  .not()
+  .spaces(); // Should not have spaces
+
 const SignUp = (props) => {
   const { setFeedback, setFeedbackObj } = props;
   const [password, setPassword] = React.useState(false);
   const [verifyPassword, setVerifyPassword] = React.useState(false);
   const [email, setEmail] = React.useState(false);
-  const [error, setError] = React.useState(false);
+  const [passwordMatchError, setPasswordMatchError] = React.useState(false);
+  const [passwordValidateError, setPasswordValidateError] =
+    React.useState(false);
   const [emailError, setEmailError] = React.useState(false);
   const history = useHistory();
 
@@ -70,10 +93,16 @@ const SignUp = (props) => {
 
   // Check if passwords match
   const checkPassword = () => {
-    if (password !== verifyPassword) {
-      setError(true);
+    if (password !== verifyPassword && password != "") {
+      setPasswordMatchError(true);
     } else {
-      setError(false);
+      setPasswordMatchError(false);
+    }
+
+    if (!schema.validate(password) && password != "") {
+      setPasswordValidateError(true);
+    } else {
+      setPasswordValidateError(false);
     }
   };
 
@@ -129,10 +158,23 @@ const SignUp = (props) => {
                     variant="outlined"
                     required
                     onChange={(e) => setPassword(e.target.value)}
-                    error={error}
-                    helperText={error ? "Passwords do not match" : ""}
+                    error={passwordValidateError}
+                    helperText={
+                      passwordValidateError ? (
+                        <div>
+                          <p style={{ margin: 0 }}>
+                            Password does not meet requirements
+                          </p>
+                          <p style={{ margin: 0 }}>
+                            6-16 characters, 1 uppercase, 1 lowercase, 1 number
+                          </p>
+                        </div>
+                      ) : (
+                        "6-16 characters, 1 uppercase, 1 lowercase, 1 number"
+                      )
+                    }
                     focused={password.length > 0}
-                    color={error ? "error" : "success"}
+                    color={passwordValidateError ? "error" : "success"}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -145,10 +187,12 @@ const SignUp = (props) => {
                     variant="outlined"
                     required
                     onChange={(e) => setVerifyPassword(e.target.value)}
-                    error={error}
-                    helperText={error ? "Passwords do not match" : ""}
+                    error={passwordMatchError}
+                    helperText={
+                      passwordMatchError ? "Passwords do not match" : ""
+                    }
                     focused={verifyPassword.length > 0}
-                    color={error ? "error" : "success"}
+                    color={passwordMatchError ? "error" : "success"}
                   />
                 </Grid>
               </Grid>
@@ -156,7 +200,11 @@ const SignUp = (props) => {
             <Grid item xs={12}>
               <Button
                 disabled={
-                  error || emailError || !password || !verifyPassword || !email
+                  passwordMatchError ||
+                  emailError ||
+                  !password ||
+                  !verifyPassword ||
+                  !email
                 }
                 fullWidth
                 type="submit"

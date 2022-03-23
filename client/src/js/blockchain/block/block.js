@@ -8,9 +8,9 @@
             * NOT adressed yet *
 */
 
-import createHeader from "../header";
-import createTransactions from "../transactions/transactions";
-import createMerkleTree from "./merkleTree";
+const createHeader = require("../header");
+const createTransactions = require("../transactions/transactions");
+const createMerkleTree = require("./merkleTree");
 
 const blockCreator = (
   previousHash,
@@ -19,16 +19,26 @@ const blockCreator = (
   num_transactions,
   block_height,
   subsidy,
-  halvings
+  halvings,
+  totalCoin,
+  wallets,
+  UTXO_Pool
 ) => {
-  // create transactions - before Merkleroot
-  var transactionJSON = createTransactions(
+  var transInfo = createTransactions(
     miner,
     num_transactions,
     block_height,
     subsidy,
-    halvings
+    halvings,
+    totalCoin,
+    wallets,
+    UTXO_Pool
   );
+
+  var transactionJSON = transInfo[0];
+  totalCoin = transInfo[1];
+  wallets = transInfo[2];
+  UTXO_Pool = transInfo[3];
 
   var merkleRoot = createMerkleTree(transactionJSON);
   var header = createHeader(previousHash, merkleRoot); // create header of the block
@@ -44,7 +54,7 @@ const blockCreator = (
     miner: miner,
     time_created: timeStamp,
   };
-  return [blockJSON, hashID];
+  return [blockJSON, hashID, totalCoin, wallets, UTXO_Pool];
 };
 
-export default blockCreator;
+module.exports = blockCreator;

@@ -13,7 +13,6 @@ const BlockComponent = (props) => {
       try {
         block.header = JSON.parse(block.header);
         block.transactions = JSON.parse(block.transactions);
-        console.log("transactions", block.transactions);
         setWaitForParse(false);
       } catch (e) {
         setWaitForParse(false);
@@ -53,7 +52,7 @@ const BlockComponent = (props) => {
             </Grid>
             <Grid item xs={12} textAlign="center">
               <Button
-                color="secondary"
+                color="primary"
                 variant="contained"
                 sx={{ m: 1 }}
                 size="small"

@@ -1,7 +1,10 @@
-import sjcl from "../../../../sjcl";
-import createAddress, { createPublicPrivateKey } from "../../testValidation";
-import { walletArr } from "../../wallet";
-import { UTXO_Pool } from "./../UTXO_Pool";
+const sjcl = require("../../../../sjcl");
+const {
+  createAddress,
+  createPublicPrivateKey,
+} = require("../../testValidation");
+//const { walletArr } = require("../../wallet");
+//const { UTXO_Pool } = require("./../UTXO_Pool");
 
 /*
     --> BasecoinTransaction.JS FILE
@@ -23,21 +26,35 @@ import { UTXO_Pool } from "./../UTXO_Pool";
 // TO DO: Add fees
 //      : Make scriptSig, scriptLength, scriptPubKey dynamic
 
-function coinbaseTransaction(users, minerWallet, fee, block_height, subsidy) {
-  let BLOCK_REWARD = subsidy;
- 
+function coinbaseTransaction(
+  users,
+  minerWallet,
+  fee,
+  block_height,
+  subsidy,
+  halvings,
+  totalCoin,
+  walletArr,
+  UTXO_Pool
+) {
   if (block_height / halvings >= 1) {
-    BLOCK_REWARD = subsidy / 2 ** Math.floor(block_height / halvings);
+    subsidy = subsidy / 2 ** Math.floor(block_height / halvings);
   }
 
-  var amount_sent = fee + BLOCK_REWARD; // calculate amount the miner is receiving
+  totalCoin = totalCoin + subsidy;
 
-  var newAddress = createAddressInfo(
+  var amount_sent = fee + subsidy; // calculate amount the miner is receiving
+  var newAddressInfo = createAddressInfo(
     minerWallet,
     amount_sent,
     block_height,
-    users
+    users,
+    walletArr,
+    UTXO_Pool
   );
+  var newAddress = newAddressInfo[0];
+  walletArr = newAddressInfo[1];
+  UTXO_Pool = newAddressInfo[2];
 
   var coinbase =
     '{ transaction_data: { UTXO: "0000000000000000000000000000000000000000000000000000000000000000", owner_UTXO: "0000000000000000000000000000000000000000000000000000000000000000", receiver: ' +
@@ -45,9 +62,9 @@ function coinbaseTransaction(users, minerWallet, fee, block_height, subsidy) {
     ", sender_leftover: 0, fee: " +
     fee +
     ", amount_sent: " +
-    BLOCK_REWARD +
+    subsidy +
     " , amount_received: " +
-    BLOCK_REWARD +
+    subsidy +
     ", block_height: " +
     block_height +
     "} }";
@@ -59,33 +76,43 @@ function coinbaseTransaction(users, minerWallet, fee, block_height, subsidy) {
   //create json object
   var coinbaseJSON = {
     hash: transactionHash,
+
     transaction_data: {
-      UTXO: "000000000000000000000000000000000000000000000000000000000000000000000000000000",
-      owner_UTXO:
-        "0000000000000000000000000000000000000000000000000000000000000000",
-      owner_UTXO:
-        "00000000000000000000000000000000000000000000000000000000000000000",
-      receiver: newAddress, //adress
-      sender_leftover: 0,
+      sender_wallet:
+        "000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      addresses_input_UTXO: [
+        "000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      ], //array with addreses [khbvusvues,bidcyvweuvfyc,kshcbiwvyie]
+      amount_sent: subsidy, //full amount of UTXO (before transaction)
+      amount_received: amount_sent, //amount received from transaction
+      receiver_address: newAddress, //adress of the new UTXO tio the receiver
+      receiver_wallet: minerWallet,
+      sender_leftover: "0", //remaining $ after transaction and fee
       sender_leftover_address:
-        "0000000000000000000000000000000000000000000000000000000000000000",
-      fee: fee,
-      amount_sent: BLOCK_REWARD, //to hash first?
-      amount_received: amount_sent,
+        "000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      fee: fee, //random fee to be dynamic
       block_height: block_height,
     },
   };
-  return coinbaseJSON;
+  return [coinbaseJSON, totalCoin, walletArr, UTXO_Pool];
 }
 
-function createAddressInfo(wallet, amount, weight, users) {
+function createAddressInfo(
+  wallet,
+  amount,
+  weight,
+  users,
+  walletArr,
+  UTXO_Pool
+) {
   var keys = createPublicPrivateKey();
   var address = createAddress(keys[2]);
   var walletPos = users.indexOf(wallet);
   walletArr[walletPos][3].push(address); // add adress to wallet
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
-  return address;
+  return [address, walletArr, UTXO_Pool];
 }
+//
 
-export default coinbaseTransaction;
+module.exports = coinbaseTransaction;

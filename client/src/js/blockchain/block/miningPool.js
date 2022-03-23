@@ -11,7 +11,7 @@
 
 */
 
-import { get_element_from_array } from "../../utils/array_utils";
+const { get_element_from_array } = require("../../utils/array_utils");
 
 // function to select random element
 const randomSelector = (min, max) => {
@@ -39,5 +39,4 @@ const chooseMiner = (miningPool) => {
   return selectedMiner;
 };
 
-export default chooseMiner;
-export { createMinerPool, chooseMiner };
+module.exports = { createMinerPool, chooseMiner };

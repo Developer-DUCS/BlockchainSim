@@ -16,6 +16,13 @@ CREATE TABLE simulation (
   sim_created DATETIME NOT NULL,
   sim_modified DATETIME NOT NULL,
   sim_blocks JSON NOT NULL,
+  subsidy TINYINT NOT NULL,
+  halvings SMALLINT NOT NULL,
+  numtransactions TINYINT NOT NULL,
+  miningPool JSON NOT NULL,
+  wallets JSON NOT NULL,
+  blockwin SMALLINT NOT NULL,
+  utxoPool JSON NOT NULL,
   PRIMARY KEY ( sim_id ),
   FOREIGN KEY (email) REFERENCES user (email)
  );

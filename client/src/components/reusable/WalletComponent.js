@@ -1,83 +1,47 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  Grid,
-  MenuItem,
-  FormControl,
-  OutlinedInput,
-  InputLabel,
-  Select,
-  Checkbox,
-  ListItemText,
-} from "@mui/material";
-import EarningCard from "../WalletCards/TotalBalanceCard";
-import TransactionCard from "../WalletCards/TransactionsCard";
-import OwnerCard from "../WalletCards/OwnerCard";
-import TransactionButton from "../WalletCards/TransactionButton";
-import AddressesCard from "../WalletCards/AddressesCard";
-import LedgerCard from "../WalletCards/LedgerCard";
+import { Grid, Box } from "@mui/material";
+import Button from "@mui/material/Button";
+import { DataGrid } from "@mui/x-data-grid";
+import Auth from "./Auth";
+import WalletCard from "../WalletCards/WalletCard";
+
+const Wallet_Card = () => {
+  return (
+    <Grid item sm={8}>
+      <WalletCard />
+    </Grid>
+  );
+};
 
 const WalletComponent = (props) => {
-  const miners = ["ean@drury.edu", "t5qcwgfkqh", "f3v80882q9"];
-  const [miner, setMiner] = React.useState(["ean@drury.edu"]);
+  const [user, setUser] = React.useState({});
+  const [WalletCards, setWalletCards] = React.useState([]);
+  const rows = [];
 
-  const handleMinerChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setMiner(typeof value === "string" ? value.split(",") : value);
+  const onAddBtnClick = (event) => {
+    setWalletCards(
+      WalletCards.concat(<Wallet_Card key={WalletCards.length} />)
+    );
   };
+
   return (
-    <Card sx={{ mt: 3, ml: 5, mr: 5, minHeight: 100, borderRadius: "16px" }}>
-      <CardContent>
-        <Grid>
-          <FormControl sx={{ ml: 3, color: "primary" }}>
-            <InputLabel size="large" id="caregoryLabel">
-              Miner
-            </InputLabel>
-            <Select
-              sx={{ width: 400 }}
-              size="large"
-              labelId="minerLabel"
-              id="Miner"
-              value={miner}
-              onChange={handleMinerChange}
-              input={<OutlinedInput size="small" label="Miner" />}
-              renderValue={(selected) => selected.join(", ")}
-            >
-              {miners.map((mine) => (
-                <MenuItem key={mine} value={mine}>
-                  <Checkbox checked={miner.indexOf(mine) > -1} />
-                  <ListItemText primary={mine} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+    <Auth setUser={setUser}>
+      <Grid container>
+        <Grid item sm={8}>
+          <WalletCard />
         </Grid>
-        <Grid
-          container
-          spacing={2}
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <EarningCard />
-          <TransactionCard />
-          <OwnerCard />
+        {WalletCards}
+        <Grid item sm={4}>
+          <Button
+            onClick={onAddBtnClick} //need to add a new card here
+            variant="contained"
+            sx={{ borderRadius: 9, size: 1 }}
+          >
+            +
+          </Button>
         </Grid>
-        <Grid
-          container
-          spacing={2}
-          direction="row"
-          justify="space-between"
-          alignItems="center"
-        >
-          <AddressesCard />
-          <LedgerCard />
-        </Grid>
-      </CardContent>
-    </Card>
+      </Grid>
+    </Auth>
   );
 };
 

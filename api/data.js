@@ -4,29 +4,117 @@ const router = express.Router();
 const db = require("../dbConn");
 const cors = require("cors");
 
+const timeStamp = require("../client/src/js/blockchain/block/timeStamp");
+const simulationCreator = require("../client/src/js/blockchain/simulation");
+const {
+  createMinerPool,
+} = require("../client/src/js/blockchain/block/miningPool");
+const sjcl = require("../client/src/sjcl");
+const { createWallet } = require("../client/src/js/blockchain/wallet");
+
 app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb" }));
 
+// Creating a Simulation
+// This will add a new row to the simulation and blocks table
 router.post("/createsim", cors(), (req, res) => {
-  const email = req.body.simulation.user;
+  // Add in here
+  const user = req.body.user;
+  const initValues = {
+    name: req.body.name,
+    desc: req.body.desc,
+    gendate: req.body.gendate,
+    gentime: req.body.gentime,
+    blockwin: req.body.blockwin,
+    numblocks: req.body.numblocks,
+    transactions: req.body.transactions,
+    subsidy: req.body.subsidy,
+    halvings: req.body.halvings,
+    coin: req.body.coin,
+    mining: req.body.mining,
+    numminers: req.body.numminers,
+  };
+
+  var miningPool = createMinerPool(initValues.numminers, user.email); //create mining pool
+  var wallets = createWallet(miningPool); // <-- [wallet_id, owner, simulation_id, adresses_aviable, balance]
+
+  var bithash = sjcl.hash.sha256.hash(initValues.desc);
+  var initialHash = sjcl.codec.hex.fromBits(bithash);
+
+  let initTime = [initValues.gendate, initValues.gentime];
+  var timeStampArr = timeStamp(
+    initTime,
+    initValues.numblocks,
+    initValues.blockwin
+  );
+  var simulation = simulationCreator(
+    initValues.numblocks,
+    initialHash,
+    timeStampArr,
+    miningPool,
+    user.email,
+    initValues.transactions,
+    initValues.subsidy,
+    initValues.halvings,
+    // Added here to pass in wallets
+    wallets
+  );
+
+  let data = {
+    simulation: {
+      user: user.email,
+      sim_name: initValues.name,
+      sim_shared: {},
+      sim_description: initValues.desc,
+      sim_created: new Date().toISOString().slice(0, 19).replace("T", " "),
+      sim_modified: new Date().toISOString().slice(0, 19).replace("T", " "),
+      sim_blocks: simulation[0],
+      subsidy: initValues.subsidy,
+      halvings: initValues.halvings,
+      numtransactions: initValues.transactions,
+      wallets: simulation[2], //change
+      miningPool: miningPool,
+      utxoPool: simulation[3], // change
+      blockwin: 10,
+    },
+    blocks: simulation[1],
+  };
+
+  // End
+  const email = data.simulation.user;
   const email_valid = email.replace(/[@.]/g, "_");
-  const sim_name = req.body.simulation.sim_name;
-  const sim_shared = req.body.simulation.sim_shared;
-  const sim_description = req.body.simulation.sim_description;
-  const sim_created = req.body.simulation.sim_created
-    .slice(0, 19)
-    .replace("T", " ");
-  const sim_modified = req.body.simulation.sim_modified
-    .slice(0, 19)
-    .replace("T", " ");
-  const sim_blocks = req.body.simulation.sim_blocks;
+  const sim_name = data.simulation.sim_name;
+  const sim_shared = data.simulation.sim_shared;
+  const sim_description = data.simulation.sim_description;
+  const sim_created = data.simulation.sim_created;
+  const sim_modified = data.simulation.sim_modified;
+  const sim_blocks = data.simulation.sim_blocks;
   const sim_shared_string = JSON.stringify(sim_shared);
   const sim_blocks_string = JSON.stringify(sim_blocks);
-  const subsidy = req.body.simulation.subsidy;
-  const halvings = req.body.simulation.halvings;
-  const numtransactions = req.body.simulation.numtransactions;
-  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}');`;
+  const subsidy = data.simulation.subsidy;
+  const halvings = data.simulation.halvings;
+  const numtransactions = data.simulation.numtransactions;
+  const sminingPool = JSON.stringify(data.simulation.miningPool);
+  const utxoPool = JSON.stringify(data.simulation.utxoPool);
+  const blockwin = data.simulation.blockwin;
+  const walletsJSON = [];
+
+  for (let i = 0; i < wallets.length; i++) {
+    miner = wallets[i][1];
+
+    walletsJSON.push({
+      hash: wallets[i][0],
+      owner: miner,
+      simulation_id: wallets[i][2],
+      addresses: wallets[i][3],
+      balance: wallets[i][4],
+    });
+  }
+
+  const swallets = JSON.stringify(walletsJSON);
+
+  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets,miningPool,utxoPool,blockwin) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${swallets}', '${sminingPool}' , '${utxoPool}' , '${blockwin}' );`;
   db.query(qry, (err) => {
     if (err) {
       console.log(err);
@@ -35,28 +123,30 @@ router.post("/createsim", cors(), (req, res) => {
 
   let qry2 = "";
 
-  for (let i = 0; i < req.body.blocks.length; i++) {
-    const hash = req.body.blocks[i].id_block;
-    const header = req.body.blocks[i].header;
+  //console.log("Length", data.blocks.length[0]);
+  for (let i = 0; i < data.blocks.length; i++) {
+    const hash = data.blocks[i].id_block;
+    const header = data.blocks[i].header;
     const headerString = JSON.stringify(header);
-    const transaction = req.body.blocks[i].transaction;
+    const transaction = data.blocks[i].transaction;
     const transactionString = JSON.stringify(transaction);
-    const transaction_counter = req.body.blocks[i].transaction_counter;
-    const miner = req.body.blocks[i].miner;
-    const block_time_created = req.body.blocks[i].time_created;
+    const transaction_counter = data.blocks[i].transaction_counter;
+    const miner = data.blocks[i].miner;
+    const block_time_created = data.blocks[i].time_created;
 
     if (i == 0) {
-      qry2 += `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}'),`;
-    } else if (i == req.body.blocks.length - 1) {
-      qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}');`;
+      qry2 += `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '${block_time_created}'),`;
+    } else if (i == data.blocks.length - 1) {
+      qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '${block_time_created}');`;
     } else {
-      qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '{}','${block_time_created}'),`;
+      qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '${block_time_created}'),`;
     }
   }
 
   db.query(qry2, (err) => {
     if (err) {
       console.log(err);
+      res.sendStatus(500);
     } else {
       res.sendStatus(200);
     }
@@ -70,14 +160,24 @@ router.post("/deletesim", cors(), (req, res) => {
   // parse email where special characters = _
   const email_valid = email.replace(/[@.]/g, "_");
   let qry = `SELECT sim_blocks FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
-  let result = [];
   db.query(qry, (err, result) => {
     if (err) {
       console.log(err);
     } else if (result.length == 0) {
+      // Not authorized to delete the simulation (not the owner)
       res.sendStatus(403);
     } else {
-      result = result;
+      // Delete Simulation
+      qry = `DELETE FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
+      db.query(qry, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.sendStatus(200);
+        }
+      });
+
+      // Delete Blocks
       // for each element in the sim blocks json object
       let resultData = JSON.stringify(result).replace(/[:\\\{\}]/g, "");
       resultData = resultData.slice(14, resultData.length - 2);
@@ -89,22 +189,12 @@ router.post("/deletesim", cors(), (req, res) => {
         db.query(qry, (err) => {
           if (err) {
             console.log(err);
+          } else {
           }
         });
       }
     }
   });
-
-  if (result.length > 0) {
-    qry = `DELETE FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
-    db.query(qry, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.sendStatus(200);
-      }
-    });
-  }
 });
 
 router.post("/getsimulations", cors(), (req, resp) => {
@@ -177,37 +267,46 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
   let email_valid = email.replace(/[@.]/g, "_");
   // TODO : Add numMiners and blockWindow to database
   // get subsidy halvings blocks
-  let qry = `SELECT subsidy, halvings, sim_blocks, numtransactions FROM simulation WHERE sim_id = '${sim_id}'`;
+  let qry = `SELECT subsidy, halvings, sim_blocks, numtransactions, miningPool, wallets, blockwin, utxoPool FROM simulation WHERE sim_id = '${sim_id}'`;
   db.query(qry, (err, res) => {
     if (err) {
       console.log(err);
-      res.status(400);
+      resp.status(400);
     } else {
       let subsidy = res[0].subsidy;
       let halvings = res[0].halvings;
       let sim_blocks = JSON.parse(res[0].sim_blocks);
       let previousHash = sim_blocks[sim_blocks.length - 1];
       let num_transactions = res[0].numtransactions;
-      var block_height = sim_blocks.length + 1;
+      var block_height = sim_blocks.length;
+      let miningPool = res[0].miningPool;
+      let wallets = res[0].wallets;
+      let blockwin = res[0].blockwin;
+      let utxoPool = res[0].utxoPool;
+
       // get timestamp
       let qry = `SELECT time_created FROM blocks_${email_valid} WHERE hash = '${previousHash}'`;
       db.query(qry, (err, re) => {
         if (err) {
           console.log(err);
-          re.sendStatus(400);
+          resp.sendStatus(400);
         } else {
-          timeStamp = new Date(re[0].time_created);
-          timeStamp.setMinutes(timeStamp.getMinutes() + 10);
-          resp
-            .status(200)
-            .send(
-              subsidy,
-              halvings,
-              previousHash,
-              num_transactions,
-              block_height,
-              timeStamp
-            );
+          // Time stamp holds a value here, when its received, it is undefined.
+          let timeStamp = new Date(re[0].time_created);
+          timeStamp.setMinutes(timeStamp.getMinutes() + blockwin);
+          timeStamp = timeStamp.toISOString().slice(0, 19).replace("T", " "); // transform to ISO format
+
+          resp.status(200).json({
+            subsidy: subsidy,
+            halvings: halvings,
+            previousHash: previousHash,
+            num_transactions: num_transactions,
+            block_height: block_height,
+            timeStamp: timeStamp,
+            miningPool: miningPool,
+            wallets: wallets,
+            utxoPool: utxoPool,
+          });
         }
       });
     }
@@ -218,23 +317,86 @@ router.post("/latestblockinfo", cors(), (req, resp) => {
 router.post("/addnewblock", cors(), (req, resp) => {
   var email = req.body.email;
   var sim_id = req.body.sim_id;
-  let qry = ``;
+  var hash = req.body.hash;
+  var block = req.body.block;
+  const email_valid = email.replace(/[@.]/g, "_");
+  let headerString = JSON.stringify(block.header);
+  let transactionString = JSON.stringify(block.transaction);
+  let transaction_counter = block.transaction_counter;
+  let miner = block.miner;
+  let block_time_created = block.time_created;
+  let qry = `SELECT sim_blocks FROM simulation WHERE sim_id = '${sim_id}'`;
   // Insert the new block hash into the simulation table's sim_blocks
+  // Get blocks
   db.query(qry, (err, res) => {
     if (err) {
       console.log(err);
-      res.sendStatus(400);
+      resp.status(400);
     } else {
-      // Insert the new block into the blocks_user table
-      db.query(qry, (err, res) => {
+      // Push hash
+      let resultData = JSON.stringify(res).replace(/[:\\\{\}]/g, "");
+      resultData = resultData.slice(14, resultData.length - 2);
+      var hashes = JSON.parse(resultData);
+      hashString = "[";
+      for (var id in hashes) {
+        let hash = hashes[id];
+        hashString += ` "${hash}" ,`;
+      }
+      hashString += ` "${hash}" ]`;
+      let qr = `UPDATE simulation SET sim_blocks = '${hashString}' WHERE sim_id = '${sim_id}'`;
+      // Update sim_blocks to contain hash
+      db.query(qr, (err, re) => {
         if (err) {
           console.log(err);
-          res.sendStatus(400);
+          resp.status(400);
         } else {
-          // Insert the new block into the blocks_user table
-          resp.status(200).send(res);
+          // I hardcoded a date into this query, so it would go through
+          let q = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '2022-01-01 10:40:00')`;
+          db.query(q, (err, r) => {
+            if (err) {
+              console.log(err);
+              resp.status(400);
+            } else {
+              // Insert the new block into the blocks_user table
+              resp.sendStatus(200);
+            }
+          });
         }
       });
+    }
+  });
+});
+
+router.post("/getwallets/id", cors(), (req, resp) => {
+  var id = req.body.id;
+  let qry = `SELECT wallets FROM simulation WHERE sim_id='${id}'`;
+  db.query(qry, (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      resp.status(200).send(JSON.parse(res[0].wallets));
+    }
+  });
+});
+
+router.post("/getminertransaction/miner", cors(), (req, resp) => {
+  var miner = req.body.miner;
+  var email = req.body.email;
+  let email_valid = email.replace(/[@.]/g, "_");
+
+  // owner = miner
+  let hash = 00; //select id from wallet row in simulation of owner
+  let qry = `SELECT transactions FROM blocks_${email_valid} WHERE sender_wallet=${hash} OR receiver_wallet=${hash};`;
+
+  db.query(qry, (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      //have to go through every element and turn them into a json object
+      for (let i = 0; i < res.length; i++) {
+        res[i] = JSON.parse(res[i].transactions);
+      }
+      resp.status(200).send(res);
     }
   });
 });

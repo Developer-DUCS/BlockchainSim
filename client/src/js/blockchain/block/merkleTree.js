@@ -1,4 +1,4 @@
-import sjcl from "../../../sjcl";
+const sjcl = require("../../../sjcl");
 
 /*
     --> MERKLETREE.JS FILE
@@ -37,7 +37,6 @@ const createMerkleTree = (transactions) => {
 const recursiveHashing = (txList) => {
   //if only 1 tx exists, return it
   if (txList.length == 1) {
-    //console.log("returned 1 hash: " + txList[0]);
     return txList[0];
   }
 
@@ -65,4 +64,4 @@ const hashify = (hash1, hash2) => {
   return hash;
 };
 
-export default createMerkleTree;
+module.exports = createMerkleTree;

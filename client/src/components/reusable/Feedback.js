@@ -1,5 +1,5 @@
 import React from "react";
-import { Snackbar } from "@mui/material";
+import { Snackbar, LinearProgress } from "@mui/material";
 
 import MuiAlert from "@mui/material/Alert";
 
@@ -18,13 +18,18 @@ const Feedback = (props) => {
   };
 
   return (
-    <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+    <Snackbar
+      open={open}
+      autoHideDuration={feedbackObj.duration || 5000}
+      onClose={handleClose}
+    >
       <Alert
         onClose={handleClose}
         severity={feedbackObj.severity}
         sx={{ width: "100%" }}
       >
         {feedbackObj.message}
+        {feedbackObj.loading ? <LinearProgress /> : ""}
       </Alert>
     </Snackbar>
   );

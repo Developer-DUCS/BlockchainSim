@@ -17,6 +17,7 @@ import FileCopyTwoToneIcon from "@mui/icons-material/FileCopyOutlined";
 import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfOutlined";
 import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import DnsIcon from "@mui/icons-material/Dns";
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: theme.palette.primary.light,
@@ -26,7 +27,8 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   borderRadius: "16px",
 }));
 
-const AddressesCard = () => {
+const AddressesCard = (props) => {
+  const { sx, addresses } = props;
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -41,11 +43,7 @@ const AddressesCard = () => {
 
   return (
     <>
-      <CardWrapper
-        border={false}
-        content={false}
-        sx={{ ml: 5, height: 500, width: 875 }}
-      >
+      <CardWrapper border={false} content={false} sx={sx}>
         <Box sx={{ p: 2.25 }}>
           <Grid container direction="column">
             <Grid item>
@@ -60,7 +58,8 @@ const AddressesCard = () => {
                       mt: 1,
                     }}
                   >
-                    <img src={EarningIcon} alt="Notification" />
+                    {/* <img src={EarningIcon} alt="Notification" /> */}
+                    <DnsIcon />
                   </Avatar>
                 </Grid>
                 <Grid item>
@@ -118,15 +117,26 @@ const AddressesCard = () => {
                         fontSize: "1.50rem",
                         fontWeight: 500,
                         mr: 1,
-                        ml: 6,
-                        mt: -4,
-                        mb: 0.75,
+                        ml: 7,
+                        mt: -4.5,
+                        mb: 3,
                       }}
                     >
-                      Addresses
+                      Transactions Addresses
                     </Typography>
+                    {addresses.map((address, i) => (
+                      <Typography
+                        sx={{
+                          fontSize: "1.5rem",
+                          fontWeight: 300,
+                          mt: 1.5,
+                          ml: 1,
+                        }}
+                      >
+                        <strong>{i}:</strong> {address.slice(0, 23)}...
+                      </Typography>
+                    ))}
                   </Grid>
-                  <Grid item></Grid>
                 </Grid>
               </Grid>
             </Grid>

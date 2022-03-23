@@ -39,6 +39,10 @@ import LinearProgress from "@mui/material/LinearProgress";
 import WalletComponent from "./reusable/WalletComponent";
 import createBlock from "../js/blockchain/block/createBlock";
 import DataGrid from "./reusable/datagrid";
+import TransactionComponent from "./reusable/TransactionComponent";
+import { ContactsOutlined } from "@material-ui/icons";
+import InputsOutputs from "./reusable/InputsOutputs";
+import AuthSimulation from "./reusable/AuthSimulation";
 
 const Simulation = (props) => {
   const history = useHistory();
@@ -54,11 +58,17 @@ const Simulation = (props) => {
   // Used to click transactions
   const [selectedTransaction, setSelectedTransaction] = React.useState(null);
 
+  // Used to show/hide inputs/outputs
+  const [showInputsOutputs, setShowInputsOutputs] = React.useState({});
+
   // Used to hold simulation blocks
   const [simulationBlocks, setSimulationBlocks] = React.useState([]);
 
   // Main blocks data, used for display/filtering of blocks
   const [filteredBlocks, setFilteredBlocks] = React.useState([]);
+
+  // Used for refreshing
+  const [refresh, setRefresh] = React.useState(false);
 
   // Used for options menu
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -124,7 +134,8 @@ const Simulation = (props) => {
           console.error(err);
         });
     }
-  }, [user]);
+    if (refresh) setRefresh(false);
+  }, [user, refresh]);
 
   const getBlocks = (hashes, owner) => {
     let url = `http://${process.env.REACT_APP_API_URL}/api/data/getblocks`;
@@ -172,7 +183,7 @@ const Simulation = (props) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email: email, sim_id: simID }),
+      body: JSON.stringify({ email: email, sim_id: simID, user: user.email }),
     };
     fetch(url, options)
       .then((res) => {
@@ -182,15 +193,29 @@ const Simulation = (props) => {
             message: `Simulation shared`,
           });
           toggleDialog();
+        } else if (res.status == 401) {
+          setFeedback(true);
+          setFeedbackObj({
+            message: `Simulation already shared to ${email}`,
+            severity: "error",
+          });
+          toggleDialog();
+        } else if (res.status == 403) {
+          setFeedback(true);
+          setFeedbackObj({
+            message: `You do not have permission to share this simulation`,
+            severity: "error",
+          });
+          handleClose();
         }
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   };
 
   const deleteSimulation = (e) => {
-    e.preventDefault();
+    console.log("delete simulation");
 
     // Get Simulation ID
     let simID = id;
@@ -252,55 +277,59 @@ const Simulation = (props) => {
     fetch(url, getData)
       .then((res) => {
         if (res.ok) {
-          // Create block
-          let subsidy = res.subsidy;
-          let halvings = res.halvings;
-          let previousHash = res.previousHash;
-          let num_transactions = res.num_transactions;
-          let block_height = res.block_height;
-          let timeStamp = res.timeStamp;
-          let newBlock = createBlock(
-            previousHash,
-            timeStamp,
-            num_transactions,
-            block_height,
-            subsidy,
-            halvings,
-            user.email
-          );
-          console.log(
-            "Hash of simulation: " +
-              newBlock[0] +
-              ". Block information: " +
-              newBlock[1]
-          );
-          /*
-          // Send block info to API
-          let url = `http://${process.env.REACT_APP_API_URL}/api/data/addnewblock`;
-          let newBlockData = {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: user.email,
-              sim_id: simID,
-              hash: newBlock[0],
-              block: newBlock[1],
-            }),
-          };
-          fetch(url, createdata)
-            .then((res) => {
-              if (res.ok) {
-                // reroute back to simulation page to refresh blocks
-                history.push(`${process.env.PUBLIC_URL}/simulation/${id}`);
-              }
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-            */
+          return res.json();
         }
+      })
+      .then((res) => {
+        // Create block
+        let subsidy = res.subsidy;
+        let halvings = res.halvings;
+        let previousHash = res.previousHash;
+        let num_transactions = res.num_transactions;
+        let block_height = res.block_height;
+        let timeStamp = res.timeStamp;
+        let miningPool = res.miningPool;
+        let wallets = res.wallets;
+        let utxoPool = res.utxoPool;
+
+        let totalCoin = 0;
+
+        let newBlock = createBlock(
+          previousHash,
+          timeStamp,
+          num_transactions,
+          block_height,
+          subsidy,
+          halvings,
+          miningPool,
+          wallets,
+          utxoPool,
+          totalCoin
+        );
+
+        // Send block info to API
+        let url = `http://${process.env.REACT_APP_API_URL}/api/data/addnewblock`;
+        let createData = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: user.email,
+            sim_id: simID,
+            hash: newBlock[1],
+            block: newBlock[0],
+          }),
+        };
+        fetch(url, createData)
+          .then((res) => {
+            if (res.ok) {
+              setRefresh(true);
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       })
       .catch((err) => {
         console.error(err);
@@ -356,292 +385,245 @@ const Simulation = (props) => {
 
   return (
     <Auth setUser={setUser}>
-      <UserBar
-        barTitle={`Simulation ${simulation.sim_name}`}
-        tabNames={["Main Chain", "Wallet"]}
-        setSelectedTab={(e, newValue) => setSelectedTab(newValue)}
-        selectedTab={selectedTab}
-        setTheme={setTheme}
-      />
-      {simulation.email == "" ? (
-        <LinearProgress sx={{ m: 5 }} />
-      ) : (
-        <Container maxWidth="xl" sx={{ mt: 2 }}>
-          <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={(e) => {
-                setAnchorEl(e.currentTarget);
-              }}
-            >
-              Options
-            </Button>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              PaperProps={{
-                elevation: 0,
-                sx: {
-                  overflow: "visible",
-                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                  mt: 1.5,
-                  "& .MuiAvatar-root": {
-                    width: 32,
-                    height: 32,
-                    ml: -0.5,
-                    mr: 1,
-                  },
-                  "&:before": {
-                    display: "block",
-                    position: "absolute",
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: "background.paper",
-                    transform: "translateY(-50%) rotate(45deg)",
-                    zIndex: 0,
-                  },
-                },
-              }}
-              transformOrigin={{ horizontal: "right", vertical: "top" }}
-              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            >
-              <MenuItem
-                onClick={() => {
-                  handleClose();
-                  toggleDialog();
+      {user == {} ? null : (
+        <AuthSimulation email={user.email} sim_id={id}>
+          <UserBar
+            barTitle={`Simulation ${simulation.sim_name}`}
+            tabNames={["Main Chain", "Wallet"]}
+            setSelectedTab={(e, newValue) => setSelectedTab(newValue)}
+            selectedTab={selectedTab}
+            setTheme={setTheme}
+          />
+          {simulation.email == "" ? (
+            <LinearProgress sx={{ m: 5 }} />
+          ) : (
+            <Container maxWidth="xl" sx={{ mt: 2 }}>
+              <Button
+                color="secondary"
+                variant="contained"
+                onClick={(e) => {
+                  history.goBack();
                 }}
               >
-                <ListItemIcon>
-                  <ShareIcon />
-                </ListItemIcon>
-                Share
-              </MenuItem>
-              <MenuItem sx={{ color: "error.main" }} onClick={deleteSimulation}>
-                <ListItemIcon sx={{ color: "error.main" }}>
-                  <DeleteIcon />
-                </ListItemIcon>
-                Delete
-              </MenuItem>
-            </Menu>
-          </Box>
-          <Card>
-            <CardContent>
-              <Typography variant="h4">
-                {simulation.sim_name}
-                <Typography
-                  variant="caption"
-                  sx={{ display: "inline-block", float: "right" }}
-                >
-                  Created on {simulation.sim_created}
-                </Typography>
-              </Typography>
-              <Typography variant="subtitle1">
-                {simulation.sim_description}
-              </Typography>
-            </CardContent>
-          </Card>
-
-          <TabPanel value={selectedTab} index={0}>
-            <Box sx={{ mt: 2 }}>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={addNewBlock}
-                sx={{ mr: 2 }}
-              >
-                Add New Block
+                Back
               </Button>
-              <Box sx={{ mt: 2 }}>
-                <TextField
-                  size="small"
-                  label="Search"
-                  variant="outlined"
-                  type="search"
-                  id="search"
-                  onChange={searchBlocks}
-                  sx={{ mr: 1, mb: 1 }}
-                />
-                <FormControl sx={{ width: 229, mb: 1 }}>
-                  <InputLabel size="small" id="categoryLabel">
-                    Category
-                  </InputLabel>
-                  <Select
-                    size="small"
-                    labelId="categoryLabel"
-                    id="category"
-                    value={category}
-                    onChange={handleCategoryChange}
-                    input={<OutlinedInput size="small" label="Category" />}
-                    renderValue={(selected) => selected.join(", ")}
+              <TabPanel value={selectedTab} index={0}>
+                <Box
+                  sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}
+                >
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={(e) => {
+                      setAnchorEl(e.currentTarget);
+                    }}
                   >
-                    {categories.map((cat) => (
-                      <MenuItem key={cat} value={cat}>
-                        <Checkbox checked={category.indexOf(cat) > -1} />
-                        <ListItemText primary={cat} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-            </Box>
-            {searchResults != "" ? (
-              <Typography variant="overline">
-                <Chip
-                  label={searchResults}
-                  onDelete={handleResultsDelete}
-                  sx={{ mb: 1 }}
-                />
-              </Typography>
-            ) : (
-              <></>
-            )}
-            {filteredBlocks.length > 0 ? (
-              <DataGrid
-                blocks={filteredBlocks}
-                setSelectedTransaction={setSelectedTransaction}
-              />
-            ) : null}
-            {selectedTransaction ? (
-              <Container
-                maxWidth="md"
-                sx={{ m: 2, textAlign: "center", ml: "auto", mr: "auto" }}
-              >
+                    Options
+                  </Button>
+
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    PaperProps={{
+                      elevation: 0,
+                      sx: {
+                        overflow: "visible",
+                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                        mt: 1.5,
+                        "& .MuiAvatar-root": {
+                          width: 32,
+                          height: 32,
+                          ml: -0.5,
+                          mr: 1,
+                        },
+                        "&:before": {
+                          display: "block",
+                          position: "absolute",
+                          top: 0,
+                          right: 14,
+                          width: 10,
+                          height: 10,
+                          bgcolor: "background.paper",
+                          transform: "translateY(-50%) rotate(45deg)",
+                          zIndex: 0,
+                        },
+                      },
+                    }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        toggleDialog();
+                      }}
+                    >
+                      <ListItemIcon>
+                        <ShareIcon />
+                      </ListItemIcon>
+                      Share
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: "error.main" }}
+                      onClick={deleteSimulation}
+                    >
+                      <ListItemIcon sx={{ color: "error.main" }}>
+                        <DeleteIcon />
+                      </ListItemIcon>
+                      Delete
+                    </MenuItem>
+                  </Menu>
+                </Box>
                 <Card>
                   <CardContent>
-                    <Typography variant="h4">Transaction Details</Typography>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      sx={{ m: 2 }}
-                      size="small"
-                      onClick={() => setSelectedTransaction(null)}
-                    >
-                      Hide Transactions
-                    </Button>
-                    <Grid container>
-                      {selectedTransaction
-                        ? selectedTransaction.map((tx, index) => (
-                            <Grid
-                              item
-                              xs={12}
-                              sx={{ pl: 1, pr: 1, pt: 0.5, pb: 0.5 }}
-                              key={index}
-                            >
-                              <Grid container>
-                                <Typography variant="subtitle2" sx={{ pr: 2 }}>
-                                  Hash:
-                                </Typography>
-                                <Typography variant="caption" sx={{ pr: 2 }}>
-                                  {tx.hash}
-                                </Typography>
-                              </Grid>
-                              <Grid container>
-                                <Grid item xs={5}>
-                                  <Typography
-                                    variant="caption"
-                                    sx={{ textAlign: "left" }}
-                                  >
-                                    {tx.transaction_data.owner_UTXO}
-                                  </Typography>
-                                  <Typography
-                                    variant="caption"
-                                    sx={{ textAlign: "right" }}
-                                  >
-                                    {tx.transaction_data.amount_sent + "BTC"}
-                                  </Typography>
-                                  <Typography variant="caption">
-                                    {tx.transactionAddressFrom}
-                                  </Typography>
-                                </Grid>
-                                <Grid
-                                  item
-                                  xs={2}
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <ArrowForwardIcon />
-                                </Grid>
-                                <Grid item xs={5}>
-                                  <Typography variant="caption">
-                                    {tx.transaction_data.receiver}
-                                  </Typography>
-                                  <Typography variant="caption">
-                                    {tx.transaction_data.amount_received +
-                                      "BTC"}
-                                  </Typography>
-                                  <Typography variant="caption">
-                                    {tx.transactionAddressFrom}
-                                  </Typography>{" "}
-                                </Grid>
-                              </Grid>
-                              <Grid container>
-                                <Grid item xs={5}></Grid>
-                                <Grid item xs={2}></Grid>
-                                <Grid item xs={5}>
-                                  <Typography variant="caption">
-                                    {tx.transaction_data.sender_leftover}
-                                  </Typography>
-                                  <Typography variant="caption">
-                                    {tx.transaction_data.sender_leftover +
-                                      "BTC"}
-                                  </Typography>
-                                  <Typography variant="caption">
-                                    {tx.transactionAddressFrom}
-                                  </Typography>{" "}
-                                </Grid>
-                              </Grid>
-                              <Divider />
-                            </Grid>
-                          ))
-                        : "non"}
-                    </Grid>
+                    <Typography variant="h4">
+                      {simulation.sim_name}
+                      <Typography
+                        variant="caption"
+                        sx={{ display: "inline-block", float: "right" }}
+                      >
+                        Created on {simulation.sim_created}
+                      </Typography>
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      {simulation.sim_description}
+                    </Typography>
                   </CardContent>
                 </Card>
-              </Container>
-            ) : null}
-          </TabPanel>
 
-          <TabPanel value={selectedTab} index={1}>
-            <WalletComponent />
-          </TabPanel>
-        </Container>
+                <Box sx={{ mt: 2 }}>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={addNewBlock}
+                    sx={{ mr: 2 }}
+                  >
+                    Add New Block
+                  </Button>
+                  <Box sx={{ mt: 2 }}>
+                    <TextField
+                      size="small"
+                      label="Search"
+                      variant="outlined"
+                      type="search"
+                      id="search"
+                      onChange={searchBlocks}
+                      sx={{ mr: 1, mb: 1 }}
+                    />
+                    <FormControl sx={{ width: 229, mb: 1 }}>
+                      <InputLabel size="small" id="categoryLabel">
+                        Category
+                      </InputLabel>
+                      <Select
+                        size="small"
+                        labelId="categoryLabel"
+                        id="category"
+                        value={category}
+                        onChange={handleCategoryChange}
+                        input={<OutlinedInput size="small" label="Category" />}
+                        renderValue={(selected) => selected.join(", ")}
+                      >
+                        {categories.map((cat) => (
+                          <MenuItem key={cat} value={cat}>
+                            <Checkbox checked={category.indexOf(cat) > -1} />
+                            <ListItemText primary={cat} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </Box>
+                {searchResults != "" ? (
+                  <Typography variant="overline">
+                    <Chip
+                      label={searchResults}
+                      onDelete={handleResultsDelete}
+                      sx={{ mb: 1 }}
+                    />
+                  </Typography>
+                ) : (
+                  <></>
+                )}
+                {filteredBlocks.length > 0 ? (
+                  <DataGrid
+                    blocks={filteredBlocks}
+                    setSelectedTransaction={setSelectedTransaction}
+                  />
+                ) : null}
+                {selectedTransaction ? (
+                  <>
+                    <TransactionComponent
+                      transaction={selectedTransaction}
+                      setSelectedTransaction={setSelectedTransaction}
+                      setShowInputsOutputs={setShowInputsOutputs}
+                    />
+                  </>
+                ) : null}
+              </TabPanel>
+
+              <TabPanel value={selectedTab} index={1}>
+                <WalletComponent />
+              </TabPanel>
+            </Container>
+          )}
+
+          {/* Dialog for inputs/outputs */}
+          <Dialog
+            fullWidth={true}
+            maxWidth="xl"
+            scroll="body"
+            open={!_.isEmpty(showInputsOutputs)}
+            onClose={(e) => {
+              e.preventDefault();
+              setShowInputsOutputs({});
+            }}
+          >
+            <DialogTitle>Inputs/Outputs</DialogTitle>
+            <DialogContent>
+              {_.isEmpty(showInputsOutputs) ? null : (
+                <InputsOutputs
+                  transaction={showInputsOutputs}
+                  blockData={simulationBlocks}
+                />
+              )}
+            </DialogContent>
+          </Dialog>
+
+          {/* Dialog for sharing */}
+          <Dialog open={dialog} onClose={toggleDialog}>
+            <DialogTitle>Share</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                To share this simulation, please enter the email address of the
+                person you wish to share with.
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="email"
+                label="Email Address"
+                type="email"
+                fullWidth
+                variant="standard"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button variant="contained" color="error" onClick={toggleDialog}>
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={shareSimulation}
+              >
+                Subscribe
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </AuthSimulation>
       )}
-
-      {/* Dialog for sharing */}
-      <Dialog open={dialog} onClose={toggleDialog}>
-        <DialogTitle>Share</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To share this simulation, please enter the email address of the
-            person you wish to share with.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="email"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" color="error" onClick={toggleDialog}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="primary" onClick={shareSimulation}>
-            Subscribe
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Auth>
   );
 };

@@ -103,7 +103,6 @@ router.post("/register", cors(), (req, res) => {
               transactions JSON NOT NULL,
               transaction_counter TINYINT NOT NULL, 
               miner VARCHAR(256) NOT NULL, 
-              balances JSON NOT NULL,
               time_created TIMESTAMP NOT NULL, 
               PRIMARY KEY (hash));`,
             (err, result) => {
@@ -134,6 +133,50 @@ router.post("/auth", cors(), (req, res) => {
   } catch (err) {
     res.sendStatus(401);
   }
+});
+
+router.post("/auth/simulation", cors(), (req, res) => {
+  let email = req.body.email;
+  let sim_id = req.body.sim_id;
+
+  let authorized = false;
+
+  let qry = `SELECT sim_blocks FROM simulation WHERE email='${email}' AND sim_id='${sim_id}'`;
+  db.query(qry, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else if (result.length > 0) {
+      authorized = true;
+      if (authorized) {
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(400);
+      }
+    } else {
+      let qry2 = `SELECT sim_shared from simulation where sim_id = '${sim_id}'`;
+      db.query(qry2, (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          shared_emails = JSON.parse(result[0].sim_shared);
+
+          if (shared_emails["email"]) {
+            shared_emails["email"].map((e) => {
+              if (e == email) {
+                authorized = true;
+              }
+            });
+          }
+
+          if (authorized) {
+            res.sendStatus(200);
+          } else {
+            res.sendStatus(400);
+          }
+        }
+      });
+    }
+  });
 });
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import sjcl from "../../sjcl";
+const sjcl = require("../../sjcl");
 //initial file to code the wallet
 
 // we would start by having a wallet per user.
@@ -20,7 +20,8 @@ const createWallet = (miningPool) => {
     var random = Math.floor(Math.random() * 1000).toString();
     var newIdbitHash = sjcl.hash.sha256.hash(miningPool[i] + random);
     var hash = sjcl.codec.hex.fromBits(newIdbitHash);
-    var newWallet = [hash, miningPool[i], "simulationTest", []];
+    // TODO: add balance field for wallets?
+    var newWallet = [hash, miningPool[i], "simulationTest", [], 0]; // TODO: DELETE SIMULATION TEST
     walletArr.push(newWallet);
   }
   return walletArr;
@@ -28,12 +29,11 @@ const createWallet = (miningPool) => {
 
 const chooseWallet = (wallets) => {
   var randomWalletNum = randomSelector(0, wallets.length - 1); // select a number
-  var selectedWallet = walletArr[randomWalletNum]; // get wallet entry from the array
+  var selectedWallet = wallets[randomWalletNum]; // get wallet entry from the array
   var walletID = selectedWallet[0];
   return walletID;
 };
 
-export default createWallet;
-export { chooseWallet, walletArr };
+module.exports = { chooseWallet, walletArr, createWallet };
 
 //create a wallet per user

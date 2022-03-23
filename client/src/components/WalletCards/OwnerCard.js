@@ -5,9 +5,10 @@ import { Avatar, Box, Typography } from "@mui/material";
 import { Icon } from "@iconify/react";
 
 const OwnerCard = (props) => {
+  const { sx } = props;
   const theme = useTheme();
   return (
-    <Box sx={{ mt: -8, ml: 10 }}>
+    <Box sx={sx}>
       <Icon
         icon="bx:bxs-user-circle"
         width="275"
