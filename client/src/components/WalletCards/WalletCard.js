@@ -81,7 +81,7 @@ const WalletCard = (props) => {
   };
   return (
     <Auth setUser={setUser}>
-      <Card sx={{ mt: 3, ml: 5, borderRadius: "16px" }}>
+      <Card sx={{ mt: 1, ml: 2, borderRadius: "16px" }}>
         <CardContent>
           <Grid container rowSpacing={-1} spacing={2}>
             <Grid item lg={6}>
