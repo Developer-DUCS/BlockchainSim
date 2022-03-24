@@ -171,12 +171,17 @@ const selectAmount2Spend = (UTXO_Sender) => {
     var amount_sent = UTXO_Sender[0][1];
     var amount_received =
       Math.round(
-        (Math.random() * amount_sent - fee + Number.EPSILON) * NUMBER_DECIMALS
+        (Math.random() * amount_sent + Number.EPSILON) * NUMBER_DECIMALS
       ) / NUMBER_DECIMALS;
     var sender_leftover =
       Math.round(
         (amount_sent - amount_received + Number.EPSILON) * NUMBER_DECIMALS
       ) / NUMBER_DECIMALS;
+
+    // Subtract fee from received amount
+    amount_received =
+      Math.round((amount_received - fee + Number.EPSILON) * NUMBER_DECIMALS) /
+      NUMBER_DECIMALS;
     var selectedUTXO = UTXO_Sender;
   }
   // CASE 2: more than one UTXO input possible
