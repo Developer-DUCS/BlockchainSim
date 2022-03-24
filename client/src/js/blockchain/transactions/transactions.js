@@ -174,13 +174,6 @@ const selectSender = (block_height, walletArr, UTXO_Pool) => {
     i++;
   }
 
-  // check if wallet is undefined
-  if (senderWallet == undefined) {
-    var wallP = Math.floor(Math.random() * walletArr.length);
-    senderWallet = walletArr[wallP];
-    senderWallet[3].push(address2find);
-  }
-
   //check if that wallet has more then one possible utxo.
   if (senderWallet.length > 1) {
     //get total amount of valid UTXOS in wallet
