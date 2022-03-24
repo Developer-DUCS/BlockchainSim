@@ -148,7 +148,10 @@ const createAddressInfo = (
   var keys = createPublicPrivateKey();
   var address = createAddress(keys[2]);
   var walletPos = users.indexOf(wallet);
-  walletArr[walletPos][4] += amount; // update wallet amount
+  walletArr[walletPos][4] =
+    Math.round(
+      (walletArr[walletPos][4] + amount + Number.EPSILON) * NUMBER_DECIMALS
+    ) / NUMBER_DECIMALS;
   walletArr[walletPos][3].push(address); // add adress to wallet
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
@@ -175,13 +178,8 @@ const selectAmount2Spend = (UTXO_Sender) => {
       ) / NUMBER_DECIMALS;
     var sender_leftover =
       Math.round(
-        (amount_sent - amount_received + Number.EPSILON) * NUMBER_DECIMALS
+        (amount_sent - amount_received - fee + Number.EPSILON) * NUMBER_DECIMALS
       ) / NUMBER_DECIMALS;
-
-    // Subtract fee from received amount
-    amount_received =
-      Math.round((amount_received - fee + Number.EPSILON) * NUMBER_DECIMALS) /
-      NUMBER_DECIMALS;
     var selectedUTXO = UTXO_Sender;
   }
   // CASE 2: more than one UTXO input possible
