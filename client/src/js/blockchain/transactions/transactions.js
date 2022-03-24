@@ -145,6 +145,11 @@ const createTransactions = (
 
 //select a sender with valid money to create transaction
 const selectSender = (block_height, walletArr, UTXO_Pool) => {
+  // Filter out wallets with no money
+  walletArr = walletArr.filter((wallet) => {
+    return wallet[4] > 0;
+  });
+
   // choose valid UTXO
   var index = 0;
   var utxo = UTXO_Pool[index];

@@ -44,6 +44,14 @@ function coinbaseTransaction(
   totalCoin = totalCoin + subsidy;
 
   var amount_sent = fee + subsidy; // calculate amount the miner is receiving
+
+  // Update miner wallet
+  walletArr.map((wallet) => {
+    if (wallet[0] == minerWallet) {
+      wallet[4] = wallet[4] + amount_sent;
+    }
+  });
+
   var newAddressInfo = createAddressInfo(
     minerWallet,
     amount_sent,

@@ -14,12 +14,9 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import Button from "@mui/material/Button";
-import Autocomplete from "@mui/material/Autocomplete";
 import Auth from "../reusable/Auth.js";
 import TotalBalanceCard from "./TotalBalanceCard";
 import TransactionCard from "./TransactionsCard";
-import OwnerCard from "./OwnerCard";
 import TransactionButton from "./TransactionButton";
 import AddressesCard from "./AddressesCard";
 import LedgerCard from "./LedgerCard";
@@ -56,10 +53,14 @@ const WalletCard = (props) => {
         .then((wallets) => {
           setWallets(wallets);
           const minersArr = [];
+          let totalCoin = 0;
           for (let i = 0; i < wallets.length; i++) {
+            console.log("balances", wallets[i].balance);
+            totalCoin += wallets[i].balance;
             minersArr.push(wallets[i].owner);
           }
           setMiners(minersArr);
+          console.log("totalCoin", totalCoin);
         });
     }
   }, [user]);
