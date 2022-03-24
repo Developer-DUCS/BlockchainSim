@@ -165,21 +165,15 @@ const selectSender = (block_height, walletArr, UTXO_Pool) => {
   var found = false;
   var senderWallet;
   var i = 0;
-  while (!found && i < walletArr.length){
+  while (!found && i < walletArr.length) {
     adrs = walletArr[i][3];
-    if(adrs.indexOf(address2find) != -1){
-      found = true
-      senderWallet = walletArr[i]
+    if (adrs.indexOf(address2find) != -1) {
+      found = true;
+      senderWallet = walletArr[i];
     }
     i++;
   }
 
-  // check if wallet is undefined
-  if(senderWallet == undefined){
-    var wallP = Math.floor(Math.random() * walletArr.length);
-    senderWallet = walletArr[wallP];
-    senderWallet[3].push(address2find); 
-  }
   // check if wallet is undefined
   if (senderWallet == undefined) {
     var wallP = Math.floor(Math.random() * walletArr.length);

@@ -52,12 +52,14 @@ function singleTransaction(
   var adrsSender = [];
   for (var i = 0; i < selectedUTXO.length; i++) {
     adrsSender.push(selectedUTXO[i][0]);
-    //addresesSender.push[selectedUTXO]
 
-    var UTXOpos = UTXO_Pool.indexOf(selectedUTXO[i][0]);
-    UTXO_Pool.splice(UTXOpos, 1);
-    var adrPos = walletArr[wallPos][3].indexOf(selectedUTXO[i][0]);
-    walletArr[wallPos][3].splice(adrPos, 1);
+    UTXO_Pool = UTXO_Pool.filter((e) => {
+      return e[0] !== selectedUTXO[i][0];
+    });
+
+    walletArr[wallPos][3] = walletArr[wallPos][3].filter((e) => {
+      return e !== selectedUTXO[i][0];
+    });
   }
 
   if (typeof sender_leftover != undefined) {
@@ -87,7 +89,6 @@ function singleTransaction(
   var out_receiver_address = out_receiver_address_info[0];
   walletArr = out_receiver_address_info[1];
   UTXO_Pool = out_receiver_address_info[2];
-
 
   //create a transaction JSON object string to be hashed
   var transaction =
@@ -132,11 +133,18 @@ function singleTransaction(
     },
   };
 
-  return [transactionJSON, walletArr, UTXO_Pool, walletArr, UTXO_Pool];
+  return [transactionJSON, walletArr, UTXO_Pool];
 }
 
 // create an address given a wallet, amount of coin, weight of the block and a list of wallets
-const createAddressInfo = (wallet, amount, weight, users, walletArr, UTXO_Pool) => {
+const createAddressInfo = (
+  wallet,
+  amount,
+  weight,
+  users,
+  walletArr,
+  UTXO_Pool
+) => {
   var keys = createPublicPrivateKey();
   var address = createAddress(keys[2]);
   var walletPos = users.indexOf(wallet);
