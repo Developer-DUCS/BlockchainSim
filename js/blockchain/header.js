@@ -18,7 +18,7 @@
                 }
 */
 
-const sjcl = require("../../sjcl");
+const sjcl = require("../sjcl");
 
 const version = "00000020";
 const time = "2b80475f";

@@ -1,4 +1,4 @@
-const sjcl = require("../../../../sjcl");
+const sjcl = require("../../../sjcl");
 const {
   createAddress,
   createPublicPrivateKey,

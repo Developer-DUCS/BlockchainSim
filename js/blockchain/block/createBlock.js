@@ -18,9 +18,6 @@
         * 
 */
 
-import { ContactSupportOutlined } from "@material-ui/icons";
-
-// TODO: we may need to store the UTXO_Pool in the data base
 const blockCreator = require("./block");
 const { chooseMiner } = require("./miningPool");
 
@@ -77,4 +74,4 @@ const createBlock = (
   return newBlock;
 };
 
-export default createBlock;
+module.exports = createBlock;

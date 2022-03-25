@@ -1,4 +1,4 @@
-const sjcl = require("../../sjcl");
+const sjcl = require("../sjcl");
 //initial file to code the wallet
 
 // we would start by having a wallet per user.

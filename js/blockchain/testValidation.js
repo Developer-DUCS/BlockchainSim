@@ -1,6 +1,6 @@
 const ECKey = require("ec-key");
 const base58 = require("base58-encode");
-const sjcl = require("../../sjcl");
+const sjcl = require("../sjcl");
 
 // ENCRIPTATION PACKAGES AND THEIR DOCUMENTATION
 //ECKey npm package: https://github.com/usrz/ec-key#-tostring-format-

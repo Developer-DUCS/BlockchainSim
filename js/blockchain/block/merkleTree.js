@@ -1,4 +1,4 @@
-const sjcl = require("../../../sjcl");
+const sjcl = require("../../sjcl");
 
 /*
     --> MERKLETREE.JS FILE
