@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 import Switch from "@mui/material/Switch";
 import lightTheme from "../../themes/lightTheme";
 import darkTheme from "../../themes/darkTheme";
-import { createBrowserHistory } from "history";
+import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 const NavBar = (props) => {
-  const history = createBrowserHistory({ forceRefresh: true });
+  const history = useHistory();
   const { setTheme, signIn, toggleSignIn } = props;
   const [toggle, setToggle] = React.useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
