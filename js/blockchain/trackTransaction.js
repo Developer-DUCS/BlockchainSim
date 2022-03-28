@@ -11,12 +11,8 @@ const trackAddres = (inputs, outputs, blocks) => {
   var allInfoInputs = [];
   var allInfoOutputs = [];
 
-  var posInput;
   var end = false;
-  var numAdr2Find = outputs.length + inputs.length;
 
-  console.log(" Output to find: ", outputs);
-  console.log(" Inputs: ", inputs);
   for (let j = 0; j < blocks.length; j++) {
     // change for while loop
     var ts = blocks[j].transactions;

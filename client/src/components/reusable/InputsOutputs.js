@@ -19,9 +19,6 @@ const InputsOutputs = ({ transaction, blockData }) => {
 
   React.useEffect(() => {
     if (!_.isEmpty(transaction)) {
-      console.log("inputs/outputs:transaction", transaction);
-      console.log("inputs/outputs:blocks", blockData);
-
       // Set the total number of blocks
       setTotalBlocks(blockData.length);
 
@@ -31,9 +28,6 @@ const InputsOutputs = ({ transaction, blockData }) => {
         transaction.transaction_data.receiver_address,
         transaction.transaction_data.sender_leftover_address,
       ];
-
-      console.log("inputTransactions", inputTransactions);
-      console.log("outputTransactions", outputTransactions);
 
       //call track address here with ur data
       /*       let inputsOutputs = trackAddres(
@@ -60,29 +54,28 @@ const InputsOutputs = ({ transaction, blockData }) => {
       fetch(url, getData)
         .then((res) => {
           if (res.ok) {
-            console.log("RES JSON:", res.json());
+            console.log("RES JSON:", res);
             return res.json();
+          } else {
+            console.log("error");
           }
         })
         .then((res) => {
-          console.log("RES: " + res);
-          inputsOutputs = JSON.parse(res.inputsOutputs);
+          inputsOutputs = res.inputsOutputs;
+
+          // Set the inputs and outputs for drawing the arrows
+          // This should be the block number or blockchain/utxo_pool
+          // setInputs(inputsOutputs[0]); // Example - inputs from blockchain and block 45
+          // setOutputs(inputsOutputs[1]); // Example - outputs to block 86 and utxo_pool
+          setInputs(inputsOutputs[0]);
+          setOutputs(inputsOutputs[1]);
+
+          // Sets the loading state to false
+          setLoading(false);
         })
         .catch((err) => {
           console.error(err);
         });
-
-      console.log("inputs/outputs", inputsOutputs);
-
-      // Set the inputs and outputs for drawing the arrows
-      // This should be the block number or blockchain/utxo_pool
-      // setInputs(inputsOutputs[0]); // Example - inputs from blockchain and block 45
-      // setOutputs(inputsOutputs[1]); // Example - outputs to block 86 and utxo_pool
-      setInputs(inputsOutputs[0]);
-      setOutputs(inputsOutputs[1]);
-
-      // Sets the loading state to false
-      setLoading(false);
     }
   }, [transaction]);
 

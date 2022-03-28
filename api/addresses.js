@@ -9,18 +9,12 @@ app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb" }));
 
-router.post("trackaddress", cors(), (req, resp) => {
+router.post("/trackaddress", cors(), (req, resp) => {
   console.log("enter route");
   // Initialize variables
-  let inputTransactions = req.body.inputTransactions;
-  let outputTransactions = req.body.outputTransactions;
+  let inputTransactions = req.body.input;
+  let outputTransactions = req.body.output;
   let blockData = req.body.blockData;
-
-  console.log(
-    "stuff passed in" + inputTransactions,
-    outputTransactions,
-    blockData
-  );
 
   let inputsOutputs = trackAddres(
     inputTransactions,
@@ -28,11 +22,7 @@ router.post("trackaddress", cors(), (req, resp) => {
     blockData
   );
 
-  console.log("prior to send response back");
-
-  resp.status(200).json({
-    inputsOutputs: inputsOutputs,
-  });
+  resp.status(200).send({ inputsOutputs: inputsOutputs });
 });
 
 module.exports = router;
