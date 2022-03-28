@@ -12,7 +12,7 @@ import TutorialHome from "./components/TutorialHome";
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
-import lightTheme from "./js/themes/lightTheme";
+import lightTheme from "./themes/lightTheme";
 import CreateSimulation from "./components/CreateSimulationPage";
 import SimulationHome from "./components/SimulationHome";
 import Feedback from "./components/reusable/Feedback";

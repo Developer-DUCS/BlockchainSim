@@ -14,7 +14,7 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { styled } from "@mui/material/styles";
-import lightTheme from "../../js/themes/lightTheme";
+import lightTheme from "../../themes/lightTheme";
 import LaunchIcon from "@mui/icons-material/Launch";
 import { Link } from "react-router-dom";
 
@@ -162,7 +162,6 @@ function Row(props) {
 
 const SimTable = (props) => {
   const { table } = props;
-  //console.log("Table", table.rows);
   const rows = [];
 
   table.rows.forEach((ele) =>

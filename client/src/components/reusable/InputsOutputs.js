@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Xarrow from "react-xarrows";
 
-import trackAddres from "../../js/blockchain/trackTransaction";
+//import trackAddres from "../../../js/blockchain/trackTransaction";
 
 const InputsOutputs = ({ transaction, blockData }) => {
   const [totalBlocks, setTotalBlocks] = React.useState(0);
@@ -36,11 +36,41 @@ const InputsOutputs = ({ transaction, blockData }) => {
       console.log("outputTransactions", outputTransactions);
 
       //call track address here with ur data
-      let inputsOutputs = trackAddres(
+      /*       let inputsOutputs = trackAddres(
         inputTransactions,
         outputTransactions,
         blockData
-      );
+      ); */
+      let inputsOutputs;
+
+      // Add block API Call
+      let url = `http://${process.env.REACT_APP_API_URL}/api/addresses/trackaddress`;
+      let getData = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          input: inputTransactions,
+          output: outputTransactions,
+          blockData: blockData,
+        }),
+      };
+
+      fetch(url, getData)
+        .then((res) => {
+          if (res.ok) {
+            console.log("RES JSON:", res.json());
+            return res.json();
+          }
+        })
+        .then((res) => {
+          console.log("RES: " + res);
+          inputsOutputs = JSON.parse(res.inputsOutputs);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
 
       console.log("inputs/outputs", inputsOutputs);
 

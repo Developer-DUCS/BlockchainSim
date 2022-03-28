@@ -38,7 +38,6 @@ const totalCoinBlockChain = (subsidy, numBlocks, halving) => {
     }
     totalTransit += curSubsidy;
   }
-  console.log("Total coin that should be in transit: ", totalTransit);
 };
 
 var previousHash;
@@ -61,7 +60,6 @@ const simulationCreator = (
   previousHash = initialHash;
 
   for (var i = 0; i < numBlocks; i++) {
-    console.log(" BLOCK: ", i);
     var selectMiner;
 
     //first block assigned to user, rest random

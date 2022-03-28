@@ -1,4 +1,4 @@
-const sjcl = require("../../../../sjcl");
+const sjcl = require("../../../sjcl");
 //const { UTXO_Pool } = require("../UTXO_Pool");
 //const { walletArr } = require("../../wallet");
 const {
@@ -88,7 +88,6 @@ function singleTransaction(
   walletArr = out_receiver_address_info[1];
   UTXO_Pool = out_receiver_address_info[2];
 
-
   //create a transaction JSON object string to be hashed
   var transaction =
     "{ transaction_data: { addresses_input_UTXO: " +
@@ -136,7 +135,14 @@ function singleTransaction(
 }
 
 // create an address given a wallet, amount of coin, weight of the block and a list of wallets
-const createAddressInfo = (wallet, amount, weight, users, walletArr, UTXO_Pool) => {
+const createAddressInfo = (
+  wallet,
+  amount,
+  weight,
+  users,
+  walletArr,
+  UTXO_Pool
+) => {
   var keys = createPublicPrivateKey();
   var address = createAddress(keys[2]);
   var walletPos = users.indexOf(wallet);

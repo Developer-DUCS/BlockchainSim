@@ -4,13 +4,13 @@ import Box from "@mui/system/Box";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import Switch from "@mui/material/Switch";
-import lightTheme from "../../js/themes/lightTheme";
-import darkTheme from "../../js/themes/darkTheme";
-import { createBrowserHistory } from "history";
+import lightTheme from "../../themes/lightTheme";
+import darkTheme from "../../themes/darkTheme";
+import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 const NavBar = (props) => {
-  const history = createBrowserHistory({ forceRefresh: true });
+  const history = useHistory();
   const { setTheme, signIn, toggleSignIn } = props;
   const [toggle, setToggle] = React.useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -37,7 +37,6 @@ const NavBar = (props) => {
 
       // Refresh the page (make sure everything is in sync)
       history.push(`${process.env.PUBLIC_URL}/signin`);
-      history.go(0);
     }
   };
 

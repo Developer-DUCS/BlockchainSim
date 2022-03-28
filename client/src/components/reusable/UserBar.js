@@ -12,8 +12,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Switch from "@mui/material/Switch";
 import { styled, useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import lightTheme from "../../js/themes/lightTheme";
-import darkTheme from "../../js/themes/darkTheme";
+import lightTheme from "../../themes/lightTheme";
+import darkTheme from "../../themes/darkTheme";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -33,7 +33,7 @@ import LockOpen from "@mui/icons-material/LockOpen";
 import Add from "@mui/icons-material/Add";
 import { ClickAwayListener } from "@mui/material";
 import { Link } from "react-router-dom";
-import { createBrowserHistory } from "history";
+import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 const drawerWidth = 270;
@@ -85,7 +85,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const UserBar = (props) => {
-  const history = createBrowserHistory({ forceRefresh: true });
+  const history = useHistory();
   const theme = useTheme();
   // setTheme (broken)
   // barTitle: String
