@@ -119,7 +119,6 @@ const UserBar = (props) => {
     } finally {
       // Refresh the page (make sure everything is in sync)
       history.push(`${process.env.PUBLIC_URL}/signin`);
-      history.go(0);
     }
   };
 
