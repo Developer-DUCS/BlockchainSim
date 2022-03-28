@@ -52,12 +52,14 @@ function singleTransaction(
   var adrsSender = [];
   for (var i = 0; i < selectedUTXO.length; i++) {
     adrsSender.push(selectedUTXO[i][0]);
-    //addresesSender.push[selectedUTXO]
 
-    var UTXOpos = UTXO_Pool.indexOf(selectedUTXO[i][0]);
-    UTXO_Pool.splice(UTXOpos, 1);
-    var adrPos = walletArr[wallPos][3].indexOf(selectedUTXO[i][0]);
-    walletArr[wallPos][3].splice(adrPos, 1);
+    UTXO_Pool = UTXO_Pool.filter((e) => {
+      return e[0] !== selectedUTXO[i][0];
+    });
+
+    walletArr[wallPos][3] = walletArr[wallPos][3].filter((e) => {
+      return e !== selectedUTXO[i][0];
+    });
   }
 
   if (typeof sender_leftover != undefined) {
@@ -131,7 +133,7 @@ function singleTransaction(
     },
   };
 
-  return [transactionJSON, walletArr, UTXO_Pool, walletArr, UTXO_Pool];
+  return [transactionJSON, walletArr, UTXO_Pool];
 }
 
 // create an address given a wallet, amount of coin, weight of the block and a list of wallets
@@ -146,7 +148,10 @@ const createAddressInfo = (
   var keys = createPublicPrivateKey();
   var address = createAddress(keys[2]);
   var walletPos = users.indexOf(wallet);
-  walletArr[walletPos][4] += amount; // update wallet amount
+  walletArr[walletPos][4] =
+    Math.round(
+      (walletArr[walletPos][4] + amount + Number.EPSILON) * NUMBER_DECIMALS
+    ) / NUMBER_DECIMALS;
   walletArr[walletPos][3].push(address); // add adress to wallet
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
@@ -169,11 +174,11 @@ const selectAmount2Spend = (UTXO_Sender) => {
     var amount_sent = UTXO_Sender[0][1];
     var amount_received =
       Math.round(
-        (Math.random() * amount_sent - fee + Number.EPSILON) * NUMBER_DECIMALS
+        (Math.random() * amount_sent + Number.EPSILON) * NUMBER_DECIMALS
       ) / NUMBER_DECIMALS;
     var sender_leftover =
       Math.round(
-        (amount_sent - amount_received + Number.EPSILON) * NUMBER_DECIMALS
+        (amount_sent - amount_received - fee + Number.EPSILON) * NUMBER_DECIMALS
       ) / NUMBER_DECIMALS;
     var selectedUTXO = UTXO_Sender;
   }
