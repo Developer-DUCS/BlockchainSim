@@ -92,7 +92,7 @@ const WalletCard = (props) => {
                   fontWeight: 500,
                 }}
               >
-                <b style={{ color: theme.palette.primary.main }}>MINER: </b>
+                <b style={{ color: theme.palette.primary }}>MINER: </b>
                 <b>{miner}</b>
               </Typography>
             </Grid>
@@ -138,10 +138,16 @@ const WalletCard = (props) => {
               <LedgerCard sx={{ width: "100%", height: 500 }} />
             </Grid>
             <Grid item lg={6}>
-              <TransactionButton sx={{ width: "100%" }} />
+              <TransactionButton
+                sx={{ width: "100%" }}
+                title="Request a payment"
+              />
             </Grid>
             <Grid item lg={6}>
-              <TransactionButton sx={{ width: "100%" }} />
+              <TransactionButton
+                sx={{ width: "100%" }}
+                title="Make a payment"
+              />
             </Grid>
           </Grid>
         </CardContent>

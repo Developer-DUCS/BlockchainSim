@@ -18,6 +18,8 @@ import MainCard from "./MainCard";
 // assets
 import TableChartOutlinedIcon from "@mui/icons-material/TableChartOutlined";
 
+import { Icon } from "@iconify/react";
+
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: theme.palette.success.main,
@@ -28,7 +30,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 }));
 
 const TransactionButton = (props) => {
-  const { sx } = props;
+  const { sx, title } = props;
   const theme = useTheme();
 
   return (
@@ -47,7 +49,8 @@ const TransactionButton = (props) => {
                     color: "#fff",
                   }}
                 >
-                  <TableChartOutlinedIcon fontSize="inherit" />
+                  {/* <TableChartOutlinedIcon fontSize="inherit" /> */}
+                  <Icon icon="fa6-solid:money-bill-transfer" />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
@@ -65,7 +68,7 @@ const TransactionButton = (props) => {
                       mb: 0.75,
                     }}
                   >
-                    Request a Payment
+                    {title}
                   </Typography>
                 }
                 secondary={
@@ -73,7 +76,7 @@ const TransactionButton = (props) => {
                     variant="subtitle2"
                     sx={{ color: "primary.light", mt: 0.25 }}
                   >
-                    Stuff
+                    Click here to make transaction
                   </Typography>
                 }
               />

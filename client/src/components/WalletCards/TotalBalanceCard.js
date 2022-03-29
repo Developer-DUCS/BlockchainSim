@@ -95,7 +95,7 @@ const TotalBalanceCard = (props) => {
   return (
     <>
       <CardWrapper border={false} content={false} sx={sx}>
-        <Box sx={{ p: 2.25 }}>
+        <Box sx={{ p: 2.25, height: 190 }}>
           <Grid container direction="column">
             <Grid item>
               <Grid container justifyContent="space-between">
@@ -126,6 +126,7 @@ const TotalBalanceCard = (props) => {
                     }
                   >
                     <Avatar
+                      onClick={console.log("clicked")}
                       variant="rounded"
                       sx={{
                         ...theme.typography.commonAvatar,
