@@ -30,6 +30,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import HomeIcon from "@mui/icons-material/Home";
 import LockOpen from "@mui/icons-material/LockOpen";
+import Auth from "../reusable/Auth";
 import Add from "@mui/icons-material/Add";
 import { ClickAwayListener } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -85,6 +86,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const UserBar = (props) => {
+  const [user, setUser] = React.useState({});
+
   const history = useHistory();
   const theme = useTheme();
   // setTheme (broken)
@@ -142,7 +145,7 @@ const UserBar = (props) => {
   };
 
   return (
-    <>
+    <Auth setUser={setUser}>
       <AppBar
         component="div"
         color="primary"
@@ -273,7 +276,7 @@ const UserBar = (props) => {
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
             <MenuItem>
-              <Avatar /> My Profile
+              <Avatar /> {user.email}
             </MenuItem>
             <Divider />
             <MenuItem>
@@ -329,7 +332,7 @@ const UserBar = (props) => {
             ))}
         </Tabs>
       </AppBar>
-    </>
+    </Auth>
   );
 };
 export default UserBar;

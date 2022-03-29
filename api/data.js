@@ -108,11 +108,12 @@ router.post("/createsim", cors(), (req, res) => {
       simulation_id: wallets[i][2],
       addresses: wallets[i][3],
       balance: wallets[i][4],
+      personal_ledger: wallets[i][5],
     });
   }
-
   const swallets = JSON.stringify(walletsJSON);
 
+  console.log(swallets);
   let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets,miningPool,utxoPool,blockwin) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${swallets}', '${sminingPool}' , '${utxoPool}' , '${blockwin}' );`;
   db.query(qry, (err) => {
     if (err) {

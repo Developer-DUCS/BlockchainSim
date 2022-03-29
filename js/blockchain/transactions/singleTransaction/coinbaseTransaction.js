@@ -117,6 +117,8 @@ function createAddressInfo(
   var address = createAddress(keys[2]);
   var walletPos = users.indexOf(wallet);
   walletArr[walletPos][3].push(address); // add adress to wallet
+  var newLedgerEle = ["received", address, amount, weight];
+  walletArr[walletPos][5].push(newLedgerEle);
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
   return [address, walletArr, UTXO_Pool];
