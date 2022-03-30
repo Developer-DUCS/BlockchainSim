@@ -275,10 +275,21 @@ const Simulation = (props) => {
       .then((res) => {
         if (res.ok) {
           setRefresh(true);
+          setFeedback(true);
+          setFeedbackObj({
+            message: `Added a new block.`,
+            duration: 2000,
+          });
         }
       })
       .catch((err) => {
         console.error(err);
+        setFeedback(true);
+        setFeedbackObj({
+          message: `Failed to add a new block.`,
+          severity: "error",
+          duration: 3000,
+        });
       });
   };
 
