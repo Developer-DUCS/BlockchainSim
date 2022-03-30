@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import React, { useState } from "react";
 
 // material-ui
 import { styled, useTheme } from "@mui/material/styles";
@@ -17,9 +17,11 @@ import FileCopyTwoToneIcon from "@mui/icons-material/FileCopyOutlined";
 import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfOutlined";
 import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { Icon } from "@iconify/react";
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: theme.palette.warning.main,
   color: "#fff",
   // overflow: "hidden",
   position: "relative",
@@ -27,10 +29,14 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 }));
 
 const LedgerCard = (props) => {
-  const { sx } = props;
+  const { sx, wallets } = props;
+
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
+
+  // Want to get the personal ledger for a certain miner
+  // Need to create API route
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -66,8 +72,8 @@ const LedgerCard = (props) => {
                     sx={{
                       ...theme.typography.commonAvatar,
                       ...theme.typography.mediumAvatar,
-                      backgroundColor: theme.palette.secondary.dark,
-                      color: theme.palette.secondary[200],
+                      backgroundColor: theme.palette.warning.dark,
+                      color: theme.palette.warning[200],
                       zIndex: 1,
                     }}
                     aria-controls="menu-earning-card"
@@ -125,6 +131,39 @@ const LedgerCard = (props) => {
                   </Typography>
                 </Grid>
                 <Grid item></Grid>
+              </Grid>
+            </Grid>
+            <Grid item>
+              <Grid container alignItems="center">
+                <Grid item>
+                  <Typography
+                    sx={{
+                      fontSize: "1.5rem",
+                      fontWeight: 400,
+                      mr: 1,
+                      mt: 0.5,
+                      mb: 0.75,
+                    }}
+                  >
+                    100
+                  </Typography>
+                </Grid>
+                <Grid item sx={{ mt: 0.5 }}>
+                  <Icon
+                    icon="mdi:bitcoin"
+                    width="30"
+                    height="30"
+                    mt="10"
+                    color="theme.palette.secondary.dark"
+                  />
+                </Grid>
+                <Grid>
+                  <Typography sx={{ ml: 1 }}>
+                    BLOCKCHAIN
+                    <ArrowForwardIcon sx={{ ml: 1, mt: -0.5, mr: 1 }} />
+                    ean@drury.edu
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>

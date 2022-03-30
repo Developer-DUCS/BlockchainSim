@@ -144,7 +144,8 @@ const TransactionButton = (props) => {
           TO DO:
           - Verify that a user has enough to send
           - Add functionality to 'confirm button'
-          - Actually do something with that data */}
+          - Actually do something with that data 
+          - Make sure that a miner is actually selected*/}
           <DialogContentText sx={{ mt: 2 }}>
             <FormControl sx={{ color: "primary", width: "100%" }}>
               <Grid container>
