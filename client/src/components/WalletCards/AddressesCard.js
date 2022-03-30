@@ -120,9 +120,10 @@ const AddressesCard = (props) => {
                         ml: 7,
                         mt: -4.5,
                         mb: 3,
+                        overflow: "auto",
                       }}
                     >
-                      Transactions Addresses
+                      Addresses Available
                     </Typography>
                     {addresses.map((address, i) => (
                       <Typography
@@ -133,7 +134,7 @@ const AddressesCard = (props) => {
                           ml: 1,
                         }}
                       >
-                        <strong>{i}:</strong> {address.slice(0, 23)}...
+                        <strong>{i}:</strong> {address.slice(0, 20)}...
                       </Typography>
                     ))}
                   </Grid>

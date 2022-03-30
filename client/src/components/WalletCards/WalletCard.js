@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import Button from "@mui/material/Button";
 import Auth from "../reusable/Auth.js";
 import TotalBalanceCard from "./TotalBalanceCard";
 import TransactionCard from "./TransactionsCard";
@@ -126,7 +127,21 @@ const WalletCard = (props) => {
               <TotalBalanceCard sx={{ width: "100%" }} balance={balance} />
             </Grid>
             <Grid item lg={6}>
-              <TransactionCard sx={{ width: "100%" }} />
+              {/* <TransactionCard sx={{ width: "100%" }} /> */}
+              <Grid item>
+                <TransactionButton
+                  sx={{ width: "100%" }}
+                  type="Pay"
+                  miners={miners}
+                />
+              </Grid>
+              <Grid item>
+                <TransactionButton
+                  sx={{ mt: 3.5, width: "100%" }}
+                  type="Request"
+                  miners={miners}
+                />
+              </Grid>
             </Grid>
             <Grid item lg={6}>
               <AddressesCard
@@ -137,7 +152,7 @@ const WalletCard = (props) => {
             <Grid item lg={6}>
               <LedgerCard sx={{ width: "100%", height: 500 }} />
             </Grid>
-            <Grid item lg={6}>
+            {/* <Grid item lg={6}>
               <TransactionButton
                 sx={{ width: "100%" }}
                 title="Request a payment"
@@ -148,7 +163,7 @@ const WalletCard = (props) => {
                 sx={{ width: "100%" }}
                 title="Make a payment"
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </CardContent>
       </Card>

@@ -520,7 +520,6 @@ const CreateSimulation = (props) => {
                             id="miners"
                             label="How many miners will be in the simulation:"
                             type="number"
-                            helperText="between 50 and 150"
                             InputProps={{ inputProps: { min: 50, max: 150 } }}
                             InputLabelProps={{
                               shrink: true,
