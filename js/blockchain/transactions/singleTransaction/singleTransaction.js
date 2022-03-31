@@ -69,7 +69,7 @@ function singleTransaction(
       amount_sent + fee,
       block_height,
     ];
-    // walletArr[wallPos][5].push(newLedgerEle);
+    walletArr[wallPos][5].push(newLedgerEle);
   }
 
   if (typeof sender_leftover != undefined) {
@@ -164,7 +164,7 @@ const createAddressInfo = (
     ) / NUMBER_DECIMALS;
   walletArr[walletPos][3].push(address); // add adress to wallet
   var newLedgerEle = ["received", address, amount, weight];
-  // walletArr[walletPos][5].push(newLedgerEle);
+  walletArr[walletPos][5].push(newLedgerEle);
   var newUTXO = [address, amount, weight]; // create new UTXO
   UTXO_Pool.push(newUTXO); //add UTXO to pool
   return [address, walletArr, UTXO_Pool];

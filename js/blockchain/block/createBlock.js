@@ -43,6 +43,7 @@ const createBlock = (
     let temp_wallet = [];
     Object.entries(wallets_to_array[i]).forEach(([key, value]) => {
       let temp_addresses = [];
+      let temp_ledger = [];
       if (key == "hash") {
         temp_wallet.push(value);
       } else if (key == "owner") {
@@ -54,6 +55,9 @@ const createBlock = (
       } else if (key == "addresses") {
         value.forEach((element) => temp_addresses.push(element));
         temp_wallet.push(temp_addresses);
+      } else if (key == "personal_ledger") {
+        value.forEach((element) => temp_ledger.push(element));
+        temp_wallet.push(temp_ledger);
       }
     });
     wallet_array.push(temp_wallet);
