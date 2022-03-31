@@ -89,7 +89,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   variant: "permanent",
 }));
 
-const UserBar = (props) => {
+const TutorialBar = (props) => {
   const history = useHistory();
   const theme = useTheme();
   // setTheme (broken)
@@ -102,12 +102,10 @@ const UserBar = (props) => {
   const [toggle, setToggle] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const setOpen2 = React.useState(false);
-  const open2 = React.useState(true);
 
-  const handleDrawerClick = () => {
-    setOpen2(!open2);
-  };
+  //const handleDrawerClick = () => {
+  //  setOpen2(!open2);
+  //};
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
   const signOut = () => {
@@ -348,4 +346,4 @@ const UserBar = (props) => {
     </>
   );
 };
-export default UserBar;
+export default TutorialBar;

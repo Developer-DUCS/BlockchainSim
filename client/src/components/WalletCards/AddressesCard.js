@@ -20,7 +20,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DnsIcon from "@mui/icons-material/Dns";
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.light,
+  backgroundColor: theme.palette.tertiary.main,
   color: "#fff",
   // overflow: "hidden",
   position: "relative",
