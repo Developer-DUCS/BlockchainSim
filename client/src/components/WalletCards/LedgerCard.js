@@ -21,7 +21,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Icon } from "@iconify/react";
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-  backgroundColor: theme.palette.warning.main,
+  backgroundColor: theme.palette.secondary.main,
   color: "#fff",
   // overflow: "hidden",
   position: "relative",
