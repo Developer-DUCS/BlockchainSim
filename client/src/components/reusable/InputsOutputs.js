@@ -6,16 +6,18 @@ import {
   CardContent,
   LinearProgress,
   Avatar,
+  Button,
+  Popover,
 } from "@mui/material";
 import Xarrow from "react-xarrows";
-
-//import trackAddres from "../../../js/blockchain/trackTransaction";
 
 const InputsOutputs = ({ transaction, blockData }) => {
   const [totalBlocks, setTotalBlocks] = React.useState(0);
   const [inputs, setInputs] = React.useState([]);
   const [outputs, setOutputs] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [showBlocks, setShowBlocks] = React.useState(inputs);
 
   React.useEffect(() => {
     if (!_.isEmpty(transaction)) {
@@ -54,7 +56,6 @@ const InputsOutputs = ({ transaction, blockData }) => {
       fetch(url, getData)
         .then((res) => {
           if (res.ok) {
-            console.log("RES JSON:", res);
             return res.json();
           } else {
             console.log("error");
@@ -78,6 +79,18 @@ const InputsOutputs = ({ transaction, blockData }) => {
         });
     }
   }, [transaction]);
+
+  const handleInputsClick = (e) => {
+    setShowBlocks(inputs);
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleOutputsClick = (e) => {
+    setShowBlocks(outputs);
+    setAnchorEl(e.currentTarget);
+  };
+
+  const open = Boolean(anchorEl);
 
   return (
     <Card sx={{ mb: 2 }}>
@@ -117,7 +130,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
                     zIndex: "1",
                   }}
                 >
-                  {" "}
+                  {transaction.transaction_data.block_height + 1}
                 </Avatar>
               </Grid>
               <Grid item xs={2}>
@@ -151,6 +164,26 @@ const InputsOutputs = ({ transaction, blockData }) => {
                 }}
               ></Box>
             ))}
+            <Grid container>
+              <Grid item xs={6} textAlign="center">
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleInputsClick}
+                >
+                  Inputs
+                </Button>
+              </Grid>
+              <Grid item xs={6} textAlign="center">
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={handleOutputsClick}
+                >
+                  Outputs
+                </Button>
+              </Grid>
+            </Grid>
 
             {inputs.map((input, i) => (
               <Xarrow
@@ -159,7 +192,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
                 end="parent"
                 path="straight"
                 headSize={3}
-                color="green"
+                color="#127E59"
                 startAnchor={{
                   position: input == -1 ? "right" : "top",
                 }}
@@ -174,11 +207,45 @@ const InputsOutputs = ({ transaction, blockData }) => {
                 end={`${output}`}
                 path="straight"
                 headSize={3}
-                color="red"
+                color="#BC2C1A"
                 startAnchor={{ position: "auto" }}
                 endAnchor={{ position: output == -1 ? "left" : "top" }}
               />
             ))}
+
+            <Popover
+              id={"inputs/outputs"}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={() => setAnchorEl(null)}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+            >
+              <Grid container>
+                {showBlocks.map((block) => (
+                  <Grid item sx={{ m: 0.5 }}>
+                    <Button
+                      disabled={block === -1}
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      onClick={() => {
+                        console.log("block", block);
+                        setAnchorEl(null);
+                      }}
+                    >
+                      {block}
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+            </Popover>
           </>
         )}
       </CardContent>
