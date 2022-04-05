@@ -43,7 +43,7 @@ const trackAddres = (inputs, outputs, blocks) => {
               var b_weigth = t.transaction_data.block_height;
               var newInput = [found, b_weigth];
               allInfoInputs.push(newInput);
-              wInputs.push(b_weigth + 1);
+              wInputs.push(t);
               adrInputs.push(found);
             }
           }
@@ -68,7 +68,7 @@ const trackAddres = (inputs, outputs, blocks) => {
               var b_weigth = t.transaction_data.block_height;
               var newOutput = [foundOut, b_weigth];
               allInfoOutputs.push(newOutput);
-              wOutputs.push(b_weigth + 1);
+              wOutputs.push(t);
               adrOutputs.push(foundOut);
             }
           }
@@ -76,7 +76,7 @@ const trackAddres = (inputs, outputs, blocks) => {
           // input is BLOCKCHAIN so there is no possible previous output
           var newOutput = ["BLOCKHAIN", -1];
           allInfoOutputs.push(newOutput);
-          wOutputs.push(-1);
+          wOutputs.push({ transaction_data: { block_height: -1 - 1 } });
           adrOutputs.push("BLOCKCHAIN");
           end = true;
         }
