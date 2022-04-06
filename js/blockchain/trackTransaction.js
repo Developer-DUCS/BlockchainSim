@@ -1,97 +1,69 @@
-// File to track addresses appearance given an initial address and a block height
-
-// where is it connected
-// do I need to call the API of do already have all the block needed?
-
-const trackAddres = (inputs, outputs, blocks) => {
-  var wInputs = [];
-  var wOutputs = [];
-  var adrInputs = [];
-  var adrOutputs = [];
-  var allInfoInputs = [];
-  var allInfoOutputs = [];
-
+const trackAddres = (curInputs, curOutputs, blocks) => {
+  var laterInputs = []; //given outputs, block heigh of inputs found later on in the chain
+  var previousOutputs = []; // given inputs, block heighs of outpus found previously in the chain
+  var adrLInputs = []; // addresses of Later inputs
+  var adrPOutputs = []; // addresses of previous Outputs
   var end = false;
 
   for (let j = 0; j < blocks.length; j++) {
-    // change for while loop
-    var ts = blocks[j].transactions;
+    var ts = blocks[j].transactions; // transactions of block j
     if (typeof ts == "string") ts = JSON.parse(ts);
     for (let i = 0; i < ts.length; i++) {
-      let t = ts[i];
-      if (t[0] != undefined) {
-        // check if it not getting inside here
-        //console.log(t.length)
-      } else {
-        //only one transaction
+      let t = ts[i]; // transaction i inside ts (block j)
+      let tAddresses = ts[i].transaction_data.addresses_input_UTXO; // transaction addresses
 
-        // Look throught the throught the output array for matching posterior inputs
-        // TODO: check if the output has not been used yet
-        for (let ele = 0; ele < outputs.length; ele++) {
-          var found = t.transaction_data.addresses_input_UTXO.find((adr) => {
-            if (adr == outputs[ele]) {
-              return adr;
-            } else if (
-              adr.includes("00000000000000") &&
-              outputs[ele].includes("00000000000000")
-            ) {
-              return adr;
-            }
-          });
-          if (found != undefined && !adrInputs.includes(found)) {
-            if (!found.includes("0000000000000")) {
-              var b_weigth = t.transaction_data.block_height;
-              var newInput = [found, b_weigth];
-              allInfoInputs.push(newInput);
-              wInputs.push(t);
-              adrInputs.push(found);
-            }
+      // Look throught the throught the output array for matching posterior inputs
+      for (let ele = 0; ele < curOutputs.length; ele++) {
+        var found = tAddresses.find((adr) => {
+          if (
+            adr == curOutputs[ele] ||
+            (adr.includes("00000000000000") &&
+              curOutputs[ele].includes("00000000000000"))
+          ) {
+            return adr;
+          }
+        });
+        if (found != undefined && !adrLInputs.includes(found)) {
+          if (!found.includes("0000000000000")) {
+            laterInputs.push(t);
+            adrLInputs.push(found);
           }
         }
-        /* while (!(wInputs.length == outputs.length)){
-          wInputs.push(-2) //indicates that address is still on utxo_pool
-        } */
+      }
 
-        // Look throught the input array for matching previous outputs
-        if (!inputs[0].includes("00000000000000")) {
-          for (let ele = 0; ele < inputs.length; ele++) {
-            if (t.transaction_data.receiver_address == inputs[ele]) {
-              var foundOut = t.transaction_data.receiver_address;
-            } else if (
-              t.transaction_data.sender_leftover_address == inputs[ele]
-            ) {
-              foundOut = t.transaction_data.sender_leftover_address;
-            } else {
-              found = undefined;
-            }
-            if (foundOut != undefined && !adrOutputs.includes(foundOut)) {
-              var b_weigth = t.transaction_data.block_height;
-              var newOutput = [foundOut, b_weigth];
-              allInfoOutputs.push(newOutput);
-              wOutputs.push(t);
-              adrOutputs.push(foundOut);
-            }
+      // Look throught the input array for matching previous outputs
+      if (!curInputs[0].includes("00000000000000")) {
+        for (let ele = 0; ele < curInputs.length; ele++) {
+          if (t.transaction_data.receiver_address == curInputs[ele]) {
+            var foundOut = t.transaction_data.receiver_address;
+          } else if (
+            t.transaction_data.sender_leftover_address == curInputs[ele]
+          ) {
+            foundOut = t.transaction_data.sender_leftover_address;
+          } else {
+            found = undefined;
           }
-        } else if (!end) {
-          // input is BLOCKCHAIN so there is no possible previous output
-          var newOutput = ["BLOCKHAIN", -1];
-          allInfoOutputs.push(newOutput);
-          wOutputs.push({ transaction_data: { block_height: -1 - 1 } });
-          adrOutputs.push("BLOCKCHAIN");
-          end = true;
+          if (foundOut != undefined && !adrPOutputs.includes(foundOut)) {
+            previousOutputs.push(t);
+            adrPOutputs.push(foundOut);
+          }
         }
+      } else if (!end) {
+        // input is BLOCKCHAIN so there is no possible previous output
+        previousOutputs.push({ transaction_data: { block_height: -1 - 1 } });
+        adrPOutputs.push("BLOCKCHAIN");
+        end = true;
       }
     }
   }
 
-  console.log(" blocks found for inputs: ", wInputs);
-  //console.log(" full info found inputs: ", allInfoInputs);
-  //console.log(" addresses inputs found: ", adrInputs)
+  while (laterInputs.length != curOutputs.length) {
+    laterInputs.push({ transaction_data: { block_height: -2 - 1 } });
+  }
 
-  console.log(" blocks found for outputs: ", wOutputs);
-  //console.log(" full info found outputs: ", allInfoOutputs);
-  //console.log(" addresses inputs outputs: ", adrOutputs)
-  return [wOutputs, wInputs];
+  console.log(" blocks found for inputs: ", laterInputs);
+  console.log(" blocks found for outputs: ", previousOutputs);
+  return [previousOutputs, laterInputs];
 };
 
 module.exports = trackAddres;
