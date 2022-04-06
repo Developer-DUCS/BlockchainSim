@@ -62,8 +62,22 @@ const InputsOutputs = ({ transaction, blockData }) => {
               inputsOutputs = res.inputsOutputs;
 
               // Set the inputs and outputs for drawing the arrows
-              setInputs([...inputs, [...inputsOutputs[0]]]);
-              setOutputs([...outputs, [...inputsOutputs[1]]]);
+              setInputs([
+                ...inputs,
+                [
+                  ...inputsOutputs[0].filter(
+                    (t) => t.transaction_data.block_height != -4
+                  ),
+                ],
+              ]);
+              setOutputs([
+                ...outputs,
+                [
+                  ...inputsOutputs[1].filter(
+                    (t) => t.transaction_data.block_height != -4
+                  ),
+                ],
+              ]);
 
               // Sets the loading state to false
               setLoading(false);
@@ -235,7 +249,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
                     startAnchor={{ position: "auto" }}
                     endAnchor={{
                       position:
-                        output.transaction_data.block_height + 1 == -1
+                        output.transaction_data.block_height + 1 == -2
                           ? "left"
                           : "top",
                     }}
