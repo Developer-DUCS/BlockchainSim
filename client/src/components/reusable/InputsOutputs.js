@@ -8,6 +8,7 @@ import {
   Avatar,
   Button,
   Popover,
+  Typography,
 } from "@mui/material";
 import Xarrow from "react-xarrows";
 
@@ -60,7 +61,6 @@ const InputsOutputs = ({ transaction, blockData }) => {
             .then((res) => {
               inputsOutputs = res.inputsOutputs;
 
-              console.log([...inputs, [...inputsOutputs[0]]]);
               // Set the inputs and outputs for drawing the arrows
               setInputs([...inputs, [...inputsOutputs[0]]]);
               setOutputs([...outputs, [...inputsOutputs[1]]]);
@@ -182,6 +182,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
                       variant="contained"
                       color="success"
                       onClick={(e) => handleInputsClick(e, i)}
+                      size="small"
                     >
                       Inputs
                     </Button>
@@ -191,9 +192,15 @@ const InputsOutputs = ({ transaction, blockData }) => {
                       variant="contained"
                       color="error"
                       onClick={(e) => handleOutputsClick(e, i)}
+                      size="small"
                     >
                       Outputs
                     </Button>
+                  </Grid>
+                  <Grid item xs={12} textAlign="center">
+                    <Typography sx={{ mt: 1 }} variant="subtitle2">
+                      {tx.hash}
+                    </Typography>
                   </Grid>
                 </Grid>
 
@@ -237,6 +244,24 @@ const InputsOutputs = ({ transaction, blockData }) => {
               </CardContent>
             </Card>
           ))}
+          <Grid container>
+            <Grid item xs={12} textAlign="center">
+              <Button
+                variant="contained"
+                color="secondary"
+                disabled={Boolean(transactions.length <= 1)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setTransactions(transactions.slice(0, -1));
+                  setInputs(inputs.slice(0, -1));
+                  setOutputs(outputs.slice(0, -1));
+                }}
+                size="small"
+              >
+                Go Back
+              </Button>
+            </Grid>
+          </Grid>
           <Popover
             id={"inputs/outputs"}
             open={open}
@@ -256,14 +281,24 @@ const InputsOutputs = ({ transaction, blockData }) => {
                 <Grid item sx={{ m: 0.5 }}>
                   <Button
                     disabled={Boolean(
-                      block.transaction_data.block_height + 1 == -1
+                      block.transaction_data.block_height + 1 == -1 ||
+                        block.transaction_data.block_height + 1 == -2
                     )}
                     variant="contained"
                     color="secondary"
                     size="small"
                     onClick={(e) => handleBlockClick(e, block)}
                   >
-                    {block.transaction_data.block_height + 1}
+                    {block.transaction_data.block_height + 1 == -1
+                      ? "BlockChain"
+                      : null}
+                    {block.transaction_data.block_height + 1 == -2
+                      ? "UTXO Pool"
+                      : null}
+                    {block.transaction_data.block_height + 1 != -1 &&
+                    block.transaction_data.block_height + 1 != -2
+                      ? `${block.transaction_data.block_height + 1}`
+                      : null}
                   </Button>
                 </Grid>
               ))}
