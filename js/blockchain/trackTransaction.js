@@ -4,6 +4,10 @@ const trackAddres = (curInputs, curOutputs, blocks) => {
   var adrLInputs = []; // addresses of Later inputs
   var adrPOutputs = []; // addresses of previous Outputs
   var end = false;
+  var empyLeftover = false;
+
+  console.log("Inputs: ", curInputs);
+  console.log("Outputs: ", curOutputs);
 
   for (let j = 0; j < blocks.length; j++) {
     var ts = blocks[j].transactions; // transactions of block j
@@ -16,10 +20,14 @@ const trackAddres = (curInputs, curOutputs, blocks) => {
       for (let ele = 0; ele < curOutputs.length; ele++) {
         var found = tAddresses.find((adr) => {
           if (
-            adr == curOutputs[ele] ||
-            (adr.includes("00000000000000") &&
-              curOutputs[ele].includes("00000000000000"))
+            adr.includes("00000000") &&
+            curOutputs[ele].includes("0000000") &&
+            !empyLeftover
           ) {
+            laterInputs.push({ transaction_data: { block_height: -3 - 1 } });
+            adrLInputs.push("IGNORE");
+            empyLeftover = true;
+          } else if (adr == curOutputs[ele]) {
             return adr;
           }
         });
@@ -27,6 +35,9 @@ const trackAddres = (curInputs, curOutputs, blocks) => {
           if (!found.includes("0000000000000")) {
             laterInputs.push(t);
             adrLInputs.push(found);
+          }
+          if (found == undefined) {
+            console.log("ELE: ", ele);
           }
         }
       }
@@ -57,7 +68,7 @@ const trackAddres = (curInputs, curOutputs, blocks) => {
     }
   }
 
-  while (laterInputs.length != curOutputs.length) {
+  while (curOutputs.length != laterInputs.length) {
     laterInputs.push({ transaction_data: { block_height: -2 - 1 } });
   }
 
