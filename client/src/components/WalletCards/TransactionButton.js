@@ -32,7 +32,7 @@ import MainCard from "./MainCard";
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-  backgroundColor: theme.palette.success.main,
+  backgroundColor: theme.palette.tertiary.main,
   color: "#fff",
   position: "relative",
   borderRadius: "16px",
