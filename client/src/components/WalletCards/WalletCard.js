@@ -31,6 +31,7 @@ const WalletCard = (props) => {
   const [miner, setMiner] = React.useState([]);
   const [balance, setBalance] = React.useState(0);
   const [addresses, setAddresses] = React.useState([]);
+  const [personalLedger, setpersonalLedger] = React.useState([]);
 
   React.useEffect(() => {
     if (user.email) {
@@ -71,6 +72,7 @@ const WalletCard = (props) => {
       if (wallets[i].owner == miner) {
         setBalance(wallets[i].balance);
         setAddresses(wallets[i].addresses);
+        setpersonalLedger(wallets[i].personal_ledger.reverse());
       }
     }
   }, [miner]);
@@ -151,8 +153,11 @@ const WalletCard = (props) => {
             </Grid>
             <Grid item lg={6}>
               <LedgerCard
-                sx={{ width: "100%", height: 500 }}
-                wallets={wallets}
+                sx={{
+                  width: "100%",
+                  height: 500,
+                }}
+                ledger={personalLedger}
               />
             </Grid>
             {/* <Grid item lg={6}>
