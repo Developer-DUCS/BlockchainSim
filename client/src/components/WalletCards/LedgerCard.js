@@ -26,10 +26,11 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   // overflow: "hidden",
   position: "relative",
   borderRadius: "16px",
+  // overflow: "scroll",
 }));
 
 const LedgerCard = (props) => {
-  const { sx, wallets } = props;
+  const { sx, ledger } = props;
 
   const theme = useTheme();
 
@@ -136,17 +137,27 @@ const LedgerCard = (props) => {
             <Grid item>
               <Grid container alignItems="center">
                 <Grid item>
-                  <Typography
-                    sx={{
-                      fontSize: "1.5rem",
-                      fontWeight: 400,
-                      mr: 1,
-                      mt: 0.5,
-                      mb: 0.75,
-                    }}
-                  >
-                    100
-                  </Typography>
+                  {ledger.map((payment) => (
+                    <Typography
+                      sx={{
+                        fontSize: "1.5rem",
+                        fontWeight: 300,
+                        mt: 1.5,
+                        ml: 1,
+                        mr: 20,
+                      }}
+                    >
+                      <strong>{payment[3]}: </strong>
+                      {payment[0] == "sent" ? "Sent     " : "Recieved "}
+                      {payment[2].toFixed(5)}
+                      <Icon
+                        icon="mdi:bitcoin"
+                        width="30"
+                        height="30"
+                        color="theme.palette.secondary.dark"
+                      />
+                    </Typography>
+                  ))}
                 </Grid>
                 <Grid item sx={{ mt: 0.5 }}>
                   <Icon
@@ -157,13 +168,13 @@ const LedgerCard = (props) => {
                     color="theme.palette.secondary.dark"
                   />
                 </Grid>
-                <Grid>
+                {/* <Grid>
                   <Typography sx={{ ml: 1 }}>
                     BLOCKCHAIN
                     <ArrowForwardIcon sx={{ ml: 1, mt: -0.5, mr: 1 }} />
                     ean@drury.edu
                   </Typography>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Grid>
           </Grid>

@@ -25,6 +25,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   // overflow: "hidden",
   position: "relative",
   borderRadius: "16px",
+  // overflow: "scroll",
 }));
 
 const AddressesCard = (props) => {
