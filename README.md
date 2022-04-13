@@ -6,22 +6,19 @@
 
 ```bash
 # Install dependencies for server
-npm/yarn install
+npm install
 
 # Install dependencies for client (Re run this for new packages)
-npm/yarn run client-install
+npm run client-install
 
-# Run the client & server with concurrently
-npm/yarn run dev
-
-# Run the Express server only
-npm/yarn run server
-
-# Run the React client only
-npm/yarn run client
-
-# Server runs on http://localhost:5000 and client on http://localhost:3000
+# Start up the app for development
+npm run dev
 ```
+
+### Errors
+_If you get React Hook error (mismatched React versions)_
+- Close development server
+- run ```yarn install```
 
 ### Extra Steps For Developers 
 
@@ -57,24 +54,6 @@ If you run into the error when running MySQL: Client does not support authentica
 
 That should fix it :)
 
-## Github CLI
-
-### Creating Branches
-To fetch branches run ```git fetch origin```
-
-To pull a branch run ```git pull {branch name}```
-
-To checkout a branch run ```git checkout {branch name}```
-
-If you need a branch that you haven't pulled before, run ```git branch -a``` This command pulls all branches, including remote ones denoted by ```remotes/origin/{branch name}``` Specify the full name of the branch when checking out the branch
-
-To create a new branch run ```git checkout -b {new branch name} {parent branch}```
-
-### Merging Branches
-To stage changes run ```git add .``` from the root directory
-
-To commit changes run ```git commit -m "commit message goes here"```
-
-To push changes back to origin run ```git push origin {current branch}```
+## Deployment Steps
 
 
