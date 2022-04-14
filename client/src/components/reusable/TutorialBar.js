@@ -225,7 +225,7 @@ const TutorialBar = (props) => {
                     </ListItemIcon>
                     <ListItemText primary={"Home"} />
                   </ListItem>
-                  <ListItemButton onClick={handleDrawerClick}>
+                  <ListItemButton onClick={handleClick}>
                     <ListItemIcon>
                       <Add />
                     </ListItemIcon>
