@@ -256,6 +256,13 @@ const CreateSimulation = (props) => {
                         setName(e.target.value);
                       }}
                     />
+                    <InfoButton
+                      sx={{ ml: -5, mt: 4.5 }}
+                      title="Name"
+                      description={
+                        "The name of your simulation. The following characters are not allowed: % * _ ; ="
+                      }
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -268,6 +275,13 @@ const CreateSimulation = (props) => {
                         setDesc(e.target.value);
                       }}
                       multiline
+                    />
+                    <InfoButton
+                      sx={{ ml: -5, mt: 4.5 }}
+                      title="Description"
+                      description={
+                        "The description of your simulation. The following characters are not allowed: % * _ ; ="
+                      }
                     />
                   </Grid>
                   <Grid item xs={12}>
