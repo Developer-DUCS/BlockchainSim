@@ -235,12 +235,33 @@ const TutorialBar = (props) => {
                   </ListItemButton>
                   <Collapse in={dropdown}>
                     <List component="div" disablePadding>
-                      <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemIcon>
-                          <StarBorder />
-                        </ListItemIcon>
-                        <ListItemText primary="Starred" />
-                      </ListItemButton>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/mining`}
+                      >
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Mining" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/transactions`}
+                      >
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Transactions" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/database`}
+                      >
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="How is our blockchain stored?" />
+                        </ListItemButton>
+                      </ListItem>
                     </List>
                   </Collapse>
                   <ListItem button key={"settings"} onClick={handleDrawerClose}>

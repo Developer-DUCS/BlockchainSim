@@ -1,12 +1,12 @@
 import { Container, Typography } from "@mui/material";
 import React from "react";
-import TutorialBar from "./reusable/TutorialBar";
+import TutorialBar from "../reusable/TutorialBar";
 import { makeStyles } from "@material-ui/core/styles";
-import styles from "./HomePageComponents/Sections/productStyle";
-import GridContainer from "./HomePageComponents/GridContainer";
-import GridItem from "./HomePageComponents/GridItem";
+import styles from "../HomePageComponents/Sections/productStyle";
+import GridContainer from "../HomePageComponents/GridContainer";
+import GridItem from "../HomePageComponents/GridItem";
 import classNames from "classnames";
-import { container } from "./HomePageComponents/extra_components/material-kit-react";
+import { container } from "../HomePageComponents/extra_components/material-kit-react";
 
 const useStyles = makeStyles(styles);
 

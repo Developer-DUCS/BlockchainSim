@@ -7,7 +7,10 @@ import LandingPage from "./components/LandingPage";
 import NavBar from "./components/reusable/NavBar";
 import SignUp from "./components/SignUp";
 import Simulation from "./components/Simulation";
-import TutorialHome from "./components/TutorialHome";
+import TutorialHome from "./components/Tutorials/TutorialHome";
+import TutorialDatabase from "./components/Tutorials/TutorialDatabase";
+import TutorialMining from "./components/Tutorials/TutorialMining";
+import TutorialTransactions from "./components/Tutorials/TutorialTransactions";
 
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
@@ -141,11 +144,41 @@ const App = () => {
                 />
               )}
             />
-            {/*Route to "/tutorialHome"*/}
+            {/*Route to "/tutorials"*/}
             <Route
               path={`${process.env.PUBLIC_URL}/tutorialHome`}
               render={() => (
                 <TutorialHome
+                  setTheme={setTheme}
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
+              )}
+            />
+            <Route
+              path={`${process.env.PUBLIC_URL}/transactions`}
+              render={() => (
+                <TutorialTransactions
+                  setTheme={setTheme}
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
+              )}
+            />
+            <Route
+              path={`${process.env.PUBLIC_URL}/database`}
+              render={() => (
+                <TutorialDatabase
+                  setTheme={setTheme}
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
+              )}
+            />
+            <Route
+              path={`${process.env.PUBLIC_URL}/mining`}
+              render={() => (
+                <TutorialMining
                   setTheme={setTheme}
                   setFeedback={setFeedback}
                   setFeedbackObj={setFeedbackObj}

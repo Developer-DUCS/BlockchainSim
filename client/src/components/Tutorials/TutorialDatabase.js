@@ -1,16 +1,16 @@
 import { Container, Typography } from "@mui/material";
 import React from "react";
-import TutorialBar from "./reusable/TutorialBar";
+import TutorialBar from "../reusable/TutorialBar";
 import { makeStyles } from "@material-ui/core/styles";
-import styles from "./HomePageComponents/Sections/productStyle";
-import GridContainer from "./HomePageComponents/GridContainer";
-import GridItem from "./HomePageComponents/GridItem";
+import styles from "../HomePageComponents/Sections/productStyle";
+import GridContainer from "../HomePageComponents/GridContainer";
+import GridItem from "../HomePageComponents/GridItem";
 import classNames from "classnames";
-import { container } from "./HomePageComponents/extra_components/material-kit-react";
+import { container } from "../HomePageComponents/extra_components/material-kit-react";
 
 const useStyles = makeStyles(styles);
 
-const TutorialHome = (props) => {
+const TutorialDatabase = (props) => {
   const { setTheme } = props;
   const classes = useStyles();
 
@@ -25,15 +25,15 @@ const TutorialHome = (props) => {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={8}>
               <h1 className={classes.title}>Database</h1>
-              <h5 className={classes.description}>
+              <h3 className={classes.description}>
                 Data is stored on a MySQL instance (and can alternatively be
                 stored on any SQL database instance). Developing the database
                 required close work with other developers and has evolved into
                 three tables: user, simulation, and a personalized blocks table
                 for each user.
-              </h5>
+              </h3>
               <h1 className={classes.title}>User Table</h1>
-              <h5 className={classes.description}>
+              <h3 className={classes.description}>
                 The user table is very simple, containing only three fields. It
                 contains an email as the primary key, a password, which is used
                 to authenticate the user, and lastly a role, which can be used
@@ -43,9 +43,9 @@ const TutorialHome = (props) => {
                 simulations, and a ‘student’ role with permissions to read and
                 edit simulations. While these roles have not been configured,
                 the field exists to account for these types of configurations.
-              </h5>
+              </h3>
               <h1 className={classes.title}>Simulation Table</h1>
-              <h5 className={classes.description}>
+              <h3 className={classes.description}>
                 The simulation table contains all of the information used to
                 create a simulation. The primary key is an auto-incrementing
                 simulation id, sim_id. It contains an email field, which
@@ -68,9 +68,9 @@ const TutorialHome = (props) => {
                 blocks in simulation. Using this field in conjunction with the
                 email field, you are able to pull all of the blocks contained in
                 the simulation by querying the user block table.
-              </h5>
+              </h3>
               <h1 className={classes.title}>User Block Table</h1>
-              <h5 className={classes.description}>
+              <h3 className={classes.description}>
                 Lastly, the user block table contains all the blocks from all of
                 the simulations each user has created and the metadata of those
                 blocks. The primary key is hash. Hash uniquely identifies each
@@ -80,7 +80,7 @@ const TutorialHome = (props) => {
                 simulation that is credited with mining the block, and lastly
                 the time_created field shows the time that the block was
                 created.
-              </h5>
+              </h3>
             </GridItem>
           </GridContainer>
         </div>
@@ -88,4 +88,4 @@ const TutorialHome = (props) => {
     </div>
   );
 };
-export default TutorialHome;
+export default TutorialDatabase;
