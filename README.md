@@ -65,3 +65,4 @@ That should fix it :)
 7. Update server.js to not include /BtB/ prefix in the routes. From: ```router.use("/BtB/api/users", require("./api/users"));``` to: ```router.use("/api/users", require("./api/users"));``` .
 
 8. Build project: ```cd client``` , ```npm run build```
+9. You only need four pm2 commands. pm2 ls will list processes, pm2 stop {#} will stop number #, pm2 restart {#} will restart process number #, pm2 start {#} will start process number #.
