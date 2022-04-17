@@ -58,8 +58,8 @@ That should fix it :)
 
 1. Clone in repo and get the correct branch, helpful commands may include: ```git clone``` , ```git fetch --all``` , ```git branch -v -a``` , ```git checkout -b {branch} origin/{branch}```
 2. Install dependencies: ```cd ./BlockchainSim``` , ```yarn install``` , ```cd client``` , ```yarn install```
-3. Rename BlockchainSim to btb: ```mv ./BlockchainSim btb
+3. Rename BlockchainSim to btb: ```mv ./BlockchainSim btb```.
 4. Update database: If database has not been created follow steps on wiki to create database, else alter dbConn.js file to contain correct credentials
 5. Update client/package.json: insert ```“homepage” : “mcs.drury.edu/BtB”,``` below private and above dependencies, and insert ```“start”: “PORT=3220 react-scripts start”``` instead of ```"start": "react-scripts start"```.
-6. Update both client and root .env files. 
+6. Update client .env file. ```REACT_APP_API_URL=mcs.drury.edu/BtB```.
 7. Build project: ```cd client``` , ```npm run build```
