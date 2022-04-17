@@ -62,4 +62,6 @@ That should fix it :)
 4. Update database: If database has not been created follow steps on wiki to create database, else alter dbConn.js file to contain correct credentials
 5. Update client/package.json: insert ```“homepage” : “mcs.drury.edu/BtB”,``` below private and above dependencies, and insert ```“start”: “PORT=3220 react-scripts start”``` instead of ```"start": "react-scripts start"```.
 6. Update client .env file. ```REACT_APP_API_URL=mcs.drury.edu/BtB```.
-7. Build project: ```cd client``` , ```npm run build```
+7. Update server.js to not include /BtB/ prefix in the routes. From: ```router.use("/BtB/api/users", require("./api/users"));``` to: ```router.use("/api/users", require("./api/users"));``` .
+
+8. Build project: ```cd client``` , ```npm run build```
