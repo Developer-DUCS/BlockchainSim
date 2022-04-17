@@ -56,4 +56,4 @@ That should fix it :)
 
 ## Deployment Steps
 
-
+1. Clone in repo and get the correct branch, helpful commands may include: ```git clone``` , ```git fetch --all``` , ```git branch -v -a``` , ```git checkout -b {branch} origin/{branch}```
