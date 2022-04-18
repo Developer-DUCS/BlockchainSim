@@ -56,6 +56,8 @@ router.post("/createsim", cors(), (req, res) => {
     initValues.transactions,
     initValues.subsidy,
     initValues.halvings,
+    initValues.coin,
+    initValues.mining,
     // Added here to pass in wallets
     wallets
   );
@@ -76,6 +78,8 @@ router.post("/createsim", cors(), (req, res) => {
       miningPool: miningPool,
       utxoPool: simulation[3], // change
       blockwin: 10,
+      mining: initValues.mining,
+      coin: initValues.coin,
     },
     blocks: simulation[1],
   };
@@ -97,6 +101,8 @@ router.post("/createsim", cors(), (req, res) => {
   const sminingPool = JSON.stringify(data.simulation.miningPool);
   const utxoPool = JSON.stringify(data.simulation.utxoPool);
   const blockwin = data.simulation.blockwin;
+  const mining = data.simulation.mining;
+  const coin = data.simulation.coin;
   const walletsJSON = [];
 
   for (let i = 0; i < wallets.length; i++) {
@@ -113,8 +119,8 @@ router.post("/createsim", cors(), (req, res) => {
   }
   const swallets = JSON.stringify(walletsJSON);
 
-  console.log(swallets);
-  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets,miningPool,utxoPool,blockwin) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${swallets}', '${sminingPool}' , '${utxoPool}' , '${blockwin}' );`;
+  //console.log(swallets);
+  let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets,miningPool,utxoPool,blockwin,mining,coin) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${swallets}', '${sminingPool}' , '${utxoPool}' , '${blockwin}' , '${mining}' , '${coin}' );`;
   db.query(qry, (err) => {
     if (err) {
       console.log(err);
@@ -276,6 +282,7 @@ router.post("/addnewblock", cors(), (req, resp) => {
   var miningPool;
   let wallets;
   let utxoPool;
+  let mining; //PoS
   let totalCoin = 0;
   // get subsidy halvings blocks
   let qry = `SELECT subsidy, halvings, sim_blocks, numtransactions, miningPool, wallets, blockwin, utxoPool FROM simulation WHERE sim_id = '${sim_id}'`;

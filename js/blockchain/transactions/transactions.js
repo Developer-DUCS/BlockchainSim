@@ -1,5 +1,6 @@
 const singleTransaction = require("./singleTransaction/singleTransaction");
 const coinbaseTransaction = require("./singleTransaction/coinbaseTransaction");
+const coinstakeTransaction = require("./singleTransaction/coinstakeTransaction");
 //const { UTXO_Pool } = require("./UTXO_Pool");
 const { chooseWallet } = require("../wallet");
 // import createAddress, { createPublicPrivateKey } from "../testValidation";
@@ -35,12 +36,13 @@ var MINIMUM_DEPTH = 100; // TO CHANGE TO DYNAMIC
 const createTransactions = (
   miner,
   numtransactions,
-  b_heigth,
+  b_height,
   subsidy,
   halvings,
   totalCoin,
   walletArr,
-  UTXO_Pool
+  UTXO_Pool,
+  mining
 ) => {
   var transactions = []; // list of all transactions
   var users = []; // possible users
@@ -49,16 +51,16 @@ const createTransactions = (
   }
 
   //more than one transaction is possible
-  if (b_heigth > MINIMUM_DEPTH - 1 && !done) {
+  if (b_height > MINIMUM_DEPTH - 1 && !done) {
     var fee = 0; //cumulation of fees in the block
     var done = false; // check if there is still possible transactions
-    var max_transactions = ~~(b_heigth / MINIMUM_DEPTH); // ~~ truncates number 1.0 --> 1
+    var max_transactions = ~~(b_height / MINIMUM_DEPTH); // ~~ truncates number 1.0 --> 1
     if (max_transactions < numtransactions) numtransactions = max_transactions;
 
     //create transactions
     for (let i = 0; i < numtransactions; i++) {
       //find a valid sender with valid money
-      var senderInfo = selectSender(b_heigth, walletArr, UTXO_Pool); // sender adresses to be used
+      var senderInfo = selectSender(b_height, walletArr, UTXO_Pool); // sender adresses to be used
       // [senderWallet, utxoArr];
 
       if (senderInfo != undefined) {
@@ -75,7 +77,7 @@ const createTransactions = (
           senderWallet,
           receiverWallet,
           UTXOs_Sender,
-          b_heigth,
+          b_height,
           users,
           walletArr,
           UTXO_Pool
@@ -97,18 +99,42 @@ const createTransactions = (
     for (let wallet in walletArr) {
       if (walletArr[wallet][1] == miner) var minerWallet = walletArr[wallet][0];
     }
-    //create coin base transaction + fees
-    var transInfo = coinbaseTransaction(
-      users,
-      minerWallet,
-      fee,
-      b_heigth,
-      subsidy,
-      halvings,
-      totalCoin,
-      walletArr,
-      UTXO_Pool
-    );
+
+    //check if PoS is enabled. if so, switch from PoW to PoS
+    if (mining == "pos" && b_height > 100) {
+      var stakeInfo = selectMinter(b_height, walletArr, UTXO_Pool); // sender adresses to be used
+      if (stakeInfo != undefined) {
+        var stakeWallet = stakeInfo[0]; // sender wallet for transaction
+        var UTXO_stake = stakeInfo[1]; // UTXOs input for transaction
+      }
+
+      var transInfo = coinstakeTransaction(
+        users,
+        stakeWallet,
+        UTXO_stake,
+        fee,
+        b_height,
+        subsidy,
+        halvings,
+        totalCoin,
+        walletArr,
+        UTXO_Pool
+      );
+    } else {
+      //create coin base transaction + fees
+      var transInfo = coinbaseTransaction(
+        users,
+        minerWallet,
+        fee,
+        b_height,
+        subsidy,
+        halvings,
+        totalCoin,
+        walletArr,
+        UTXO_Pool
+      );
+    }
+
     var baseTX = transInfo[0];
     totalCoin = transInfo[1];
     walletArr = transInfo[2];
@@ -126,7 +152,7 @@ const createTransactions = (
       users,
       minerWallet,
       0,
-      b_heigth,
+      b_height,
       subsidy,
       halvings,
       totalCoin,
@@ -144,11 +170,11 @@ const createTransactions = (
 };
 
 //select a sender with valid money to create transaction
-const selectSender = (block_height, walletArr, UTXO_Pool) => {
+const selectSender = (b_height, walletArr, UTXO_Pool) => {
   // choose valid UTXO
   var index = 0;
   var utxo = UTXO_Pool[index];
-  var validHeigth = block_height - MINIMUM_DEPTH;
+  var validHeigth = b_height - MINIMUM_DEPTH;
   var utxoArr = [];
 
   var utxoHeigth = utxo[2];
@@ -194,4 +220,46 @@ const selectSender = (block_height, walletArr, UTXO_Pool) => {
   return senderInfo;
 };
 
+//select a sender with valid money to create transaction
+const selectMinter = (b_height, walletArr, UTXO_Pool) => {
+  // choose valid UTXO
+  var index = 0;
+  var utxo = UTXO_Pool[index];
+  var validHeigth = b_height - MINIMUM_DEPTH;
+  var utxoArr = [];
+  utxoArr.push(utxo);
+
+  //track address and get wallet
+  var address2find = utxo[0];
+  var found = false;
+  var senderWallet;
+  var i = 0;
+  while (!found && i < walletArr.length) {
+    adrs = walletArr[i][3];
+    if (adrs.indexOf(address2find) != -1) {
+      found = true;
+      senderWallet = walletArr[i];
+    }
+    i++;
+  }
+
+  //check if that wallet has more then one possible utxo.
+  if (senderWallet.length > 1) {
+    //get total amount of valid UTXOS in wallet
+    var addressesArr = senderWallet[3];
+    // find UTXOs attached to address
+    var utxosFound = UTXO_Pool.filter((utx) => {
+      return addressesArr.indexOf(utx[0]) != -1;
+    });
+
+    // get valid UTXOs
+    utxoArr = utxosFound.filter((utx) => {
+      return utx[2] <= validHeigth;
+    });
+  }
+
+  var senderInfo = [senderWallet, utxoArr]; // [laura, [askbvasebraienv, 50BTC, block 3]]
+
+  return senderInfo;
+};
 module.exports = createTransactions;

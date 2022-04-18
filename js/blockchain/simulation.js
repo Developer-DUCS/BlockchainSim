@@ -50,6 +50,8 @@ const simulationCreator = (
   num_transactions,
   subsidy,
   halvings,
+  coin,
+  mining,
   //totalCoin, COMMENTED THIS OUT BC TOTALCOIN INIT TO 0 AND IDK WHAT TO PASS IN FROM SIM CREATOR IN DATA.JS
   wallets
 ) => {
@@ -77,7 +79,9 @@ const simulationCreator = (
       halvings,
       totalCoin,
       wallets,
-      UTXO_pool
+      UTXO_pool,
+      //add mining to block for PoS
+      mining
     );
 
     var hashID = newBlock[1];

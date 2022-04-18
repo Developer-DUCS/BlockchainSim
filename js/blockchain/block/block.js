@@ -22,7 +22,8 @@ const blockCreator = (
   halvings,
   totalCoin,
   wallets,
-  UTXO_Pool
+  UTXO_Pool,
+  mining
 ) => {
   var transInfo = createTransactions(
     miner,
@@ -32,7 +33,8 @@ const blockCreator = (
     halvings,
     totalCoin,
     wallets,
-    UTXO_Pool
+    UTXO_Pool,
+    mining
   );
 
   var transactionJSON = transInfo[0];
