@@ -33,6 +33,7 @@ const trackAddres = (curInputs, curOutputs, blocks) => {
         });
         if (found != undefined && !adrLInputs.includes(found)) {
           if (!found.includes("0000000000000")) {
+            t.actualAddress = found;
             laterInputs.push(t);
             adrLInputs.push(found);
           }
@@ -55,6 +56,7 @@ const trackAddres = (curInputs, curOutputs, blocks) => {
             found = undefined;
           }
           if (foundOut != undefined && !adrPOutputs.includes(foundOut)) {
+            t.actualAddress = foundOut;
             previousOutputs.push(t);
             adrPOutputs.push(foundOut);
           }
