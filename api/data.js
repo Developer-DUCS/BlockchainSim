@@ -10,6 +10,7 @@ const { createMinerPool } = require("../js/blockchain/block/miningPool");
 const sjcl = require("../js/sjcl");
 const { createWallet } = require("../js/blockchain/wallet");
 const createBlock = require("../js/blockchain/block/createBlock");
+const { susInput, escApos } = require("../js/utils/clean_input");
 
 app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
@@ -83,9 +84,9 @@ router.post("/createsim", cors(), (req, res) => {
   // End
   const email = data.simulation.user;
   const email_valid = email.replace(/[@.]/g, "_");
-  const sim_name = data.simulation.sim_name;
+  let sim_name = data.simulation.sim_name;
   const sim_shared = data.simulation.sim_shared;
-  const sim_description = data.simulation.sim_description;
+  let sim_description = data.simulation.sim_description;
   const sim_created = data.simulation.sim_created;
   const sim_modified = data.simulation.sim_modified;
   const sim_blocks = data.simulation.sim_blocks;
@@ -98,6 +99,18 @@ router.post("/createsim", cors(), (req, res) => {
   const utxoPool = JSON.stringify(data.simulation.utxoPool);
   const blockwin = data.simulation.blockwin;
   const walletsJSON = [];
+
+  //Check for suspicious input in the name and description
+  if (susInput(sim_name) == true) {
+    // Send bad request
+    res.sendStatus(400);
+  }
+  if (susInput(sim_description) == true) {
+    // Send bad request
+    res.sendStatus(400);
+  }
+  sim_name = escApos(sim_name);
+  sim_description = escApos(sim_description);
 
   for (let i = 0; i < wallets.length; i++) {
     miner = wallets[i][1];
@@ -113,7 +126,6 @@ router.post("/createsim", cors(), (req, res) => {
   }
   const swallets = JSON.stringify(walletsJSON);
 
-  console.log(swallets);
   let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets,miningPool,utxoPool,blockwin) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${swallets}', '${sminingPool}' , '${utxoPool}' , '${blockwin}' );`;
   db.query(qry, (err) => {
     if (err) {

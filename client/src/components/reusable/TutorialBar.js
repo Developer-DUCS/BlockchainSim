@@ -99,15 +99,16 @@ const TutorialBar = (props) => {
   // selectedTab: Number (index of tab)
   const { setTheme, barTitle, tabNames, setSelectedTab, selectedTab } = props;
   const [openDrawer, setOpen] = React.useState(false);
+  const [dropdown, setdropdown] = React.useState(false);
   const [toggle, setToggle] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  //const handleDrawerClick = () => {
-  //  setOpen2(!open2);
-  //};
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
+  const handleDropDownClick = () => {
+    setdropdown(!dropdown);
+  };
   const signOut = () => {
     try {
       // Remove token
@@ -225,21 +226,42 @@ const TutorialBar = (props) => {
                     </ListItemIcon>
                     <ListItemText primary={"Home"} />
                   </ListItem>
-                  <ListItemButton onClick={handleDrawerClick}>
+                  <ListItemButton onClick={handleDropDownClick}>
                     <ListItemIcon>
                       <Add />
                     </ListItemIcon>
                     <ListItemText primary={"Beyond the Block Tutorials"} />
                     {open ? <ExpandLess /> : <ExpandMore />}
                   </ListItemButton>
-                  <Collapse in={open} timeout="auto" unmountOnExit>
+                  <Collapse in={dropdown}>
                     <List component="div" disablePadding>
-                      <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemIcon>
-                          <StarBorder />
-                        </ListItemIcon>
-                        <ListItemText primary="Starred" />
-                      </ListItemButton>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/mining`}
+                      >
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Mining" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/transactions`}
+                      >
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Transactions" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/database`}
+                      >
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="How is our blockchain stored?" />
+                        </ListItemButton>
+                      </ListItem>
                     </List>
                   </Collapse>
                   <ListItem button key={"settings"} onClick={handleDrawerClose}>
