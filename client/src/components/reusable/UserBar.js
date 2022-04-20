@@ -90,14 +90,16 @@ const UserBar = (props) => {
 
   const history = useHistory();
   const theme = useTheme();
-  // setTheme (broken)
+  // setTheme: function that updates app theme
   // barTitle: String
   // tabNames: Array<String>
   // setSelectedTab: React state function
   // selectedTab: Number (index of tab)
   const { setTheme, barTitle, tabNames, setSelectedTab, selectedTab } = props;
   const [openDrawer, setOpen] = React.useState(false);
-  const [toggle, setToggle] = React.useState(false);
+  const [toggle, setToggle] = React.useState(
+    theme.mode === "dark" ? true : false
+  );
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -302,7 +304,7 @@ const UserBar = (props) => {
           </Grid>
 
           <Grid item>
-            <Switch onChange={toggleTheme} color="secondary" />
+            <Switch checked={toggle} onChange={toggleTheme} color="secondary" />
           </Grid>
           <Grid item>
             <Tooltip title="Alerts • No alerts">

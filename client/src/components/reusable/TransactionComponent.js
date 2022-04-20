@@ -17,9 +17,6 @@ const TransactionComponent = ({
   setSelectedTransaction,
   setShowInputsOutputs,
 }) => {
-  React.useEffect(() => {
-    console.log(transaction);
-  }, []);
   return (
     <Card sx={{ mb: 2 }}>
       <CardContent sx={{ textAlign: "center", position: "relative" }}>

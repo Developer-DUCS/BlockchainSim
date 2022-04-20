@@ -57,12 +57,10 @@ const WalletCard = (props) => {
           const minersArr = [];
           let totalCoin = 0;
           for (let i = 0; i < wallets.length; i++) {
-            console.log("balances", wallets[i].balance);
             totalCoin += wallets[i].balance;
             minersArr.push(wallets[i].owner);
           }
           setMiners(minersArr);
-          console.log("totalCoin", totalCoin);
         });
     }
   }, [user]);

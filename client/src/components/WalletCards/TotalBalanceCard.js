@@ -126,7 +126,6 @@ const TotalBalanceCard = (props) => {
                     }
                   >
                     <Avatar
-                      onClick={console.log("clicked")}
                       variant="rounded"
                       sx={{
                         ...theme.typography.commonAvatar,
