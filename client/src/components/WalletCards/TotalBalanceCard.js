@@ -91,7 +91,6 @@ const TotalBalanceCard = (props) => {
       setUsd(false);
     }
   };
-
   return (
     <>
       <CardWrapper border={false} content={false} sx={sx}>
@@ -126,6 +125,12 @@ const TotalBalanceCard = (props) => {
                     }
                   >
                     <Avatar
+                      onClick={() =>
+                        window.open(
+                          "https://www.google.com/finance/quote/BTC-USD?sa=X&ved=2ahUKEwiI66LIoqH3AhV5kGoFHdwUBv4Q-fUHegQIAhAX",
+                          "_blank"
+                        )
+                      }
                       variant="rounded"
                       sx={{
                         ...theme.typography.commonAvatar,
