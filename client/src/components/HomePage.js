@@ -38,7 +38,7 @@ const HomePage = (props) => {
         fixed
         changeColorOnScroll={{
           height: 400,
-          color: "#388697",
+          color: "primary",
         }}
         {...rest}
       />

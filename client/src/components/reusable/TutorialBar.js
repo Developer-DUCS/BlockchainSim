@@ -100,7 +100,9 @@ const TutorialBar = (props) => {
   const { setTheme, barTitle, tabNames, setSelectedTab, selectedTab } = props;
   const [openDrawer, setOpen] = React.useState(false);
   const [dropdown, setdropdown] = React.useState(false);
-  const [toggle, setToggle] = React.useState(false);
+  const [toggle, setToggle] = React.useState(
+    theme.mode === "dark" ? true : false
+  );
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -335,7 +337,7 @@ const TutorialBar = (props) => {
           </Grid>
 
           <Grid item>
-            <Switch onChange={toggleTheme} color="secondary" />
+            <Switch checked={toggle} onChange={toggleTheme} color="secondary" />
           </Grid>
           <Grid item>
             <Tooltip title="Alerts • No alerts">

@@ -36,7 +36,7 @@ import { ClickAwayListener } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
-
+import BookIcon from "@mui/icons-material/Book";
 const drawerWidth = 270;
 
 // const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -232,6 +232,18 @@ const UserBar = (props) => {
                       <Add />
                     </ListItemIcon>
                     <ListItemText primary={"Create New Simulation"} />
+                  </ListItem>
+                  <ListItem
+                    button
+                    key={"tutorial"}
+                    onClick={handleDrawerClose}
+                    component={Link}
+                    to={`${process.env.PUBLIC_URL}/tutorialHome`}
+                  >
+                    <ListItemIcon>
+                      <BookIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Tutorials"} />
                   </ListItem>
                   <ListItem button key={"settings"} onClick={handleDrawerClose}>
                     <ListItemIcon>

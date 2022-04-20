@@ -21,9 +21,19 @@ import SimulationHome from "./components/SimulationHome";
 import Feedback from "./components/reusable/Feedback";
 
 import { CookiesProvider, useCookies } from "react-cookie";
+import darkTheme from "./themes/darkTheme";
+
+const getThemeFromLocalStorage = () => {
+  let localItem = localStorage.getItem("theme");
+  if (localItem === "dark") {
+    return darkTheme;
+  } else {
+    return lightTheme;
+  }
+};
 
 const App = () => {
-  const [theme, setTheme] = React.useState(lightTheme);
+  const [theme, setTheme] = React.useState(getThemeFromLocalStorage());
   const [signIn, setSignIn] = React.useState(false);
   const basename = process.env.REACT_APP_BASENAME || null;
   const [feedback, setFeedback] = React.useState(false);
@@ -49,6 +59,14 @@ const App = () => {
       }
     });
   }, []);
+
+  React.useEffect(() => {
+    if (theme.mode === "dark") {
+      window.localStorage.setItem("theme", "dark");
+    } else {
+      window.localStorage.setItem("theme", "light");
+    }
+  }, [theme]);
 
   const toggleSignIn = () => {
     setSignIn(!signIn);

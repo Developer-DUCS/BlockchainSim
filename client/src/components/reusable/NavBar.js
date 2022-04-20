@@ -8,11 +8,15 @@ import lightTheme from "../../themes/lightTheme";
 import darkTheme from "../../themes/darkTheme";
 import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { useTheme } from "@mui/material/styles";
 
 const NavBar = (props) => {
   const history = useHistory();
+  const theme = useTheme();
   const { setTheme, signIn, toggleSignIn } = props;
-  const [toggle, setToggle] = React.useState(false);
+  const [toggle, setToggle] = React.useState(
+    theme.mode === "dark" ? true : false
+  );
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
   const toggleTheme = () => {
@@ -52,8 +56,8 @@ const NavBar = (props) => {
               Beyond the Block
             </Link>
           </Typography>
-          <Switch onChange={toggleTheme} />
-          {signIn == false ? (
+          <Switch checked={toggle} onChange={toggleTheme} />
+          {signIn == false || window.localStorage.getItem("token") ? (
             <>
               <Button
                 component={Link}
