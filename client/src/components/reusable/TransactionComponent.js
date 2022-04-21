@@ -45,7 +45,7 @@ const TransactionComponent = ({
                   xs={12}
                   sx={{
                     pb: 1,
-                    background: index % 2 ? "#ebe8e4" : "inherit",
+                    background: index % 2 ? "secondary.main" : "inherit",
                   }}
                   key={index}
                 >
@@ -187,7 +187,7 @@ const TransactionComponent = ({
                       <Button
                         size="small"
                         variant="contained"
-                        color="primary"
+                        color="secondary"
                         onClick={(e) => {
                           e.preventDefault();
                           setShowInputsOutputs(tx);

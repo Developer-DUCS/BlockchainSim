@@ -40,6 +40,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import ListItemButton from "@mui/material/ListItemButton";
 import StarBorder from "@mui/icons-material/StarBorder";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 const drawerWidth = 270;
 
@@ -224,13 +225,13 @@ const TutorialBar = (props) => {
                     to={`${process.env.PUBLIC_URL}`}
                   >
                     <ListItemIcon>
-                      <HomeIcon />
+                      <HomeIcon color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Home"} />
                   </ListItem>
                   <ListItemButton onClick={handleDropDownClick}>
                     <ListItemIcon>
-                      <Add />
+                      <Add color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Beyond the Block Tutorials"} />
                     {open ? <ExpandLess /> : <ExpandMore />}
@@ -240,8 +241,23 @@ const TutorialBar = (props) => {
                       <ListItem
                         button
                         component={Link}
+                        to={`${process.env.PUBLIC_URL}/tutorialHome`}
+                      >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Tutorial Home" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
                         to={`${process.env.PUBLIC_URL}/mining`}
                       >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemText primary="Mining" />
                         </ListItemButton>
@@ -251,6 +267,9 @@ const TutorialBar = (props) => {
                         component={Link}
                         to={`${process.env.PUBLIC_URL}/transactions`}
                       >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemText primary="Transactions" />
                         </ListItemButton>
@@ -260,6 +279,9 @@ const TutorialBar = (props) => {
                         component={Link}
                         to={`${process.env.PUBLIC_URL}/database`}
                       >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemText primary="How is our blockchain stored?" />
                         </ListItemButton>
@@ -268,7 +290,7 @@ const TutorialBar = (props) => {
                   </Collapse>
                   <ListItem button key={"settings"} onClick={handleDrawerClose}>
                     <ListItemIcon>
-                      <Settings />
+                      <Settings color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Settings"} />
                   </ListItem>
@@ -316,13 +338,13 @@ const TutorialBar = (props) => {
             <Divider />
             <MenuItem>
               <ListItemIcon>
-                <Settings fontSize="small" />
+                <Settings fontSize="small" color="tertiary" />
               </ListItemIcon>
               Settings
             </MenuItem>
             <MenuItem onClick={signOut}>
               <ListItemIcon>
-                <Logout fontSize="small" />
+                <Logout fontSize="small" color="tertiary" />
               </ListItemIcon>
               Sign Out
             </MenuItem>

@@ -217,7 +217,7 @@ const UserBar = (props) => {
                     to={`${process.env.PUBLIC_URL}/simulation`}
                   >
                     <ListItemIcon>
-                      <HomeIcon />
+                      <HomeIcon color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Home"} />
                   </ListItem>
@@ -229,7 +229,7 @@ const UserBar = (props) => {
                     to={`${process.env.PUBLIC_URL}/createsimulation`}
                   >
                     <ListItemIcon>
-                      <Add />
+                      <Add color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Create New Simulation"} />
                   </ListItem>
@@ -241,13 +241,13 @@ const UserBar = (props) => {
                     to={`${process.env.PUBLIC_URL}/tutorialHome`}
                   >
                     <ListItemIcon>
-                      <BookIcon />
+                      <BookIcon color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Tutorials"} />
                   </ListItem>
                   <ListItem button key={"settings"} onClick={handleDrawerClose}>
                     <ListItemIcon>
-                      <Settings />
+                      <Settings color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Settings"} />
                   </ListItem>
@@ -295,13 +295,13 @@ const UserBar = (props) => {
             <Divider />
             <MenuItem>
               <ListItemIcon>
-                <Settings fontSize="small" />
+                <Settings fontSize="small" color="tertiary" />
               </ListItemIcon>
               Settings
             </MenuItem>
             <MenuItem onClick={signOut}>
               <ListItemIcon>
-                <Logout fontSize="small" />
+                <Logout fontSize="small" color="tertiary" />
               </ListItemIcon>
               Sign Out
             </MenuItem>

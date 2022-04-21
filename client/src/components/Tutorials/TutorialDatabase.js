@@ -32,7 +32,7 @@ const TutorialDatabase = (props) => {
                 three tables: user, simulation, and a personalized blocks table
                 for each user.
               </h3>
-              <h1 className={classes.title}>User Table</h1>
+              <h2 className={classes.title}>User Table</h2>
               <h3 className={classes.description}>
                 The user table is very simple, containing only three fields. It
                 contains an email as the primary key, a password, which is used
@@ -44,7 +44,7 @@ const TutorialDatabase = (props) => {
                 edit simulations. While these roles have not been configured,
                 the field exists to account for these types of configurations.
               </h3>
-              <h1 className={classes.title}>Simulation Table</h1>
+              <h2 className={classes.title}>Simulation Table</h2>
               <h3 className={classes.description}>
                 The simulation table contains all of the information used to
                 create a simulation. The primary key is an auto-incrementing
@@ -69,7 +69,7 @@ const TutorialDatabase = (props) => {
                 email field, you are able to pull all of the blocks contained in
                 the simulation by querying the user block table.
               </h3>
-              <h1 className={classes.title}>User Block Table</h1>
+              <h2 className={classes.title}>User Block Table</h2>
               <h3 className={classes.description}>
                 Lastly, the user block table contains all the blocks from all of
                 the simulations each user has created and the metadata of those
