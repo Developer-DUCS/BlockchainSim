@@ -36,7 +36,7 @@ import { ClickAwayListener } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
-
+import BookIcon from "@mui/icons-material/Book";
 const drawerWidth = 270;
 
 // const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -90,14 +90,16 @@ const UserBar = (props) => {
 
   const history = useHistory();
   const theme = useTheme();
-  // setTheme (broken)
+  // setTheme: function that updates app theme
   // barTitle: String
   // tabNames: Array<String>
   // setSelectedTab: React state function
   // selectedTab: Number (index of tab)
   const { setTheme, barTitle, tabNames, setSelectedTab, selectedTab } = props;
   const [openDrawer, setOpen] = React.useState(false);
-  const [toggle, setToggle] = React.useState(false);
+  const [toggle, setToggle] = React.useState(
+    theme.mode === "dark" ? true : false
+  );
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -215,7 +217,7 @@ const UserBar = (props) => {
                     to={`${process.env.PUBLIC_URL}/simulation`}
                   >
                     <ListItemIcon>
-                      <HomeIcon />
+                      <HomeIcon color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Home"} />
                   </ListItem>
@@ -227,13 +229,25 @@ const UserBar = (props) => {
                     to={`${process.env.PUBLIC_URL}/createsimulation`}
                   >
                     <ListItemIcon>
-                      <Add />
+                      <Add color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Create New Simulation"} />
                   </ListItem>
+                  <ListItem
+                    button
+                    key={"tutorial"}
+                    onClick={handleDrawerClose}
+                    component={Link}
+                    to={`${process.env.PUBLIC_URL}/tutorialHome`}
+                  >
+                    <ListItemIcon>
+                      <BookIcon color="tertiary" />
+                    </ListItemIcon>
+                    <ListItemText primary={"Tutorials"} />
+                  </ListItem>
                   <ListItem button key={"settings"} onClick={handleDrawerClose}>
                     <ListItemIcon>
-                      <Settings />
+                      <Settings color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Settings"} />
                   </ListItem>
@@ -281,13 +295,13 @@ const UserBar = (props) => {
             <Divider />
             <MenuItem>
               <ListItemIcon>
-                <Settings fontSize="small" />
+                <Settings fontSize="small" color="tertiary" />
               </ListItemIcon>
               Settings
             </MenuItem>
             <MenuItem onClick={signOut}>
               <ListItemIcon>
-                <Logout fontSize="small" />
+                <Logout fontSize="small" color="tertiary" />
               </ListItemIcon>
               Sign Out
             </MenuItem>
@@ -302,7 +316,7 @@ const UserBar = (props) => {
           </Grid>
 
           <Grid item>
-            <Switch onChange={toggleTheme} color="secondary" />
+            <Switch checked={toggle} onChange={toggleTheme} color="secondary" />
           </Grid>
           <Grid item>
             <Tooltip title="Alerts • No alerts">

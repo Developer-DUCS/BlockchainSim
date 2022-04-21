@@ -25,7 +25,7 @@ const TutorialHome = (props) => {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={8}>
               <h1 className={classes.title}>Blockchain</h1>
-              <h5 className={classes.description}>
+              <h3 className={classes.description}>
                 Bitcoin was launched in 2009 as an ‘electronic peer-to-peer cash
                 system’. The anonymous user Satoshi Nakamoto combined multiple
                 existing technologies in new ways to create the Bitcoin network
@@ -34,6 +34,8 @@ const TutorialHome = (props) => {
                 The key features of the Bitcoin network are that it is
                 decentralized and permissionless. This is what separates Bitcoin
                 from other digital assets, such as online banking.
+              </h3>
+              <h3 className={classes.description}>
                 Permissionless means you do not need permission to participate
                 in the Bitcoin network; any user can download the blockchain and
                 run a full node. Decentralized means that there is no central
@@ -55,17 +57,20 @@ const TutorialHome = (props) => {
                 commonly known as Proof-of-Work, referring to mining, or the
                 process of creating a new block and earning the right to add it
                 to the chain. All cryptocurrencies that came later use some
-                variation of Satoshi’s protocol. After the launch of Bitcoin,
-                Satoshi worked with a team of volunteers to develop the first
-                wallets. Before wallets, users had to keep a physical or digital
-                copy of their private key to access and spend their Bitcoin. If
-                they lost this private key they lost their Bitcoin for good.
-                This is another side effect of decentralization. Here we will
-                describe the various parts of the blockchain, what goes in an
-                actual block, how the network communicates, and much more. On
-                this website you can also create and explore your own blockchain
-                simulations if you prefer a hands-on learning experience.
-              </h5>
+                variation of Satoshi’s protocol.{" "}
+              </h3>
+              <h3 className={classes.description}>
+                After the launch of Bitcoin, Satoshi worked with a team of
+                volunteers to develop the first wallets. Before wallets, users
+                had to keep a physical or digital copy of their private key to
+                access and spend their Bitcoin. If they lost this private key
+                they lost their Bitcoin for good. This is another side effect of
+                decentralization. Here we will describe the various parts of the
+                blockchain, what goes in an actual block, how the network
+                communicates, and much more. On this website you can also create
+                and explore your own blockchain simulations if you prefer a
+                hands-on learning experience.
+              </h3>
             </GridItem>
           </GridContainer>
         </div>

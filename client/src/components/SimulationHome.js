@@ -81,7 +81,7 @@ const SimulationHome = (props) => {
           variant="contained"
           sx={{ float: 500, ml: 2, mt: 2 }}
         >
-          Add New Simulation
+          Create New Simulation
         </Button>
         <TabPanel value={selectedTab} index={0}>
           <Grid container spacing={3} sx={{ p: 2 }}>

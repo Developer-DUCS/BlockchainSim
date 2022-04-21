@@ -78,10 +78,6 @@ function Row(props) {
     hour12: true,
   };
 
-  React.useEffect(() => {
-    //console.log("row", row);
-  }, []);
-
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>

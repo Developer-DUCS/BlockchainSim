@@ -10,7 +10,6 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb" }));
 
 router.post("/trackaddress", cors(), (req, resp) => {
-  console.log("enter route");
   // Initialize variables
   let inputTransactions = req.body.input;
   let outputTransactions = req.body.output;
