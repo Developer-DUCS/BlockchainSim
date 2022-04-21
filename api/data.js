@@ -135,7 +135,6 @@ router.post("/createsim", cors(), (req, res) => {
 
   let qry2 = "";
 
-  //console.log("Length", data.blocks.length[0]);
   for (let i = 0; i < data.blocks.length; i++) {
     const hash = data.blocks[i].id_block;
     const header = data.blocks[i].header;

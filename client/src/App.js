@@ -7,7 +7,10 @@ import LandingPage from "./components/LandingPage";
 import NavBar from "./components/reusable/NavBar";
 import SignUp from "./components/SignUp";
 import Simulation from "./components/Simulation";
-import TutorialHome from "./components/TutorialHome";
+import TutorialHome from "./components/Tutorials/TutorialHome";
+import TutorialDatabase from "./components/Tutorials/TutorialDatabase";
+import TutorialMining from "./components/Tutorials/TutorialMining";
+import TutorialTransactions from "./components/Tutorials/TutorialTransactions";
 
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
@@ -18,9 +21,19 @@ import SimulationHome from "./components/SimulationHome";
 import Feedback from "./components/reusable/Feedback";
 
 import { CookiesProvider, useCookies } from "react-cookie";
+import darkTheme from "./themes/darkTheme";
+
+const getThemeFromLocalStorage = () => {
+  let localItem = localStorage.getItem("theme");
+  if (localItem === "dark") {
+    return darkTheme;
+  } else {
+    return lightTheme;
+  }
+};
 
 const App = () => {
-  const [theme, setTheme] = React.useState(lightTheme);
+  const [theme, setTheme] = React.useState(getThemeFromLocalStorage());
   const [signIn, setSignIn] = React.useState(false);
   const basename = process.env.REACT_APP_BASENAME || null;
   const [feedback, setFeedback] = React.useState(false);
@@ -46,6 +59,14 @@ const App = () => {
       }
     });
   }, []);
+
+  React.useEffect(() => {
+    if (theme.mode === "dark") {
+      window.localStorage.setItem("theme", "dark");
+    } else {
+      window.localStorage.setItem("theme", "light");
+    }
+  }, [theme]);
 
   const toggleSignIn = () => {
     setSignIn(!signIn);
@@ -141,11 +162,41 @@ const App = () => {
                 />
               )}
             />
-            {/*Route to "/tutorialHome"*/}
+            {/*Route to "/tutorials"*/}
             <Route
               path={`${process.env.PUBLIC_URL}/tutorialHome`}
               render={() => (
                 <TutorialHome
+                  setTheme={setTheme}
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
+              )}
+            />
+            <Route
+              path={`${process.env.PUBLIC_URL}/transactions`}
+              render={() => (
+                <TutorialTransactions
+                  setTheme={setTheme}
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
+              )}
+            />
+            <Route
+              path={`${process.env.PUBLIC_URL}/database`}
+              render={() => (
+                <TutorialDatabase
+                  setTheme={setTheme}
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
+              )}
+            />
+            <Route
+              path={`${process.env.PUBLIC_URL}/mining`}
+              render={() => (
+                <TutorialMining
                   setTheme={setTheme}
                   setFeedback={setFeedback}
                   setFeedbackObj={setFeedbackObj}

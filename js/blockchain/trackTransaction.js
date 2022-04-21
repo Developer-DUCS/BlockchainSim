@@ -6,9 +6,6 @@ const trackAddres = (curInputs, curOutputs, blocks) => {
   var end = false;
   var empyLeftover = false;
 
-  console.log("Inputs: ", curInputs);
-  console.log("Outputs: ", curOutputs);
-
   for (let j = 0; j < blocks.length; j++) {
     var ts = blocks[j].transactions; // transactions of block j
     if (typeof ts == "string") ts = JSON.parse(ts);
@@ -33,6 +30,7 @@ const trackAddres = (curInputs, curOutputs, blocks) => {
         });
         if (found != undefined && !adrLInputs.includes(found)) {
           if (!found.includes("0000000000000")) {
+            t.actualAddress = found;
             laterInputs.push(t);
             adrLInputs.push(found);
           }
@@ -55,6 +53,7 @@ const trackAddres = (curInputs, curOutputs, blocks) => {
             found = undefined;
           }
           if (foundOut != undefined && !adrPOutputs.includes(foundOut)) {
+            t.actualAddress = foundOut;
             previousOutputs.push(t);
             adrPOutputs.push(foundOut);
           }
@@ -72,8 +71,6 @@ const trackAddres = (curInputs, curOutputs, blocks) => {
     laterInputs.push({ transaction_data: { block_height: -2 - 1 } });
   }
 
-  console.log(" blocks found for inputs: ", laterInputs);
-  console.log(" blocks found for outputs: ", previousOutputs);
   return [previousOutputs, laterInputs];
 };
 

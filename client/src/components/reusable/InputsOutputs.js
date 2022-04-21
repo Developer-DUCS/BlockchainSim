@@ -20,6 +20,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [showBlocks, setShowBlocks] = React.useState(inputs);
   const [transactions, setTransactions] = React.useState([transaction]);
+  const [showAddress, setShowAddress] = React.useState([]);
 
   React.useEffect(() => {
     if (transactions.length > 0) {
@@ -105,6 +106,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
   const handleBlockClick = (e, block) => {
     e.preventDefault();
     popoverClose();
+    setShowAddress([...showAddress, block.actualAddress]);
     setTransactions([...transactions, block]);
     setLoading(true);
   };
@@ -122,7 +124,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
       ) : (
         <>
           {transactions.map((tx, i) => (
-            <Card sx={{ mb: 2 }}>
+            <Card sx={{ mb: 2 }} key={i}>
               <CardContent>
                 <Grid container>
                   <Grid item xs={2}>
@@ -213,29 +215,26 @@ const InputsOutputs = ({ transaction, blockData }) => {
                   </Grid>
                   <Grid item xs={12} textAlign="center">
                     <Typography sx={{ mt: 1 }} variant="subtitle2">
-                      {tx.hash}
+                      Address: {showAddress[i] ? showAddress[i] : ""}
                     </Typography>
                   </Grid>
                 </Grid>
 
                 {inputs[i].map((input, j) => (
-                  <>
-                    <Xarrow
-                      key={`${j}-${i}`}
-                      start={`${input.transaction_data.block_height + 1}-${i}`}
-                      end={`parent-${i}`}
-                      path="straight"
-                      headSize={3}
-                      color="#127E59"
-                      startAnchor={{
-                        position:
-                          input.transaction_data.block_height + 1 == -1
-                            ? "right"
-                            : "top",
-                      }}
-                      endAnchor={{ position: "auto" }}
-                    />
-                  </>
+                  <Xarrow
+                    key={`${j}-${i}`}
+                    start={`${input.transaction_data.block_height + 1}-${i}`}
+                    end={`parent-${i}`}
+                    path="straight"
+                    headSize={3}
+                    color="#127E59"
+                    startAnchor={
+                      input.transaction_data.block_height + 1 == -1
+                        ? "right"
+                        : "top"
+                    }
+                    endAnchor="auto"
+                  />
                 ))}
 
                 {outputs[i].map((output, j) => (
@@ -246,13 +245,12 @@ const InputsOutputs = ({ transaction, blockData }) => {
                     path="straight"
                     headSize={3}
                     color="#BC2C1A"
-                    startAnchor={{ position: "auto" }}
-                    endAnchor={{
-                      position:
-                        output.transaction_data.block_height + 1 == -2
-                          ? "left"
-                          : "top",
-                    }}
+                    startAnchor="auto"
+                    endAnchor={
+                      output.transaction_data.block_height + 1 == -2
+                        ? "left"
+                        : "top"
+                    }
                   />
                 ))}
               </CardContent>
@@ -269,10 +267,11 @@ const InputsOutputs = ({ transaction, blockData }) => {
                   setTransactions(transactions.slice(0, -1));
                   setInputs(inputs.slice(0, -1));
                   setOutputs(outputs.slice(0, -1));
+                  setShowAddress(showAddress.slice(0, -1));
                 }}
                 size="small"
               >
-                Go Back
+                Undo
               </Button>
             </Grid>
           </Grid>
@@ -291,8 +290,8 @@ const InputsOutputs = ({ transaction, blockData }) => {
             }}
           >
             <Grid container>
-              {showBlocks.map((block) => (
-                <Grid item sx={{ m: 0.5 }}>
+              {showBlocks.map((block, i) => (
+                <Grid item sx={{ m: 0.5 }} key={i}>
                   <Button
                     disabled={Boolean(
                       block.transaction_data.block_height + 1 == -1 ||

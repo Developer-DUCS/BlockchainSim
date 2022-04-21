@@ -60,7 +60,7 @@ const LedgerCard = (props) => {
                     sx={{
                       ...theme.typography.commonAvatar,
                       ...theme.typography.largeAvatar,
-                      backgroundColor: theme.palette.primary[800],
+                      backgroundColor: theme.palette.secondary.main[800],
                       mt: 1,
                     }}
                   >
@@ -73,8 +73,8 @@ const LedgerCard = (props) => {
                     sx={{
                       ...theme.typography.commonAvatar,
                       ...theme.typography.mediumAvatar,
-                      backgroundColor: theme.palette.warning.dark,
-                      color: theme.palette.warning[200],
+                      backgroundColor: theme.palette.secondary.dark,
+                      color: theme.palette.secondary.main[200],
                       zIndex: 1,
                     }}
                     aria-controls="menu-earning-card"
