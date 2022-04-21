@@ -315,8 +315,10 @@ router.post("/addnewblock", cors(), (req, resp) => {
           resp.sendStatus(400);
         } else {
           // Time stamp holds a value here, when its received, it is undefined.
+          console.log("re time", re[0].time_created);
           timeStamp = new Date(re[0].time_created);
           timeStamp.setMinutes(timeStamp.getMinutes() + blockwin);
+          timeStamp.setHours(timeStamp.getHours() - 6);
           timeStamp = timeStamp.toISOString().slice(0, 19).replace("T", " "); // transform to ISO format
 
           let newBlock = createBlock(
@@ -364,7 +366,9 @@ router.post("/addnewblock", cors(), (req, resp) => {
                   resp.status(400);
                 } else {
                   // I hardcoded a date into this query, so it would go through
-                  let q = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '2022-01-01 10:40:00')`;
+                  console.log("btm", block_time_created);
+                  console.log("timestamp", timeStamp);
+                  let q = `INSERT INTO blocks_${email_valid} VALUES ('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '${block_time_created}')`;
                   db.query(q, (err, r) => {
                     if (err) {
                       console.log(err);
