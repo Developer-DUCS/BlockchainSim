@@ -170,20 +170,20 @@ const createTransactions = (
 };
 
 //select a sender with valid money to create transaction
-const selectSender = (b_height, walletArr, UTXO_Pool) => {
+const selectSender = (b_height, walletArr, UTXO_Pool, mining) => {
   // choose valid UTXO
   var index = 0;
   var utxo = UTXO_Pool[index];
   var validHeigth = b_height - MINIMUM_DEPTH;
   var utxoArr = [];
 
-  var utxoHeigth = utxo[2];
-  while (utxoHeigth > validHeigth) {
-    // in case the first UTXO is not valid
-    index = index + 1;
-    utxo = UTXO_Pool[index];
-    utxoHeigth = utxo[2];
-  }
+  //var utxoHeigth = utxo[2];
+  //while (utxoHeigth > validHeigth) {
+  // in case the first UTXO is not valid
+  //  index = index + 1;
+  //  utxo = UTXO_Pool[index];
+  //  utxoHeigth = utxo[2];
+  //}
   utxoArr.push(utxo);
 
   //track address and get wallet
@@ -220,13 +220,19 @@ const selectSender = (b_height, walletArr, UTXO_Pool) => {
   return senderInfo;
 };
 
-//select a sender with valid money to create transaction
+// select a UTXO to be the Minter's stake
+// ***This function returns NaN about half the time...
+// ***But it won't cause any errors with the simulation
 const selectMinter = (b_height, walletArr, UTXO_Pool) => {
+  //console.log("b_height: " + b_height);
+  //console.log("walletArr: " + walletArr);
+  //console.log("UTXO_Pool: " + UTXO_Pool);
   // choose valid UTXO
   var index = 0;
   var utxo = UTXO_Pool[index];
-  var validHeigth = b_height - MINIMUM_DEPTH;
+  //console.log("utxo: " + utxo);
   var utxoArr = [];
+  //removed while loop for Valid_Height
   utxoArr.push(utxo);
 
   //track address and get wallet
@@ -236,6 +242,7 @@ const selectMinter = (b_height, walletArr, UTXO_Pool) => {
   var i = 0;
   while (!found && i < walletArr.length) {
     adrs = walletArr[i][3];
+    //console.log("adrs: " + adrs);
     if (adrs.indexOf(address2find) != -1) {
       found = true;
       senderWallet = walletArr[i];
@@ -254,7 +261,7 @@ const selectMinter = (b_height, walletArr, UTXO_Pool) => {
 
     // get valid UTXOs
     utxoArr = utxosFound.filter((utx) => {
-      return utx[2] <= validHeigth;
+      return utx[2];
     });
   }
 

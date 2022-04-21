@@ -3,33 +3,35 @@ const {
   createAddress,
   createPublicPrivateKey,
 } = require("../../testValidation");
-//const { walletArr } = require("../../wallet");
-//const { UTXO_Pool } = require("./../UTXO_Pool");
 
 /*
-    --> BasecoinTransaction.JS FILE
+    --> coinstakeTransaction.JS FILE
 
     --> INPUTS:
-      - miner: person who mined the code and it is receiving the reward + fees
-      - fee: fees from the other transactions in the block
+      - stakeWallet: wallet w/ available balance selected for stake
+      - UTXO_stake: list of 1 or more UTXO's passed in as the Minter's stake
       - block_heigth: the height of the block 
+      - etc...
 
     --> OUTPUTS:
-      - coinbaseJSON: a single transaction as a JSON object
+      - coinbaseJSON: a single transaction as a JSON object 
+      - (I call it coinbaseJSON as well to make it easier in transaction.js)
 
     *CONNECTIONS*:
-      - File called from transactions.js (createTransactions())
+      - File called from transactions.js (createTransactions() -> coinstakeTransaction())
       - File calls: 
         * sjcl() (sjcl.js) -->  used to create hashes and convert to hexadecimal
 */
 
-// TO DO: Add fees
-//      : Make scriptSig, scriptLength, scriptPubKey dynamic
+// ToDo:
+// 1. Fix SelectMinter on transaction.js (it is part of PoS)
+// 2. change subsidy to be dependent on stake - dynamic stake
+// 3. change Miner label to Minter in block visualizer
+// 4. Label the stake as stake, make it obvious
+// 5. Burn fees in PoS - don't include them in block reward
+// 5. Let the simulation creater stake coins???
 
-//REFERENCE
-//coininputinfo - [fee, amount_sent, sender_leftover, selectedUTXO, amount_received]
-//[wallet_id, owner, simulation_id, adresses_aviable, balance, pesonal_ledger]
-// personal_ledger = [[sent/received, address, coin, blockheight], ...]
+// There is a lot more you can do with PoS
 
 const NUMBER_DECIMALS = 100000;
 
@@ -53,12 +55,15 @@ function coinstakeTransaction(
   var sender_leftover = subsidy;
   var walletArr;
   var coinInputInfo = selectStake(UTXO_stake);
-  //fee, amount_sent, sender_leftover, selectedUTXO, amount_received
-  console.log("coinInputInfo: " + coinInputInfo);
+  //coinInputInfo = [fee, amount_sent, sender_leftover, selectedUTXO, amount_received]
+  //console.log("coinInputInfo: " + coinInputInfo);
   var fee = coinInputInfo[0];
-  var amount_sent = coinInputInfo[1]; //stake
+  var amount_sent = coinInputInfo[1]; //STAKE
+  //console.log("amount_sent: " + amount_sent);
   var selectedUTXO = coinInputInfo[2];
+  //console.log("selectedUTXO : " + selectedUTXO);
   var amount_received = coinInputInfo[3];
+  //console.log("amount_received: " + amount_received);
 
   // delete UTXOs that are going to be spent
   var wallPos = users.indexOf(stakeWallet[0]);
@@ -81,22 +86,11 @@ function coinstakeTransaction(
     // walletArr[wallPos][5].push(newLedgerEle);
   }
 
-  if (typeof sender_leftover != undefined) {
-    // sender leftover new address
-    var out_sender_address_info = createAddressInfo(
-      stakeWallet[0],
-      sender_leftover,
-      block_height,
-      users,
-      walletArr,
-      UTXO_Pool
-    );
-    var out_sender_address = out_sender_address_info[0];
-    walletArr = out_sender_address_info[1];
-    UTXO_Pool = out_sender_address_info[2];
-  }
+  // No need for sender_leftover address,
+  // because that is coming from the blockchain as subsidy
 
-  //address receiver
+  // address receiver
+  // Stake is a transaction to yourself, so receiver is also sender
   var out_receiver_address_info = createAddressInfo(
     stakeWallet[0],
     amount_received,
@@ -119,7 +113,7 @@ function coinstakeTransaction(
     ", sender_leftover: " +
     sender_leftover +
     " , fee: " +
-    fee +
+    fee + //fees are burned in PoS. Implement this
     ", amount_sent: " +
     amount_sent +
     " , amount_received: " +
@@ -136,7 +130,7 @@ function coinstakeTransaction(
   var coinbaseJSON = {
     hash: transactionHash,
 
-    //data is scrambled - look at constants above for clarification
+    //look above for clarification on these values
     transaction_data: {
       sender_wallet: stakeWallet[0],
       addresses_input_UTXO: adrsSender,
@@ -147,13 +141,15 @@ function coinstakeTransaction(
       sender_leftover: sender_leftover,
       sender_leftover_address:
         "000000000000000000000000000000000000000000000000000000000000000000000000000000",
-      fee: fee, //burn fees in PoS
+      fee: fee, //burn
       block_height: block_height,
     },
   };
+  //same format as coinbaseTX data
   return [coinbaseJSON, totalCoin, walletArr, UTXO_Pool];
 }
 
+//nothing different about this function
 function createAddressInfo(
   wallet,
   amount,
@@ -174,20 +170,27 @@ function createAddressInfo(
 }
 
 // select the amount of coin to spend in the transactions and the UTXOs to use
+// -> this function seems to be working fine, it is just that sometimes
+//    selectMinter will send undefined values.
 const selectStake = (UTXO_stake) => {
   // CASE 1: ony one possible input
   if (UTXO_stake.length == 1) {
+    //console.log("single UTXO_stake: " + UTXO_stake);
+    //console.log("single UTXO_stake[0][1]: " + UTXO_stake[0][1]);
     var fee = 0;
-    var amount_sent = UTXO_stake[0][1];
-    var amount_received = amount_sent;
+    var amount_sent = UTXO_stake[0][1]; //amount_sent = amount_received
+    var amount_received = UTXO_stake[0][1]; //stake is Tx to yourself!
     var selectedUTXO = UTXO_stake;
   }
   // CASE 2: more than one UTXO input possible
   else {
     // 1) select # UTXOs to spend
+    //console.log("mult. UTXO_stake: " + UTXO_stake);
+    //console.log("mult. UTXO_stake[0][1]: " + UTXO_stake[0][1]);
     var numaddresses2use = Math.floor(
       Math.random() * (UTXO_stake.length - 1) + 1
     );
+    //console.log("numaddresses2use: " + numaddresses2use);
     // 2) calculate fees
     var fee = 0;
     // 3) calculate total possible to be spent
@@ -203,6 +206,7 @@ const selectStake = (UTXO_stake) => {
       Math.round(
         (Math.random() * coinLastUTXO + Number.EPSILON) * NUMBER_DECIMALS
       ) / NUMBER_DECIMALS; // round to 5 decimals
+    //console.log("amount2spendLast: " + amount2spendLast);
     var amount_received =
       Math.round(
         (total + amount2spendLast + Number.EPSILON) * NUMBER_DECIMALS
@@ -210,8 +214,8 @@ const selectStake = (UTXO_stake) => {
     var amount_sent =
       Math.round((total + coinLastUTXO + Number.EPSILON) * NUMBER_DECIMALS) /
       NUMBER_DECIMALS;
-    var amount_received = amount_sent;
-    // 5) get UTXOs to be used
+    //console.log("amount_received : " + amount_received);
+
     var selectedUTXO = [];
     for (var i = 0; i < numaddresses2use; i++) selectedUTXO.push(UTXO_stake[i]);
   }
