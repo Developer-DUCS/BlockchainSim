@@ -7,7 +7,6 @@ const express = require("express");
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
-
 app.use("/", users);
 
 const email = "testonly@test.com";
@@ -52,7 +51,9 @@ afterAll((done) => {
   });
 });
 
-// Tests are set up in a linear progression (ex: /register before /login to test)
+/* USER REGISTRATION TESTS */
+
+// Test registration of a valid user
 test("Route /register works", (done) => {
   request(app)
     .post("/register")
@@ -67,6 +68,7 @@ test("Route /register works", (done) => {
     });
 });
 
+// Test registration fail if a user has been already register
 test("Route /register fails, email already taken", (done) => {
   request(app)
     .post("/register")
@@ -81,6 +83,9 @@ test("Route /register fails, email already taken", (done) => {
     });
 });
 
+/* LOG IN API TESTS */
+
+// Login with an existing account
 test("Route /login success", (done) => {
   request(app)
     .post("/login")
@@ -96,6 +101,7 @@ test("Route /login success", (done) => {
     });
 });
 
+// Log in with an existing account but bad password
 test("Route /login bad password", (done) => {
   request(app)
     .post("/login")
@@ -110,6 +116,7 @@ test("Route /login bad password", (done) => {
     });
 });
 
+// Log in with an non existing account
 test("Route /login no account", (done) => {
   request(app)
     .post("/login")
@@ -124,6 +131,7 @@ test("Route /login no account", (done) => {
     });
 });
 
+// Bad user input
 test("Route /login form broke", (done) => {
   request(app)
     .post("/login")
@@ -138,6 +146,7 @@ test("Route /login form broke", (done) => {
     });
 });
 
+// Authenticaction pass test
 test("Route /auth success", (done) => {
   request(app)
     .post("/login")
@@ -164,6 +173,7 @@ test("Route /auth success", (done) => {
     });
 });
 
+// authentication fail test
 test("Route /auth fails", (done) => {
   request(app)
     .post("/auth")
