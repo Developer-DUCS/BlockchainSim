@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useState } from "react";
 
 // material-ui
@@ -9,17 +8,13 @@ import { Avatar, Box, Grid, Menu, MenuItem, Typography } from "@mui/material";
 import MainCard from "./MainCard";
 
 // assets
-import EarningIcon from "../../images/icons/earning.svg";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import GetAppTwoToneIcon from "@mui/icons-material/GetAppOutlined";
 import FileCopyTwoToneIcon from "@mui/icons-material/FileCopyOutlined";
 import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfOutlined";
 import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { Icon } from "@iconify/react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { unstable_styleFunctionSx } from "@mui/system";
 
 const styles = {
   "&:hover": {

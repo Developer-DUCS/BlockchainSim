@@ -4,18 +4,9 @@ import Button from "@mui/material/Button";
 import Auth from "./Auth";
 import WalletCard from "../WalletCards/WalletCard";
 
-const Wallet_Card = () => {
-  return (
-    <Grid item sm={8}>
-      <WalletCard />
-    </Grid>
-  );
-};
-
 const WalletComponent = (props) => {
   const [user, setUser] = React.useState({});
   const [walletCards, setWalletCards] = React.useState(1);
-  const rows = [];
 
   const onAddBtnClick = (event) => {
     setWalletCards(walletCards + 1);

@@ -29,12 +29,23 @@ const WalletCard = (props) => {
   const [wallets, setWallets] = React.useState([]);
 
   //stores information gained from database
+  // all the miners in the simulation
   const [miners, setMiners] = React.useState([]);
+
+  // the current miner that is selected to view
   const [miner, setMiner] = React.useState([]);
+
+  // the balance of the selected miner
   const [balance, setBalance] = React.useState(0);
+
+  // all the addresses from the selected miner
   const [addresses, setAddresses] = React.useState([]);
+
+  // the personal ledger for the selected miner
   const [personalLedger, setpersonalLedger] = React.useState([]);
 
+  // when page loads, will fetch data from the DB  based of current simualtion from a user and store necessary information
+  // about all the miners
   React.useEffect(() => {
     if (user.email) {
       let url = `http://${process.env.REACT_APP_API_URL}/api/data/getwallets/id`;
@@ -55,6 +66,7 @@ const WalletCard = (props) => {
           }
         })
         .then((wallets) => {
+          // sets wallets to all wallets from a simulation
           setWallets(wallets);
           const minersArr = [];
           let totalCoin = 0;
@@ -67,6 +79,8 @@ const WalletCard = (props) => {
     }
   }, [user]);
 
+  // Whenever a user selects a miner; balances, addresses, and personal ledgers
+  // will be set and passed into individual card components
   React.useEffect(() => {
     for (let i = 0; i < wallets.length; i++) {
       if (wallets[i].owner == miner) {
@@ -77,6 +91,7 @@ const WalletCard = (props) => {
     }
   }, [miner]);
 
+  // Whenever a miner is selected, the card will be updated
   const handleMinerChange = (event) => {
     const {
       target: { value },
