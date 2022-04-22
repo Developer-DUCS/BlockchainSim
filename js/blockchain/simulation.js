@@ -1,6 +1,5 @@
 const blockCreator = require("./block/block");
 const { chooseMiner } = require("./block/miningPool");
-const { createWallet } = require("./wallet");
 //const { UTXO_Pool } = require("./transactions/UTXO_Pool");
 
 /*

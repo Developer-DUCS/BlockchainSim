@@ -114,7 +114,6 @@ const CreateSimulation = (props) => {
   const [numMiners, setNumMiners] = React.useState("50");
   const [numMinersError, setNumMinersError] = React.useState(false);
   const [genDate, setGenDate] = React.useState("2009-01-09");
-  const NUM_MINERS = 100; //DELETE
 
   const handleWindowChange = (event) => {
     setBlockWindow(event.target.value);
