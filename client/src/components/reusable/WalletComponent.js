@@ -34,7 +34,7 @@ const WalletComponent = (props) => {
       </Box>
       <Box sx={{ overflow: "auto", whiteSpace: "nowrap", m: 2 }}>
         {[...Array(walletCards)].map(() => (
-          <Box style={{ display: "inline-block", width: "900px" }}>
+          <Box style={{ display: "inline-block", width: "50%" }}>
             <WalletCard />
           </Box>
         ))}

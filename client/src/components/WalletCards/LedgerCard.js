@@ -159,7 +159,7 @@ const LedgerCard = (props) => {
                     </Typography>
                   ))}
                 </Grid>
-                <Grid item sx={{ mt: 0.5 }}>
+                {/* <Grid item sx={{ mt: 0.5 }}>
                   <Icon
                     icon="mdi:bitcoin"
                     width="30"
@@ -167,7 +167,7 @@ const LedgerCard = (props) => {
                     mt="10"
                     color="theme.palette.secondary.dark"
                   />
-                </Grid>
+                </Grid> */}
                 {/* <Grid>
                   <Typography sx={{ ml: 1 }}>
                     BLOCKCHAIN

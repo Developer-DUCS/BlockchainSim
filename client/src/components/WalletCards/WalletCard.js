@@ -14,10 +14,8 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import Button from "@mui/material/Button";
 import Auth from "../reusable/Auth.js";
 import TotalBalanceCard from "./TotalBalanceCard";
-import TransactionCard from "./TransactionsCard";
 import TransactionButton from "./TransactionButton";
 import AddressesCard from "./AddressesCard";
 import LedgerCard from "./LedgerCard";
@@ -26,7 +24,11 @@ const WalletCard = (props) => {
   const theme = useTheme();
   const [user, setUser] = React.useState({});
   const { id } = useParams();
+
+  //array of all wallet card objects
   const [wallets, setWallets] = React.useState([]);
+
+  //stores information gained from database
   const [miners, setMiners] = React.useState([]);
   const [miner, setMiner] = React.useState([]);
   const [balance, setBalance] = React.useState(0);
@@ -69,8 +71,8 @@ const WalletCard = (props) => {
     for (let i = 0; i < wallets.length; i++) {
       if (wallets[i].owner == miner) {
         setBalance(wallets[i].balance);
-        setAddresses(wallets[i].addresses);
-        setpersonalLedger(wallets[i].personal_ledger.reverse());
+        setAddresses(wallets[i].addresses.slice(0, 4));
+        setpersonalLedger(wallets[i].personal_ledger.reverse().slice(0, 4));
       }
     }
   }, [miner]);
@@ -81,6 +83,7 @@ const WalletCard = (props) => {
     } = event;
     setMiner(typeof value === "string" ? value.split(",") : value);
   };
+
   return (
     <Auth setUser={setUser}>
       <Card sx={{ mt: 1, ml: 2, borderRadius: "16px" }}>
@@ -89,7 +92,7 @@ const WalletCard = (props) => {
             <Grid item lg={6}>
               <Typography
                 sx={{
-                  fontSize: "2.125rem",
+                  fontSize: "30px",
                   fontWeight: 500,
                 }}
               >
@@ -127,7 +130,6 @@ const WalletCard = (props) => {
               <TotalBalanceCard sx={{ width: "100%" }} balance={balance} />
             </Grid>
             <Grid item lg={6}>
-              {/* <TransactionCard sx={{ width: "100%" }} /> */}
               <Grid item>
                 <TransactionButton
                   sx={{ width: "100%" }}
@@ -145,7 +147,7 @@ const WalletCard = (props) => {
             </Grid>
             <Grid item lg={6}>
               <AddressesCard
-                sx={{ width: "100%", height: 500 }}
+                sx={{ width: "100%", height: 300 }}
                 addresses={addresses}
               />
             </Grid>
@@ -153,23 +155,11 @@ const WalletCard = (props) => {
               <LedgerCard
                 sx={{
                   width: "100%",
-                  height: 500,
+                  height: 300,
                 }}
                 ledger={personalLedger}
               />
             </Grid>
-            {/* <Grid item lg={6}>
-              <TransactionButton
-                sx={{ width: "100%" }}
-                title="Request a payment"
-              />
-            </Grid>
-            <Grid item lg={6}>
-              <TransactionButton
-                sx={{ width: "100%" }}
-                title="Make a payment"
-              />
-            </Grid> */}
           </Grid>
         </CardContent>
       </Card>
