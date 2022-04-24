@@ -11,6 +11,7 @@ import TutorialHome from "./components/Tutorials/TutorialHome";
 import TutorialDatabase from "./components/Tutorials/TutorialDatabase";
 import TutorialMining from "./components/Tutorials/TutorialMining";
 import TutorialTransactions from "./components/Tutorials/TutorialTransactions";
+import TutorialBlockHeader from "./components/Tutorials/TutorialBlockHeader";
 
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
@@ -22,6 +23,7 @@ import Feedback from "./components/reusable/Feedback";
 
 import { CookiesProvider, useCookies } from "react-cookie";
 import darkTheme from "./themes/darkTheme";
+import TutorialBlockHeader from "./components/Tutorials/TutorialBlockHeader";
 
 const getThemeFromLocalStorage = () => {
   let localItem = localStorage.getItem("theme");
@@ -197,6 +199,16 @@ const App = () => {
               path={`${process.env.PUBLIC_URL}/mining`}
               render={() => (
                 <TutorialMining
+                  setTheme={setTheme}
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
+              )}
+            />
+            <Route
+              path={`${process.env.PUBLIC_URL}/blockheader`}
+              render={() => (
+                <TutorialBlockHeader
                   setTheme={setTheme}
                   setFeedback={setFeedback}
                   setFeedbackObj={setFeedbackObj}

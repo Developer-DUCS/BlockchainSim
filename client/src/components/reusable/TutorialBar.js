@@ -253,6 +253,18 @@ const TutorialBar = (props) => {
                       <ListItem
                         button
                         component={Link}
+                        to={`${process.env.PUBLIC_URL}/blockheader`}
+                      >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Block Header" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
                         to={`${process.env.PUBLIC_URL}/mining`}
                       >
                         <ListItemIcon>
