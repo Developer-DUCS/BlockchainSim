@@ -21,6 +21,7 @@ app.use(express.urlencoded({ limit: "50mb" }));
 router.post("/createsim", cors(), (req, res) => {
   // Add in here
   const user = req.body.user;
+  //var subsidy = int(req.body.subsidy);
   const initValues = {
     name: req.body.name,
     desc: req.body.desc,
@@ -29,7 +30,7 @@ router.post("/createsim", cors(), (req, res) => {
     blockwin: req.body.blockwin,
     numblocks: req.body.numblocks,
     transactions: req.body.transactions,
-    subsidy: req.body.subsidy,
+    subsidy: parseInt(req.body.subsidy),
     halvings: req.body.halvings,
     coin: req.body.coin,
     mining: req.body.mining,
@@ -48,6 +49,9 @@ router.post("/createsim", cors(), (req, res) => {
     initValues.numblocks,
     initValues.blockwin
   );
+
+  console.log("works up to here 1.0", initValues, initialHash, user.email);
+
   var simulation = simulationCreator(
     initValues.numblocks,
     initialHash,
@@ -57,10 +61,10 @@ router.post("/createsim", cors(), (req, res) => {
     initValues.transactions,
     initValues.subsidy,
     initValues.halvings,
-    // Added here to pass in wallets
     wallets
   );
 
+  console.log("works up to here 2.0");
   let data = {
     simulation: {
       user: user.email,
@@ -126,6 +130,8 @@ router.post("/createsim", cors(), (req, res) => {
   }
   const swallets = JSON.stringify(walletsJSON);
 
+  console.log("simulation created, pending of being added to database");
+
   let qry = `INSERT INTO simulation (email,sim_name,sim_shared,sim_description,sim_created,sim_modified,sim_blocks,subsidy,halvings,numtransactions,wallets,miningPool,utxoPool,blockwin) VALUES ('${email}', '${sim_name}', '${sim_shared_string}', '${sim_description}', '${sim_created}', '${sim_modified}', '${sim_blocks_string}', '${subsidy}', '${halvings}', '${numtransactions}', '${swallets}', '${sminingPool}' , '${utxoPool}' , '${blockwin}' );`;
   db.query(qry, (err) => {
     if (err) {
@@ -134,6 +140,8 @@ router.post("/createsim", cors(), (req, res) => {
   });
 
   let qry2 = "";
+
+  console.log("simulation added, left the blocks");
 
   for (let i = 0; i < data.blocks.length; i++) {
     const hash = data.blocks[i].id_block;
@@ -153,6 +161,8 @@ router.post("/createsim", cors(), (req, res) => {
       qry2 += `('${hash}', '${headerString}', '${transactionString}', ${transaction_counter}, '${miner}', '${block_time_created}'),`;
     }
   }
+
+  console.log("blocks added");
 
   db.query(qry2, (err) => {
     if (err) {
