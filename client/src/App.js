@@ -1,3 +1,4 @@
+// Imports from project
 import React from "react";
 import HomePage from "./components/HomePage";
 import Error from "./components/Error";
@@ -11,6 +12,8 @@ import TutorialHome from "./components/Tutorials/TutorialHome";
 import TutorialDatabase from "./components/Tutorials/TutorialDatabase";
 import TutorialMining from "./components/Tutorials/TutorialMining";
 import TutorialTransactions from "./components/Tutorials/TutorialTransactions";
+import TutorialBlockHeader from "./components/Tutorials/TutorialBlockHeader";
+import TutorialWallets from "./components/Tutorials/TutorialWallets";
 
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
@@ -197,6 +200,26 @@ const App = () => {
               path={`${process.env.PUBLIC_URL}/mining`}
               render={() => (
                 <TutorialMining
+                  setTheme={setTheme}
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
+              )}
+            />
+            <Route
+              path={`${process.env.PUBLIC_URL}/blockheader`}
+              render={() => (
+                <TutorialBlockHeader
+                  setTheme={setTheme}
+                  setFeedback={setFeedback}
+                  setFeedbackObj={setFeedbackObj}
+                />
+              )}
+            />
+            <Route
+              path={`${process.env.PUBLIC_URL}/wallets`}
+              render={() => (
+                <TutorialWallets
                   setTheme={setTheme}
                   setFeedback={setFeedback}
                   setFeedbackObj={setFeedbackObj}

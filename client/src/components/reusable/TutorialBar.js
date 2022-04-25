@@ -222,7 +222,7 @@ const TutorialBar = (props) => {
                     key={"home"}
                     onClick={handleDrawerClose}
                     component={Link}
-                    to={`${process.env.PUBLIC_URL}`}
+                    to={`${process.env.PUBLIC_URL}/simulation`}
                   >
                     <ListItemIcon>
                       <HomeIcon color="tertiary" />
@@ -248,6 +248,18 @@ const TutorialBar = (props) => {
                         </ListItemIcon>
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemText primary="Tutorial Home" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/blockheader`}
+                      >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Block Header" />
                         </ListItemButton>
                       </ListItem>
                       <ListItem
@@ -284,6 +296,18 @@ const TutorialBar = (props) => {
                         </ListItemIcon>
                         <ListItemButton sx={{ pl: 4 }}>
                           <ListItemText primary="How is our blockchain stored?" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/wallets`}
+                      >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Wallets" />
                         </ListItemButton>
                       </ListItem>
                     </List>

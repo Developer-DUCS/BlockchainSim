@@ -14,10 +14,8 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import Button from "@mui/material/Button";
 import Auth from "../reusable/Auth.js";
 import TotalBalanceCard from "./TotalBalanceCard";
-import TransactionCard from "./TransactionsCard";
 import TransactionButton from "./TransactionButton";
 import AddressesCard from "./AddressesCard";
 import LedgerCard from "./LedgerCard";
@@ -26,13 +24,28 @@ const WalletCard = (props) => {
   const theme = useTheme();
   const [user, setUser] = React.useState({});
   const { id } = useParams();
+
+  //array of all wallet card objects
   const [wallets, setWallets] = React.useState([]);
+
+  //stores information gained from database
+  // all the miners in the simulation
   const [miners, setMiners] = React.useState([]);
+
+  // the current miner that is selected to view
   const [miner, setMiner] = React.useState([]);
+
+  // the balance of the selected miner
   const [balance, setBalance] = React.useState(0);
+
+  // all the addresses from the selected miner
   const [addresses, setAddresses] = React.useState([]);
+
+  // the personal ledger for the selected miner
   const [personalLedger, setpersonalLedger] = React.useState([]);
 
+  // when page loads, will fetch data from the DB  based of current simualtion from a user and store necessary information
+  // about all the miners
   React.useEffect(() => {
     if (user.email) {
       let url = `http://${process.env.REACT_APP_API_URL}/api/data/getwallets/id`;
@@ -53,6 +66,7 @@ const WalletCard = (props) => {
           }
         })
         .then((wallets) => {
+          // sets wallets to all wallets from a simulation
           setWallets(wallets);
           const minersArr = [];
           let totalCoin = 0;
@@ -65,22 +79,26 @@ const WalletCard = (props) => {
     }
   }, [user]);
 
+  // Whenever a user selects a miner; balances, addresses, and personal ledgers
+  // will be set and passed into individual card components
   React.useEffect(() => {
     for (let i = 0; i < wallets.length; i++) {
       if (wallets[i].owner == miner) {
         setBalance(wallets[i].balance);
-        setAddresses(wallets[i].addresses);
-        setpersonalLedger(wallets[i].personal_ledger.reverse());
+        setAddresses(wallets[i].addresses.slice(0, 4));
+        setpersonalLedger(wallets[i].personal_ledger.reverse().slice(0, 4));
       }
     }
   }, [miner]);
 
+  // Whenever a miner is selected, the card will be updated
   const handleMinerChange = (event) => {
     const {
       target: { value },
     } = event;
     setMiner(typeof value === "string" ? value.split(",") : value);
   };
+
   return (
     <Auth setUser={setUser}>
       <Card sx={{ mt: 1, ml: 2, borderRadius: "16px" }}>
@@ -89,7 +107,7 @@ const WalletCard = (props) => {
             <Grid item lg={6}>
               <Typography
                 sx={{
-                  fontSize: "2.125rem",
+                  fontSize: "30px",
                   fontWeight: 500,
                 }}
               >
@@ -127,7 +145,6 @@ const WalletCard = (props) => {
               <TotalBalanceCard sx={{ width: "100%" }} balance={balance} />
             </Grid>
             <Grid item lg={6}>
-              {/* <TransactionCard sx={{ width: "100%" }} /> */}
               <Grid item>
                 <TransactionButton
                   sx={{ width: "100%" }}
@@ -145,7 +162,7 @@ const WalletCard = (props) => {
             </Grid>
             <Grid item lg={6}>
               <AddressesCard
-                sx={{ width: "100%", height: 500 }}
+                sx={{ width: "100%", height: 300 }}
                 addresses={addresses}
               />
             </Grid>
@@ -153,23 +170,11 @@ const WalletCard = (props) => {
               <LedgerCard
                 sx={{
                   width: "100%",
-                  height: 500,
+                  height: 300,
                 }}
                 ledger={personalLedger}
               />
             </Grid>
-            {/* <Grid item lg={6}>
-              <TransactionButton
-                sx={{ width: "100%" }}
-                title="Request a payment"
-              />
-            </Grid>
-            <Grid item lg={6}>
-              <TransactionButton
-                sx={{ width: "100%" }}
-                title="Make a payment"
-              />
-            </Grid> */}
           </Grid>
         </CardContent>
       </Card>
