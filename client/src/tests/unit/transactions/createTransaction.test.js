@@ -1,7 +1,12 @@
-import { selectSender } from "../../../../../js/blockchain/transactions/transactions";
+import { createTransactions } from "../../../../../js/blockchain/transactions/transactions";
 
 // initial mock values
 var b = 101;
+var miner = "12345";
+var numtransactions = 3;
+var subsidy = 50;
+var halvings = 200;
+var totalCoin = 1000; //calculate this
 var wallArr = [
   ["abc3abc3abc3abc3", "test@test.com", 0, ["abc1abc2abc3"], 50, []],
   [
@@ -21,14 +26,24 @@ var UTXO_Pool = [
   ["cde1cde2cde3", 50, 50],
   ["def1def2def3", 50, 88],
 ];
-var responseT1 = [
-  ["abc3abc3abc3abc3", "test@test.com", 0, ["abc1abc2abc3"], 50, []],
-  [["abc1abc2abc3", 50, 0]],
-];
+var responseT1 = [];
 
 // tests at block 101
 describe("block 101", () => {
-  it("selects sender at block 101", () => {
-    expect(selectSender(b, wallArr, UTXO_Pool)).toEqual(responseT1);
+  it("creates transactions", () => {
+    expect(
+      console.log(
+        createTransactions(
+          miner,
+          numtransactions,
+          b,
+          subsidy,
+          halvings,
+          totalCoin,
+          wallArr,
+          UTXO_Pool
+        )
+      )
+    );
   });
 });
