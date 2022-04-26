@@ -11,6 +11,8 @@ const request = require("supertest");
 const express = require("express");
 const app = express();
 
+//app.use(express.bodyParser());
+
 app.use(express.json({ limit: "50mb" }));
 app.use(
   express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
@@ -29,7 +31,7 @@ app.use("/", datapath);
 app.use("/users/", users);
 
 const email1 = "testonly@test.com";
-const password1 = "testonly";
+const password1 = "Testonly99_";
 const email2 = "onlytest@test.com";
 const password2 = "onlytest";
 const role = "dev";
@@ -186,30 +188,39 @@ const mockInitialVal = {
   gendate: "2009-01-09",
   gentime: "10:30",
   blockwin: "10",
-  numblocks: "100",
+  numblocks: "250",
   transactions: "5",
   subsidy: 50,
   halvings: "100",
   coin: "btc",
   mining: "pow",
   numminers: "50",
-  user: email1,
+  user: { email: email1 },
 };
 
+//
 // Test create a simulation
 test("Route /createsim works", (done) => {
   request(app)
     .post("/createsim")
-    .type("form")
+    .type("raw")
     .send(mockInitialVal)
-    .expect(200)
-    .then(() => {
+    .set("Accept", "appication/json")
+    .expect(201)
+    .end((err, res) => {
+      if (err) return done(err);
+      //console.log(res);
+      //expect(res.body).to.be.eql({ error: "make an error" });
       done();
-    })
-    .catch((err) => {
-      done(err);
     });
 });
+
+/* .then(() => {
+  done();
+})
+.catch((err) => {
+  done(err);
+}); */
 
 /* // Test delete a simulation
 // Expect 200

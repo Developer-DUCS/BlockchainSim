@@ -145,6 +145,7 @@ const createTransactions = (
 
 //select a sender with valid money to create transaction
 const selectSender = (block_height, walletArr, UTXO_Pool) => {
+  console.log("in");
   // choose valid UTXO
   var index = 0;
   var utxo = UTXO_Pool[index];
@@ -166,7 +167,7 @@ const selectSender = (block_height, walletArr, UTXO_Pool) => {
   var senderWallet;
   var i = 0;
   while (!found && i < walletArr.length) {
-    adrs = walletArr[i][3];
+    var adrs = walletArr[i][3];
     if (adrs.indexOf(address2find) != -1) {
       found = true;
       senderWallet = walletArr[i];
@@ -194,4 +195,4 @@ const selectSender = (block_height, walletArr, UTXO_Pool) => {
   return senderInfo;
 };
 
-module.exports = createTransactions;
+module.exports = { createTransactions, selectSender };
