@@ -14,6 +14,7 @@ import TutorialMining from "./components/Tutorials/TutorialMining";
 import TutorialTransactions from "./components/Tutorials/TutorialTransactions";
 import TutorialBlockHeader from "./components/Tutorials/TutorialBlockHeader";
 import TutorialWallets from "./components/Tutorials/TutorialWallets";
+import Footer from "./components/HomePageComponents/Footer";
 
 // Imports for the theme
 import CssBaseline from "@mui/material/CssBaseline";
@@ -107,6 +108,8 @@ const App = () => {
                     setFeedback={setFeedback}
                     setFeedbackObj={setFeedbackObj}
                   />
+
+                  <Footer />
                 </>
               )}
             />
@@ -125,6 +128,8 @@ const App = () => {
                     setFeedback={setFeedback}
                     setFeedbackObj={setFeedbackObj}
                   />
+
+                  <Footer />
                 </>
               )}
             />
@@ -139,18 +144,26 @@ const App = () => {
             <Route
               path={`${process.env.PUBLIC_URL}/createsimulation`}
               render={() => (
-                <CreateSimulation
-                  setTheme={setTheme}
-                  setFeedback={setFeedback}
-                  setFeedbackObj={setFeedbackObj}
-                />
+                <>
+                  <CreateSimulation
+                    setTheme={setTheme}
+                    setFeedback={setFeedback}
+                    setFeedbackObj={setFeedbackObj}
+                  />
+                  <Footer />
+                </>
               )}
             />
 
             {/* Route to "/simulation" */}
             <Route
               path={`${process.env.PUBLIC_URL}/simulation`}
-              render={() => <SimulationHome setTheme={setTheme} />}
+              render={() => (
+                <>
+                  <SimulationHome setTheme={setTheme} />
+                  <Footer />
+                </>
+              )}
               exact
             />
 
@@ -158,72 +171,93 @@ const App = () => {
             <Route
               path={`${process.env.PUBLIC_URL}/simulation/:id`}
               render={() => (
-                <Simulation
-                  setTheme={setTheme}
-                  setFeedback={setFeedback}
-                  setFeedbackObj={setFeedbackObj}
-                />
+                <>
+                  <Simulation
+                    setTheme={setTheme}
+                    setFeedback={setFeedback}
+                    setFeedbackObj={setFeedbackObj}
+                  />
+                  <Footer />
+                </>
               )}
             />
             {/*Route to "/tutorials"*/}
             <Route
               path={`${process.env.PUBLIC_URL}/tutorialHome`}
               render={() => (
-                <TutorialHome
-                  setTheme={setTheme}
-                  setFeedback={setFeedback}
-                  setFeedbackObj={setFeedbackObj}
-                />
+                <>
+                  <TutorialHome
+                    setTheme={setTheme}
+                    setFeedback={setFeedback}
+                    setFeedbackObj={setFeedbackObj}
+                  />
+                  <Footer />
+                </>
               )}
             />
             <Route
               path={`${process.env.PUBLIC_URL}/transactions`}
               render={() => (
-                <TutorialTransactions
-                  setTheme={setTheme}
-                  setFeedback={setFeedback}
-                  setFeedbackObj={setFeedbackObj}
-                />
+                <>
+                  <TutorialTransactions
+                    setTheme={setTheme}
+                    setFeedback={setFeedback}
+                    setFeedbackObj={setFeedbackObj}
+                  />
+                  <Footer />
+                </>
               )}
             />
             <Route
               path={`${process.env.PUBLIC_URL}/database`}
               render={() => (
-                <TutorialDatabase
-                  setTheme={setTheme}
-                  setFeedback={setFeedback}
-                  setFeedbackObj={setFeedbackObj}
-                />
+                <>
+                  <TutorialDatabase
+                    setTheme={setTheme}
+                    setFeedback={setFeedback}
+                    setFeedbackObj={setFeedbackObj}
+                  />
+                  <Footer />
+                </>
               )}
             />
             <Route
               path={`${process.env.PUBLIC_URL}/mining`}
               render={() => (
-                <TutorialMining
-                  setTheme={setTheme}
-                  setFeedback={setFeedback}
-                  setFeedbackObj={setFeedbackObj}
-                />
+                <>
+                  <TutorialMining
+                    setTheme={setTheme}
+                    setFeedback={setFeedback}
+                    setFeedbackObj={setFeedbackObj}
+                  />
+                  <Footer />
+                </>
               )}
             />
             <Route
               path={`${process.env.PUBLIC_URL}/blockheader`}
               render={() => (
-                <TutorialBlockHeader
-                  setTheme={setTheme}
-                  setFeedback={setFeedback}
-                  setFeedbackObj={setFeedbackObj}
-                />
+                <>
+                  <TutorialBlockHeader
+                    setTheme={setTheme}
+                    setFeedback={setFeedback}
+                    setFeedbackObj={setFeedbackObj}
+                  />
+                  <Footer />
+                </>
               )}
             />
             <Route
               path={`${process.env.PUBLIC_URL}/wallets`}
               render={() => (
-                <TutorialWallets
-                  setTheme={setTheme}
-                  setFeedback={setFeedback}
-                  setFeedbackObj={setFeedbackObj}
-                />
+                <>
+                  <TutorialWallets
+                    setTheme={setTheme}
+                    setFeedback={setFeedback}
+                    setFeedbackObj={setFeedbackObj}
+                  />
+                  <Footer />
+                </>
               )}
             />
             {/* Route to ERROR pages */}
