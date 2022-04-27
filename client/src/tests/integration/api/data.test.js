@@ -1,4 +1,4 @@
-import createTimeStamp from "../../../../../js/blockchain/block/timeStamp";
+/* import createTimeStamp from "../../../../../js/blockchain/block/timeStamp";
 import simulationCreator from "../../../../../js/blockchain/simulation";
 import { createMinerPool } from "../../../../../js/blockchain/block/miningPool";
 import sjcl from "../../../../../js/sjcl";
@@ -12,6 +12,8 @@ const express = require("express");
 const app = express();
 
 //app.use(express.bodyParser());
+
+//
 
 app.use(express.json({ limit: "50mb" }));
 app.use(
@@ -182,7 +184,7 @@ var data = {
   blocks: simulation[1],
 }; */
 
-const mockInitialVal = {
+/* const mockInitialVal = {
   name: "testCreate",
   desc: "Test create a simultaion",
   gendate: "2009-01-09",
@@ -213,7 +215,7 @@ test("Route /createsim works", (done) => {
       //expect(res.body).to.be.eql({ error: "make an error" });
       done();
     });
-});
+}); */
 
 /* .then(() => {
   done();
