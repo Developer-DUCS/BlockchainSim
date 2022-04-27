@@ -9,7 +9,7 @@
 */
 
 const createHeader = require("../header");
-const createTransactions = require("../transactions/transactions");
+const { createTransactions } = require("../transactions/transactions");
 const createMerkleTree = require("./merkleTree");
 
 const blockCreator = (
