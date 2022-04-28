@@ -1,4 +1,4 @@
-const trackAddres = (curInputs, curOutputs, blocks) => {
+const trackAddress = (curInputs, curOutputs, blocks) => {
   var laterInputs = []; //given outputs, block heigh of inputs found later on in the chain
   var previousOutputs = []; // given inputs, block heighs of outpus found previously in the chain
   var adrLInputs = []; // addresses of Later inputs
@@ -74,4 +74,4 @@ const trackAddres = (curInputs, curOutputs, blocks) => {
   return [previousOutputs, laterInputs];
 };
 
-module.exports = trackAddres;
+module.exports = trackAddress;
