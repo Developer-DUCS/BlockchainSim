@@ -295,7 +295,19 @@ const TutorialBar = (props) => {
                           <KeyboardArrowRightIcon color="tertiary" />
                         </ListItemIcon>
                         <ListItemButton sx={{ pl: 4 }}>
-                          <ListItemText primary="How is our blockchain stored?" />
+                          <ListItemText primary="Database" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/addresses`}
+                      >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Addresses" />
                         </ListItemButton>
                       </ListItem>
                       <ListItem

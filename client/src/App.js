@@ -14,6 +14,7 @@ import TutorialMining from "./components/Tutorials/TutorialMining";
 import TutorialTransactions from "./components/Tutorials/TutorialTransactions";
 import TutorialBlockHeader from "./components/Tutorials/TutorialBlockHeader";
 import TutorialWallets from "./components/Tutorials/TutorialWallets";
+import TutorialAddresses from "./components/Tutorials/TutorialAddresses";
 import Footer from "./components/HomePageComponents/Footer";
 
 // Imports for the theme
@@ -239,6 +240,19 @@ const App = () => {
               render={() => (
                 <>
                   <TutorialBlockHeader
+                    setTheme={setTheme}
+                    setFeedback={setFeedback}
+                    setFeedbackObj={setFeedbackObj}
+                  />
+                  <Footer />
+                </>
+              )}
+            />
+            <Route
+              path={`${process.env.PUBLIC_URL}/addresses`}
+              render={() => (
+                <>
+                  <TutorialAddresses
                     setTheme={setTheme}
                     setFeedback={setFeedback}
                     setFeedbackObj={setFeedbackObj}
