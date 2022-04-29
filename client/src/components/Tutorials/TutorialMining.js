@@ -61,6 +61,54 @@ const TutorialMining = (props) => {
                 of the crypto is high enough, these farmers will usually make
                 back much more than they spend.
               </h3>
+              <h2 className={classes.title}>Types of Consensus Mechanisms</h2>
+              <h3 className={classes.description}>
+                Users or nodes on Bitcoin’s peer-to-peer network have the option
+                of becoming mining nodes. Miners validate incoming transactions
+                by including them in candidate blocks. Miners compete with one
+                another to add their candidate block to the chain in a process
+                known as Proof-of-Work. This refers to computational work done
+                by the miner’s hardware to solve cryptography puzzles. In which,
+                miner’s compete to find a cryptographic hash that will satisfy
+                that block’s difficulty. This means computing cryptographic hash
+                functions as fast as possible. When a miner finds this
+                goldenhash, they broadcast their block to the rest of the
+                network for approval. Proposed blocks must meet the consensus
+                rules or be rejected by the rest of the network. Miner’s receive
+                the block reward in the form of freshly minted coin subsidy and
+                transaction fees from validated transactions. The subsidy for
+                mining new blocks started at 50 Bitcoin and has since been cut
+                in half every 210,000 blocks or about every four years.
+              </h3>
+              <h3 className={classes.description}>
+                Bitcoin and the Proof-of-Work mechanism uses computational power
+                as a scarce resource. This means the higher a miner’s
+                computational power the faster they are able to compute hash
+                functions and the higher their chances of mining Bitcoin.
+                Bitcoin mining originally took place on a computer’s CPU or GPU,
+                but nowadays the network is much larger and the hashrate per
+                second is much higher. Now miners must use specialized mining
+                equipment (ASICs) in large amounts to mine Bitcoin effectively.
+                This has led to growing concerns over Bitcoin’s high energy
+                consumption.
+              </h3>
+              <h3 className={classes.description}>
+                Proof-of-Stake is another consensus mechanism that was
+                introduced by the cryptocurrency Peercoin. It was designed to be
+                a sustainable replacement for PoW. Instead of relying on
+                computational power, miners stake their assets to participate in
+                validation and earn block rewards. The mechanism is
+                fundamentally the same as PoW, except the number of hashes
+                minters are allowed is proportional to the coinage of their
+                stake. That way energy is not wasted computing more hashes than
+                necessary and the block difficulty stays very low. This protocol
+                uses a little bit of Game Theory to align the interests of the
+                users with that of the developers. User’s are incentivized to
+                secure the blockchain to protect their staked assets, and they
+                receive dividends in the form of block rewards. There are
+                drawbacks to this consensus mechanism as well, but that is a
+                separate topic.
+              </h3>
             </GridItem>
           </GridContainer>
         </div>

@@ -3,7 +3,7 @@ const app = express();
 const router = express.Router();
 const cors = require("cors");
 
-const trackAddres = require("../js/blockchain/trackTransaction");
+const trackAddress = require("../js/blockchain/trackTransaction");
 
 app.use(express.json());
 app.use(express.json({ limit: "50mb" }));
@@ -15,7 +15,7 @@ router.post("/trackaddress", cors(), (req, resp) => {
   let outputTransactions = req.body.output;
   let blockData = req.body.blockData;
 
-  let inputsOutputs = trackAddres(
+  let inputsOutputs = trackAddress(
     inputTransactions,
     outputTransactions,
     blockData
