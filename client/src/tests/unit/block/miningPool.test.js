@@ -5,7 +5,6 @@ import {
 describe("Mining Pool Test", () => {
   it("creates a pool of miners", () => {
     let result = createMinerPool(100, "user");
-    console.log(result);
     expect(result.length).toBe(100);
   });
 
