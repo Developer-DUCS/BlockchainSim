@@ -7,6 +7,7 @@ import GridContainer from "../HomePageComponents/GridContainer";
 import GridItem from "../HomePageComponents/GridItem";
 import classNames from "classnames";
 import { container } from "../HomePageComponents/extra_components/material-kit-react";
+import Block from "../../assets/Block.jpg";
 
 const useStyles = makeStyles(styles);
 
@@ -47,6 +48,15 @@ const TutorialBlockHeader = (props) => {
                 hash is a 32-bit number that is unique to each block. This can
                 be seen when creating a simulation as below:
               </h3>
+              <GridContainer justify="center">
+                <GridItem xs={12} sm={12} md={8}>
+                  <img
+                    src={Block}
+                    alt="Step 2 of the Bitcoin address generation."
+                    width="100%"
+                  />
+                </GridItem>
+              </GridContainer>
               <h2 className={classes.title}>
                 Difficulty, Timestamp, and Nonce
               </h2>
