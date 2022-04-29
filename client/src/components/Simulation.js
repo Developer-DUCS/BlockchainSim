@@ -128,6 +128,7 @@ const Simulation = (props) => {
         .then((simulation) => {
           setSimulation(simulation[0]);
           getBlocks(simulation[0].sim_blocks, simulation[0].email);
+          console.log(simulation);
         })
         .catch((err) => {
           console.error(err);
@@ -446,6 +447,9 @@ const Simulation = (props) => {
                     </Typography>
                     <Typography variant="subtitle1">
                       {simulation.sim_description}
+                    </Typography>
+                    <Typography>
+                      Number of blocks: {simulationBlocks.length}
                     </Typography>
                   </CardContent>
                 </Card>
