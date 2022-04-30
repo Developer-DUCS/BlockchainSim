@@ -26,7 +26,7 @@ const TutorialAddresses = (props) => {
         <div className={classes.section}>
           <Grid>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8}>
+              <GridItem md={8} align="left">
                 <h1 className={classes.title}>Addresses</h1>
                 <h3 className={classes.description}>
                   Addresses and digital signatures are created through Public
@@ -60,7 +60,7 @@ const TutorialAddresses = (props) => {
               </GridItem>
             </GridContainer>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8}>
+              <GridItem md={8} align="left">
                 <img
                   src={ECM}
                   alt="Elliptic curve multiplication graph."
@@ -69,7 +69,7 @@ const TutorialAddresses = (props) => {
               </GridItem>
             </GridContainer>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8}>
+              <GridItem md={8} align="left">
                 <h3 className={classes.description}>
                   A digital signature can be created by hashing a transaction
                   and encrypting it with your private key. Now, anyone can hash
@@ -97,7 +97,7 @@ const TutorialAddresses = (props) => {
               </GridItem>
             </GridContainer>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8}>
+              <GridItem md={8} align="left">
                 <img
                   src={AddrStep1}
                   alt="Step 1 of the Bitcoin address generation."
@@ -106,7 +106,7 @@ const TutorialAddresses = (props) => {
               </GridItem>
             </GridContainer>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8}>
+              <GridItem md={8} align="left">
                 <h3 className={classes.description}>
                   Once you have the public key hash, you must prefix a certain
                   version number depending on the type of address you want to
@@ -121,7 +121,7 @@ const TutorialAddresses = (props) => {
               </GridItem>
             </GridContainer>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8}>
+              <GridItem md={8} align="left">
                 <img
                   src={AddrStep2}
                   alt="Step 2 of the Bitcoin address generation."
@@ -130,7 +130,7 @@ const TutorialAddresses = (props) => {
               </GridItem>
             </GridContainer>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8}>
+              <GridItem md={8} align="left">
                 <h2>Sources</h2>
                 <h3 className={classes.description}>
                   <a

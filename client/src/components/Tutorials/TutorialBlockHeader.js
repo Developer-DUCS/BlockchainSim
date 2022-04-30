@@ -24,7 +24,7 @@ const TutorialBlockHeader = (props) => {
         <div className={classes.container}></div>
         <div className={classes.section}>
           <GridContainer justify="center">
-            <GridItem xs={12} sm={12} md={8}>
+            <GridItem md={8} align="left">
               <h1 className={classes.title}>Block Header</h1>
               <h3 className={classes.description}>
                 The structure of a block is made up of many different
@@ -50,11 +50,7 @@ const TutorialBlockHeader = (props) => {
               </h3>
               <GridContainer justify="center">
                 <GridItem xs={12} sm={12} md={8}>
-                  <img
-                    src={Block}
-                    alt="Step 2 of the Bitcoin address generation."
-                    width="100%"
-                  />
+                  <img src={Block} width="100%" />
                 </GridItem>
               </GridContainer>
               <h2 className={classes.title}>

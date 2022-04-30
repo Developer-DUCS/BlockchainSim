@@ -28,7 +28,7 @@ const TutorialWallets = (props) => {
         <div className={classes.section}>
           <Grid>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8}>
+              <GridItem md={8} align="left">
                 <h1 className={classes.title}>Wallets</h1>
                 <h3 className={classes.description}>
                   Wallets are an important part of the blockchain, because they
@@ -56,7 +56,7 @@ const TutorialWallets = (props) => {
               </GridItem>
             </GridContainer>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8}>
+              <GridItem xs={12} sm={12} md={8} align="left">
                 <h1 className={classes.title}>Viewing a Wallet</h1>
                 <h3 className={classes.description}>
                   In order to view the wallet for a certain miner, click on the
@@ -74,7 +74,7 @@ const TutorialWallets = (props) => {
               </GridItem>
             </GridContainer>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8}>
+              <GridItem xs={12} sm={12} md={8} align="left">
                 <h1 className={classes.title}>About our Wallets</h1>
                 <h3 className={classes.description}>
                   Included in a wallet is the balance, available addresses, a

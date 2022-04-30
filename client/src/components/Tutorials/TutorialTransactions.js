@@ -23,7 +23,7 @@ const TutorialTransactions = (props) => {
         <div className={classes.container}></div>
         <div className={classes.section}>
           <GridContainer justify="center">
-            <GridItem xs={12} sm={12} md={8}>
+            <GridItem md={8} align="left">
               <h1 className={classes.title}>Transactions</h1>
               <h3 className={classes.description}>
                 Transactions are the central component of the blockchain. The

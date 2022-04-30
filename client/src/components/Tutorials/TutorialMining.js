@@ -23,7 +23,7 @@ const TutorialMining = (props) => {
         <div className={classes.container}></div>
         <div className={classes.section}>
           <GridContainer justify="center">
-            <GridItem xs={12} sm={12} md={8}>
+            <GridItem md={8} align="left">
               <h1 className={classes.title}>Mining</h1>
               <h3 className={classes.description}>
                 Mining is used to include transactions in blocks. In Bitcoin,
