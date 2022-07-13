@@ -195,7 +195,7 @@ const CreateSimulation = (props) => {
 
     // API call to create simulation
     // if successful, redirect to simulation page
-    const url = `http://${process.env.REACT_APP_API_URL}/api/data/createsim`;
+    const url = `${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/data/createsim`;
     fetch(url, {
       method: "POST",
       headers: {

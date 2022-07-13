@@ -49,7 +49,7 @@ const SignUp = (props) => {
 
     // Fetch api "/register" via POST
     // Config for post request
-    const url = `http://${process.env.REACT_APP_API_URL}/api/users/register`;
+    const url = `${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/users/register`;
     const payload = {
       id: email,
       pass: password,

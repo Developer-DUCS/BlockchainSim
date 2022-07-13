@@ -21,7 +21,7 @@ const SimulationHome = (props) => {
     // If user is logged in, fetch simulation data
     if (user.email) {
       // Fetch api "/getsimulations" via POST
-      let url = `http://${process.env.REACT_APP_API_URL}/api/data/getsimulations`;
+      let url = `${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/data/getsimulations`;
       let options = {
         method: "POST",
         headers: {
@@ -45,7 +45,7 @@ const SimulationHome = (props) => {
         });
 
       // Fetch api "/getsharedsimulations" via GET
-      url = `http://${process.env.REACT_APP_API_URL}/api/data/getsharedsimulations`;
+      url = `${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/data/getsharedsimulations`;
       fetch(url, options)
         .then((res) => {
           if (res.ok) {
