@@ -11,7 +11,7 @@ const AuthSimulation = (props) => {
     if (email) {
       // Fetch "/auth" via POST
       fetch(
-        `${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/users/auth/simulation`,
+        `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/users/auth/simulation`,
         {
           method: "POST",
           headers: {

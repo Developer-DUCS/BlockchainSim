@@ -22,7 +22,8 @@ const SignIn = (props) => {
   // Checks to see if the user is already logged in and
   // redirects them to the home page if they are
   React.useEffect(() => {
-    fetch(`${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/users/auth`, {
+    console.log(`Sign-In: ${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/users/auth`)
+    fetch(`${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/users/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +63,7 @@ const SignIn = (props) => {
     // API call to login to account
     // if successful, redirect to landing page
     // if not, display error message
-    fetch(`${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/users/login`, {
+    fetch(`${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

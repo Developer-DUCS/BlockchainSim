@@ -50,7 +50,8 @@ const App = () => {
 
   // Check if the user is signed in
   React.useEffect(() => {
-    fetch(`${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/users/auth`, {
+    //console.log(`${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/users/auth`);
+    fetch(`${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/users/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

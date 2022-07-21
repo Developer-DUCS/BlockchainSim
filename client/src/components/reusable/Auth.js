@@ -12,7 +12,7 @@ const Auth = (props) => {
   // On Page Load
   React.useEffect(() => {
     // Fetch "/auth" via POST
-    fetch(`${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/users/auth`, {
+    fetch(`${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/users/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

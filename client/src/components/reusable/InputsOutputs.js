@@ -38,7 +38,7 @@ const InputsOutputs = ({ transaction, blockData }) => {
           let inputsOutputs;
 
           // Add block API Call
-          let url = `${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/addresses/trackaddress`;
+          let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/addresses/trackaddress`;
           let getData = {
             method: "POST",
             headers: {

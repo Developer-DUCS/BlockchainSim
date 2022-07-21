@@ -108,7 +108,7 @@ const Simulation = (props) => {
 
   React.useEffect(() => {
     if (user.email) {
-      let url = `${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/data/getsimulations/id`;
+      let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/data/getsimulations/id`;
       let options = {
         method: "POST",
         headers: {
@@ -138,7 +138,7 @@ const Simulation = (props) => {
   }, [user, refresh]);
 
   const getBlocks = (hashes, owner) => {
-    let url = `${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/data/getblocks`;
+    let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/data/getblocks`;
     let options = {
       method: "POST",
       headers: {
@@ -177,7 +177,7 @@ const Simulation = (props) => {
     // Email value
     let email = document.getElementById("email").value;
 
-    let url = `${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/share`;
+    let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/share`;
     let options = {
       method: "POST",
       headers: {
@@ -219,7 +219,7 @@ const Simulation = (props) => {
     let simID = id;
 
     // Delete API Call
-    let url = `${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/data/deletesim`;
+    let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/data/deletesim`;
     let options = {
       method: "POST",
       headers: {
@@ -263,7 +263,7 @@ const Simulation = (props) => {
 
     // Fetch previousHash, timestamp, block height, subsidy, halvings
     // Add block API Call
-    let url = `${process.env.SCHEME}://${process.env.REACT_APP_API_URL}/api/data/addnewblock`;
+    let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/data/addnewblock`;
     let getData = {
       method: "POST",
       headers: {
