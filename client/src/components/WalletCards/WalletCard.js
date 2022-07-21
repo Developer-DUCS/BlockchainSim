@@ -48,7 +48,7 @@ const WalletCard = (props) => {
   // about all the miners
   React.useEffect(() => {
     if (user.email) {
-      let url = `http://${process.env.REACT_APP_API_URL}/api/data/getwallets/id`;
+      let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/data/getwallets/id`;
       let options = {
         method: "POST",
         headers: {
