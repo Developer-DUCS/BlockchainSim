@@ -4,6 +4,8 @@
 
 The Beyond the Block blockchain simulator, BlockchainSim, is a Bit Coin Simulator developed at Drury University by Bryan Valencia, Laura Pareja, Seth Workman, Sean Lowry, Ean Vandergraaf, and Dawson Holderman under the direction of Dr. Scott Sigman and Dr. Chris Branton.  The project is licensed under the Apache 2.0 license.  Copyright 2021 by Drury University.
 
+Current release code is found in the dev branch.
+
 ## Quick Start
 
 ```bash
