@@ -12,8 +12,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Switch from "@mui/material/Switch";
 import { styled, useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import lightTheme from "../../js/themes/lightTheme";
-import darkTheme from "../../js/themes/darkTheme";
+import lightTheme from "../../themes/lightTheme";
+import darkTheme from "../../themes/darkTheme";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -33,13 +33,14 @@ import LockOpen from "@mui/icons-material/LockOpen";
 import Add from "@mui/icons-material/Add";
 import { ClickAwayListener } from "@mui/material";
 import { Link } from "react-router-dom";
-import { createBrowserHistory } from "history";
+import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import ListItemButton from "@mui/material/ListItemButton";
 import StarBorder from "@mui/icons-material/StarBorder";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 const drawerWidth = 270;
 
@@ -89,8 +90,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   variant: "permanent",
 }));
 
-const UserBar = (props) => {
-  const history = createBrowserHistory({ forceRefresh: true });
+const TutorialBar = (props) => {
+  const history = useHistory();
   const theme = useTheme();
   // setTheme (broken)
   // barTitle: String
@@ -99,17 +100,18 @@ const UserBar = (props) => {
   // selectedTab: Number (index of tab)
   const { setTheme, barTitle, tabNames, setSelectedTab, selectedTab } = props;
   const [openDrawer, setOpen] = React.useState(false);
-  const [toggle, setToggle] = React.useState(false);
+  const [dropdown, setdropdown] = React.useState(false);
+  const [toggle, setToggle] = React.useState(
+    theme.mode === "dark" ? true : false
+  );
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const setOpen2 = React.useState(false);
-  const open2 = React.useState(true);
 
-  const handleDrawerClick = () => {
-    setOpen2(!open2);
-  };
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
+  const handleDropDownClick = () => {
+    setdropdown(!dropdown);
+  };
   const signOut = () => {
     try {
       // Remove token
@@ -220,33 +222,111 @@ const UserBar = (props) => {
                     key={"home"}
                     onClick={handleDrawerClose}
                     component={Link}
-                    to={`${process.env.PUBLIC_URL}`}
+                    to={`${process.env.PUBLIC_URL}/simulation`}
                   >
                     <ListItemIcon>
-                      <HomeIcon />
+                      <HomeIcon color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Home"} />
                   </ListItem>
-                  <ListItemButton onClick={handleDrawerClick}>
+                  <ListItemButton onClick={handleDropDownClick}>
                     <ListItemIcon>
-                      <Add />
+                      <Add color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Beyond the Block Tutorials"} />
                     {open ? <ExpandLess /> : <ExpandMore />}
                   </ListItemButton>
-                  <Collapse in={open} timeout="auto" unmountOnExit>
+                  <Collapse in={dropdown}>
                     <List component="div" disablePadding>
-                      <ListItemButton sx={{ pl: 4 }}>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/tutorialHome`}
+                      >
                         <ListItemIcon>
-                          <StarBorder />
+                          <KeyboardArrowRightIcon color="tertiary" />
                         </ListItemIcon>
-                        <ListItemText primary="Starred" />
-                      </ListItemButton>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Tutorial Home" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/blockheader`}
+                      >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Block Header" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/mining`}
+                      >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Mining" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/transactions`}
+                      >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Transactions" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/database`}
+                      >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Database" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/addresses`}
+                      >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Addresses" />
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={`${process.env.PUBLIC_URL}/wallets`}
+                      >
+                        <ListItemIcon>
+                          <KeyboardArrowRightIcon color="tertiary" />
+                        </ListItemIcon>
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemText primary="Wallets" />
+                        </ListItemButton>
+                      </ListItem>
                     </List>
                   </Collapse>
                   <ListItem button key={"settings"} onClick={handleDrawerClose}>
                     <ListItemIcon>
-                      <Settings />
+                      <Settings color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Settings"} />
                   </ListItem>
@@ -294,13 +374,13 @@ const UserBar = (props) => {
             <Divider />
             <MenuItem>
               <ListItemIcon>
-                <Settings fontSize="small" />
+                <Settings fontSize="small" color="tertiary" />
               </ListItemIcon>
               Settings
             </MenuItem>
             <MenuItem onClick={signOut}>
               <ListItemIcon>
-                <Logout fontSize="small" />
+                <Logout fontSize="small" color="tertiary" />
               </ListItemIcon>
               Sign Out
             </MenuItem>
@@ -315,7 +395,7 @@ const UserBar = (props) => {
           </Grid>
 
           <Grid item>
-            <Switch onChange={toggleTheme} color="secondary" />
+            <Switch checked={toggle} onChange={toggleTheme} color="secondary" />
           </Grid>
           <Grid item>
             <Tooltip title="Alerts • No alerts">
@@ -348,4 +428,4 @@ const UserBar = (props) => {
     </>
   );
 };
-export default UserBar;
+export default TutorialBar;

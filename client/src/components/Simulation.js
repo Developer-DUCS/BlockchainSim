@@ -37,7 +37,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useHistory } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import WalletComponent from "./reusable/WalletComponent";
-import createBlock from "../js/blockchain/block/createBlock";
 import DataGrid from "./reusable/datagrid";
 import TransactionComponent from "./reusable/TransactionComponent";
 import { ContactsOutlined } from "@material-ui/icons";
@@ -109,7 +108,7 @@ const Simulation = (props) => {
 
   React.useEffect(() => {
     if (user.email) {
-      let url = `http://${process.env.REACT_APP_API_URL}/api/data/getsimulations/id`;
+      let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/data/getsimulations/id`;
       let options = {
         method: "POST",
         headers: {
@@ -129,6 +128,7 @@ const Simulation = (props) => {
         .then((simulation) => {
           setSimulation(simulation[0]);
           getBlocks(simulation[0].sim_blocks, simulation[0].email);
+          console.log(simulation);
         })
         .catch((err) => {
           console.error(err);
@@ -138,7 +138,7 @@ const Simulation = (props) => {
   }, [user, refresh]);
 
   const getBlocks = (hashes, owner) => {
-    let url = `http://${process.env.REACT_APP_API_URL}/api/data/getblocks`;
+    let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/data/getblocks`;
     let options = {
       method: "POST",
       headers: {
@@ -177,7 +177,7 @@ const Simulation = (props) => {
     // Email value
     let email = document.getElementById("email").value;
 
-    let url = `http://${process.env.REACT_APP_API_URL}/api/share`;
+    let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/share`;
     let options = {
       method: "POST",
       headers: {
@@ -215,13 +215,11 @@ const Simulation = (props) => {
   };
 
   const deleteSimulation = (e) => {
-    console.log("delete simulation");
-
     // Get Simulation ID
     let simID = id;
 
     // Delete API Call
-    let url = `http://${process.env.REACT_APP_API_URL}/api/data/deletesim`;
+    let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/data/deletesim`;
     let options = {
       method: "POST",
       headers: {
@@ -265,7 +263,7 @@ const Simulation = (props) => {
 
     // Fetch previousHash, timestamp, block height, subsidy, halvings
     // Add block API Call
-    let url = `http://${process.env.REACT_APP_API_URL}/api/data/latestblockinfo`;
+    let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/data/addnewblock`;
     let getData = {
       method: "POST",
       headers: {
@@ -277,62 +275,22 @@ const Simulation = (props) => {
     fetch(url, getData)
       .then((res) => {
         if (res.ok) {
-          return res.json();
-        }
-      })
-      .then((res) => {
-        // Create block
-        let subsidy = res.subsidy;
-        let halvings = res.halvings;
-        let previousHash = res.previousHash;
-        let num_transactions = res.num_transactions;
-        let block_height = res.block_height;
-        let timeStamp = res.timeStamp;
-        let miningPool = res.miningPool;
-        let wallets = res.wallets;
-        let utxoPool = res.utxoPool;
-
-        let totalCoin = 0;
-
-        let newBlock = createBlock(
-          previousHash,
-          timeStamp,
-          num_transactions,
-          block_height,
-          subsidy,
-          halvings,
-          miningPool,
-          wallets,
-          utxoPool,
-          totalCoin
-        );
-
-        // Send block info to API
-        let url = `http://${process.env.REACT_APP_API_URL}/api/data/addnewblock`;
-        let createData = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: user.email,
-            sim_id: simID,
-            hash: newBlock[1],
-            block: newBlock[0],
-          }),
-        };
-        fetch(url, createData)
-          .then((res) => {
-            if (res.ok) {
-              setRefresh(true);
-            }
-          })
-          .catch((err) => {
-            console.error(err);
+          setRefresh(true);
+          setFeedback(true);
+          setFeedbackObj({
+            message: `Added a new block.`,
+            duration: 2000,
           });
+        }
       })
       .catch((err) => {
         console.error(err);
+        setFeedback(true);
+        setFeedbackObj({
+          message: `Failed to add a new block.`,
+          severity: "error",
+          duration: 3000,
+        });
       });
   };
 
@@ -489,6 +447,9 @@ const Simulation = (props) => {
                     </Typography>
                     <Typography variant="subtitle1">
                       {simulation.sim_description}
+                    </Typography>
+                    <Typography>
+                      Number of blocks: {simulationBlocks.length}
                     </Typography>
                   </CardContent>
                 </Card>

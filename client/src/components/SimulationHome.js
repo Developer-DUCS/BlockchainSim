@@ -21,7 +21,7 @@ const SimulationHome = (props) => {
     // If user is logged in, fetch simulation data
     if (user.email) {
       // Fetch api "/getsimulations" via POST
-      let url = `http://${process.env.REACT_APP_API_URL}/api/data/getsimulations`;
+      let url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/data/getsimulations`;
       let options = {
         method: "POST",
         headers: {
@@ -45,7 +45,7 @@ const SimulationHome = (props) => {
         });
 
       // Fetch api "/getsharedsimulations" via GET
-      url = `http://${process.env.REACT_APP_API_URL}/api/data/getsharedsimulations`;
+      url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/data/getsharedsimulations`;
       fetch(url, options)
         .then((res) => {
           if (res.ok) {
@@ -81,7 +81,7 @@ const SimulationHome = (props) => {
           variant="contained"
           sx={{ float: 500, ml: 2, mt: 2 }}
         >
-          Add New Simulation
+          Create New Simulation
         </Button>
         <TabPanel value={selectedTab} index={0}>
           <Grid container spacing={3} sx={{ p: 2 }}>

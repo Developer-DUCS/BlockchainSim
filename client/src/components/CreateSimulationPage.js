@@ -114,7 +114,6 @@ const CreateSimulation = (props) => {
   const [numMiners, setNumMiners] = React.useState("50");
   const [numMinersError, setNumMinersError] = React.useState(false);
   const [genDate, setGenDate] = React.useState("2009-01-09");
-  const NUM_MINERS = 100; //DELETE
 
   const handleWindowChange = (event) => {
     setBlockWindow(event.target.value);
@@ -196,7 +195,7 @@ const CreateSimulation = (props) => {
 
     // API call to create simulation
     // if successful, redirect to simulation page
-    const url = `http://${process.env.REACT_APP_API_URL}/api/data/createsim`;
+    const url = `${process.env.REACT_APP_URL_SCHEME}://${process.env.REACT_APP_API_URL}/api/data/createsim`;
     fetch(url, {
       method: "POST",
       headers: {
@@ -256,6 +255,13 @@ const CreateSimulation = (props) => {
                         setName(e.target.value);
                       }}
                     />
+                    <InfoButton
+                      sx={{ ml: -5, mt: 4.5 }}
+                      title="Name"
+                      description={
+                        "The name of your simulation. The following characters are not allowed: % * _ ; ="
+                      }
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -268,6 +274,13 @@ const CreateSimulation = (props) => {
                         setDesc(e.target.value);
                       }}
                       multiline
+                    />
+                    <InfoButton
+                      sx={{ ml: -5, mt: 4.5 }}
+                      title="Description"
+                      description={
+                        "The description of your simulation. The following characters are not allowed: % * _ ; ="
+                      }
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -520,7 +533,6 @@ const CreateSimulation = (props) => {
                             id="miners"
                             label="How many miners will be in the simulation:"
                             type="number"
-                            helperText="between 50 and 150"
                             InputProps={{ inputProps: { min: 50, max: 150 } }}
                             InputLabelProps={{
                               shrink: true,

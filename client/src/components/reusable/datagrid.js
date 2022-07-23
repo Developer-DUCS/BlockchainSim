@@ -10,17 +10,21 @@ const datagrid = (props) => {
   const [cols, setCols] = React.useState([]);
 
   React.useEffect(() => {
-    let rowTemp = { id: 1 };
+    let rowTemp = { id: "customid" };
     let columnsTemp = [];
     blocks.map((block, index) => {
-      rowTemp[index] = index;
+      rowTemp[`id${index}`] = index;
     });
 
     blocks.map((block, index) => {
       columnsTemp.push({
-        field: index,
-        headerName: "",
+        field: `id${index}`,
+        headerName: "1",
         width: 515,
+        valueGetter: ({ value }) => "index",
+        valueFormatter: ({ value }) => {
+          return "test";
+        },
         renderCell: (params) => (
           <div>
             <Box
@@ -50,7 +54,7 @@ const datagrid = (props) => {
         rows={rows}
         columns={cols}
         hideFooter={true}
-        disableSelectionOnClick
+        disableSelectionOnClick={true}
       />
     </div>
   );

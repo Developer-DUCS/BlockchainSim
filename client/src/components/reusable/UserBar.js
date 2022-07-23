@@ -12,8 +12,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Switch from "@mui/material/Switch";
 import { styled, useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import lightTheme from "../../js/themes/lightTheme";
-import darkTheme from "../../js/themes/darkTheme";
+import lightTheme from "../../themes/lightTheme";
+import darkTheme from "../../themes/darkTheme";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -30,71 +30,40 @@ import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import HomeIcon from "@mui/icons-material/Home";
 import LockOpen from "@mui/icons-material/LockOpen";
+import Auth from "../reusable/Auth";
 import Add from "@mui/icons-material/Add";
 import { ClickAwayListener } from "@mui/material";
 import { Link } from "react-router-dom";
-import { createBrowserHistory } from "history";
+import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import BookIcon from "@mui/icons-material/Book";
 
 const drawerWidth = 270;
-
-// const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
-//   ({ theme, openDrawer }) => ({
-//     flexGrow: 1,
-//     padding: theme.spacing(3),
-//     transition: theme.transitions.create("margin", {
-//       easing: theme.transitions.easing.sharp,
-//       duration: theme.transitions.duration.leavingScreen,
-//     }),
-//     marginLeft: `-${drawerWidth}px`,
-//     ...(openDrawer && {
-//       transition: theme.transitions.create("margin", {
-//         easing: theme.transitions.easing.easeOut,
-//         duration: theme.transitions.duration.enteringScreen,
-//       }),
-//       marginLeft: 0,
-//     }),
-//   })
-// );
-
-// const appbar = styled(MuiAppBar, {
-//   shouldForwardProp: (prop) => prop !== "open",
-// })(({ theme, openDrawer }) => ({
-//   transition: theme.transitions.create(["margin", "width"], {
-//     easing: theme.transitions.easing.sharp,
-//     duration: theme.transitions.duration.leavingScreen,
-//   }),
-//   ...(openDrawer && {
-//     width: `calc(100% - ${drawerWidth}px)`,
-//     marginLeft: `${drawerWidth}px`,
-//     transition: theme.transitions.create(["margin", "width"], {
-//       easing: theme.transitions.easing.easeOut,
-//       duration: theme.transitions.duration.enteringScreen,
-//     }),
-//   }),
-// }));
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: "flex-end",
   variant: "permanent",
 }));
 
 const UserBar = (props) => {
-  const history = createBrowserHistory({ forceRefresh: true });
+  const [user, setUser] = React.useState({});
+
+  const history = useHistory();
   const theme = useTheme();
-  // setTheme (broken)
+  // setTheme: function that updates app theme
   // barTitle: String
   // tabNames: Array<String>
   // setSelectedTab: React state function
   // selectedTab: Number (index of tab)
   const { setTheme, barTitle, tabNames, setSelectedTab, selectedTab } = props;
   const [openDrawer, setOpen] = React.useState(false);
-  const [toggle, setToggle] = React.useState(false);
+  const [toggle, setToggle] = React.useState(
+    theme.mode === "dark" ? true : false
+  );
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -142,7 +111,7 @@ const UserBar = (props) => {
   };
 
   return (
-    <>
+    <Auth setUser={setUser}>
       <AppBar
         component="div"
         color="primary"
@@ -156,14 +125,6 @@ const UserBar = (props) => {
             <Grid item xs />
           </Grid>
         </Toolbar>
-        {/* </AppBar> */}
-        {/* <AppBar
-        component="div"
-        color="primary"
-        position="static"
-        elevation={0}
-        sx={{ zIndex: 0 }}
-      > */}
         <Toolbar>
           <ClickAwayListener onClickAway={handleDrawerClose}>
             <div style={{ width: "50px" }}>
@@ -212,7 +173,7 @@ const UserBar = (props) => {
                     to={`${process.env.PUBLIC_URL}/simulation`}
                   >
                     <ListItemIcon>
-                      <HomeIcon />
+                      <HomeIcon color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Home"} />
                   </ListItem>
@@ -224,13 +185,25 @@ const UserBar = (props) => {
                     to={`${process.env.PUBLIC_URL}/createsimulation`}
                   >
                     <ListItemIcon>
-                      <Add />
+                      <Add color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Create New Simulation"} />
                   </ListItem>
+                  <ListItem
+                    button
+                    key={"tutorial"}
+                    onClick={handleDrawerClose}
+                    component={Link}
+                    to={`${process.env.PUBLIC_URL}/tutorialHome`}
+                  >
+                    <ListItemIcon>
+                      <BookIcon color="tertiary" />
+                    </ListItemIcon>
+                    <ListItemText primary={"Tutorials"} />
+                  </ListItem>
                   <ListItem button key={"settings"} onClick={handleDrawerClose}>
                     <ListItemIcon>
-                      <Settings />
+                      <Settings color="tertiary" />
                     </ListItemIcon>
                     <ListItemText primary={"Settings"} />
                   </ListItem>
@@ -273,18 +246,18 @@ const UserBar = (props) => {
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
             <MenuItem>
-              <Avatar /> My Profile
+              <Avatar /> {user.email}
             </MenuItem>
             <Divider />
             <MenuItem>
               <ListItemIcon>
-                <Settings fontSize="small" />
+                <Settings fontSize="small" color="tertiary" />
               </ListItemIcon>
               Settings
             </MenuItem>
             <MenuItem onClick={signOut}>
               <ListItemIcon>
-                <Logout fontSize="small" />
+                <Logout fontSize="small" color="tertiary" />
               </ListItemIcon>
               Sign Out
             </MenuItem>
@@ -299,7 +272,7 @@ const UserBar = (props) => {
           </Grid>
 
           <Grid item>
-            <Switch onChange={toggleTheme} color="secondary" />
+            <Switch checked={toggle} onChange={toggleTheme} color="secondary" />
           </Grid>
           <Grid item>
             <Tooltip title="Alerts • No alerts">
@@ -329,7 +302,7 @@ const UserBar = (props) => {
             ))}
         </Tabs>
       </AppBar>
-    </>
+    </Auth>
   );
 };
 export default UserBar;

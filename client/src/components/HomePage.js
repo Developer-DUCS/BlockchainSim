@@ -38,7 +38,7 @@ const HomePage = (props) => {
         fixed
         changeColorOnScroll={{
           height: 400,
-          color: "#388697",
+          color: "primary",
         }}
         {...rest}
       />
@@ -54,8 +54,6 @@ const HomePage = (props) => {
               <Button
                 component={Link}
                 to={`${process.env.PUBLIC_URL}/tutorialHome`}
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 <i className="fas fa-play" />
                 Tutorial

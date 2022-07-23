@@ -28,10 +28,13 @@ app.use(function (req, res, next) {
 router.use("/BtB/api/users", require("./api/users"));
 router.use("/BtB/api/data", require("./api/data"));
 router.use("/BtB/api/share", require("./api/share"));
+router.use("/BtB/api/addresses", require("./api/addresses"));
 
 // router.use("/api/users", require("./client/src/api/users"));
 // router.use("/api/data", require("./client/src/api/data"));
 // router.use("/api/share", require("./client/src/api/share"));
+// router.use("/api/addresses", require("./api/addresses"));
+
 // router.use(
 //   "/addresses",
 //   require("./client/src/js/blockchain/transactions/adresses")

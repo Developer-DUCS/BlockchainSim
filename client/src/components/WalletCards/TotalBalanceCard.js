@@ -1,35 +1,28 @@
-import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React from "react";
 
 // material-ui
 import { styled, useTheme } from "@mui/material/styles";
-import { Avatar, Box, Grid, Menu, MenuItem, Typography } from "@mui/material";
+import { Avatar, Box, Grid, Typography } from "@mui/material";
 
 // project imports
 import MainCard from "./MainCard";
 
 // assets
-import EarningIcon from "../../images/icons/earning.svg";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import GetAppTwoToneIcon from "@mui/icons-material/GetAppOutlined";
-import FileCopyTwoToneIcon from "@mui/icons-material/FileCopyOutlined";
-import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfOutlined";
-import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { Icon } from "@iconify/react";
 import Button from "@mui/material/Button";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
 
+// used for styling the card
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   color: "#fff",
-  // overflow: "hidden",
   position: "relative",
   borderRadius: "16px",
 }));
 
+// stlying the hover over the "..." button
 const MyToolTipStyle = styled(({ className, ...props }) => (
   <Tooltip arrow placement="top" {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
@@ -45,12 +38,21 @@ const MyToolTipStyle = styled(({ className, ...props }) => (
 
 const TotalBalanceCard = (props) => {
   const { sx, balance } = props;
-  // const [bitcoinPrice, setBitcoinPrice] = React.useState();
-  //allows for toggling
+  const theme = useTheme();
+
+  // allows for toggling between usd and btc
+  // the state for usd
   const [usd, setUsd] = React.useState(false);
+
+  // the state for btc
   const [btc, setBtc] = React.useState(true);
+
+  // the total balance in usd after making the conversion from btc
   const [usdBalance, setusdBalance] = React.useState(0);
+
+  // pulls current price of bitcoin and converts values
   React.useEffect(() => {
+    // getting the current price of bitcoin by scraping google finance page
     let url =
       "https://web.scraper.workers.dev/?url=https%3A%2F%2Fwww.google.com%2Ffinance%2Fquote%2FBTC-USD%3Fsa%3DX%26ved%3D2ahUKEwj65fnJ9If2AhWlkIkEHReYCTUQ-fUHegQIFRAS&selector=div.YMlKec.fxKbKc&scrape=text&pretty=true";
     let options = {
@@ -78,8 +80,6 @@ const TotalBalanceCard = (props) => {
       });
   }, [balance]);
 
-  const theme = useTheme();
-
   const toggleCurrency = (event) => {
     //if they are currently viewing BTC
     //and want to see it in USD
@@ -95,7 +95,7 @@ const TotalBalanceCard = (props) => {
   return (
     <>
       <CardWrapper border={false} content={false} sx={sx}>
-        <Box sx={{ p: 2.25 }}>
+        <Box sx={{ p: 2.25, height: 190 }}>
           <Grid container direction="column">
             <Grid item>
               <Grid container justifyContent="space-between">
@@ -125,7 +125,14 @@ const TotalBalanceCard = (props) => {
                       </React.Fragment>
                     }
                   >
+                    {/* Will redirect a user to the google finance page, where the conversions are taken from */}
                     <Avatar
+                      onClick={() =>
+                        window.open(
+                          "https://www.google.com/finance/quote/BTC-USD?sa=X&ved=2ahUKEwiI66LIoqH3AhV5kGoFHdwUBv4Q-fUHegQIAhAX",
+                          "_blank"
+                        )
+                      }
                       variant="rounded"
                       sx={{
                         ...theme.typography.commonAvatar,
@@ -144,6 +151,9 @@ const TotalBalanceCard = (props) => {
               </Grid>
             </Grid>
             <Grid item>
+              {/* Contains the row with a logo and a balance
+                  If the balance is in usd => display "$" logo and current balance in usd
+                  Else => display btc logo and current balance in btc */}
               {usd ? (
                 <Grid container alignItems="center" spacing={1}>
                   <Grid item>

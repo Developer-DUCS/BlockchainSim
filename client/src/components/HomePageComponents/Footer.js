@@ -13,6 +13,8 @@ import Favorite from "@material-ui/icons/Favorite";
 
 import styles from "./extra_components/footerStyle.js";
 
+import TransparentLogo from "../../assets/TransparentLogo.png";
+
 const useStyles = makeStyles(styles);
 
 export default function Footer(props) {
@@ -31,6 +33,9 @@ export default function Footer(props) {
       <div className={classes.container}>
         <div className={classes.left}>
           <List className={classes.list}>
+            <ListItem className={classes.inlineBlock}>
+              <img src={TransparentLogo} width="30px" />
+            </ListItem>
             <ListItem className={classes.inlineBlock}>
               <a href="" className={classes.block} target="_blank">
                 Off The Chain
